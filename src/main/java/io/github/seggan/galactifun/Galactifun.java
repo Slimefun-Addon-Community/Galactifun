@@ -36,6 +36,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon, CommandExec
             new GitHubBuildsUpdater(this, getFile(), "Slimefun-Addon-Community/Galactifun/master").start();
         }
 
+        Objects.requireNonNull(getCommand("ptp")).setExecutor(this);
+
         new Mars().register(this);
     }
 
