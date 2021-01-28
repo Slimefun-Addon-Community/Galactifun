@@ -9,6 +9,8 @@ public class Mars extends CelestialObject {
 
     public Mars() {
         super("Mars", 2, true, 0.3F, 3389500);
+
+        new MarsListener();
     }
 
     @Override

@@ -21,4 +21,7 @@ public abstract class CelestialGenerator extends ChunkGenerator {
     @NonNull
     public abstract ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome);
 
+    @NonNull
+    public abstract World.Environment getEnvironment();
+
 }

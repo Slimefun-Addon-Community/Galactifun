@@ -82,8 +82,11 @@ public abstract class CelestialObject {
         World world = Bukkit.getWorld(this.getWorldName());
         if (world != null) return;
 
+        CelestialGenerator generator = this.getGenerator();
+
         world = new WorldCreator(this.getWorldName())
-            .generator(this.getGenerator())
+            .generator(generator)
+            .environment(generator.getEnvironment())
             .createWorld();
 
         assert world != null;

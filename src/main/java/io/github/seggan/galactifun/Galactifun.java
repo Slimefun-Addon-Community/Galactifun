@@ -3,6 +3,7 @@ package io.github.seggan.galactifun;
 import io.github.seggan.galactifun.api.CelestialObject;
 import io.github.seggan.galactifun.solarsystem.mars.Mars;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import org.bukkit.Bukkit;
@@ -16,8 +17,13 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
     private final Set<CelestialObject> celestials = new HashSet<>();
 
+    @Getter
+    private static Galactifun instance = null;
+
     @Override
     public void onEnable() {
+        instance = this;
+
         Config cfg = new Config(this);
 
         if (getDescription().getVersion().startsWith("DEV - ")) {
