@@ -1,5 +1,6 @@
 package io.github.seggan.galactifun.api;
 
+import lombok.NonNull;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
@@ -17,6 +18,7 @@ public abstract class CelestialGenerator extends ChunkGenerator {
         return generateChunk(world, random, createChunkData(world), x, z, biome);
     }
 
-    public abstract ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int x, int z, BiomeGrid biome);
+    @NonNull
+    public abstract ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome);
 
 }

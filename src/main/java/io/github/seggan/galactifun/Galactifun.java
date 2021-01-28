@@ -1,20 +1,20 @@
 package io.github.seggan.galactifun;
 
+import io.github.seggan.galactifun.api.CelestialObject;
+import io.github.seggan.galactifun.solarsystem.mars.Mars;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Galactifun extends JavaPlugin implements SlimefunAddon {
+
+    private final Set<CelestialObject> celestials = new HashSet<>();
 
     @Override
     public void onEnable() {
@@ -23,6 +23,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         if (getDescription().getVersion().startsWith("DEV - ")) {
             new GitHubBuildsUpdater(this, getFile(), "Slimefun-Addon-Community/Galactifun/master").start();
         }
+
+        new Mars().register(this);
     }
 
     @Override
@@ -40,4 +42,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         return this;
     }
 
+    public void addCelestial(CelestialObject celestial) {
+        celestials.add(celestial);
+    }
 }
