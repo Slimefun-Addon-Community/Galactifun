@@ -73,7 +73,7 @@ public abstract class CelestialObject {
 
     @NonNull
     public final String getWorldName() {
-        return name.toLowerCase(Locale.ROOT).replace(" ", "_");
+        return name.toLowerCase(Locale.ROOT).replace(' ', '_');
     }
 
     public void register(Galactifun galactifun) {

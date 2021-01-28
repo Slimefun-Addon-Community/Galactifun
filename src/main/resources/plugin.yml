@@ -6,3 +6,13 @@ version: ${project.version}
 api-version: 1.14
 depend:
 - Slimefun
+
+commands:
+  ptp:
+    description: Teleport to a planet
+    permission: galactifun.ptp
+
+permissions:
+  galactifun.ptp:
+    description: The permission for the /ptp command
+    default: op
