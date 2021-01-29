@@ -7,21 +7,22 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class MarsBoulderPopulator extends BlockPopulator {
     @Override
-    public void populate(World world, Random random, Chunk chunk) {
-        int x = random.nextInt(16);
-        int z = random.nextInt(16);
-
-        Block b = world.getHighestBlockAt(x * chunk.getX(), z * chunk.getZ());
-        if (b.getType() == Material.GRANITE) return;
-
-        Block up = b.getRelative(BlockFace.UP);
-
+    public void populate(@Nonnull World world, Random random, @Nonnull Chunk chunk) {
         if (random.nextBoolean()) {
-            up.setType(Material.GRANITE);
+            int x = random.nextInt(16);
+            int z = random.nextInt(16);
+
+            Block b = world.getHighestBlockAt(x * chunk.getX(), z * chunk.getZ());
+
+            if (b.getType() == Material.GRANITE) return;
+
+            b.getRelative(BlockFace.UP).setType(Material.GRANITE);
+
         }
     }
 }

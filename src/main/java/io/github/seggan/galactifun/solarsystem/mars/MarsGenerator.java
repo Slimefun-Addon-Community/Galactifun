@@ -1,22 +1,22 @@
 package io.github.seggan.galactifun.solarsystem.mars;
 
-import io.github.seggan.galactifun.api.CelestialGenerator;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class MarsGenerator extends CelestialGenerator {
+public class MarsGenerator extends ChunkGenerator {
     int currentHeight = 50;
 
-    @Override
-    @NonNull
+    @Nonnull
     public ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome) {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
         generator.setScale(0.01D);
@@ -53,17 +53,17 @@ public class MarsGenerator extends CelestialGenerator {
         } else {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    currentHeight = (int) ((generator.noise(
+                    this.currentHeight = (int) ((generator.noise(
                         chunkX * 16 + x,
                         chunkZ * 16 + z,
                         0.5D,
                         0.5D,
                         true) + 1) * 40D + 35D);
 
-                    chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
-                    chunk.setBlock(x, currentHeight - 1, z, Material.RED_SAND);
+                    chunk.setBlock(x, this.currentHeight, z, Material.RED_SAND);
+                    chunk.setBlock(x, this.currentHeight - 1, z, Material.RED_SAND);
 
-                    for (int i = currentHeight - 2; i > 0; i--) {
+                    for (int i = this.currentHeight - 2 ; i > 0; i--) {
                         if (seedRandom.nextDouble() > 0.2) {
                             chunk.setBlock(x, i, z, Material.RED_SANDSTONE);
                         } else {
@@ -84,14 +84,10 @@ public class MarsGenerator extends CelestialGenerator {
 
         return chunk;
     }
-
+    
+    @Nonnull
     @Override
-    public @NonNull World.Environment getEnvironment() {
-        return World.Environment.NETHER;
-    }
-
-    @Override
-    public List<BlockPopulator> getDefaultPopulators(World world) {
+    public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
         return Collections.singletonList(new MarsBoulderPopulator());
     }
 

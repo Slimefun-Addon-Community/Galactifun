@@ -1,11 +1,11 @@
 package io.github.seggan.galactifun.solarsystem.mars;
 
-import io.github.seggan.galactifun.api.CelestialGenerator;
-import io.github.seggan.galactifun.api.CelestialObject;
 import lombok.NonNull;
 import org.bukkit.potion.PotionEffectType;
 
-public class Mars extends CelestialObject {
+import javax.annotation.Nonnull;
+
+public class Mars extends LargeCelestialObject {
 
     public Mars() {
         super("Mars", 2, true, 0.3F, 3389500);
@@ -13,18 +13,21 @@ public class Mars extends CelestialObject {
         new MarsListener();
     }
 
+    @Nonnull
     @Override
     @NonNull
     public CelestialGenerator getGenerator() {
         return new MarsGenerator();
     }
 
+    @Nonnull
     @Override
     @NonNull
-    public PotionEffectType[] getEffects() {
+    public PotionEffectType[] getNormalEffects() {
         return new PotionEffectType[0];
     }
 
+    @Nonnull
     @Override
     @NonNull
     public PotionEffectType[] getUnprotectedEffects() {
