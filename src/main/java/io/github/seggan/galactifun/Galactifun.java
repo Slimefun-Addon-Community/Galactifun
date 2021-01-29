@@ -66,7 +66,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon, CommandExec
             return true;
         }
 
-        PaperLib.teleportAsync((Player) sender, Objects.requireNonNull(Bukkit.getWorld(args[1])).getSpawnLocation());
+        PaperLib.teleportAsync((Player) sender, Objects.requireNonNull(Bukkit.getWorld(args[0])).getSpawnLocation());
 
         return true;
     }
