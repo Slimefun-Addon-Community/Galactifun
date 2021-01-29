@@ -7,6 +7,7 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.experimental.UtilityClass;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,17 +30,17 @@ public final class Registry {
         CELESTIAL_OBJECTS.put(object.getWorld().getName(), object);
     }
 
-    @Nonnull
+    @Nullable
     public static Galaxy getGalaxy(@Nonnull String name) {
         return GALAXIES.get(name);
     }
 
-    @Nonnull
+    @Nullable
     public static StarSystem getStarSystem(@Nonnull String name) {
         return STAR_SYSTEMS.get(name);
-    }  
-    
-    @Nonnull
+    }
+
+    @Nullable
     public static CelestialObject getCelestialObject(@Nonnull String worldName) {
         return CELESTIAL_OBJECTS.get(worldName);
     }

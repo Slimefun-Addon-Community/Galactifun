@@ -4,10 +4,13 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.Moon;
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.GenerationType;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -22,7 +25,8 @@ import java.util.logging.Level;
 public final class Earth extends Planet {
 
     public Earth(@Nonnull Moon theMoon) {
-        super("Earth", 91_565_000, 0, 196_900_000, SolarType.NORMAL, Atmosphere.EARTH_LIKE, theMoon);
+        super("Earth", 91_565_000, 0, 196_900_000,
+                SolarType.NORMAL, Atmosphere.EARTH_LIKE, GenerationType.FLAT_NO_CAVE, theMoon);
     }
 
     @Nonnull
@@ -53,9 +57,16 @@ public final class Earth extends Planet {
         }
     }
 
+    @Nonnull
     @Override
-    protected void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
-        // wont be called
+    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+        return Material.STONE; // wont get called
+    }
+
+    @Nonnull
+    @Override
+    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+        return Biome.THE_VOID; // wont get called
     }
 
 }
