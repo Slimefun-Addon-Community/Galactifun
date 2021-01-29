@@ -1,18 +1,18 @@
 name: Galactifun
-author: Slimefun Addon Community
+authors: [Seggan, Mooy1, ProfElements, GallowsDove]
 description: Space addon for Slimefun
-main: io.github.seggan.galactifun.Galactifun
+main: io.github.addoncommunity.galactifun.Galactifun
 version: ${project.version}
-api-version: 1.14
-depend:
-- Slimefun
+api-version: 1.16
+depend: [Slimefun]
 
 commands:
-  ptp:
-    description: Teleport to a planet
-    permission: galactifun.ptp
-
+  galactifun:
+    description: galactifun main command
+    usage: /galactifun <subcommand>
+    aliases: [gf, galactic]
+    
 permissions:
-  galactifun.ptp:
-    description: The permission for the /ptp command
+  galactifun.admin:
+    description: galactifun admin perm
     default: op

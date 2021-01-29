@@ -1,0 +1,4 @@
+# The name of your world that is earth.
+# This should be the name main world where people work on stuff and make bases.
+# By default, it is "world"
+earth-world-name: world
