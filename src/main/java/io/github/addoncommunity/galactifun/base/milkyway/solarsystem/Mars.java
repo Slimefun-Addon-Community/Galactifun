@@ -72,6 +72,7 @@ public class Mars extends Planet {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 1; y < 60; y++) {
+                        // Generate the caverns
                         double density = generator.noise(
                             (chunkX << 4) + x,
                             y,
@@ -80,13 +81,15 @@ public class Mars extends Planet {
                             0.5D,
                             true
                         );
+
+                        // Choose a narrow selection of blocks
                         if (density > 0.25) {
                             chunk.setBlock(x, y, z, Material.CAVE_AIR);
                         }
                     }
                     currentHeight = (int) ((generator.noise(
-                            chunkX << 4 + x,
-                            chunkZ << 4 + z,
+                        (chunkX << 4) + x,
+                            (chunkZ << 4) + z,
                             0.5D,
                             0.5D,
                             true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
@@ -100,7 +103,7 @@ public class Mars extends Planet {
                     for (int y = currentHeight - 1; y > 0; y--) {
                         if (chunk.getType(x, y, z) != Material.CAVE_AIR) {
                             if (random.nextDouble() > 0.2) {
-                                // 4/5 blocks are red sandstone
+                                // 4/5 blocks are terracotta
                                 chunk.setBlock(x, y, z, Material.TERRACOTTA);
                             } else {
                                 if (y > 15) {
