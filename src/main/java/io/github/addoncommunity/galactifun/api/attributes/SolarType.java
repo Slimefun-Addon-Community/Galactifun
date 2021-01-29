@@ -1,4 +1,4 @@
-package io.github.seggan.galactifun.api.attributes;
+package io.github.addoncommunity.galactifun.api.attributes;
 
 import org.bukkit.GameRule;
 import org.bukkit.World;

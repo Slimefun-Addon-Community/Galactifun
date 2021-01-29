@@ -1,8 +1,8 @@
-package io.github.seggan.galactifun.api;
+package io.github.addoncommunity.galactifun.api;
 
-import io.github.seggan.galactifun.api.attributes.Atmosphere;
-import io.github.seggan.galactifun.api.attributes.SolarType;
-import io.github.seggan.galactifun.core.Registry;
+import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.core.Registry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;

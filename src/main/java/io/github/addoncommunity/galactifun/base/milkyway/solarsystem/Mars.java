@@ -1,8 +1,8 @@
-package io.github.seggan.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.seggan.galactifun.api.Planet;
-import io.github.seggan.galactifun.api.attributes.Atmosphere;
-import io.github.seggan.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.Planet;
+import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;

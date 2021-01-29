@@ -1,8 +1,8 @@
-package io.github.seggan.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.seggan.galactifun.api.Moon;
-import io.github.seggan.galactifun.api.attributes.Atmosphere;
-import io.github.seggan.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.Moon;
 
 import javax.annotation.Nonnull;
 import java.util.Random;

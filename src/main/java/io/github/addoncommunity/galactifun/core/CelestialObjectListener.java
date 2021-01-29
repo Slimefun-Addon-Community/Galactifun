@@ -1,4 +1,4 @@
-package io.github.seggan.galactifun.core;
+package io.github.addoncommunity.galactifun.core;
 
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public final class CelestialObjectListener implements Listener {
     
     @EventHandler
     public void onMobSpawn(@Nonnull EntitySpawnEvent e) {
-        // TODO improve
+        // TODO improve, should have some methods in celestial objects for events
         if (e.getEntity().getWorld().getName().equals("mars")) {
             e.setCancelled(true);
         }

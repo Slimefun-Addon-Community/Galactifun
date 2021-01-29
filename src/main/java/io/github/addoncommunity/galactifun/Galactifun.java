@@ -1,18 +1,14 @@
-package io.github.seggan.galactifun;
+package io.github.addoncommunity.galactifun;
 
+import io.github.addoncommunity.galactifun.core.TeleportCommand;
 import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.seggan.galactifun.core.CelestialObjectListener;
+import io.github.addoncommunity.galactifun.core.CelestialObjectListener;
+import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
@@ -24,10 +20,9 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         instance = this;
 
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
-        
-        // temporary, replace with CommandManager.setup
-        Objects.requireNonNull(getCommand("ptp")).setExecutor(this);
 
+        CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic", new TeleportCommand());
+        
         CelestialObjectListener.setup();
 
     }
@@ -48,15 +43,4 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         return this;
     }
     
-    @Override
-    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
-        // temporary
-        if (!(sender instanceof Player)) {
-            return true;
-        }
-
-        PaperLib.teleportAsync((Player) sender, Objects.requireNonNull(Bukkit.getWorld(args[1])).getSpawnLocation());
-
-        return true;
-    }
 }

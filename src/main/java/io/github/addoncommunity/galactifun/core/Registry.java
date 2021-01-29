@@ -1,8 +1,8 @@
-package io.github.seggan.galactifun.core;
+package io.github.addoncommunity.galactifun.core;
 
-import io.github.seggan.galactifun.api.CelestialObject;
-import io.github.seggan.galactifun.api.Galaxy;
-import io.github.seggan.galactifun.api.StarSystem;
+import io.github.addoncommunity.galactifun.api.CelestialObject;
+import io.github.addoncommunity.galactifun.api.Galaxy;
+import io.github.addoncommunity.galactifun.api.StarSystem;
 import lombok.experimental.UtilityClass;
 
 import javax.annotation.Nonnull;

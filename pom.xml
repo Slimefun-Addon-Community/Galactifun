@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.seggan.galactifun</groupId>
+    <groupId>io.github.addoncommunity.galactifun</groupId>
     <artifactId>Galactifun</artifactId>
     <version>UNOFFICIAL</version>
 
@@ -62,11 +62,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>io.github.seggan.galactifun.bstats</shadedPattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.github.mooy1.infinitylib</pattern>
-                            <shadedPattern>io.github.seggan.galactifun.infinitylib</shadedPattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.infinitylib</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>

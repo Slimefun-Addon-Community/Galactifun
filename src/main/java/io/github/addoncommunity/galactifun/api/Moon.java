@@ -1,7 +1,7 @@
-package io.github.seggan.galactifun.api;
+package io.github.addoncommunity.galactifun.api;
 
-import io.github.seggan.galactifun.api.attributes.Atmosphere;
-import io.github.seggan.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 
 import javax.annotation.Nonnull;
 
