@@ -62,9 +62,9 @@ class MarsGenerator extends CelestialGenerator {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 1; y < 60; y++) {
                         double density = generator.noise(
-                            chunkX * 16 + x,
+                            (chunkX << 4) + x,
                             y,
-                            chunkZ * 16 + z,
+                            (chunkZ << 4) + z,
                             0.5D,
                             0.5D,
                             true
@@ -74,8 +74,8 @@ class MarsGenerator extends CelestialGenerator {
                         }
                     }
                     currentHeight = (int) ((generator.noise(
-                        chunkX * 16 + x,
-                        chunkZ * 16 + z,
+                        (chunkX << 4) + x,
+                        (chunkZ << 4) + z,
                         0.5D,
                         0.5D,
                         true) + 1) * MAX_DEVIATION + MIN_HEIGHT);

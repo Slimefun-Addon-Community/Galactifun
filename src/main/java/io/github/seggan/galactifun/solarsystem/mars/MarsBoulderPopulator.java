@@ -15,7 +15,7 @@ class MarsBoulderPopulator extends BlockPopulator {
         int x = random.nextInt(16);
         int z = random.nextInt(16);
 
-        Block b = world.getHighestBlockAt(x * chunk.getX(), z * chunk.getZ());
+        Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
         if (b.getType() == Material.GRANITE) return;
 
         Block up = b.getRelative(BlockFace.UP);
