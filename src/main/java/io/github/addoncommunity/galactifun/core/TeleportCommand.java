@@ -40,7 +40,7 @@ public class TeleportCommand extends AbstractCommand {
     @Override
     public List<String> onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         List<String> worlds = new ArrayList<>();
-        if (strings.length == 1) {
+        if (strings.length == 2) {
             for (World world : Bukkit.getWorlds()) {
                 worlds.add(world.getName());
             }

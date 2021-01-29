@@ -36,7 +36,6 @@ public final class Earth extends Planet {
             world = Bukkit.getWorld(worldName);
             
             if (world != null) {
-                PluginUtils.log("Using world '" + worldName + "' as earth...");
                 return world;
             }
         }

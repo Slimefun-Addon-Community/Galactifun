@@ -69,14 +69,16 @@ public class Mars extends Planet {
             }
         } else {
             int currentHeight;
+            int startX = chunkX << 4;
+            int startZ = chunkZ << 4;
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 1; y < 60; y++) {
                         // Generate the caverns
-                        double density = generator.noise(
-                            (chunkX << 4) + x,
+                        double density = caveGenerator.noise(
+                            startX + x,
                             y,
-                            (chunkZ << 4) + z,
+                            startZ + z,
                             0.5D,
                             0.5D,
                             true
@@ -88,8 +90,8 @@ public class Mars extends Planet {
                         }
                     }
                     currentHeight = (int) ((generator.noise(
-                        (chunkX << 4) + x,
-                            (chunkZ << 4) + z,
+                        startX + x,
+                         startZ + z,
                             0.5D,
                             0.5D,
                             true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
