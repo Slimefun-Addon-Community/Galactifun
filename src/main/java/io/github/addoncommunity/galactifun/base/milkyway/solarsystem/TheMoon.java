@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class TheMoon extends Moon {
-    
+
     // MIN_HEIGHT + MAX_DEVIATION is the max height the world would generate
     private static final double MAX_DEVIATION = 20;
 
@@ -25,8 +25,8 @@ public class TheMoon extends Moon {
 
     @Override
     protected void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
-        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(random, 8);
-        generator.setScale(0.01);
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
+        generator.setScale(0.01D);
         int height;
         int startX = chunkX << 4;
         int startZ = chunkZ << 4;
@@ -34,12 +34,12 @@ public class TheMoon extends Moon {
             for (int z = 0; z < 16; z++) {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
-                height = (int) (MIN_HEIGHT + MAX_DEVIATION * generator.noise(
+                height = (int) (MIN_HEIGHT + MAX_DEVIATION * (1 + generator.noise(
                         startX + x, startZ + z, 0.5D, 0.5D, true)
-                );
+                ));
                 
                 for (int y = 1 ; y < height ; y++) {
-                    if (random.nextDouble() > 0.04 || y > 40) {
+                    if (random.nextDouble() > 0.02 || y > 40) {
                         chunk.setBlock(x, y, z, Material.ANDESITE);
                     } else {
                         chunk.setBlock(x, y, z, Material.GOLD_ORE);

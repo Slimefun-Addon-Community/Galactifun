@@ -15,7 +15,7 @@ import java.util.List;
 public class TeleportCommand extends AbstractCommand {
 
     public TeleportCommand() {
-        super("teleport", "teleports you to the spawn of the specified world", true);
+        super("world", "teleports you to the spawn of the specified world", true);
     }
 
     @Override

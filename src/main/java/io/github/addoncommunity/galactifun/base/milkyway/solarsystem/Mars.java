@@ -31,103 +31,65 @@ public class Mars extends Planet {
 
     @Override
     public void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
-        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
-        SimplexOctaveGenerator caveGenerator = new SimplexOctaveGenerator(new Random(world.getSeed()), 16);
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
         // The higher the scale, the more extreme the terrain
         generator.setScale(0.01D);
-        caveGenerator.setScale(1D);
-
-        // This stuff is for generating the canyon. The else clause has the real terrain gen code
-        if (chunkX == 0) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 1, z, Material.RED_SAND);
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
-                }
-            }
-        } else if (chunkX == 1) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 1, z, Material.RED_SAND);
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
-                }
-            }
-
+        
+        int currentHeight;
+        int startX = chunkX << 4;
+        int startZ = chunkZ << 4;
+        for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                chunk.setBlock(15, 2, z, Material.RED_SAND);
-            }
-        } else if (chunkX == -1) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 1, z, Material.RED_SAND);
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
-                }
-            }
-
-            for (int z = 0; z < 16; z++) {
-                chunk.setBlock(0, 2, z, Material.RED_SAND);
-            }
-        } else {
-            int currentHeight;
-            int startX = chunkX << 4;
-            int startZ = chunkZ << 4;
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    for (int y = 1; y < 60; y++) {
-                        // Generate the caverns
-                        double density = caveGenerator.noise(
-                            startX + x,
-                            y,
-                            startZ + z,
-                            0.5D,
-                            0.5D,
-                            true
-                        );
-
-                        // Choose a narrow selection of blocks
-                        if (density > 0.25) {
-                            chunk.setBlock(x, y, z, Material.CAVE_AIR);
-                        }
-                    }
-                    currentHeight = (int) ((generator.noise(
+                for (int y = 1; y < 60; y++) {
+                    // Generate the caverns
+                    double density = generator.noise(
                         startX + x,
-                         startZ + z,
-                            0.5D,
-                            0.5D,
-                            true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
+                        y,
+                        startZ + z,
+                        0.5D,
+                        0.5D,
+                        true
+                    );
 
-                    if (chunk.getType(x, currentHeight-1, z) != Material.CAVE_AIR) {
-                        // Set top block to red sand
-                        chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
+                    // Choose a narrow selection of blocks
+                    if (density > 0.25) {
+                        chunk.setBlock(x, y, z, Material.CAVE_AIR);
                     }
+                }
+                currentHeight = (int) ((generator.noise(
+                    startX + x,
+                     startZ + z,
+                        0.5D,
+                        0.5D,
+                        true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
 
-                    // For every remaining block...
-                    for (int y = currentHeight - 1; y > 0; y--) {
-                        if (chunk.getType(x, y, z) != Material.CAVE_AIR) {
-                            if (random.nextDouble() > 0.2) {
-                                // 4/5 blocks are terracotta
-                                chunk.setBlock(x, y, z, Material.TERRACOTTA);
+                if (chunk.getType(x, currentHeight-1, z) != Material.CAVE_AIR) {
+                    // Set top block to red sand
+                    chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
+                }
+
+                // For every remaining block...
+                for (int y = currentHeight - 1; y > 0; y--) {
+                    if (chunk.getType(x, y, z) != Material.CAVE_AIR) {
+                        if (random.nextDouble() > 0.2) {
+                            // 4/5 blocks are terracotta
+                            chunk.setBlock(x, y, z, Material.TERRACOTTA);
+                        } else {
+                            if (y > 15) {
+                                // Blue ice is the other 1/5 if y > 15
+                                chunk.setBlock(x, y, z, Material.BLUE_ICE);
                             } else {
-                                if (y > 15) {
-                                    // Blue ice is the other 1/5 if y > 15
-                                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
-                                } else {
-                                    // Otherwise iron ore
-                                    chunk.setBlock(x, y, z, Material.IRON_ORE);
-                                }
+                                // Otherwise iron ore
+                                chunk.setBlock(x, y, z, Material.IRON_ORE);
                             }
                         }
                     }
-
-                    // And bedrock bottom
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
                 }
-            }
-        }
 
-        // Set biome
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
+                // And bedrock bottom
+                chunk.setBlock(x, 0, z, Material.BEDROCK);
+
+                // biome
                 for (int y = 0; y < 256; y++) {
                     biome.setBiome(x, y, z, Biome.NETHER_WASTES);
                 }
