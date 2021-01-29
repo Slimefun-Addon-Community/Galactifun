@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import io.github.addoncommunity.galactifun.api.Moon;
+import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -14,7 +15,7 @@ public class TheMoon extends Moon {
     }
 
     @Override
-    protected void generateChunk(@Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
+    protected void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
         
     }
 

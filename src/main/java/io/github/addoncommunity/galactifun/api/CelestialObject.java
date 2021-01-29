@@ -97,11 +97,11 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Override
     public final ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int x, int z, @Nonnull BiomeGrid biome) {
         ChunkData data = createChunkData(world);
-        generateChunk(data, random, biome, x, z);
+        generateChunk(world, data, random, biome, x, z);
         return data;
     }
     
-    protected abstract void generateChunk(@Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ);
+    protected abstract void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ);
 
     @Override
     public final int hashCode() {
