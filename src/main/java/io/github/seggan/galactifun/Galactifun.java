@@ -1,6 +1,7 @@
 package io.github.seggan.galactifun;
 
 import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.seggan.galactifun.core.CelestialObjectListener;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import lombok.Getter;
@@ -13,9 +14,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-@Getter
 public class Galactifun extends JavaPlugin implements SlimefunAddon {
-    
+
+    @Getter
     private static Galactifun instance;
     
     @Override
@@ -26,6 +27,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         
         // temporary, replace with CommandManager.setup
         Objects.requireNonNull(getCommand("ptp")).setExecutor(this);
+
+        CelestialObjectListener.setup();
 
     }
 

@@ -1,9 +1,9 @@
 name: Galactifun
-author: Slimefun Addon Community
+authors: [Seggan, Mooy1] # add ur names
 description: Space addon for Slimefun
-main: io.github.seggan.galactifun.Galactifun
+main: io.github.seggan.galactifun.Galactifun # could change package name to io.github.slimefun-addon-community?
 version: ${project.version}
-api-version: 1.14
+api-version: 1.16
 depend:
 - Slimefun
 

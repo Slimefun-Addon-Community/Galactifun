@@ -1,4 +1,4 @@
-package io.github.seggan.galactifun.objects;
+package io.github.seggan.galactifun.api.attributes;
 
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
@@ -8,14 +8,19 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * An atmoshpere of a celestial object
+ *
+ * @author Mooy1
+ *
+ */
 @Getter
 public class Atmosphere {
 
-    public static final Atmosphere EARTH = new Atmosphere(21, true, false, false, true, World.Environment.NORMAL);
-    public static final Atmosphere MOON = new Atmosphere(0, false, false, false, false,World.Environment.THE_END);
-    public static final Atmosphere MARS = new Atmosphere(0, false, false, false, false, World.Environment.NETHER);
-    public static final Atmosphere VENUS = new Atmosphere(0, false, false, true, true, World.Environment.NETHER);
-    
+    public static final Atmosphere EARTH_LIKE = new Atmosphere(21, true, false, false, true, World.Environment.NORMAL);
+    public static final Atmosphere MARS_LIKE = new Atmosphere(0, false, false, false, false, World.Environment.NETHER);
+    public static final Atmosphere MOON_LIKE = new Atmosphere(0, false, false, false, false,World.Environment.THE_END);
+
     private final int oxygenPercentage;
     private final boolean weatherCycle;
     private final boolean storming;
@@ -46,7 +51,7 @@ public class Atmosphere {
         this(oxygenRatio, weatherCycle, storming, thundering, flammable, environment, new PotionEffectType[0], new PotionEffectType[0]);
     }
     
-    void applyEffects(@Nonnull World world) {
+    public void applyEffects(@Nonnull World world) {
         world.setGameRule(GameRule.DO_WEATHER_CYCLE, this.weatherCycle);
         world.setStorm(this.storming);
         world.setThundering(this.thundering);
