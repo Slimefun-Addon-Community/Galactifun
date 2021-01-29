@@ -12,15 +12,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class MarsGenerator extends CelestialGenerator {
+class MarsGenerator extends CelestialGenerator {
     int currentHeight = 50;
+    // MIN_HEIGHT + MAX_DEVIATION is the max height the world would generate
+    private static final double MAX_DEVIATION = 40;
+    // The minimum height for the noise generator
+    private static final double MIN_HEIGHT = 35;
 
     @Override
-    @NonNull
     public ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome) {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
+        // The higher the scale, the more extreme the terrain
         generator.setScale(0.01D);
 
+        // This stuff is for generating the canyon. The else clause has the real terrain gen code
         if (chunkX == 0) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
@@ -58,35 +63,42 @@ public class MarsGenerator extends CelestialGenerator {
                         chunkZ * 16 + z,
                         0.5D,
                         0.5D,
-                        true) + 1) * 40D + 35D);
+                        true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
 
+                    // Set top 2 blocks to red sand
                     chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
                     chunk.setBlock(x, currentHeight - 1, z, Material.RED_SAND);
 
-                    for (int i = currentHeight - 2; i > 0; i--) {
+                    // For every remaining block...
+                    for (int y = currentHeight - 2; y > 0; y--) {
                         if (seedRandom.nextDouble() > 0.2) {
-                            chunk.setBlock(x, i, z, Material.RED_SANDSTONE);
+                            // 4/5 blocks are red sandstone
+                            chunk.setBlock(x, y, z, Material.RED_SANDSTONE);
                         } else {
-                            if (i > 15) {
-                                chunk.setBlock(x, i, z, Material.BLUE_ICE);
+                            if (y > 15) {
+                                // Blue ice is the other 1/5 if y > 15
+                                chunk.setBlock(x, y, z, Material.BLUE_ICE);
                             } else {
-                                chunk.setBlock(x, i, z, Material.IRON_ORE);
+                                // Otherwise iron ore
+                                chunk.setBlock(x, y, z, Material.IRON_ORE);
                             }
                         }
                     }
 
+                    // And bedrock bottom
                     chunk.setBlock(x, 0, z, Material.BEDROCK);
                 }
             }
         }
 
+        // This line no work?
         biome.setBiome(15, 255, 15, Biome.NETHER_WASTES);
 
         return chunk;
     }
 
     @Override
-    public @NonNull World.Environment getEnvironment() {
+    public World.Environment getEnvironment() {
         return World.Environment.NETHER;
     }
 

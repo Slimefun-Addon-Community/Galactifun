@@ -35,7 +35,7 @@ public abstract class CelestialObject {
      */
     private final float gravity;
     /**
-     * The radius of the body int meters. Used for determining the world border size
+     * The radius of the body in meters. Used for determining the world border size
      */
     private final long radius;
     /**
@@ -52,7 +52,6 @@ public abstract class CelestialObject {
      *
      * @return a CelestialGenerator for the celestial
      */
-    @NonNull
     public abstract CelestialGenerator getGenerator();
 
     /**
@@ -60,7 +59,6 @@ public abstract class CelestialObject {
      *
      * @return a list of potion effects
      */
-    @NonNull
     public abstract PotionEffectType[] getEffects();
 
     /**
@@ -68,10 +66,8 @@ public abstract class CelestialObject {
      *
      * @return a list of potion effects
      */
-    @NonNull
     public abstract PotionEffectType[] getUnprotectedEffects();
 
-    @NonNull
     public final String getWorldName() {
         return name.toLowerCase(Locale.ROOT).replace(' ', '_');
     }

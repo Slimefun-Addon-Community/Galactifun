@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
-public class MarsListener implements Listener {
+class MarsListener implements Listener {
 
     public MarsListener() {
         Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());

@@ -9,7 +9,7 @@ import org.bukkit.generator.BlockPopulator;
 
 import java.util.Random;
 
-public class MarsBoulderPopulator extends BlockPopulator {
+class MarsBoulderPopulator extends BlockPopulator {
     @Override
     public void populate(World world, Random random, Chunk chunk) {
         int x = random.nextInt(16);

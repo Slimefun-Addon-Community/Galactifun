@@ -18,10 +18,8 @@ public abstract class CelestialGenerator extends ChunkGenerator {
         return generateChunk(world, random, createChunkData(world), x, z, biome);
     }
 
-    @NonNull
     public abstract ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome);
 
-    @NonNull
     public abstract World.Environment getEnvironment();
 
 }
