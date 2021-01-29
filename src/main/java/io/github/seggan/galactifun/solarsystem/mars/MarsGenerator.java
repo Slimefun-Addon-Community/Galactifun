@@ -1,7 +1,7 @@
 package io.github.seggan.galactifun.solarsystem.mars;
 
 import io.github.seggan.galactifun.api.CelestialGenerator;
-import lombok.NonNull;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -22,8 +22,10 @@ class MarsGenerator extends CelestialGenerator {
     @Override
     public ChunkData generateChunk(World world, Random seedRandom, ChunkData chunk, int chunkX, int chunkZ, BiomeGrid biome) {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
+        SimplexOctaveGenerator caveGenerator = new SimplexOctaveGenerator(new Random(world.getSeed()), 16);
         // The higher the scale, the more extreme the terrain
         generator.setScale(0.01D);
+        caveGenerator.setScale(1D);
 
         // This stuff is for generating the canyon. The else clause has the real terrain gen code
         if (chunkX == 0) {
@@ -58,6 +60,19 @@ class MarsGenerator extends CelestialGenerator {
         } else {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
+                    for (int y = 1; y < 60; y++) {
+                        double density = generator.noise(
+                            chunkX * 16 + x,
+                            y,
+                            chunkZ * 16 + z,
+                            0.5D,
+                            0.5D,
+                            true
+                        );
+                        if (density > 0.25) {
+                            chunk.setBlock(x, y, z, Material.CAVE_AIR);
+                        }
+                    }
                     currentHeight = (int) ((generator.noise(
                         chunkX * 16 + x,
                         chunkZ * 16 + z,
@@ -65,22 +80,25 @@ class MarsGenerator extends CelestialGenerator {
                         0.5D,
                         true) + 1) * MAX_DEVIATION + MIN_HEIGHT);
 
-                    // Set top 2 blocks to red sand
-                    chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
-                    chunk.setBlock(x, currentHeight - 1, z, Material.RED_SAND);
+                    if (chunk.getType(x, currentHeight-1, z) != Material.CAVE_AIR) {
+                        // Set top block to red sand
+                        chunk.setBlock(x, currentHeight, z, Material.RED_SAND);
+                    }
 
                     // For every remaining block...
-                    for (int y = currentHeight - 2; y > 0; y--) {
-                        if (seedRandom.nextDouble() > 0.2) {
-                            // 4/5 blocks are red sandstone
-                            chunk.setBlock(x, y, z, Material.RED_SANDSTONE);
-                        } else {
-                            if (y > 15) {
-                                // Blue ice is the other 1/5 if y > 15
-                                chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                    for (int y = currentHeight - 1; y > 0; y--) {
+                        if (chunk.getType(x, y, z) != Material.CAVE_AIR) {
+                            if (seedRandom.nextDouble() > 0.2) {
+                                // 4/5 blocks are red sandstone
+                                chunk.setBlock(x, y, z, Material.TERRACOTTA);
                             } else {
-                                // Otherwise iron ore
-                                chunk.setBlock(x, y, z, Material.IRON_ORE);
+                                if (y > 15) {
+                                    // Blue ice is the other 1/5 if y > 15
+                                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                                } else {
+                                    // Otherwise iron ore
+                                    chunk.setBlock(x, y, z, Material.IRON_ORE);
+                                }
                             }
                         }
                     }
@@ -91,7 +109,7 @@ class MarsGenerator extends CelestialGenerator {
             }
         }
 
-        // Set Biome
+        // Set biome
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 0; y < 256; y++) {
