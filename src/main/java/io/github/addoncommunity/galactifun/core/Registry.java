@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.core;
 import io.github.addoncommunity.galactifun.api.CelestialObject;
 import io.github.addoncommunity.galactifun.api.Galaxy;
 import io.github.addoncommunity.galactifun.api.StarSystem;
+import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.experimental.UtilityClass;
 
 import javax.annotation.Nonnull;
@@ -17,14 +18,17 @@ public final class Registry {
     private static final Map<String, CelestialObject> CELESTIAL_OBJECTS = new HashMap<>();
     
     public static void register(@Nonnull Galaxy galaxy) {
+        PluginUtils.log("Registered Galaxy: " + galaxy.getName());
         GALAXIES.put(galaxy.getName(), galaxy);
     }
     
     public static void register(@Nonnull StarSystem system) {
+        PluginUtils.log("Registered Star System: " + system.getName());
         STAR_SYSTEMS.put(system.getName(), system);
     }
     
     public static void register(@Nonnull CelestialObject object) {
+        PluginUtils.log("Registered Celestial Object: " + object.getName());
         CELESTIAL_OBJECTS.put(object.getWorld().getName(), object);
     }
 

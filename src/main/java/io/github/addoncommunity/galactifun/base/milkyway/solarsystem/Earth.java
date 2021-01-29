@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.Moon;
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
@@ -20,7 +21,7 @@ import java.util.logging.Level;
  */
 public final class Earth extends Planet {
 
-    public Earth(@Nonnull TheMoon theMoon) {
+    public Earth(@Nonnull Moon theMoon) {
         super("Earth", 91_565_000, 0, 196_900_000, SolarType.NORMAL, Atmosphere.EARTH_LIKE, theMoon);
     }
 
@@ -35,7 +36,7 @@ public final class Earth extends Planet {
             world = Bukkit.getWorld(worldName);
             
             if (world != null) {
-                PluginUtils.log("Using world " + worldName + " as earth");
+                PluginUtils.log("Using world '" + worldName + "' as earth...");
                 return world;
             }
         }
