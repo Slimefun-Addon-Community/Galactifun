@@ -3,10 +3,10 @@ package io.github.addoncommunity.galactifun.core;
 import io.github.addoncommunity.galactifun.api.CelestialObject;
 import io.github.addoncommunity.galactifun.api.Galaxy;
 import io.github.addoncommunity.galactifun.api.StarSystem;
-import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.experimental.UtilityClass;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public final class Registry {
         return STAR_SYSTEMS.get(name);
     }  
     
-    @Nonnull
+    @Nullable
     public static CelestialObject getCelestialObject(@Nonnull String worldName) {
         return CELESTIAL_OBJECTS.get(worldName);
     }
