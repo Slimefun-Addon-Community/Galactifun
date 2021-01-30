@@ -4,6 +4,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.Moon;
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Bukkit;
@@ -22,7 +23,7 @@ import java.util.logging.Level;
 public final class Earth extends Planet {
 
     public Earth(@Nonnull Moon theMoon) {
-        super("Earth", 91_565_000, 0, 196_900_000, SolarType.NORMAL, Atmosphere.EARTH_LIKE, theMoon);
+        super("Earth", 91_565_000, new Gravity(0), 196_900_000, SolarType.NORMAL, Atmosphere.EARTH_LIKE, theMoon);
     }
 
     @Nonnull

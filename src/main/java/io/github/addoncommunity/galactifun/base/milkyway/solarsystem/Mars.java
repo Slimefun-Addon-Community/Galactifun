@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -26,7 +27,7 @@ public class Mars extends Planet {
     private static final double MIN_HEIGHT = 35;
 
     public Mars() {
-        super("Mars", 144_610_000L, -1, 55_910_000L, SolarType.NORMAL, Atmosphere.MARS_LIKE);
+        super("Mars", 144_610_000L, new Gravity(-1), 55_910_000L, SolarType.NORMAL, Atmosphere.MARS_LIKE);
     }
 
     @Override

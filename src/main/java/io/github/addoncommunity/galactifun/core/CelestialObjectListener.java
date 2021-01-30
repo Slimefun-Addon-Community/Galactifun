@@ -1,18 +1,24 @@
 package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.CelestialObject;
 import io.github.mooy1.infinitylib.PluginUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 
 /**
  * Listeners for celestial object handlers
@@ -40,14 +46,7 @@ public final class CelestialObjectListener implements Listener {
         CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
 
         if (object != null) {
-            int g = -object.getGravity() - 1;
-
-            e.getPlayer().removePotionEffect(PotionEffectType.JUMP);
-            e.getPlayer().removePotionEffect(PotionEffectType.SLOW_FALLING);
-            new PotionEffect(PotionEffectType.JUMP, 2147483647, g).apply(e.getPlayer());
-            if (g > 0) {
-                new PotionEffect(PotionEffectType.SLOW_FALLING, 2147483647, (g-1)/2).apply(e.getPlayer());
-            }
+            object.getGravity().applyGravity(e.getPlayer());
         } else {
             CelestialObject from = Registry.getCelestialObject(e.getFrom().getName());
 
@@ -58,25 +57,37 @@ public final class CelestialObjectListener implements Listener {
         }
     }
 
+    // This runs a few seconds after joining?
+    @EventHandler
+    public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
+        CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
+
+        if (object != null) {
+            Bukkit.getScheduler().runTask(Galactifun.getInstance(), () -> object.getGravity().applyGravity(e.getPlayer()));
+        }
+    }
+
+    @EventHandler
+    public void onPlanetRespawn(@Nonnull PlayerRespawnEvent e) {
+        CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
+
+        if (object != null) {
+            Bukkit.getScheduler().runTask(Galactifun.getInstance(), () -> object.getGravity().applyGravity(e.getPlayer()));
+        }
+    }
+
     @EventHandler
     public void onMilkDrink(@Nonnull PlayerItemConsumeEvent e) {
         if (e.getItem().getType() == Material.MILK_BUCKET) {
             CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
 
             if (object != null) {
-                int g = -object.getGravity() - 1;
-
                 Player p = e.getPlayer();
 
                 for (PotionEffect effect : p.getActivePotionEffects())
                     p.removePotionEffect(effect.getType());
 
-                new PotionEffect(PotionEffectType.JUMP, 2147483647, g).apply(p);
-                if (g > 0) {
-                    new PotionEffect(PotionEffectType.SLOW_FALLING, 2147483647, (g-1)/2).apply(p);
-                }
-
-                e.setCancelled(true);
+                Bukkit.getScheduler().runTask(Galactifun.getInstance(), () -> object.getGravity().applyGravity(e.getPlayer()));
             }
         }
     }
