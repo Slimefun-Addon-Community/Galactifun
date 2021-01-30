@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -18,7 +17,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 
 /**
  * Listeners for celestial object handlers
@@ -57,13 +55,12 @@ public final class CelestialObjectListener implements Listener {
         }
     }
 
-    // This runs a few seconds after joining?
     @EventHandler
     public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
 
         if (object != null) {
-            Bukkit.getScheduler().runTask(Galactifun.getInstance(), () -> object.getGravity().applyGravity(e.getPlayer()));
+            Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> object.getGravity().applyGravity(e.getPlayer()), 20);
         }
     }
 

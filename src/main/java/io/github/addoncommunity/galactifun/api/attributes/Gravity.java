@@ -7,6 +7,13 @@ import org.bukkit.potion.PotionEffectType;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 
+/**
+ * Represents the gravitational pull. Earth is 0, negative for weaker, positive for stronger
+ *
+ * @author GallowsDove
+ *
+ */
+
 @AllArgsConstructor
 @Getter
 public class Gravity {

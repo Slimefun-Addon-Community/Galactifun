@@ -34,17 +34,13 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Nonnull private final World world;
     @Nonnull private final SolarType type;
     @Nonnull private final Atmosphere atmosphere;
+    @Nonnull private final Gravity gravity;
 
     /**
      * Distance in miles from the object that this it orbiting
      */
     private final long distance;
-    
-    /**
-     * Gravity where earth is 0, negative for lower, positive for higher
-     */
-    @Nonnull private final Gravity gravity;
-    
+
     /**
      * Surface area
      */
