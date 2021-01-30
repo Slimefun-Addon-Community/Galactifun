@@ -15,7 +15,7 @@ import java.util.List;
 public class TeleportCommand extends AbstractCommand {
 
     public TeleportCommand() {
-        super("teleport", "teleports you to the spawn of the specified world", true);
+        super("world", "teleports you to the spawn of the specified world", true);
     }
 
     @Override
@@ -40,8 +40,10 @@ public class TeleportCommand extends AbstractCommand {
     @Override
     public List<String> onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         List<String> worlds = new ArrayList<>();
-        for (World world : Bukkit.getWorlds()) {
-            worlds.add(world.getName());
+        if (strings.length == 2) {
+            for (World world : Bukkit.getWorlds()) {
+                worlds.add(world.getName());
+            }
         }
         return worlds;
     }

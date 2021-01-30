@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun;
 
+import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.TeleportCommand;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.addoncommunity.galactifun.core.CelestialObjectListener;
@@ -24,6 +25,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic", new TeleportCommand());
         
         CelestialObjectListener.setup();
+
+        BaseRegistry.setup();
 
     }
 
