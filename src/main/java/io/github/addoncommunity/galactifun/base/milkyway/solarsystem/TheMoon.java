@@ -2,18 +2,20 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.Moon;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.attributes.GenerationType;
-import io.github.addoncommunity.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.attributes.DayCycle;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Random;
 
 public final class TheMoon extends Moon {
     
     public TheMoon() {
-        super("The Moon", 238_900, -3, 14_600_000L, SolarType.NORMAL, Atmosphere.MOON_LIKE, GenerationType.FLAT_NO_CAVE);
+        super("The Moon", 238_900, -3, 14_600_000L, DayCycle.NORMAL, Atmosphere.MOON_LIKE, Terrain.FLAT_NO_CAVE);
     }
     
     @Nonnull
@@ -30,6 +32,11 @@ public final class TheMoon extends Moon {
     @Override
     protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
         return Biome.BADLANDS;
+    }
+
+    @Override
+    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        
     }
 
 }

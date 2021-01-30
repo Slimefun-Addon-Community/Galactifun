@@ -3,15 +3,20 @@ package io.github.addoncommunity.galactifun.api.attributes;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class GenerationType {
+public class Terrain {
 
-    public static final GenerationType HILLY_CAVES = new GenerationType(
-            40, 35, 8, 0.01, .5, .5, .375
+    public static final Terrain HILLY_CAVES = new Terrain(
+            40, 35, 8, 0.01, .5, .5, .16, .3, .3
     );
-    public static final GenerationType FLAT_NO_CAVE = new GenerationType(
-            20, 45, 8,0.01, .5, .5, 0
+    
+    public static final Terrain FLAT_NO_CAVE = new Terrain(
+            20, 45, 8,0.01, .5, .5
     );
 
+    public Terrain(int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency) {
+        this(maxDeviation, minHeight, octaves, scale, amplitude, frequency, 0, 0, 0);
+    }
+    
     /**
      * Maximum y deviation
      */
@@ -46,5 +51,15 @@ public class GenerationType {
      * Ratio of caves from 0 - 1
      */
     public final double caveRatio;
+
+    /**
+     * cave noise amplitude
+     */
+    public final double caveAmplitude;
+
+    /**
+     * cave noise frequency
+     */
+    public final double caveFrequency;
     
 }
