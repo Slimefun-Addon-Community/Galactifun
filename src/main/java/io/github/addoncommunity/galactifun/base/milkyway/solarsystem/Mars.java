@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.Terrain;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ import java.util.Random;
 public final class Mars extends Planet {
     
     public Mars() {
-        super("Mars", 144_610_000L, -1, 55_910_000L, DayCycle.NORMAL, Atmosphere.MARS_LIKE, Terrain.HILLY_CAVES);
+        super("Mars", 144_610_000L, 55_910_000L, Gravity.MARS_LIKE, DayCycle.NORMAL, Atmosphere.MARS_LIKE, Terrain.HILLY_CAVES);
     }
     
     @Nonnull

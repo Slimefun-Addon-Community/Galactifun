@@ -9,7 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import javax.annotation.Nonnull;
 
 /**
- * An atmoshpere of a celestial object
+ * An atmosphere of a celestial object
  *
  * @author Mooy1
  *

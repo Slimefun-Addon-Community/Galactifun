@@ -2,9 +2,10 @@ package io.github.addoncommunity.galactifun.api;
 
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.Terrain;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.Registry;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
@@ -41,23 +42,19 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Nonnull private final DayCycle solarType;
     @Nonnull private final Atmosphere atmosphere;
     @Nonnull private final Terrain terrain;
+    @Nonnull private final Gravity gravity;
 
     /**
      * Distance in miles from the object that this it orbiting
      */
     private final long distance;
-    
-    /**
-     * Gravity where earth is 0, negative for lower, positive for higher
-     */
-    private final int gravity;
-    
+
     /**
      * Surface area in square meters
      */
     private final long surfaceArea;
-
-    public CelestialObject(@Nonnull String name, long distance, int gravity, long surfaceArea,
+    
+    public CelestialObject(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
                            @Nonnull DayCycle solarType, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
         
         Validate.notNull(name);
@@ -74,7 +71,7 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.terrain = terrain;
         this.world = setupWorld();
         
-        Registry.register(this);
+        GalacticRegistry.register(this);
     }
 
     /**
