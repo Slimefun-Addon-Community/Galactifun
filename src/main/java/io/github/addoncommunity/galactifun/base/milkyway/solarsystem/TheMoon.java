@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.Moon;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,7 +21,7 @@ public class TheMoon extends Moon {
     private static final double MIN_HEIGHT = 45;
     
     public TheMoon() {
-        super("The Moon", 238_900, -3, 14_600_000L, SolarType.NORMAL, Atmosphere.MOON_LIKE);
+        super("The Moon", 238_900, new Gravity(-3), 14_600_000L, SolarType.NORMAL, Atmosphere.MOON_LIKE);
     }
 
     @Override

@@ -1,15 +1,17 @@
 package io.github.addoncommunity.galactifun.api;
 
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 import io.github.addoncommunity.galactifun.core.Registry;
-import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.generator.ChunkGenerator;
+
+import lombok.Getter;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -32,23 +34,19 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Nonnull private final World world;
     @Nonnull private final SolarType type;
     @Nonnull private final Atmosphere atmosphere;
+    @Nonnull private final Gravity gravity;
 
     /**
      * Distance in miles from the object that this it orbiting
      */
     private final long distance;
-    
-    /**
-     * Gravity where earth is 0, negative for lower, positive for higher
-     */
-    private final int gravity;
-    
+
     /**
      * Surface area
      */
     private final long surfaceArea;
 
-    public CelestialObject(@Nonnull String name, long distance, int gravity, long surfaceArea,
+    public CelestialObject(@Nonnull String name, long distance, @Nonnull Gravity gravity, long surfaceArea,
                            @Nonnull SolarType type, @Nonnull Atmosphere atmosphere) {
         
         Validate.notNull(name);

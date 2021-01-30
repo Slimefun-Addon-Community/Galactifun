@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api;
 
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
 
 import javax.annotation.Nonnull;
@@ -13,7 +14,7 @@ import javax.annotation.Nonnull;
  */
 public abstract class Moon extends CelestialObject {
     
-    public Moon(@Nonnull String name, int distance, int gravity, long surfaceArea, @Nonnull SolarType type, @Nonnull Atmosphere atmosphere) {
+    public Moon(@Nonnull String name, int distance, @Nonnull Gravity gravity, long surfaceArea, @Nonnull SolarType type, @Nonnull Atmosphere atmosphere) {
         super(name, distance, gravity, surfaceArea, type, atmosphere);
     }
 
