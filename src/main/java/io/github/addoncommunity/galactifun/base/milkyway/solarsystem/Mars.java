@@ -1,19 +1,15 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.GalacticPopulator;
 import io.github.addoncommunity.galactifun.api.Planet;
 import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.attributes.SolarType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Slime;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
@@ -105,7 +101,26 @@ public class Mars extends Planet {
     @Nonnull
     @Override
     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-        return Collections.singletonList(new GalacticPopulator(10, 60, 20, 40, 4, 7, SlimefunItems.CHARGING_BENCH, Material.TERRACOTTA, Material.BLUE_ICE));
+        return Collections.singletonList(new BlockPopulator() {
+
+            // boulder populator
+            @Override
+            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+                if (random.nextBoolean()) {
+                    int x = random.nextInt(16);
+                    int z = random.nextInt(16);
+
+                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    if (b.getType() == Material.GRANITE) return;
+
+                    Block up = b.getRelative(BlockFace.UP);
+
+                    if (random.nextBoolean()) {
+                        up.setType(Material.GRANITE);
+                    }
+                }
+            }
+        });
     }
 
     @Override

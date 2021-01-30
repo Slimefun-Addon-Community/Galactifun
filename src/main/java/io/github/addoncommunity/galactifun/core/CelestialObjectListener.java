@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -32,7 +32,7 @@ public final class CelestialObjectListener implements Listener {
     }
     
     @EventHandler
-    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+    public void onMobSpawn(@Nonnull EntitySpawnEvent e) {
         // TODO improve, should have some methods in celestial objects for events
         if (e.getEntity().getWorld().getName().equals("mars")) {
             e.setCancelled(true);
