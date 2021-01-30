@@ -2,10 +2,13 @@ package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.CelestialObject;
 import io.github.mooy1.infinitylib.PluginUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -51,6 +54,29 @@ public final class CelestialObjectListener implements Listener {
             if (from != null) {
                 e.getPlayer().removePotionEffect(PotionEffectType.JUMP);
                 e.getPlayer().removePotionEffect(PotionEffectType.SLOW_FALLING);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onMilkDrink(@Nonnull PlayerItemConsumeEvent e) {
+        if (e.getItem().getType() == Material.MILK_BUCKET) {
+            CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
+
+            if (object != null) {
+                int g = -object.getGravity() - 1;
+
+                Player p = e.getPlayer();
+
+                for (PotionEffect effect : p.getActivePotionEffects())
+                    p.removePotionEffect(effect.getType());
+
+                new PotionEffect(PotionEffectType.JUMP, 2147483647, g).apply(p);
+                if (g > 0) {
+                    new PotionEffect(PotionEffectType.SLOW_FALLING, 2147483647, (g-1)/2).apply(p);
+                }
+
+                e.setCancelled(true);
             }
         }
     }
