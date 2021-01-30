@@ -73,7 +73,7 @@ public class Mars extends Planet {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 1; y < 60; y++) {
                         // Generate the caverns
-                        double density = generator.noise(
+                        double density = caveGenerator.noise(
                             (chunkX << 4) + x,
                             y,
                             (chunkZ << 4) + z,
