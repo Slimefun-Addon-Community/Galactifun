@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api;
 
-import io.github.addoncommunity.galactifun.core.Registry;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 
 import javax.annotation.Nonnull;
@@ -23,7 +23,7 @@ public class Galaxy {
     public Galaxy(@Nonnull String name, @Nonnull StarSystem... systems) {
         this.systems = new ArrayList<>(Arrays.asList(systems));
         this.name = name;
-        Registry.register(this);
+        GalacticRegistry.register(this);
     }
 
     public final void addStarSystems(@Nonnull StarSystem... systems) {

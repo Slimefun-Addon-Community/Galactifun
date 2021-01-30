@@ -32,6 +32,7 @@ public class Atmosphere {
     private final boolean storming;
     private final boolean thundering;
     private final boolean flammable;
+    
     @Nonnull private final PotionEffectType[] normalEffects;
     @Nonnull private final PotionEffectType[] unprotectedEffects;
     @Nonnull private final World.Environment environment;

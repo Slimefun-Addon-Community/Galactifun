@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @UtilityClass
-public final class Registry {
+public final class GalacticRegistry {
 
     private static final Map<String, Galaxy> GALAXIES = new HashMap<>();
     private static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
-    private static final Map<World, CelestialObject> CELESTIAL_OBJECTS = new HashMap<>();
-    private static final Map<World, CelestialObject> CELESTIAL_OBJECTS = new HashMap<>();
+    private static final Map<String, CelestialObject> CELESTIAL_NAMES = new HashMap<>();
     
     public static void register(@Nonnull Galaxy galaxy) {
         GALAXIES.put(galaxy.getName(), galaxy);
@@ -28,7 +27,7 @@ public final class Registry {
     }
     
     public static void register(@Nonnull CelestialObject object) {
-        CELESTIAL_OBJECTS.put(object.getWorld(), object);
+        CELESTIAL_NAMES.put(object.getWorld().getName(), object);
     }
 
     @Nullable
@@ -42,8 +41,13 @@ public final class Registry {
     }
 
     @Nullable
+    public static CelestialObject getCelestialObject(@Nonnull World world) {
+        return getCelestialObject(world.getName());
+    }
+
+    @Nullable
     public static CelestialObject getCelestialObject(@Nonnull String worldName) {
-        return CELESTIAL_OBJECTS.get(worldName);
+        return CELESTIAL_NAMES.get(worldName);
     }
     
 }

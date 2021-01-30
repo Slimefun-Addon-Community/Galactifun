@@ -17,6 +17,12 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Mars
+ * 
+ * @author Seggan
+ * @author Mooy1
+ */
 public final class Mars extends Planet {
     
     public Mars() {

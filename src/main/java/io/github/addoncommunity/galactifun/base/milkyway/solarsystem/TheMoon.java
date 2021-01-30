@@ -13,6 +13,12 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The moon
+ *
+ * @author Seggan
+ * @author Mooy1
+ */
 public final class TheMoon extends Moon {
     
     public TheMoon() {

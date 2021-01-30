@@ -18,7 +18,7 @@ import java.util.Random;
 
 /**
  * A class to connect the default earth world into the api
- * 
+ *
  * @author Mooy1
  * 
  */

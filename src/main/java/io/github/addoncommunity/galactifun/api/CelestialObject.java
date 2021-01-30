@@ -34,7 +34,14 @@ import java.util.Random;
 @Getter
 public abstract class CelestialObject extends ChunkGenerator {
 
+    /**
+     * Ratio of earth's border to it's surface area, used to calculate other celestial object's borders relative to earth
+     */
     private static final double EARTH_BORDER_RATIO = BaseRegistry.EARTH_WORLD.getWorldBorder().getSize() / 196_900_000;
+
+    /**
+     * Minimum border size
+     */
     private static final double MIN_BORDER = 600D;
     
     @Nonnull private final String name;

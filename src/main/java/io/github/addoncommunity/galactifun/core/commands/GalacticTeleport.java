@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.mooy1.infinitylib.command.AbstractCommand;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -12,9 +12,15 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeleportCommand extends AbstractCommand {
+/**
+ * Command to teleport to world spawns
+ * 
+ * @author Seggan
+ * @author Mooy1
+ */
+public class GalacticTeleport extends AbstractCommand {
 
-    public TeleportCommand() {
+    public GalacticTeleport() {
         super("world", "teleports you to the spawn of the specified world", true);
     }
 

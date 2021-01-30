@@ -1,9 +1,10 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.TeleportCommand;
+import io.github.addoncommunity.galactifun.core.GalacticTicker;
+import io.github.addoncommunity.galactifun.core.commands.GalacticTeleport;
 import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.addoncommunity.galactifun.core.CelestialObjectListener;
+import io.github.addoncommunity.galactifun.core.listeners.GalacticListener;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
@@ -22,11 +23,15 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
 
-        CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic", new TeleportCommand());
+        CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
+                new GalacticTeleport()
+        );
         
-        CelestialObjectListener.setup();
+        GalacticListener.setup();
 
         BaseRegistry.setup();
+        
+        PluginUtils.scheduleRepeatingSync(new GalacticTicker(), 10, 100);
 
     }
 

@@ -2,8 +2,14 @@ package io.github.addoncommunity.galactifun.api.attributes;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Defines the terrain of a celestial object
+ * 
+ * @author Mooy1
+ * 
+ */
 @AllArgsConstructor
-public class Terrain {
+public final class Terrain {
 
     public static final Terrain HILLY_CAVES = new Terrain(
             40, 35, 8, 0.01, .5, .5, .16, .3, .3

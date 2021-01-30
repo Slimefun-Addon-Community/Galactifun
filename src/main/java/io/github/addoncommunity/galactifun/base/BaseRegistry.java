@@ -16,6 +16,9 @@ import org.bukkit.World;
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
+/**
+ * Registry of constants for the base celestial objects
+ */
 @UtilityClass
 public final class BaseRegistry {
 
