@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.base;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.Galaxy;
-import io.github.addoncommunity.galactifun.api.Moon;
-import io.github.addoncommunity.galactifun.api.Planet;
-import io.github.addoncommunity.galactifun.api.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.Galaxy;
+import io.github.addoncommunity.galactifun.api.universe.Moon;
+import io.github.addoncommunity.galactifun.api.universe.Planet;
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.TheMoon;

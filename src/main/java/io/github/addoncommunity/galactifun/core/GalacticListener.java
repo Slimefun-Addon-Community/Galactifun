@@ -1,7 +1,6 @@
-package io.github.addoncommunity.galactifun.core.listeners;
+package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.CelestialObject;
-import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.api.universe.CelestialObject;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

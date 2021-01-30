@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.CelestialObject;
+import io.github.addoncommunity.galactifun.api.universe.CelestialObject;
 
 /**
  * Task applying effects for celestial objects

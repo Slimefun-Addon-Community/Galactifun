@@ -1,9 +1,9 @@
-package io.github.addoncommunity.galactifun.api;
+package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.attributes.DayCycle;
-import io.github.addoncommunity.galactifun.api.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
 
 import javax.annotation.Nonnull;
 

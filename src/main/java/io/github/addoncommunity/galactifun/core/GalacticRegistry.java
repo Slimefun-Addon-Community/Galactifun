@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.CelestialObject;
-import io.github.addoncommunity.galactifun.api.Galaxy;
-import io.github.addoncommunity.galactifun.api.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.CelestialObject;
+import io.github.addoncommunity.galactifun.api.universe.Galaxy;
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import lombok.experimental.UtilityClass;
 import org.bukkit.World;
 import org.bukkit.event.player.PlayerEvent;

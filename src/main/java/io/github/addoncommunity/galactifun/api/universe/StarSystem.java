@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api;
+package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;

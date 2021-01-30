@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.attributes;
+package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;

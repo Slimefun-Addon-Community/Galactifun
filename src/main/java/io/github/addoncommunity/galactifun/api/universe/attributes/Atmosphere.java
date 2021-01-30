@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.attributes;
+package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import lombok.Getter;
 import org.apache.commons.lang.Validate;

@@ -1,11 +1,8 @@
-package io.github.addoncommunity.galactifun.api.attributes;
+package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import lombok.Getter;
-import lombok.AllArgsConstructor;
 
 import javax.annotation.Nonnull;
 

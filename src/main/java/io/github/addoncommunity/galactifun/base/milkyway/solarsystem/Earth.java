@@ -1,11 +1,11 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.Moon;
-import io.github.addoncommunity.galactifun.api.Planet;
-import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.attributes.DayCycle;
-import io.github.addoncommunity.galactifun.api.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.Moon;
+import io.github.addoncommunity.galactifun.api.universe.Planet;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
