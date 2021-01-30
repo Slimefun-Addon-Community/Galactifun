@@ -25,7 +25,7 @@ import java.util.Random;
 public final class Earth extends Planet {
     
     public Earth(@Nonnull Moon theMoon) {
-        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, DayCycle.NORMAL, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVES, theMoon);
+        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVES, theMoon);
     }
 
     @Nonnull

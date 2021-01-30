@@ -1,6 +1,14 @@
 package io.github.addoncommunity.galactifun.api.attributes;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
+
+import javax.annotation.Nonnull;
+import java.util.Random;
 
 /**
  * Defines the terrain of a celestial object
@@ -26,46 +34,136 @@ public final class Terrain {
     /**
      * Maximum y deviation
      */
-    public final int maxDeviation;
+    private final int maxDeviation;
 
     /**
      * Minimum y value
      */
-    public final int minHeight;
+    private final int minHeight;
 
     /**
      * Octave generator octaves
      */
-    public final int octaves;
+    private final int octaves;
 
     /**
      * Octave generator scale
      */
-    public final double scale;
+    private final double scale;
 
     /**
      * noise amplitude
      */
-    public final double amplitude;
+    private final double amplitude;
     
     /**
      * noise frequency
      */
-    public final double frequency;
+    private final double frequency;
     
     /**
      * Ratio of caves from 0 - 1
      */
-    public final double caveRatio;
+    private final double caveRatio;
 
     /**
      * cave noise amplitude
      */
-    public final double caveAmplitude;
+    private final double caveAmplitude;
 
     /**
      * cave noise frequency
      */
-    public final double caveFrequency;
+    private final double caveFrequency;
+
+    public void generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ,
+                                  @Nonnull BiomeSupplier supplier, @Nonnull MaterialSupplier material,
+                                  @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull ChunkGenerator.ChunkData chunk) {
+        
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, this.octaves);
+        generator.setScale(this.scale);
+
+        int height;
+        int startX = chunkX << 4;
+        int startZ = chunkZ << 4;
+
+        if (this.caveRatio == 0) {
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    chunk.setBlock(x, 0, z, Material.BEDROCK);
+
+                    // find max height
+                    height = (int) (this.minHeight + this.maxDeviation * (1 + generator.noise(
+                            startX + x,
+                            startZ + z,
+                            this.frequency,
+                            this.amplitude,
+                            true)
+                    ));
+
+                    // generate the rest
+                    for (int y = 1 ; y < height ; y++) {
+                        chunk.setBlock(x, y, z, material.get(random, height, x, y, z));
+                    }
+
+                    // set biome
+                    Biome biome = supplier.get(random, chunkX, chunkZ);
+                    for (int y = 0 ; y < 256 ; y++) {
+                        grid.setBiome(x, y, z, biome);
+                    }
+                }
+            }
+        } else {
+            double caveRatio = this.caveRatio * 2;
+
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    chunk.setBlock(x, 0, z, Material.BEDROCK);
+
+                    // find max height
+                    height = (int) (this.minHeight + this.maxDeviation * (1 + generator.noise(
+                            startX + x, startZ + z, this.frequency, this.amplitude, true)
+                    ));
+
+                    int top = height - 1;
+
+                    // generate caves
+                    for (int y = 1 ; y < height ; y++) {
+                        double density = 1 + generator.noise(
+                                startX + x,
+                                y,
+                                startZ + z,
+                                this.caveFrequency,
+                                this.caveAmplitude,
+                                true
+                        );
+
+                        // Choose a narrow selection of blocks
+                        if (density <= caveRatio) {
+                            chunk.setBlock(x, y, z, Material.CAVE_AIR);
+                        } else {
+                            chunk.setBlock(x, y, z, material.get(random, top, x, y, z));
+                        }
+                    }
+
+                    // set biome
+                    Biome biome = supplier.get(random, chunkX, chunkZ);
+                    for (int y = 0 ; y < 256 ; y++) {
+                        grid.setBiome(x, y, z, biome);
+                    }
+                }
+            }
+        }
+    }
+    
+    @FunctionalInterface
+    public interface MaterialSupplier {
+        @Nonnull Material get(@Nonnull Random random, int top, int x, int y, int z);
+    }
+
+    @FunctionalInterface
+    public interface BiomeSupplier {
+        @Nonnull Biome get(@Nonnull Random random, int chunkX, int chunkZ);
+    }
     
 }

@@ -14,9 +14,10 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.util.noise.SimplexOctaveGenerator;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import java.util.Random;
  * @author Mooy1
  *
  */
-@Getter
 public abstract class CelestialObject extends ChunkGenerator {
 
     /**
@@ -44,8 +44,8 @@ public abstract class CelestialObject extends ChunkGenerator {
      */
     private static final double MIN_BORDER = 600D;
     
-    @Nonnull private final String name;
-    @Nonnull private final World world;
+    @Getter @Nonnull private final String name;
+    @Getter @Nonnull private final World world;
     @Nonnull private final DayCycle solarType;
     @Nonnull private final Atmosphere atmosphere;
     @Nonnull private final Terrain terrain;
@@ -54,7 +54,7 @@ public abstract class CelestialObject extends ChunkGenerator {
     /**
      * Distance in miles from the object that this it orbiting
      */
-    private final long distance;
+    @Getter private final long distance;
 
     /**
      * Surface area in square meters
@@ -78,12 +78,8 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.terrain = terrain;
         this.world = setupWorld();
         
-        GalacticRegistry.register(this);
     }
 
-    /**
-     * Be careful when overriding.
-     */
     protected World setupWorld() {
         // will fetch the world if its already been loaded
         World world = new WorldCreator(this.name.toLowerCase(Locale.ROOT).replace(' ', '_'))
@@ -104,90 +100,42 @@ public abstract class CelestialObject extends ChunkGenerator {
         if (BlockStorage.getStorage(world) == null) {
             new BlockStorage(world);
         }
+
+        GalacticRegistry.register(this);
         
         return world;
+    }
+    
+    public void tickWorld() {
+
+        // time
+        
+        
+        // player effects
+        for (Player p : this.world.getPlayers()) {
+            applyEffects(p);
+        }
+
+        // other stuff?
+    }
+    
+    public void applyEffects(@Nonnull Player p) {
+        // apply gravity
+        this.gravity.applyGravity(p);
+
+        // apply atmospheric effects TODO needs to be improved a lot
+        for (PotionEffectType effectType : this.atmosphere.getNormalEffects()) {
+            effectType.createEffect(120, 0).apply(p);
+        }
+
+        // other stuff?
     }
 
     @Nonnull
     @Override
     public final ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
         ChunkData chunk = createChunkData(world);
-        
-        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, this.terrain.octaves);
-        generator.setScale(this.terrain.scale);
-        
-        int height;
-        int startX = chunkX << 4;
-        int startZ = chunkZ << 4;
-
-        if (this.terrain.caveRatio == 0) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
-
-                    // find max height
-                    height = (int) (this.terrain.minHeight + this.terrain.maxDeviation * (1 + generator.noise(
-                            startX + x,
-                            startZ + z,
-                            this.terrain.frequency,
-                            this.terrain.amplitude,
-                            true)
-                    ));
-
-                    // generate the rest
-                    for (int y = 1 ; y < height ; y++) {
-                        chunk.setBlock(x, y, z, generateBlock(random, height, x, y, z));
-                    }
-
-                    // set biome
-                    Biome biome = getBiome(random, chunkX, chunkZ);
-                    for (int y = 0 ; y < 256 ; y++) {
-                        grid.setBiome(x, y, z, biome);
-                    }
-                }
-            }
-        } else {
-            double caveRatio = this.terrain.caveRatio * 2;
-
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
-
-                    // find max height
-                    height = (int) (this.terrain.minHeight + this.terrain.maxDeviation * (1 + generator.noise(
-                            startX + x, startZ + z, this.terrain.frequency, this.terrain.amplitude, true)
-                    ));
-
-                    int top = height - 1;
-
-                    // generate caves
-                    for (int y = 1 ; y < height ; y++) {
-                        double density = 1 + generator.noise(
-                                startX + x,
-                                y,
-                                startZ + z,
-                                this.terrain.caveFrequency,
-                                this.terrain.caveAmplitude,
-                                true
-                        );
-
-                        // Choose a narrow selection of blocks
-                        if (density <= caveRatio) {
-                            chunk.setBlock(x, y, z, Material.CAVE_AIR);
-                        } else {
-                            chunk.setBlock(x, y, z, generateBlock(random, top, x, y, z));
-                        }
-                    }
-                    
-                    // set biome
-                    Biome biome = getBiome(random, chunkX, chunkZ);
-                    for (int y = 0 ; y < 256 ; y++) {
-                        grid.setBiome(x, y, z, biome);
-                    }
-                }
-            }
-        }
-
+        this.terrain.generateChunkData(world, random, chunkX, chunkZ, this::getBiome, this::generateBlock, grid, chunk);
         return chunk;
     }
     

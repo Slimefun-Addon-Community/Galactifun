@@ -26,20 +26,22 @@ public class Gravity {
     private final int speed;
     
     public Gravity(double relativeToEarth) {
+        int affect;
         if (relativeToEarth < 1) {
-            this.jump = (int) ((1 / relativeToEarth) - 1);
+            affect = (int) ((1 / relativeToEarth) - 1);
         } else {
-            this.jump = (int) (-1 * (relativeToEarth - 1));
+            affect = (int) (-1 * (relativeToEarth - 1));
         }
-        this.speed = this.jump / 2;
+        this.jump = affect - 1;
+        this.speed = (affect / 2) - 1;
     }
     
     public void applyGravity(@Nonnull Player p) {
         removeGravity(p);
-        if (this.jump != 0) {
+        if (this.jump != -1) {
             new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump).apply(p);
             
-            if (this.speed != 0) {
+            if (this.speed != -1) {
                 new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, this.speed).apply(p);
             }
         }

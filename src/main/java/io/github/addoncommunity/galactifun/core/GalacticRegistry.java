@@ -5,6 +5,7 @@ import io.github.addoncommunity.galactifun.api.Galaxy;
 import io.github.addoncommunity.galactifun.api.StarSystem;
 import lombok.experimental.UtilityClass;
 import org.bukkit.World;
+import org.bukkit.event.player.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,9 +15,9 @@ import java.util.Map;
 @UtilityClass
 public final class GalacticRegistry {
 
-    private static final Map<String, Galaxy> GALAXIES = new HashMap<>();
-    private static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
-    private static final Map<String, CelestialObject> CELESTIAL_NAMES = new HashMap<>();
+    static final Map<String, Galaxy> GALAXIES = new HashMap<>();
+    static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
+    static final Map<String, CelestialObject> CELESTIAL_OBJECTS = new HashMap<>();
     
     public static void register(@Nonnull Galaxy galaxy) {
         GALAXIES.put(galaxy.getName(), galaxy);
@@ -27,12 +28,17 @@ public final class GalacticRegistry {
     }
     
     public static void register(@Nonnull CelestialObject object) {
-        CELESTIAL_NAMES.put(object.getWorld().getName(), object);
+        CELESTIAL_OBJECTS.put(object.getWorld().getName(), object);
     }
 
     @Nullable
     public static Galaxy getGalaxy(@Nonnull String name) {
         return GALAXIES.get(name);
+    }
+
+    @Nullable
+    public static CelestialObject getCelestialObject(@Nonnull String worldName) {
+        return CELESTIAL_OBJECTS.get(worldName);
     }
 
     @Nullable
@@ -46,8 +52,8 @@ public final class GalacticRegistry {
     }
 
     @Nullable
-    public static CelestialObject getCelestialObject(@Nonnull String worldName) {
-        return CELESTIAL_NAMES.get(worldName);
+    public static CelestialObject getCelestialObject(@Nonnull PlayerEvent e) {
+        return getCelestialObject(e.getPlayer().getWorld().getName());
     }
     
 }
