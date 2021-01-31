@@ -1,3 +1,5 @@
 # Galactifun
 
-A Slimefun addon intended to replace ClayTech, which is apparently abandoned.
+A Slimefun addon which adds galaxies, star systems, planets, moons, rockets, and spacesuits. It has a large api for addon devs.
+
+Inspiration taken from ClayTech.

@@ -1,41 +1,46 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.Moon;
-import io.github.addoncommunity.galactifun.api.Planet;
-import io.github.addoncommunity.galactifun.api.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.attributes.SolarType;
+import io.github.addoncommunity.galactifun.api.universe.Moon;
+import io.github.addoncommunity.galactifun.api.universe.Planet;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
 /**
  * A class to connect the default earth world into the api
- * 
+ *
  * @author Mooy1
  * 
  */
 public final class Earth extends Planet {
 
-    public Earth(@Nonnull Moon theMoon) {
-        super("Earth", 91_565_000, new Gravity(0), 196_900_000, SolarType.NORMAL, Atmosphere.EARTH_LIKE, theMoon);
-    }
-
+    /**
+     * The world used for earth
+     */
+    public static final World WORLD = getMainWorld();
+    
     @Nonnull
-    @Override
-    protected World setupWorld() {
+    private static World getMainWorld() {
         World world;
-        
+
         String worldName = Galactifun.getInstance().getConfig().getString("earth-world-name");
-        
+
         if (worldName != null) {
             world = Bukkit.getWorld(worldName);
-            
+
             if (world != null) {
                 return world;
             }
@@ -53,10 +58,32 @@ public final class Earth extends Planet {
             return world;
         }
     }
+    
+    public Earth(@Nonnull Moon theMoon) {
+        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVERNS, theMoon);
+    }
+
+    @Nonnull
+    @Override
+    protected World setupWorld() {
+        return WORLD;
+    }
+
+    @Nonnull
+    @Override
+    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+        throw new IllegalStateException("Earth shouldn't be generating blocks!");
+    }
+
+    @Nonnull
+    @Override
+    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+        throw new IllegalStateException("Earth shouldn't be generating biomes!");
+    }
 
     @Override
-    protected void generateChunk(@Nonnull World world, @Nonnull ChunkData chunk, @Nonnull Random random, @Nonnull BiomeGrid biome, int chunkX, int chunkZ) {
-        // wont be called
+    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        throw new IllegalStateException("Earth shouldn't be generating populators!");
     }
 
 }
