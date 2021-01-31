@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.TheMoon;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.venus.Venus;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -21,11 +22,12 @@ public final class BaseRegistry {
 
     public static final Planet EARTH = new Earth(THE_MOON);
     public static final Planet MARS = new Mars();
-    
+    public static final Planet VENUS = new Venus();
+
     public static final CelestialObject SATURN = new Saturn();
     
-    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", EARTH, MARS, SATURN);
-
+    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", VENUS, EARTH, MARS, SATURN);
+    
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", SOLAR_SYSTEM);
     
     public static void setup() {

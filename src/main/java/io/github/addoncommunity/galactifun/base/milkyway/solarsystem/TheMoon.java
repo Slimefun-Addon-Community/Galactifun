@@ -19,6 +19,7 @@ import java.util.Random;
  *
  * @author Seggan
  * @author Mooy1
+ *
  */
 public final class TheMoon extends Moon {
     

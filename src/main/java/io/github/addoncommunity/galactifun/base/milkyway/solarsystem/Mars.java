@@ -5,12 +5,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import org.bukkit.Chunk;
+import io.github.addoncommunity.galactifun.api.universe.populators.GalacticBoulderPopulator;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
@@ -18,19 +17,20 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Mars
- * 
+ * Class for Mars
+ *
  * @author Seggan
  * @author Mooy1
+ *
  */
 public final class Mars extends Planet {
-    
+
     public Mars() {
         super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),  Material.RED_SAND, new DayCycle(1.03), 
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
     }
-    
+
     @Nonnull
     @Override
     protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
@@ -60,23 +60,7 @@ public final class Mars extends Planet {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BlockPopulator() {
-
-            // boulder populator
-            @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                if (random.nextBoolean()) {
-                    int x = random.nextInt(16);
-                    int z = random.nextInt(16);
-
-                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-
-                    if (b.getType() == Material.GRANITE) return;
-
-                    b.getRelative(BlockFace.UP).setType(Material.GRANITE);
-                }
-            }
-        });
+        populators.add(new GalacticBoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
     }
 
 }

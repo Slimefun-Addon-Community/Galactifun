@@ -10,6 +10,7 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  * 
  * @author Seggan
  * @author Mooy1
+ *
  */
 @AllArgsConstructor
 public class Cave implements TerrainFeature {
@@ -42,7 +43,7 @@ public class Cave implements TerrainFeature {
             );
 
             // Choose a narrow selection of blocks
-            if (density <= this.densityThreshold) {
+            if (density > this.densityThreshold) {
                 chunk.setBlock(x, y, z, Material.CAVE_AIR);
             }
         }
