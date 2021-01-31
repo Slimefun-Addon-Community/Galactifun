@@ -10,6 +10,12 @@ import org.bukkit.generator.BlockPopulator;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
+/**
+ * Lake populator
+ *
+ * @author Seggan
+ * @author Mooy1
+ */
 @AllArgsConstructor
 public class GalacticLakePopulator extends BlockPopulator {
     
