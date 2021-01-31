@@ -17,20 +17,20 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Mars
- * 
+ * Class for Mars
+ *
  * @author Seggan
  * @author Mooy1
  *
  */
 public final class Mars extends Planet {
-    
+
     public Mars() {
         super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378), new DayCycle(1.03),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
     }
-    
+
     @Nonnull
     @Override
     protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
