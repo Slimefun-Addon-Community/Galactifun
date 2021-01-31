@@ -5,7 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -25,7 +25,7 @@ import java.util.Random;
 public final class Earth extends Planet {
     
     public Earth(@Nonnull Moon theMoon) {
-        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVES, theMoon);
+        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVERNS, theMoon);
     }
 
     @Nonnull

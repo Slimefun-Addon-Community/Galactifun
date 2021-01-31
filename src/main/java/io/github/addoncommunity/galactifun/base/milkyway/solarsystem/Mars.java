@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -28,7 +28,7 @@ public final class Mars extends Planet {
     public Mars() {
         super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378), new DayCycle(1.03),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
-                Terrain.HILLY_CAVES);
+                Terrain.HILLY_CAVERNS);
     }
     
     @Nonnull

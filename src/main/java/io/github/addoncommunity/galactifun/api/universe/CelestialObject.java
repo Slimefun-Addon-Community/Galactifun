@@ -3,7 +3,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
@@ -80,6 +80,9 @@ public abstract class CelestialObject extends ChunkGenerator {
         
     }
 
+    /**
+     * Sets up and creates the world
+     */
     @Nonnull
     protected World setupWorld() {
         // will fetch the world if its already been loaded
@@ -92,7 +95,7 @@ public abstract class CelestialObject extends ChunkGenerator {
 
         this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
-
+        
         WorldBorder border = world.getWorldBorder();
         border.setSize(Math.max(MIN_BORDER, EARTH_BORDER_RATIO * this.surfaceArea));
         border.setCenter(0, 0);
@@ -106,7 +109,10 @@ public abstract class CelestialObject extends ChunkGenerator {
         
         return world;
     }
-    
+
+    /**
+     * Ticks the world
+     */
     public void tickWorld() {
 
         // time
@@ -114,13 +120,16 @@ public abstract class CelestialObject extends ChunkGenerator {
         
         // player effects
         for (Player p : this.world.getPlayers()) {
-            applyEffects(p);
+            applyWorldEffects(p);
         }
 
         // other stuff?
     }
-    
-    public void applyEffects(@Nonnull Player p) {
+
+    /**
+     * All effects that should be applied to the player
+     */
+    public void applyWorldEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
 
@@ -139,10 +148,18 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.terrain.generateChunkData(world, random, chunkX, chunkZ, this::getBiome, this::generateBlock, grid, chunk);
         return chunk;
     }
-    
+
+    /**
+     * The material for the block that should be generated at the specified x, y, z value of the chunk.
+     * 
+     * The top value is used so that you can set the top 3 blocks to a different material for ex.
+     */
     @Nonnull
     protected abstract Material generateBlock(@Nonnull Random random, int top, int x, int y, int z);
-    
+
+    /**
+     * The biome that should be used for the chunk at the specified x and z
+     */
     @Nonnull
     protected abstract Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ);
 
@@ -153,7 +170,10 @@ public abstract class CelestialObject extends ChunkGenerator {
         getPopulators(populators);
         return populators;
     }
-    
+
+    /**
+     * Add all chunk populators to this list
+     */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     @Override
