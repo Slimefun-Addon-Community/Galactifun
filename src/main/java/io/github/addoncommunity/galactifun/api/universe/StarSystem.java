@@ -1,6 +1,6 @@
-package io.github.addoncommunity.galactifun.api;
+package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.core.Registry;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 
 import javax.annotation.Nonnull;
@@ -25,7 +25,7 @@ public class StarSystem {
     public StarSystem(@Nonnull String name, CelestialObject... objects) {
         this.objects = new ArrayList<>(Arrays.asList(objects));
         this.name = name;
-        Registry.register(this);
+        GalacticRegistry.register(this);
     }
 
     public final void addObjects(@Nonnull CelestialObject... objects) {
