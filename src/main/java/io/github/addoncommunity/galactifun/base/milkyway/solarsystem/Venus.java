@@ -30,7 +30,7 @@ public class Venus extends Planet {
             true,
             true,
             true,
-            World.Environment.NORMAL,
+            World.Environment.NETHER,
             new PotionEffectType[0],
             new PotionEffectType[]{PotionEffectType.WITHER}
         ), new Terrain(50, 50, 8, 0.02, 0.5, 0.3));
@@ -55,7 +55,7 @@ public class Venus extends Planet {
     @Nonnull
     @Override
     protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.DESERT;
+        return Biome.BASALT_DELTAS;
     }
 
     @Override
@@ -77,6 +77,7 @@ public class Venus extends Planet {
                 }
 
                 if (highestBlock.getY() >= 115) {
+                    highestBlock.setType(Material.OBSIDIAN);
                     highestBlock.getRelative(BlockFace.UP).setType(Material.LAVA);
                 }
             }
