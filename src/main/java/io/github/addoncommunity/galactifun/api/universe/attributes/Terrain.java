@@ -1,5 +1,6 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.terrain;
+package io.github.addoncommunity.galactifun.api.universe.attributes;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrainfeatures.TerrainFeature;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;

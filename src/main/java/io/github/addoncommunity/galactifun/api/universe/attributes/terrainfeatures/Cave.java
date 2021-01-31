@@ -1,5 +1,6 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.terrain;
+package io.github.addoncommunity.galactifun.api.universe.attributes.terrainfeatures;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
@@ -10,12 +11,13 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  * @author Seggan
  * @author Mooy1
  */
+@AllArgsConstructor
 public class Cave implements TerrainFeature {
 
     /**
-     * Ratio of caves from 0 - 1, will be spread to [-1, 1]
+     * Density threshold 0-1
      */
-    private final double ratio;
+    private final double densityThreshold;
 
     /**
      * cave noise amplitude
@@ -26,12 +28,6 @@ public class Cave implements TerrainFeature {
      * cave noise frequency
      */
     private final double frequency;
-    
-    public Cave(double ratio, double amplitude, double frequency) {
-        this.ratio = ratio * 2 - 1;
-        this.amplitude = amplitude;
-        this.frequency = frequency;
-    }
 
     @Override
     public void generate(SimplexOctaveGenerator generator, ChunkGenerator.ChunkData chunk, int realX, int realZ, int x, int z, int height) {
@@ -46,7 +42,7 @@ public class Cave implements TerrainFeature {
             );
 
             // Choose a narrow selection of blocks
-            if (density <= this.ratio) {
+            if (density <= this.densityThreshold) {
                 chunk.setBlock(x, y, z, Material.CAVE_AIR);
             }
         }
