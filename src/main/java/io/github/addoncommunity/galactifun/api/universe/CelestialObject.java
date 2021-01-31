@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -33,12 +33,7 @@ import java.util.Random;
  *
  */
 public abstract class CelestialObject extends ChunkGenerator {
-
-    /**
-     * Ratio of earth's border to it's surface area, used to calculate other celestial object's borders relative to earth
-     */
-    private static final double EARTH_BORDER_RATIO = BaseRegistry.EARTH_WORLD.getWorldBorder().getSize() / 196_900_000;
-
+    
     /**
      * Minimum border size
      */
@@ -97,15 +92,15 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.atmosphere.applyEffects(world);
         
         WorldBorder border = world.getWorldBorder();
-        border.setSize(Math.max(MIN_BORDER, EARTH_BORDER_RATIO * this.surfaceArea));
+        border.setSize(Math.max(MIN_BORDER, Earth.WORLD.getWorldBorder().getSize() * this.surfaceArea / 196_900_000));
         border.setCenter(0, 0);
         // TODO maybe change up border damage stuff?
 
         if (BlockStorage.getStorage(world) == null) {
             new BlockStorage(world);
         }
-
-        GalacticRegistry.register(this);
+        
+        GalacticRegistry.register(world, this);
         
         return world;
     }
@@ -114,9 +109,8 @@ public abstract class CelestialObject extends ChunkGenerator {
      * Ticks the world
      */
     public void tickWorld() {
-
         // time
-        
+        this.dayCycle.applyTime(this.world);
         
         // player effects
         for (Player p : this.world.getPlayers()) {
@@ -166,7 +160,7 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Nonnull
     @Override
     public final List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-        List<BlockPopulator> populators = new ArrayList<>(2);
+        List<BlockPopulator> populators = new ArrayList<>();
         getPopulators(populators);
         return populators;
     }

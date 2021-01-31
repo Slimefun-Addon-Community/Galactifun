@@ -16,7 +16,7 @@ public class DayCycle {
     
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
     public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
-    public static final DayCycle EARTH_LIKE = new DayCycle(1);
+    public static final DayCycle EARTH_LIKE = new DayCycle(1D);
     
     private final boolean cycle;
     private final long time;
@@ -41,7 +41,7 @@ public class DayCycle {
         }
     }
     
-    public void changeTime(@Nonnull World world) {
+    public void applyTime(@Nonnull World world) {
         if (this.extraTicks != 0) {
             // find a way to implement
         }

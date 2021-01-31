@@ -27,8 +27,8 @@ public final class GalacticRegistry {
         STAR_SYSTEMS.put(system.getName(), system);
     }
     
-    public static void register(@Nonnull CelestialObject object) {
-        CELESTIAL_OBJECTS.put(object.getWorld().getName(), object);
+    public static void register(@Nonnull World world, @Nonnull CelestialObject object) {
+        CELESTIAL_OBJECTS.put(world.getName(), object);
     }
 
     @Nullable
