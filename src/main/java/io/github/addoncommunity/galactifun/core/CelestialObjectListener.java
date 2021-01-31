@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,7 +35,15 @@ public final class CelestialObjectListener implements Listener {
     @EventHandler
     public void onMobSpawn(@Nonnull EntitySpawnEvent e) {
         // TODO improve, should have some methods in celestial objects for events
-        if (e.getEntity().getWorld().getName().equals("mars")) {
+        String name = e.getEntity().getWorld().getName();
+        if (name.equals("mars") || name.equals("venus")) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent e) {
+        if (e.getWorld().getName().equals("venus")) {
             e.setCancelled(true);
         }
     }
