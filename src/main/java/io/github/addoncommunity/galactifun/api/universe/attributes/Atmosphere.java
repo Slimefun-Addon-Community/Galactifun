@@ -23,7 +23,7 @@ public class Atmosphere {
             0, false, false, false, false, World.Environment.NETHER
     );
     public static final Atmosphere MOON_LIKE = new Atmosphere(
-            0, false, false, false, false,World.Environment.NORMAL
+            0, false, false, false, false, World.Environment.NORMAL
     );
 
     @Getter private final int oxygenPercentage;
@@ -36,12 +36,12 @@ public class Atmosphere {
     @Nonnull @Getter private final PotionEffectType[] unprotectedEffects;
     @Nonnull @Getter private final World.Environment environment;
     
-    public Atmosphere(int oxygenRatio, boolean weatherCycle, boolean storming, boolean thundering, boolean flammable, @Nonnull World.Environment environment,
+    public Atmosphere(int oxygenPercentage, boolean weatherCycle, boolean storming, boolean thundering, boolean flammable, @Nonnull World.Environment environment,
                       @Nonnull PotionEffectType[] normalEffects, @Nonnull PotionEffectType[] unprotectedEffects) {
         
-        Validate.isTrue(oxygenRatio <= 100 && oxygenRatio >= 0);
+        Validate.isTrue(oxygenPercentage <= 100 && oxygenPercentage >= 0);
         
-        this.oxygenPercentage = oxygenRatio;
+        this.oxygenPercentage = oxygenPercentage;
         this.weatherCycle = weatherCycle;
         this.environment = environment;
         this.thundering = thundering;
@@ -53,8 +53,8 @@ public class Atmosphere {
         this.unprotectedEffects = unprotectedEffects;
     }
     
-    public Atmosphere(int oxygenRatio, boolean weatherCycle, boolean storming, boolean thundering, boolean flammable, @Nonnull World.Environment environment) {
-        this(oxygenRatio, weatherCycle, storming, thundering, flammable, environment, new PotionEffectType[0], new PotionEffectType[0]);
+    public Atmosphere(int oxygenPercentage, boolean weatherCycle, boolean storming, boolean thundering, boolean flammable, @Nonnull World.Environment environment) {
+        this(oxygenPercentage, weatherCycle, storming, thundering, flammable, environment, new PotionEffectType[0], new PotionEffectType[0]);
     }
     
     public void applyEffects(@Nonnull World world) {

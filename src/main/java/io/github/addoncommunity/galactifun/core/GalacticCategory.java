@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public final class UniverseCategory extends FlexCategory {
+public final class GalacticCategory extends FlexCategory {
 
-    public UniverseCategory(NamespacedKey key, ItemStack item) {
+    public GalacticCategory(NamespacedKey key, ItemStack item) {
         super(key, item);
     }
 

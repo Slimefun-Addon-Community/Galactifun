@@ -18,9 +18,9 @@ import java.util.List;
  * @author Seggan
  * @author Mooy1
  */
-public class GalacticTeleport extends AbstractCommand {
+public final class TeleportCommand extends AbstractCommand {
 
-    public GalacticTeleport() {
+    public TeleportCommand() {
         super("world", "teleports you to the spawn of the specified world", true);
     }
 

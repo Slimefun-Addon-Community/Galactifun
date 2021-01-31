@@ -46,7 +46,7 @@ public abstract class CelestialObject extends ChunkGenerator {
     
     @Getter @Nonnull private final String name;
     @Getter @Nonnull private final World world;
-    @Nonnull private final DayCycle solarType;
+    @Nonnull private final DayCycle dayCycle;
     @Nonnull private final Atmosphere atmosphere;
     @Nonnull private final Terrain terrain;
     @Nonnull private final Gravity gravity;
@@ -62,10 +62,10 @@ public abstract class CelestialObject extends ChunkGenerator {
     private final long surfaceArea;
     
     public CelestialObject(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
-                           @Nonnull DayCycle solarType, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
+                           @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
         
         Validate.notNull(name);
-        Validate.notNull(solarType);
+        Validate.notNull(dayCycle);
         Validate.notNull(atmosphere);
         Validate.notNull(terrain);
         
@@ -73,13 +73,14 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.distance = distance;
         this.gravity = gravity;
         this.surfaceArea = surfaceArea;
-        this.solarType = solarType;
+        this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
         this.terrain = terrain;
         this.world = setupWorld();
         
     }
 
+    @Nonnull
     protected World setupWorld() {
         // will fetch the world if its already been loaded
         World world = new WorldCreator(this.name.toLowerCase(Locale.ROOT).replace(' ', '_'))
@@ -89,7 +90,7 @@ public abstract class CelestialObject extends ChunkGenerator {
 
         Validate.notNull(world, "There was an error loading the world for " + this.name);
 
-        this.solarType.applyEffects(world);
+        this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
 
         WorldBorder border = world.getWorldBorder();
