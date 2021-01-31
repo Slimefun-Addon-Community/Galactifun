@@ -8,7 +8,6 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.TheMoon;
 import lombok.experimental.UtilityClass;
-import org.bukkit.World;
 
 /**
  * Registry of constants for the base celestial objects
