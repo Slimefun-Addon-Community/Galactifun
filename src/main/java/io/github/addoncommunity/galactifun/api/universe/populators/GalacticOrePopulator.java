@@ -1,13 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.populators;
 
-/*
-*
-* Populator utility for simple ore population
-*
-* @author GallowsDove
-*
- */
-
 import io.github.addoncommunity.galactifun.Galactifun;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -24,7 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-
+/**
+ * Populator utility for simple ore population
+ *
+ * @author GallowsDove
+ *
+ */
 public final class GalacticOrePopulator extends BlockPopulator {
     private final int attempts;
     private final int chance;

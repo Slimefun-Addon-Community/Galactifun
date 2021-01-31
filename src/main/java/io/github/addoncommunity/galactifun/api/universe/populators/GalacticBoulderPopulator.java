@@ -18,7 +18,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class GalacticBoulderPopulator extends BlockPopulator {
+
+/**
+ * Populator utility for surface boulders
+ *
+ * @author GallowsDove
+ * @author Seggan
+ *
+ */
+public final class GalacticBoulderPopulator extends BlockPopulator {
     private final int attempts;
     private final int chance;
     @Nonnull private final Material ore;
