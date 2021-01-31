@@ -17,12 +17,12 @@ public final class GalacticCategory extends FlexCategory {
 
     @Override
     public boolean isVisible(@Nonnull Player player, @Nonnull PlayerProfile playerProfile, @Nonnull SlimefunGuideMode slimefunGuideMode) {
-        return false;
+        return true;
     }
 
     @Override
     public void open(Player player, PlayerProfile playerProfile, SlimefunGuideMode slimefunGuideMode) {
-
+        // do stuff with GalacticExplorer
     }
 
 }
