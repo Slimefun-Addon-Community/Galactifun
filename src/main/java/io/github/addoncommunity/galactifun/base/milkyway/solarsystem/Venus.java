@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -58,11 +59,13 @@ public class Venus extends Planet {
                     chunk.setBlock(x, y, z, Material.BLACKSTONE);
                 }
 
-                for (int y = 75; y > 10; y--) {
-                    if (chunk.getType(x, y, z) != Material.AIR) {
+                if (currentHeight > 75) {
+                    for (int y = 75; y > 10; y--) {
                         chunk.setBlock(x, y, z, Material.BASALT);
-                    } else {
-                        chunk.setBlock(x, y, z, Material.LAVA);
+                    }
+                } else {
+                    for (int y = currentHeight; y > 10; y--) {
+                        chunk.setBlock(x, y, z, Material.BASALT);
                     }
                 }
 
@@ -86,7 +89,7 @@ public class Venus extends Planet {
     @Nonnull
     @Override
     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-        return Collections.singletonList(new BlockPopulator() {
+        return Arrays.asList(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 final int startX = chunk.getX() << 4;
@@ -104,6 +107,23 @@ public class Venus extends Planet {
 
                 if (highestBlock.getY() >= 115) {
                     highestBlock.getRelative(BlockFace.UP).setType(Material.LAVA);
+                }
+            }
+        }, new BlockPopulator() {
+            @Override
+            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+                final int startX = chunk.getX() << 4;
+                final int startZ = chunk.getZ() << 4;
+
+                for (int x = 0; x < 16; x++) {
+                    for (int z = 0; z < 16; z++) {
+                        Block b = world.getHighestBlockAt(startX + x, startZ + z);
+                        if (b.getY() < 75) {
+                            for (int y = 75; y > b.getY(); y--) {
+                                chunk.getBlock(x, y, z).setType(Material.LAVA);
+                            }
+                        }
+                    }
                 }
             }
         });

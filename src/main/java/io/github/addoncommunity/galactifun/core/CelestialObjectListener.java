@@ -42,13 +42,6 @@ public final class CelestialObjectListener implements Listener {
     }
 
     @EventHandler
-    public void onWeatherChange(WeatherChangeEvent e) {
-        if (e.getWorld().getName().equals("venus")) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
         CelestialObject object = Registry.getCelestialObject(e.getPlayer().getWorld().getName());
 
