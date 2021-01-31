@@ -5,12 +5,10 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import org.bukkit.Chunk;
+import io.github.addoncommunity.galactifun.api.universe.populators.GalacticBoulderPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
@@ -22,6 +20,7 @@ import java.util.Random;
  * 
  * @author Seggan
  * @author Mooy1
+ *
  */
 public final class Mars extends Planet {
     
@@ -60,23 +59,7 @@ public final class Mars extends Planet {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BlockPopulator() {
-
-            // boulder populator
-            @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                if (random.nextBoolean()) {
-                    int x = random.nextInt(16);
-                    int z = random.nextInt(16);
-
-                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-
-                    if (b.getType() == Material.GRANITE) return;
-
-                    b.getRelative(BlockFace.UP).setType(Material.GRANITE);
-                }
-            }
-        });
+        populators.add(new GalacticBoulderPopulator(2, 25, Material.GRANITE, Material.RED_SAND));
     }
 
 }
