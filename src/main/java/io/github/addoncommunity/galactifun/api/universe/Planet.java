@@ -18,14 +18,14 @@ import java.util.List;
  */
 public abstract class Planet extends CelestialObject {
     
-    private final List<Moon> moons;
+    private final List<Moon> moons = new ArrayList<>();
 
-    public Planet(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
-                  @Nonnull DayCycle solarType, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain, @Nonnull Moon... moons) {
-        super(name, distance, surfaceArea, gravity, solarType, atmosphere, terrain);
-        this.moons = new ArrayList<>(Arrays.asList(moons));
+    public Planet(@Nonnull String name, long distance, long surfaceArea,
+                  @Nonnull Gravity gravity, @Nonnull DayCycle dayCycle,
+                  @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain, @Nonnull Moon... moons) {
+        super(name, distance, surfaceArea, gravity, dayCycle, atmosphere, terrain);
+        addMoons(moons);
     }
-
 
     public final void addMoons(@Nonnull Moon... moons) {
         this.moons.addAll(Arrays.asList(moons));

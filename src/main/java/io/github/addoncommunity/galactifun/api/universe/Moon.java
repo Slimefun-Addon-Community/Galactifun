@@ -14,11 +14,10 @@ import javax.annotation.Nonnull;
  *
  */
 public abstract class Moon extends CelestialObject {
-
-
+    
     public Moon(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
-                @Nonnull DayCycle solarType, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
-        super(name, distance, surfaceArea, gravity, solarType, atmosphere, terrain);
+                @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
+        super(name, distance, surfaceArea, gravity, dayCycle, atmosphere, terrain);
     }
 
 }
