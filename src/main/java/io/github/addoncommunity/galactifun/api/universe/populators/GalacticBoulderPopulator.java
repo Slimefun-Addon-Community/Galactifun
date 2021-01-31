@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
@@ -59,7 +58,7 @@ public class GalacticBoulderPopulator extends BlockPopulator {
 
                     if (id != null) {
                         final int fx = x;
-                        final int fy = b.getY();
+                        final int fy = b.getRelative(BlockFace.UP).getY();
                         final int fz = z;
 
                         // Cam produce concurrentModificationException error, currently non-avoidable

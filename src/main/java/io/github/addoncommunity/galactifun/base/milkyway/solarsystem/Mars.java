@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.populators.GalacticBoulderPopulator;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -59,7 +60,7 @@ public final class Mars extends Planet {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new GalacticBoulderPopulator(2, 25, Material.GRANITE, Material.RED_SAND));
+        populators.add(new GalacticBoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
     }
 
 }
