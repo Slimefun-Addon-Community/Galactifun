@@ -26,7 +26,7 @@ public class Venus extends Planet {
     private static final double MIN_HEIGHT = 50;
 
     public Venus() {
-        super("Venus", 67_621_000L, 177_700_000L, new Gravity(0), DayCycle.ETERNAL_DAY, new Atmosphere(
+        super("Venus", 67_621_000L, 177_700_000L, new Gravity(1), DayCycle.ETERNAL_DAY, new Atmosphere(
             0,
             false,
             true,
