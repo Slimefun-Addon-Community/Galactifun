@@ -20,8 +20,7 @@ public abstract class Planet extends CelestialObject {
     
     private final List<Moon> moons = new ArrayList<>();
 
-    public Planet(@Nonnull String name, long distance, long surfaceArea,
-                  @Nonnull Gravity gravity, @Nonnull DayCycle dayCycle,
+    public Planet(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull DayCycle dayCycle,
                   @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain, @Nonnull Moon... moons) {
         super(name, distance, surfaceArea, gravity, dayCycle, atmosphere, terrain);
         addMoons(moons);
