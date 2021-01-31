@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Mars
+ * Class for Mars
  *
  * @author Seggan
  * @author Mooy1

@@ -1,16 +1,13 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.venus;
 
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
@@ -18,6 +15,11 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class for Venus
+ *
+ * @author Seggan
+ */
 public class Venus extends Planet {
 
     private static final double MAX_DEVIATION = 50;
@@ -60,46 +62,7 @@ public class Venus extends Planet {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BlockPopulator() {
-            @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                final int startX = chunk.getX() << 4;
-                final int startZ = chunk.getZ() << 4;
-
-                Block highestBlock = chunk.getBlock(0, 0, 0);
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        Block b = world.getHighestBlockAt(startX + x, startZ + z);
-                        if (b.getY() > highestBlock.getY()) {
-                            highestBlock = b;
-                        }
-                    }
-                }
-
-                if (highestBlock.getY() >= 115) {
-                    highestBlock.setType(Material.OBSIDIAN);
-                    highestBlock.getRelative(BlockFace.UP).setType(Material.LAVA);
-                }
-            }
-        });
-
-        populators.add(new BlockPopulator() {
-            @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                final int startX = chunk.getX() << 4;
-                final int startZ = chunk.getZ() << 4;
-
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        Block b = world.getHighestBlockAt(startX + x, startZ + z);
-                        if (b.getY() < 75) {
-                            for (int y = 75; y > b.getY(); y--) {
-                                chunk.getBlock(x, y, z).setType(Material.LAVA);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        populators.add(new VenusVolcanoLavaPopulator());
+        populators.add(new VenusLavaLakePopulator());
     }
 }
