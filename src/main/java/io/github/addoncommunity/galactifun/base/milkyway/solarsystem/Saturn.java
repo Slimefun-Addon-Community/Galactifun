@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.api.universe.CelestialObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import org.bukkit.Material;
 import org.bukkit.World;
 

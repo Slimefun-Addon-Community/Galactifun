@@ -13,7 +13,7 @@ import java.util.List;
  */
 public final class TheUniverse implements GalacticHolder<Galaxy> {
     
-    public static final TheUniverse UNIVERSE = new TheUniverse();
+    public static final TheUniverse INSTANCE = new TheUniverse();
     
     private final List<Galaxy> galaxies = new ArrayList<>();
     

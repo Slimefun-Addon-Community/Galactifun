@@ -14,13 +14,16 @@ import lombok.experimental.UtilityClass;
 
 /**
  * Registry of constants for the base celestial objects
+ * 
+ * @author Mooy1
+ * @author Seggan
  */
 @UtilityClass
 public final class BaseRegistry {
     
     public static final Moon THE_MOON = new TheMoon();
 
-    public static final Planet EARTH = new Earth(THE_MOON);
+    public static final Planet EARTH = new Earth((TheMoon) THE_MOON);
     public static final Planet MARS = new Mars();
     public static final Planet VENUS = new Venus();
 

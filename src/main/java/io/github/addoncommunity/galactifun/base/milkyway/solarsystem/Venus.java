@@ -4,9 +4,9 @@ import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.GalacticLakePopulator;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.GalacticVolcanoPopulator;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.LakePopulator;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.VolcanoPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -62,7 +62,7 @@ public class Venus extends Planet {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new GalacticVolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
-        populators.add(new GalacticLakePopulator(75, Material.LAVA));
+        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new LakePopulator(75, Material.LAVA));
     }
 }

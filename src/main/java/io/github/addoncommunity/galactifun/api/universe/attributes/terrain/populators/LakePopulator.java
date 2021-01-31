@@ -17,7 +17,7 @@ import java.util.Random;
  * @author Mooy1
  */
 @AllArgsConstructor
-public class GalacticLakePopulator extends BlockPopulator {
+public class LakePopulator extends BlockPopulator {
     
     private final int maxY;
     private final Material liquid;

@@ -6,8 +6,9 @@ import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.mooy1.infinitylib.PluginUtils;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -59,7 +60,7 @@ public final class Earth extends Planet {
         }
     }
     
-    public Earth(@Nonnull Moon theMoon) {
+    public Earth(@Nonnull TheMoon theMoon) {
         super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
                 DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVERNS, theMoon);
     }

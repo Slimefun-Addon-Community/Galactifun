@@ -3,7 +3,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.core.explorer.GalacticComponent;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;

@@ -18,7 +18,7 @@ public final class GalacticExplorer {
     private static final Map<UUID, GalacticHolder<?>> history = new HashMap<>();
     
     public static void explore(@Nonnull Player p) {
-        GalacticHolder<?> holder = history.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.UNIVERSE);
+        GalacticHolder<?> holder = history.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.INSTANCE);
 
         ChestMenu menu = new ChestMenu(holder.getName());
         

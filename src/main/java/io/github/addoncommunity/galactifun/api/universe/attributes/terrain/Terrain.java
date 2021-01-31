@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes;
+package io.github.addoncommunity.galactifun.api.universe.attributes.terrain;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.features.TerrainFeature;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public final class Terrain {
     );
 
     /**
-     * 
+     * Short description of the terrain
      */
     @Nonnull @Getter private final String desc;
 
@@ -80,9 +80,14 @@ public final class Terrain {
         this.frequency = frequency;
         this.features = features;
     }
-    
+
+    /**
+     * Creates a new ChunkGenerator based on this terrain
+     */
     @Nonnull
-    public ChunkGenerator createGenerator(@Nonnull BiomeSupplier biomeSupplier, @Nonnull MaterialSupplier materialSupplier, @Nonnull PopulatorSupplier populatorSupplier) {
+    public ChunkGenerator createGenerator(@Nonnull BiomeSupplier biomeSupplier,
+                                          @Nonnull MaterialSupplier materialSupplier,
+                                          @Nonnull PopulatorSupplier populatorSupplier) {
         return new ChunkGenerator() {
             @Nonnull
             @Override

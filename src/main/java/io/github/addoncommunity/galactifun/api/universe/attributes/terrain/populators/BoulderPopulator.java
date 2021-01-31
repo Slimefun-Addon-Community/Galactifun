@@ -25,7 +25,7 @@ import java.util.Random;
  * @author Seggan
  *
  */
-public class GalacticBoulderPopulator extends BlockPopulator {
+public class BoulderPopulator extends BlockPopulator {
     private final int attempts;
     private final int chance;
     @Nonnull private final Material ore;
@@ -33,7 +33,7 @@ public class GalacticBoulderPopulator extends BlockPopulator {
     @Nonnull private final List<Material> source;
 
 
-    public GalacticBoulderPopulator(int attempts, int chance, @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
+    public BoulderPopulator(int attempts, int chance, @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
         this.attempts = attempts;
         this.chance = chance;
         this.ore = slimefunItem.getType();
@@ -41,7 +41,7 @@ public class GalacticBoulderPopulator extends BlockPopulator {
         this.source = new ArrayList<>(Arrays.asList(source));
     }
 
-    public GalacticBoulderPopulator(int attempts, int chance, @Nonnull Material ore, @Nonnull Material... source) {
+    public BoulderPopulator(int attempts, int chance, @Nonnull Material ore, @Nonnull Material... source) {
         this.attempts = attempts;
         this.chance = chance;
         this.ore = ore;

@@ -20,7 +20,7 @@ import java.util.Random;
  * @author Mooy1
  * 
  */
-public class GalacticOrePopulator extends BlockPopulator {
+public class OrePopulator extends BlockPopulator {
     
     private final int attempts;
     private final int chance;
@@ -33,8 +33,8 @@ public class GalacticOrePopulator extends BlockPopulator {
     @Nonnull private final Material[] source;
 
 
-    public GalacticOrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
-                                @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
+    public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
+                        @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
         this.attempts = attempts;
         this.chance = chance;
         this.miny = miny;
@@ -46,8 +46,8 @@ public class GalacticOrePopulator extends BlockPopulator {
         this.source = source;
     }
 
-    public GalacticOrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
-                                @Nonnull Material ore, @Nonnull Material... source) {
+    public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
+                        @Nonnull Material ore, @Nonnull Material... source) {
         this.attempts = attempts;
         this.chance = chance;
         this.miny = miny;

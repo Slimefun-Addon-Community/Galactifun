@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import io.github.addoncommunity.galactifun.core.explorer.GalacticComponent;
 import io.github.addoncommunity.galactifun.core.explorer.GalacticHolder;
@@ -29,7 +28,7 @@ public class Galaxy implements GalacticHolder<StarSystem>, GalacticComponent {
         this.systems = new ArrayList<>(Arrays.asList(systems));
         this.name = name;
         GalacticRegistry.register(this);
-        TheUniverse.UNIVERSE.add(this);
+        TheUniverse.INSTANCE.add(this);
     }
     
     @Nonnull
