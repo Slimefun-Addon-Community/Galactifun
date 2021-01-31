@@ -5,8 +5,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import io.github.addoncommunity.galactifun.api.universe.populators.GalacticLakePopulator;
-import io.github.addoncommunity.galactifun.api.universe.populators.GalacticVolcanoPopulator;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.GalacticLakePopulator;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.GalacticVolcanoPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -35,7 +35,7 @@ public class Venus extends Planet {
             World.Environment.NETHER,
             new PotionEffectType[0],
             new PotionEffectType[]{PotionEffectType.WITHER}
-        ), new Terrain(50, 50, 8, 0.02, 0.5, 0.3));
+        ), new Terrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3));
     }
 
     @Nonnull

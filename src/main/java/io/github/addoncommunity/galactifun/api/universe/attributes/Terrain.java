@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.features.TerrainFeature;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.features.TerrainFeature;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -21,14 +22,19 @@ import java.util.Random;
  */
 public final class Terrain {
 
-    public static final Terrain HILLY_CAVERNS = new Terrain(
+    public static final Terrain HILLY_CAVERNS = new Terrain( "Hilly Caverns",
             40, 35, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
     );
     
-    public static final Terrain SMOOTH = new Terrain(
+    public static final Terrain SMOOTH = new Terrain( "Smooth",
             20, 45, 8,0.01, .5, .5
     );
-    
+
+    /**
+     * 
+     */
+    @Nonnull @Getter private final String desc;
+
     /**
      * Maximum y deviation
      */
@@ -64,7 +70,8 @@ public final class Terrain {
      */
     @Nonnull private final TerrainFeature[] features;
 
-    public Terrain(int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
+    public Terrain(@Nonnull String desc, int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
+        this.desc = desc;
         this.maxDeviation = maxDeviation;
         this.minHeight = minHeight;
         this.octaves = octaves;

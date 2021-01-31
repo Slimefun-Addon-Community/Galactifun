@@ -39,7 +39,7 @@ public abstract class CelestialWorld extends CelestialObject {
     private static final double MIN_BORDER = 600D;
     
     @Getter @Nonnull private final World world;
-    
+
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                           @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
         super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);

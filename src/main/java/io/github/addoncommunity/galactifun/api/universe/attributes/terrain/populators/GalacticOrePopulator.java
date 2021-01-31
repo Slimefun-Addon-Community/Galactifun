@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.populators;
+package io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators;
 
 import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;

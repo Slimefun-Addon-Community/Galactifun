@@ -23,13 +23,13 @@ public abstract class CelestialObject implements GalacticComponent {
     @Getter @Nonnull protected final String name;
     @Nonnull protected final DayCycle dayCycle;
     @Nonnull protected final Atmosphere atmosphere;
-    @Nonnull protected final Terrain terrain;
     @Nonnull protected final Gravity gravity;
+    @Nonnull protected final Terrain terrain;
 
     /**
      * Distance in miles from the object that this it orbiting
      */
-    private final long distance;
+    @Getter private final long distance;
 
     /**
      * Surface area in square meters
@@ -49,13 +49,13 @@ public abstract class CelestialObject implements GalacticComponent {
         Validate.notNull(atmosphere);
         Validate.notNull(terrain);
 
+        this.terrain = terrain;
         this.name = name;
         this.distance = distance;
         this.gravity = gravity;
         this.surfaceArea = surfaceArea;
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
-        this.terrain = terrain;
         this.displayItem = new CustomItem(
                 material,
                 name,
