@@ -13,7 +13,7 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
 public class Cave implements TerrainFeature {
 
     /**
-     * Ratio of caves from 0 - 1
+     * Ratio of caves from 0 - 1, will be spread to [-1, 1]
      */
     private final double ratio;
 
@@ -28,7 +28,7 @@ public class Cave implements TerrainFeature {
     private final double frequency;
     
     public Cave(double ratio, double amplitude, double frequency) {
-        this.ratio = ratio * 2;
+        this.ratio = ratio * 2 - 1;
         this.amplitude = amplitude;
         this.frequency = frequency;
     }
@@ -36,7 +36,7 @@ public class Cave implements TerrainFeature {
     @Override
     public void generate(SimplexOctaveGenerator generator, ChunkGenerator.ChunkData chunk, int realX, int realZ, int x, int z, int height) {
         for (int y = 1 ; y < height ; y++) {
-            double density = 1 + generator.noise(
+            double density = generator.noise(
                     realX,
                     y,
                     realZ,
