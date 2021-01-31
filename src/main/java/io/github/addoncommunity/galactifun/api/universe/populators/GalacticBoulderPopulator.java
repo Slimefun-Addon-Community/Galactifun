@@ -1,9 +1,8 @@
 package io.github.addoncommunity.galactifun.api.universe.populators;
 
-import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -26,7 +25,7 @@ import java.util.Random;
  * @author Seggan
  *
  */
-public final class GalacticBoulderPopulator extends BlockPopulator {
+public class GalacticBoulderPopulator extends BlockPopulator {
     private final int attempts;
     private final int chance;
     @Nonnull private final Material ore;
@@ -34,8 +33,7 @@ public final class GalacticBoulderPopulator extends BlockPopulator {
     @Nonnull private final List<Material> source;
 
 
-    public GalacticBoulderPopulator(int attempts, int chance, @Nonnull SlimefunItemStack slimefunItem,
-                                    @Nonnull Material... source) {
+    public GalacticBoulderPopulator(int attempts, int chance, @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
         this.attempts = attempts;
         this.chance = chance;
         this.ore = slimefunItem.getType();
@@ -53,29 +51,26 @@ public final class GalacticBoulderPopulator extends BlockPopulator {
 
     @Override
     public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        for (int i = 0; i < attempts; i++) {
-            if (random.nextInt(100) < chance) {
+        for (int i = 0 ; i < this.attempts ; i++) {
+            if (random.nextInt(100) < this.chance) {
 
                 int x = random.nextInt(16);
                 int z = random.nextInt(16);
 
                 Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
 
-                if (source.contains(b.getType())) {
-                    b.getRelative(BlockFace.UP).setType(ore);
+                if (this.source.contains(b.getType())) {
+                    b.getRelative(BlockFace.UP).setType(this.ore);
 
-                    if (id != null) {
+                    if (this.id != null) {
                         final int fx = x;
                         final int fy = b.getRelative(BlockFace.UP).getY();
                         final int fz = z;
 
                         // Cam produce concurrentModificationException error, currently non-avoidable
-                        Bukkit.getScheduler().runTask(Galactifun.getInstance(),
-                                () -> BlockStorage.store(chunk.getBlock(fx, fy, fz), id));
+                        PluginUtils.runSync(() -> BlockStorage.store(chunk.getBlock(fx, fy, fz), this.id));
                     }
                 }
-
-
             }
         }
     }

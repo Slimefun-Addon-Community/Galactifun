@@ -1,9 +1,8 @@
 package io.github.addoncommunity.galactifun.api.universe.populators;
 
-import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,7 +21,8 @@ import java.util.Random;
  * @author GallowsDove
  *
  */
-public final class GalacticOrePopulator extends BlockPopulator {
+public class GalacticOrePopulator extends BlockPopulator {
+    
     private final int attempts;
     private final int chance;
     private final int miny;
@@ -62,35 +62,34 @@ public final class GalacticOrePopulator extends BlockPopulator {
 
     @Override
     public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        for (int i = 1; i < attempts; i++) {
-            if (random.nextInt(100) < chance) {
+        for (int i = 1 ; i < this.attempts ; i++) {
+            if (random.nextInt(100) < this.chance) {
                 int x = random.nextInt(16);
-                int y = random.nextInt(maxy - miny) + miny;
+                int y = random.nextInt(this.maxy - this.miny) + this.miny;
                 int z = random.nextInt(16);
 
-                if (source.contains(chunk.getBlock(x, y, z).getType())) {
+                if (this.source.contains(chunk.getBlock(x, y, z).getType())) {
                     boolean canContinue = true;
                     int length = 0;
 
                     while (canContinue) {
-                        chunk.getBlock(x, y, z).setType(ore);
-                        if (id != null) {
+                        chunk.getBlock(x, y, z).setType(this.ore);
+                        if (this.id != null) {
                             final int fx = x;
                             final int fy = y;
                             final int fz = z;
 
                             // Cam produce concurrentModificationException error, currently non-avoidable
-                            Bukkit.getScheduler().runTask(Galactifun.getInstance(),
-                                    () -> BlockStorage.store(chunk.getBlock(fx, fy, fz), id));
+                            PluginUtils.runSync(() -> BlockStorage.store(chunk.getBlock(fx, fy, fz), this.id));
                         }
 
-                        if ((length < minSize) || (random.nextInt(100) < 50)) {
+                        if ((length < this.minSize) || (random.nextInt(100) < 50)) {
                             switch (random.nextInt(6)) {
                                 case 0:
                                     x = Math.min(x + 1, 15);
                                     break;
                                 case 1:
-                                    y = Math.min (y + 1, maxy);
+                                    y = Math.min (y + 1, this.maxy);
                                     break;
                                 case 2:
                                     z = Math.min(z + 1, 15);
@@ -99,7 +98,7 @@ public final class GalacticOrePopulator extends BlockPopulator {
                                     x = Math.max(x - 1, 0);
                                     break;
                                 case 4:
-                                    y = Math.max(y - 1, miny);
+                                    y = Math.max(y - 1, this.miny);
                                     break;
                                 case 5:
                                     z = Math.max(z - 1, 0);
@@ -107,8 +106,8 @@ public final class GalacticOrePopulator extends BlockPopulator {
                             }
                             length++;
 
-                            canContinue = (source.contains(chunk.getBlock(x, y, z).getType())) &&
-                                    (length < maxSize);
+                            canContinue = (this.source.contains(chunk.getBlock(x, y, z).getType())) &&
+                                    (length < this.maxSize);
                         } else canContinue = false;
                     }
                 }

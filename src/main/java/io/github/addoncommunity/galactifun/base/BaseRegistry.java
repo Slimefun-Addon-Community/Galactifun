@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.TheMoon;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.venus.Venus;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import lombok.experimental.UtilityClass;
 
 /**
