@@ -17,7 +17,6 @@ public class Gravity {
     
     public static final Gravity EARTH_LIKE = new Gravity(1);
     public static final Gravity MOON_LIKE = new Gravity(.165);
-    public static final Gravity MARS_LIKE = new Gravity(.378);
     
     private final int jump;
     private final int speed;

@@ -22,7 +22,7 @@ import java.util.Random;
 public final class TheMoon extends Moon {
     
     public TheMoon() {
-        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE, DayCycle.EARTH_LIKE, Atmosphere.MOON_LIKE, Terrain.FLAT_NO_CAVE);
+        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE, DayCycle.EARTH_LIKE, Atmosphere.NONE, Terrain.FLAT_NO_CAVE);
     }
     
     @Nonnull

@@ -26,7 +26,9 @@ import java.util.Random;
 public final class Mars extends Planet {
     
     public Mars() {
-        super("Mars", 144_610_000L, 55_910_000L, Gravity.MARS_LIKE, DayCycle.MARS_LIKE, Atmosphere.MARS_LIKE, Terrain.HILLY_CAVES);
+        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378), new DayCycle(1.03),
+                new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
+                Terrain.HILLY_CAVES);
     }
     
     @Nonnull

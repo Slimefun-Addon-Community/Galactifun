@@ -19,10 +19,7 @@ public class Atmosphere {
     public static final Atmosphere EARTH_LIKE = new Atmosphere(
             21, true, false, false, true, World.Environment.NORMAL
     );
-    public static final Atmosphere MARS_LIKE = new Atmosphere(
-            0, false, false, false, false, World.Environment.NETHER
-    );
-    public static final Atmosphere MOON_LIKE = new Atmosphere(
+    public static final Atmosphere NONE = new Atmosphere(
             0, false, false, false, false, World.Environment.NORMAL
     );
 

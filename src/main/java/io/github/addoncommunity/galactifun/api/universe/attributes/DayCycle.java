@@ -17,7 +17,6 @@ public class DayCycle {
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
     public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
     public static final DayCycle EARTH_LIKE = new DayCycle(1);
-    public static final DayCycle MARS_LIKE = new DayCycle(1.02);
     
     private final boolean cycle;
     private final long time;
