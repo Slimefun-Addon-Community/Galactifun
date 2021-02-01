@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
@@ -29,6 +29,8 @@ public final class Mars extends Planet {
         super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378), new DayCycle(1.03),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
+
+        new Martian().register();
     }
 
     @Nonnull

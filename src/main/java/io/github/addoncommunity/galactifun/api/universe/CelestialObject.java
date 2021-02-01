@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
+import io.github.addoncommunity.galactifun.api.mobs.Mob;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -14,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -21,8 +23,10 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -179,5 +183,4 @@ public abstract class CelestialObject extends ChunkGenerator {
     public final boolean equals(Object obj) {
         return obj instanceof CelestialObject && ((CelestialObject) obj).name.equals(this.name);
     }
-
 }
