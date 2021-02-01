@@ -1,12 +1,17 @@
 package io.github.addoncommunity.galactifun.core.util;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Utility class for logging
+ *
+ * @author WalshyDev
+ */
+@UtilityClass
 public final class Log {
-    private Log() {
-    }
 
     public static void info(@Nonnull String message) {
         Bukkit.getLogger().info(message);

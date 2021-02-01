@@ -187,7 +187,7 @@ public abstract class CelestialObject extends ChunkGenerator implements Listener
     }
 
     @EventHandler
-    public final void onEntitySpawn(CreatureSpawnEvent e) {
+    public final void onCreatureSpawn(CreatureSpawnEvent e) {
         if (e.getEntity().getWorld().getName().equals(world.getName())) {
             onMobSpawn(e);
         }
