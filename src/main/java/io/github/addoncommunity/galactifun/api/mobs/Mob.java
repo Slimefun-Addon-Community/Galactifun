@@ -22,6 +22,7 @@ import java.util.Objects;
  */
 @Getter
 public abstract class Mob {
+    
     @Nonnull
     private final String id;
     @Nullable
@@ -34,10 +35,10 @@ public abstract class Mob {
     @Nullable
     private ItemStack[] armor = null;
 
-    @ParametersAreNonnullByDefault
-    protected Mob(String id, @Nullable String name, EntityType type, double health) {
+    protected Mob(@Nonnull String id, @Nullable String name, @Nonnull EntityType type, double health) {
         Objects.requireNonNull(id, "Id cannot be null!");
         Objects.requireNonNull(type, "Type cannot be null!");
+        
         this.id = id;
         this.name = name == null ? null : ChatColors.color(name);
         this.type = type;
@@ -92,11 +93,11 @@ public abstract class Mob {
         MobManager.INSTANCE.register(this);
     }
 
-    public int hashCode() {
-        return Objects.hash(this.id, this.name, this.type);
+    public final int hashCode() {
+        return this.id.hashCode();
     }
 
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (obj == this) {
             return true;
         } else {
@@ -109,5 +110,6 @@ public abstract class Mob {
     public abstract double getChanceToSpawn(@Nonnull Chunk chunk);
 
     public abstract int getMaxAmountInChunk(@Nonnull Chunk chunk);
+    
 }
 

@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 class Martian extends Mob implements Listener {
 
-    private final Map<Material, ItemStack> TRADES = new HashMap<>();
+    private final Map<Material, ItemStack> trades = new HashMap<>();
 
     protected Martian() {
         super("MARTIAN", "Martian", EntityType.ZOMBIE_VILLAGER, 32);
@@ -45,7 +45,7 @@ class Martian extends Mob implements Listener {
 
     private void setupTrades() {
         // Fixes the sword
-        TRADES.put(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
+        this.trades.put(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
     }
 
     @Override
@@ -81,7 +81,7 @@ class Martian extends Mob implements Listener {
             PlayerInventory inv = e.getPlayer().getInventory();
             ItemStack item = inv.getItem(e.getHand());
 
-            ItemStack trade = TRADES.get(item.getType());
+            ItemStack trade = this.trades.get(item.getType());
 
             if (trade != null) {
                 Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {

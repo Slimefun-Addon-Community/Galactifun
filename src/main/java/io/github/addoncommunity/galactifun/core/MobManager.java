@@ -30,7 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author WalshyDev
  */
-public final class MobManager {
+public final class MobManager { // TODO clean this up
+    
     private static final Map<String, Mob> registry = new HashMap<>();
     public static final MobManager INSTANCE = new MobManager();
 

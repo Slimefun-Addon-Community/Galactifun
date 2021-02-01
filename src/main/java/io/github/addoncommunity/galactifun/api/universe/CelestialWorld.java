@@ -16,6 +16,7 @@ import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
@@ -129,6 +130,10 @@ public abstract class CelestialWorld extends CelestialObject {
         }
 
         // other stuff?
+    }
+
+    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+        e.setCancelled(true);
     }
 
 }
