@@ -1,13 +1,11 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
-import io.github.addoncommunity.galactifun.api.mobs.Mob;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.BoulderPopulator;
-import io.github.addoncommunity.galactifun.core.MobManager;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;

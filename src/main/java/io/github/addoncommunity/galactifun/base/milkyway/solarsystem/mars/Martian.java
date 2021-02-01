@@ -1,8 +1,6 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.mobs.Mob;
-import io.github.addoncommunity.galactifun.core.MobManager;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -12,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
