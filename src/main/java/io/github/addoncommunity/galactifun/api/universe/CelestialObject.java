@@ -9,6 +9,7 @@ import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -23,13 +24,13 @@ public abstract class CelestialObject implements GalacticComponent {
     @Getter @Nonnull protected final String name;
     @Nonnull protected final DayCycle dayCycle;
     @Nonnull protected final Atmosphere atmosphere;
-    @Nonnull protected final Gravity gravity;
     @Nonnull protected final Terrain terrain;
+    @Nonnull protected final Gravity gravity;
 
     /**
      * Distance in miles from the object that this it orbiting
      */
-    @Getter private final long distance;
+    @Getter protected final long distance;
 
     /**
      * Surface area in square meters
@@ -39,7 +40,7 @@ public abstract class CelestialObject implements GalacticComponent {
     /**
      * Display item
      */
-    private final ItemStack displayItem;
+    @Getter private final ItemStack displayItem;
 
     public CelestialObject(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                            @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
@@ -66,12 +67,6 @@ public abstract class CelestialObject implements GalacticComponent {
         );
     }
 
-    @Nonnull
-    @Override
-    public final ItemStack getDisplayItem() {
-        return this.displayItem;
-    }
-
     @Override
     public final int hashCode() {
         return this.name.hashCode();
@@ -79,7 +74,7 @@ public abstract class CelestialObject implements GalacticComponent {
 
     @Override
     public final boolean equals(Object obj) {
-        return obj instanceof CelestialWorld && ((CelestialWorld) obj).name.equals(this.name);
+        return obj instanceof CelestialObject && ((CelestialObject) obj).name.equals(this.name);
     }
     
 }
