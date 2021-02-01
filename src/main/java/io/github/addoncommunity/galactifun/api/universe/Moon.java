@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
  */
 public abstract class Moon extends CelestialWorld {
 
-    public Moon(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,@Nonnull Material material,
+    public Moon(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                 @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Terrain terrain) {
         super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);
     }
