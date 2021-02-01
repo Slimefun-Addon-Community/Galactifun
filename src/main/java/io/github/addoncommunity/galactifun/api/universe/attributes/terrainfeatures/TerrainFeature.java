@@ -7,6 +7,7 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  * Represents something that can add features to terrains
  * 
  * @author Mooy1
+ *
  */
 public interface TerrainFeature {
 
