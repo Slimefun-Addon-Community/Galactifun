@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
- * Represents a GalacticComponent that olds other GalacticComponents
+ * Represents a GalacticComponent that holds other GalacticComponents
  *
  * @author Mooy1
  */

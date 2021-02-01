@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.explorer.GalacticExplorer;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
@@ -16,7 +17,11 @@ import javax.annotation.Nonnull;
  */
 public final class GalacticCategory extends FlexCategory {
 
-    public GalacticCategory() {
+    public static void setup(@Nonnull Galactifun galactifun) {
+        new GalacticCategory().register(galactifun);
+    }
+    
+    private GalacticCategory() {
         super(PluginUtils.getKey("galactic_category"), null);
     }
 

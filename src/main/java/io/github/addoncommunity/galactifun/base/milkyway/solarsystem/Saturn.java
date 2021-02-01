@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 
 /**
- * Saturn, an ex of a planet with no implemented world
+ * Saturn, an example of a planet with no implemented world
  */
 public final class Saturn extends CelestialObject {
 

@@ -2,28 +2,22 @@ package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.mobs.Mob;
-import io.github.addoncommunity.galactifun.core.util.Log;
+import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.InventoryHolder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The class that manages mobs
@@ -60,7 +54,7 @@ public final class MobManager { // TODO clean this up
         Objects.requireNonNull(location, "Position cannot be null");
 
         if (!mob.getEntityType().isAlive()) {
-            Log.error("Attempted to spawn '{}' however it isn't a living entity!", mob.getId());
+            PluginUtils.log("Attempted to spawn '" + mob.getId() + "' however it isn't a living entity!");
         } else {
             LivingEntity e = (LivingEntity) location.getWorld().spawnEntity(location, mob.getEntityType());
             PersistentDataAPI.setString(e, MOB_ID, mob.getId());
