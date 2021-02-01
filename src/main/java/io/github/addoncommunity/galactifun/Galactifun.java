@@ -40,6 +40,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         BaseRegistry.setup();
         
         PluginUtils.scheduleRepeatingSync(new GalacticTicker(), 10, GalacticTicker.INTERVAL);
+
+        setupTicker();
         
     }
 

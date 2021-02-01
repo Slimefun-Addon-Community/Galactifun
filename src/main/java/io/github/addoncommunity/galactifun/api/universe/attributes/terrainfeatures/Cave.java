@@ -29,9 +29,11 @@ public class Cave implements TerrainFeature {
      */
     private final double frequency;
 
+    private final int maxHeight;
+
     @Override
     public void generate(SimplexOctaveGenerator generator, ChunkGenerator.ChunkData chunk, int realX, int realZ, int x, int z, int height) {
-        for (int y = 1 ; y < height ; y++) {
+        for (int y = 1 ; y < maxHeight ; y++) {
             double density = generator.noise(
                     realX,
                     y,

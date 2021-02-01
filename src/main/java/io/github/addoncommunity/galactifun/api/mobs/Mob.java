@@ -10,12 +10,16 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 
+/**
+ * An abstract class for a custom mob
+ *
+ * @author WalshyDev
+ */
 @Getter
 public abstract class Mob {
     @Nonnull
@@ -67,9 +71,17 @@ public abstract class Mob {
     public void onSpawn(@Nonnull LivingEntity self, @Nonnull BlockPosition position) {
     }
 
+    /**
+     * Ticks once for the entire class
+     */
     public void onUniqueTick() {
     }
 
+    /**
+     * Ticks once for every instance of the Mob
+     *
+     * @param self the entity that is ticking
+     */
     public void onMobTick(@Nonnull LivingEntity self) {
     }
 

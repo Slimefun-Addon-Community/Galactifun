@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.api.mobs.Mob;
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -10,23 +10,24 @@ import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Random;
  * @author Mooy1
  *
  */
-public abstract class CelestialObject extends ChunkGenerator {
+public abstract class CelestialObject extends ChunkGenerator implements Listener {
     
     /**
      * Minimum border size
@@ -76,7 +77,8 @@ public abstract class CelestialObject extends ChunkGenerator {
         this.atmosphere = atmosphere;
         this.terrain = terrain;
         this.world = setupWorld();
-        
+
+        Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
     }
 
     /**
@@ -182,5 +184,16 @@ public abstract class CelestialObject extends ChunkGenerator {
     @Override
     public final boolean equals(Object obj) {
         return obj instanceof CelestialObject && ((CelestialObject) obj).name.equals(this.name);
+    }
+
+    @EventHandler
+    public final void onEntitySpawn(CreatureSpawnEvent e) {
+        if (e.getEntity().getWorld().getName().equals(world.getName())) {
+            onMobSpawn(e);
+        }
+    }
+
+    protected void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+        e.setCancelled(true);
     }
 }

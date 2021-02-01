@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.core.MobManager;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -22,22 +23,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Martian extends Mob implements Listener {
+/**
+ * Class for the martian, a mob spawning naturally on mars
+ *
+ * @author Seggan
+ */
+class Martian extends Mob implements Listener {
 
-    private static final Map<ItemStack, ItemStack> TRADES = new HashMap<>();
+    private final Map<Material, ItemStack> TRADES = new HashMap<>();
 
     protected Martian() {
-        super("MARTIAN", "Martian", EntityType.ENDERMAN, 32);
+        super("MARTIAN", "Martian", EntityType.ZOMBIE_VILLAGER, 32);
 
         Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
 
-        this.setArmor(new ItemStack[] {new ItemStack(Material.IRON_HELMET), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_BOOTS)})
+        this.setArmor(new ItemStack[] {new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)})
             .setMainHandItem(new ItemStack(Material.IRON_SWORD));
+
+        setupTrades();
+    }
+
+    private void setupTrades() {
+        // Fixes the sword
+        TRADES.put(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
     }
 
     @Override
     public void onSpawn(@Nonnull LivingEntity self, @Nonnull BlockPosition position) {
         self.setCanPickupItems(false);
+        self.setRemoveWhenFarAway(true);
     }
 
     @Override
@@ -47,7 +61,7 @@ public class Martian extends Mob implements Listener {
 
     @Override
     public double getChanceToSpawn(@Nonnull Chunk chunk) {
-        return 0.5;
+        return 50;
     }
 
     @Override
@@ -66,11 +80,18 @@ public class Martian extends Mob implements Listener {
         if (Objects.equals(MobManager.INSTANCE.getByEntity(entity), this)) {
             PlayerInventory inv = e.getPlayer().getInventory();
             ItemStack item = inv.getItem(e.getHand());
-            ItemStack trade = TRADES.get(inv.getItem(e.getHand()));
+
+            ItemStack trade = TRADES.get(item.getType());
+
             if (trade != null) {
-                entity.getWorld().dropItemNaturally(entity.getLocation(), trade);
-                item.setAmount(item.getAmount() - 1);
-                inv.setItem(e.getHand(), item);
+                Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), trade);
+
+                    if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                        item.setAmount(item.getAmount() - 1);
+                        inv.setItem(e.getHand(), item);
+                    }
+                }, 100);
             }
         }
     }

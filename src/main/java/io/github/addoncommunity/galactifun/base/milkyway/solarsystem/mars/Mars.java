@@ -1,21 +1,27 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
+import io.github.addoncommunity.galactifun.api.mobs.Mob;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.core.MobManager;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Class for Mars
@@ -81,4 +87,21 @@ public final class Mars extends Planet {
         });
     }
 
+    @Override
+    protected void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            if (e.getEntityType() == EntityType.MAGMA_CUBE) {
+                // Shouldn't be null
+                Mob martian = Objects.requireNonNull(MobManager.INSTANCE.getById("MARTIAN"));
+
+
+                if (MobManager.countInChunk(e.getLocation().getChunk(), martian) < martian.getMaxAmountInChunk(e.getLocation().getChunk()) &&
+                    ThreadLocalRandom.current().nextDouble(100) <= martian.getChanceToSpawn(e.getLocation().getChunk())) {
+                    MobManager.INSTANCE.spawn(martian, e.getLocation());
+                }
+            }
+
+            e.setCancelled(true);
+        }
+    }
 }
