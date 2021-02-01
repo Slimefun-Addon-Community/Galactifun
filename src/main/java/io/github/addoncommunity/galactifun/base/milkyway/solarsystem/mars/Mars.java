@@ -5,8 +5,8 @@ import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
-import io.github.addoncommunity.galactifun.api.universe.populators.GalacticBoulderPopulator;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.core.MobManager;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class Mars extends Planet {
 
     public Mars() {
-        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378), new DayCycle(1.03),
+        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),  Material.RED_SAND, new DayCycle(1.03), 
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
 
@@ -67,11 +67,13 @@ public final class Mars extends Planet {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new GalacticBoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
+        populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
     }
+    
+    // TODO clean up
 
     @Override
-    protected void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             if (e.getEntityType() == EntityType.MAGMA_CUBE) {
                 // Shouldn't be null

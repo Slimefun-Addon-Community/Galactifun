@@ -1,18 +1,28 @@
 package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.core.explorer.GalacticExplorer;
+import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Category for exploring the universe
+ * 
+ * @author Mooy1
+ */
 public final class GalacticCategory extends FlexCategory {
 
-    public GalacticCategory(NamespacedKey key, ItemStack item) {
-        super(key, item);
+    public static void setup(@Nonnull Galactifun galactifun) {
+        new GalacticCategory().register(galactifun);
+    }
+    
+    private GalacticCategory() {
+        super(PluginUtils.getKey("galactic_category"), null);
     }
 
     @Override
@@ -21,8 +31,9 @@ public final class GalacticCategory extends FlexCategory {
     }
 
     @Override
-    public void open(Player player, PlayerProfile playerProfile, SlimefunGuideMode slimefunGuideMode) {
-        // do stuff with GalacticExplorer
+    public void open(@Nonnull Player player, @Nonnull PlayerProfile playerProfile, @Nonnull SlimefunGuideMode slimefunGuideMode) {
+        GalacticExplorer.explore(player);
+        playerProfile.getGuideHistory().add(this, 1);
     }
 
 }

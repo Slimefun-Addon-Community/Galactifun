@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,8 +21,10 @@ public class Gravity {
     
     private final int jump;
     private final int speed;
+    @Getter private final int percent;
     
     public Gravity(double relativeToEarth) {
+        this.percent = (int) (relativeToEarth * 100);
         int affect;
         if (relativeToEarth < 1) {
             affect = (int) ((1 / relativeToEarth) - 1);

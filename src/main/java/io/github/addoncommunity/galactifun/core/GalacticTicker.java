@@ -1,17 +1,17 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialObject;
+import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 
 /**
  * Task applying effects for celestial objects
  */
 public final class GalacticTicker implements Runnable {
 
-    public static long INTERVAL = 100L;
+    public static final long INTERVAL = 100L;
     
     @Override
     public void run() {
-        for (CelestialObject object : GalacticRegistry.CELESTIAL_OBJECTS.values()) {
+        for (CelestialWorld object : GalacticRegistry.CELESTIAL_WORLDS.values()) {
             object.tickWorld();
         }
     }

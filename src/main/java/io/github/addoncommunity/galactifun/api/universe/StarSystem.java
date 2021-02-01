@@ -1,7 +1,10 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.core.explorer.GalacticComponent;
+import io.github.addoncommunity.galactifun.core.explorer.GalacticHolder;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import java.util.List;
  *
  */
 @Getter
-public class StarSystem {
+public class StarSystem implements GalacticHolder<CelestialObject>, GalacticComponent {
     
     // TODO add stats of star like heat, size, special effects over planets, etc
     
@@ -27,9 +30,17 @@ public class StarSystem {
         this.name = name;
         GalacticRegistry.register(this);
     }
-
-    public final void addObjects(@Nonnull CelestialObject... objects) {
-        this.objects.addAll(Arrays.asList(objects));
-    }
     
+    @Nonnull
+    @Override
+    public ItemStack getDisplayItem() {
+        return null;
+    }
+
+    @Nonnull
+    @Override
+    public List<CelestialObject> getComponents() {
+        return this.objects;
+    }
+
 }
