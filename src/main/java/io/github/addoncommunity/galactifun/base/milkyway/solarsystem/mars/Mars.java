@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -15,7 +16,6 @@ import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,7 +33,7 @@ public final class Mars extends Planet {
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
 
-        new Martian().register();
+        new Martian().register(this);
     }
 
     @Nonnull
@@ -73,14 +73,13 @@ public final class Mars extends Planet {
     @Override
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+
             if (e.getEntityType() == EntityType.MAGMA_CUBE) {
-                // Shouldn't be null
-                Mob martian = Objects.requireNonNull(MobManager.INSTANCE.getById("MARTIAN"));
+                Martian alien = (Martian) GalacticRegistry.getAlien("MARTIAN");
 
-
-                if (MobManager.countInChunk(e.getLocation().getChunk(), martian) < martian.getMaxAmountInChunk(e.getLocation().getChunk()) &&
-                    ThreadLocalRandom.current().nextDouble(100) <= martian.getChanceToSpawn(e.getLocation().getChunk())) {
-                    MobManager.INSTANCE.spawn(martian, e.getLocation());
+                if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&
+                    alien.canSpawn(e.getLocation().getChunk())) {
+                    alien.spawn(e.getLocation());
                 }
             }
 

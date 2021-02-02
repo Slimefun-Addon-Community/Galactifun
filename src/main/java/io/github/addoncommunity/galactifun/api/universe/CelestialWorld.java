@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
+import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -21,9 +22,11 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * A class representing any celestial object with a world
@@ -40,6 +43,8 @@ public abstract class CelestialWorld extends CelestialObject {
     private static final double MIN_BORDER = 600D;
     
     @Getter @Nonnull private final World world;
+
+    @Getter @Nonnull private final Set<Alien> nativeSpecies = new HashSet<>();
 
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                           @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
