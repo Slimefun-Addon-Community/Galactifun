@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.api.universe.Moon;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -23,7 +23,8 @@ import java.util.Random;
 public final class TheMoon extends Moon {
     
     public TheMoon() {
-        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE, DayCycle.EARTH_LIKE, Atmosphere.NONE, Terrain.SMOOTH);
+        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE,
+                Material.ANDESITE, DayCycle.EARTH_LIKE, Atmosphere.NONE, Terrain.SMOOTH);
     }
     
     @Nonnull

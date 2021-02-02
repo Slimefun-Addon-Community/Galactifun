@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.terrainfeatures;
+package io.github.addoncommunity.galactifun.api.universe.attributes.terrain.features;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  *
  */
 @AllArgsConstructor
-public class Cave implements TerrainFeature {
+public class CaveFeature implements TerrainFeature {
 
     /**
      * Density threshold 0-1
@@ -30,9 +30,11 @@ public class Cave implements TerrainFeature {
      */
     private final double frequency;
 
+    private final int blocksBetweenSurface;
+
     @Override
     public void generate(SimplexOctaveGenerator generator, ChunkGenerator.ChunkData chunk, int realX, int realZ, int x, int z, int height) {
-        for (int y = 1 ; y < height ; y++) {
+        for (int y = 1 ; y < height - this.blocksBetweenSurface ; y++) {
             double density = generator.noise(
                     realX,
                     y,

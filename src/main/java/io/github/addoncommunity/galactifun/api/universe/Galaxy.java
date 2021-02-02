@@ -1,7 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.core.explorer.GalacticComponent;
+import io.github.addoncommunity.galactifun.core.explorer.GalacticHolder;
+import io.github.addoncommunity.galactifun.core.explorer.TheUniverse;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -15,7 +19,7 @@ import java.util.List;
  *
  */
 @Getter
-public class Galaxy {
+public class Galaxy implements GalacticHolder<StarSystem>, GalacticComponent {
     
     private final String name;
     private final List<StarSystem> systems;
@@ -24,10 +28,19 @@ public class Galaxy {
         this.systems = new ArrayList<>(Arrays.asList(systems));
         this.name = name;
         GalacticRegistry.register(this);
-    }
-
-    public final void addStarSystems(@Nonnull StarSystem... systems) {
-        this.systems.addAll(Arrays.asList(systems));
+        TheUniverse.INSTANCE.add(this);
     }
     
+    @Nonnull
+    @Override
+    public ItemStack getDisplayItem() {
+        return null;
+    }
+
+    @Nonnull
+    @Override
+    public List<StarSystem> getComponents() {
+        return this.systems;
+    }
+
 }
