@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.mob;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.core.Util;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -21,6 +22,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Abstract class for an alien
@@ -40,20 +44,24 @@ public abstract class Alien {
     private final int health;
     @Nonnull
     private final EntityType type;
+    @Nonnull
+    private final List<CelestialWorld> worlds;
 
-    public Alien(@Nonnull String id, @Nullable String name, @Nonnull EntityType type, int health) {
+    public Alien(@Nonnull String id, @Nullable String name, @Nonnull EntityType type, int health, @Nonnull CelestialWorld... worlds) {
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
 
         this.id = id;
         this.name = name;
         this.health = health;
         this.type = type;
+        this.worlds = new ArrayList<>(Arrays.asList(worlds));
 
-    }
+        for (CelestialWorld world : this.worlds) {
+            world.getNativeSpecies().add(this);
+        }
 
-    public final void register(@Nonnull CelestialWorld homeWorld) {
-        homeWorld.getNativeSpecies().add(this);
         GalacticRegistry.register(this.id, this);
+
     }
 
     public final void spawn(@Nonnull Location loc) {
@@ -69,6 +77,14 @@ public abstract class Alien {
         }
 
         onSpawn(entity, loc);
+    }
+
+    public boolean canSpawn(@Nonnull Chunk chunk) {
+        CelestialWorld world = GalacticRegistry.getCelestialWorld(chunk.getWorld());
+        if (world != null) {
+            return (this.worlds.contains(world) && Util.countInChunk(chunk, this) < getMaxAmountInChunk(chunk));
+        }
+        return false;
     }
 
     protected void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
@@ -92,7 +108,5 @@ public abstract class Alien {
     public abstract double getChanceToSpawn(@Nonnull Chunk chunk);
 
     public abstract int getMaxAmountInChunk(@Nonnull Chunk chunk);
-
-    public abstract boolean canSpawn(@Nonnull Chunk chunk);
 
 }
