@@ -109,12 +109,12 @@ class Martian extends Alien implements Listener {
                 false
             ));
 
+            if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                ItemUtils.consumeItem(item, true);
+            }
+
             Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {
                 entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
-
-                if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                    ItemUtils.consumeItem(item, true);
-                }
 
                 entity.getEquipment().setItemInOffHand(null);
                 entity.removePotionEffect(PotionEffectType.SLOW);
