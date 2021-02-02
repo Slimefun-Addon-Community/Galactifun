@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
@@ -17,7 +18,7 @@ public class AlienListener implements Listener {
 
     @EventHandler
     public final void onAlienTarget(EntityTargetEvent e) {
-        AbstractAlien alien = GalacticRegistry.getAlien(e.getEntity());
+        Alien alien = GalacticRegistry.getAlien(e.getEntity());
         if (alien != null) {
             alien.onTarget(e);
         }
@@ -25,7 +26,7 @@ public class AlienListener implements Listener {
 
     @EventHandler
     public final void onAlienInteract(PlayerInteractEntityEvent e) {
-        AbstractAlien alien = GalacticRegistry.getAlien(e.getRightClicked());
+        Alien alien = GalacticRegistry.getAlien(e.getRightClicked());
         if (alien != null) {
             alien.onInteract(e);
         }
@@ -33,9 +34,17 @@ public class AlienListener implements Listener {
 
     @EventHandler
     public final void onAlienHit(EntityDamageByEntityEvent e) {
-        AbstractAlien alien = GalacticRegistry.getAlien(e.getEntity());
+        Alien alien = GalacticRegistry.getAlien(e.getEntity());
         if (alien != null) {
             alien.onHit(e);
+        }
+    }
+
+    @EventHandler
+    public final void onAlienDie(EntityDeathEvent e) {
+        Alien alien = GalacticRegistry.getAlien(e.getEntity());
+        if (alien != null) {
+            alien.onDeath(e);
         }
     }
 }

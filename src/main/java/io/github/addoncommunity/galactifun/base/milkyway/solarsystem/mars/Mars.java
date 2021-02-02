@@ -1,23 +1,21 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
-import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -75,11 +73,13 @@ public final class Mars extends Planet {
     @Override
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            for (AbstractAlien alien : getNativeSpecies()) {
+
+            if (e.getEntityType() == EntityType.MAGMA_CUBE) {
+                Martian alien = (Martian) GalacticRegistry.getAlien("MARTIAN");
+
                 if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&
                     alien.canSpawn(e.getLocation().getChunk())) {
                     alien.spawn(e.getLocation());
-                    break;
                 }
             }
 

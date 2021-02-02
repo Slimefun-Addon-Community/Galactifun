@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
+import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -46,7 +46,7 @@ public abstract class CelestialWorld extends CelestialObject implements Listener
     
     @Getter @Nonnull private final World world;
 
-    @Getter @Nonnull private final Set<AbstractAlien> nativeSpecies = new HashSet<>();
+    @Getter @Nonnull private final Set<Alien> nativeSpecies = new HashSet<>();
 
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                           @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {

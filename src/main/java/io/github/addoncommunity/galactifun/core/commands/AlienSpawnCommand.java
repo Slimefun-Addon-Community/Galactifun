@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
+import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import io.github.mooy1.infinitylib.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class AlienSpawnCommand extends AbstractCommand {
         }
 
         Player p = (Player) commandSender;
-        AbstractAlien alien = GalacticRegistry.getAlien(strings[1]);
+        Alien alien = GalacticRegistry.getAlien(strings[1]);
 
         if (alien != null) {
             alien.spawn(p.getLocation());

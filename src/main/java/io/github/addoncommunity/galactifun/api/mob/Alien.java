@@ -6,7 +6,6 @@ import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -14,8 +13,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
  * @author Seggan
  */
 @Getter
-public abstract class AbstractAlien implements Listener {
+public abstract class Alien {
     public static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "galactifun_alien");
 
     @Nonnull
@@ -39,7 +38,7 @@ public abstract class AbstractAlien implements Listener {
     @Nonnull
     private final EntityType type;
 
-    public AbstractAlien(@Nonnull String id, @Nullable String name, @Nonnull EntityType type, int health) {
+    public Alien(@Nonnull String id, @Nullable String name, @Nonnull EntityType type, int health) {
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
 
         this.id = id;
@@ -52,7 +51,6 @@ public abstract class AbstractAlien implements Listener {
     public final void register(@Nonnull CelestialWorld homeWorld) {
         homeWorld.getNativeSpecies().add(this);
         GalacticRegistry.register(id, this);
-        Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
     }
 
     public final void spawn(@Nonnull Location loc) {
@@ -83,6 +81,9 @@ public abstract class AbstractAlien implements Listener {
     }
 
     protected void onTarget(@Nonnull EntityTargetEvent e) {
+    }
+
+    protected void onDeath(@Nonnull EntityDeathEvent e) {
     }
 
     public abstract double getChanceToSpawn(@Nonnull Chunk chunk);
