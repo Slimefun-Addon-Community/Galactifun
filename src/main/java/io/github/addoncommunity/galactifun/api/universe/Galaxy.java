@@ -16,7 +16,6 @@ import java.util.List;
  * A galaxy filled with star systems
  *
  * @author Mooy1
- *
  */
 @Getter
 public class Galaxy implements GalacticHolder<StarSystem>, GalacticComponent {

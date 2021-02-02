@@ -33,7 +33,6 @@ import java.util.Set;
  *
  * @author Seggan
  * @author Mooy1
- *
  */
 public abstract class CelestialWorld extends CelestialObject {
     

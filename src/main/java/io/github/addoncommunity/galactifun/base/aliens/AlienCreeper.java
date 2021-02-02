@@ -10,6 +10,11 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nonnull;
 
+/**
+ * A class for an alien creeper
+ *
+ * @author GallowsDove
+ */
 public class AlienCreeper extends Alien {
     public AlienCreeper(@Nonnull CelestialWorld... worlds) {
         super("ALIEN_CREEPER", "Alien Creeper", EntityType.CREEPER, 40, worlds);

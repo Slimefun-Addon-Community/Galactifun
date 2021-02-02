@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Class for the martian, a mob spawning naturally on mars
+ * Class for the martian
  *
  * @author Seggan
  */

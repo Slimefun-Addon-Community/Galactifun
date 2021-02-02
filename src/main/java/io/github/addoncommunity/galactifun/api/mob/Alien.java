@@ -30,6 +30,7 @@ import java.util.List;
  * Abstract class for an alien
  *
  * @author Seggan
+ * @author GallowsDove
  */
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
