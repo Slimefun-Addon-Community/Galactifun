@@ -20,7 +20,7 @@ import java.util.Random;
  * @author Mooy1
  * 
  */
-public final class Terrain {
+public class Terrain {
 
     public static final Terrain HILLY_CAVERNS = new Terrain( "Hilly Caverns",
             40, 35, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
@@ -30,45 +30,48 @@ public final class Terrain {
             20, 45, 8,0.01, .5, .5
     );
 
+    // Ignore the warning, MC isn't multithreaded
+    public static final Terrain FLAT = new FlatTerrain(61);
+
     /**
      * Short description of the terrain
      */
-    @Nonnull @Getter private final String desc;
+    @Nonnull @Getter protected final String desc;
 
     /**
      * Maximum y deviation
      */
-    private final int maxDeviation;
+    protected final int maxDeviation;
 
     /**
      * Minimum y value
      */
-    private final int minHeight;
+    protected final int minHeight;
 
     /**
      * Octave generator octaves
      */
-    private final int octaves;
+    protected final int octaves;
 
     /**
      * Octave generator scale
      */
-    private final double scale;
+    protected final double scale;
 
     /**
      * noise amplitude
      */
-    private final double amplitude;
+    protected final double amplitude;
     
     /**
      * noise frequency
      */
-    private final double frequency;
+    protected final double frequency;
 
     /**
      * Features
      */
-    @Nonnull private final TerrainFeature[] features;
+    @Nonnull protected final TerrainFeature[] features;
 
     public Terrain(@Nonnull String desc, int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
         this.desc = desc;
