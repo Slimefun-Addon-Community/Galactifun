@@ -84,7 +84,7 @@ public final class Mars extends Planet {
                 }
             }
 
-            if (e.getEntityType() == EntityType.PIGLIN) {
+            if (e.getEntityType() == EntityType.ENDERMAN) {
                 AlienCreeper alien = (AlienCreeper) GalacticRegistry.getAlien("ALIEN_CREEPER");
 
                 if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&

@@ -31,9 +31,7 @@ public class AlienCreeper extends Alien {
     }
 
     @Override
-    public double getChanceToSpawn(@Nonnull Chunk chunk) {
-        return 2;
-    }
+    public double getChanceToSpawn(@Nonnull Chunk chunk) { return 40; }
 
     @Override
     public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
@@ -58,5 +56,4 @@ public class AlienCreeper extends Alien {
             }
         }
     }
-
 }

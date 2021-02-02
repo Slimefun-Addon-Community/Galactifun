@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO improve mob spawning
+
 /**
  * Abstract class for an alien
  *
