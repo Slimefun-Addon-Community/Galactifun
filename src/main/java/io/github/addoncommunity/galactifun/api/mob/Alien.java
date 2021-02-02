@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.mob;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.apache.commons.lang.Validate;
@@ -27,10 +28,12 @@ import javax.annotation.Nullable;
  * @author Seggan
  */
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class Alien {
-    public static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "galactifun_alien");
+    public static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
 
     @Nonnull
+    @EqualsAndHashCode.Include
     private final String id;
     @Nullable
     private final String name;
@@ -50,18 +53,18 @@ public abstract class Alien {
 
     public final void register(@Nonnull CelestialWorld homeWorld) {
         homeWorld.getNativeSpecies().add(this);
-        GalacticRegistry.register(id, this);
+        GalacticRegistry.register(this.id, this);
     }
 
     public final void spawn(@Nonnull Location loc) {
-        LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, type);
-        PersistentDataAPI.setString(entity, KEY, id);
+        LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, this.type);
+        PersistentDataAPI.setString(entity, KEY, this.id);
 
-        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-        entity.setHealth(health);
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(this.health);
+        entity.setHealth(this.health);
 
         if (name != null) {
-            entity.setCustomName(ChatColor.translateAlternateColorCodes('&', name));
+            entity.setCustomName(ChatColor.translateAlternateColorCodes('&', this.name));
             entity.setCustomNameVisible(true);
         }
 

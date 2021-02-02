@@ -17,8 +17,6 @@ import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
@@ -37,7 +35,7 @@ import java.util.Set;
  * @author Mooy1
  *
  */
-public abstract class CelestialWorld extends CelestialObject implements Listener {
+public abstract class CelestialWorld extends CelestialObject {
     
     /**
      * Minimum border size
@@ -137,13 +135,6 @@ public abstract class CelestialWorld extends CelestialObject implements Listener
         }
 
         // other stuff?
-    }
-
-    @EventHandler
-    public final void onCreatureSpawn(CreatureSpawnEvent e) {
-        if (e.getLocation().getWorld().getName().equals(world.getName())) {
-            onMobSpawn(e);
-        }
     }
 
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {

@@ -1,19 +1,16 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.core.Util;
+import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +21,6 @@ import org.bukkit.potion.PotionEffectType;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -32,17 +28,12 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Seggan
  */
-class Martian extends Alien implements Listener {
+class Martian extends Alien {
 
     private final Map<Material, ItemStack> trades = new HashMap<>();
-    private static final NamespacedKey TARGET_KEY = new NamespacedKey(Galactifun.getInstance(), "martian_target");
-
-    private static final Map<UUID, UUID> targets = new HashMap<>();
 
     protected Martian() {
         super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
-
-        Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
 
         setupTrades();
     }
@@ -113,11 +104,13 @@ class Martian extends Alien implements Listener {
                 ItemUtils.consumeItem(item, true);
             }
 
-            Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {
-                entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
+            PluginUtils.runSync(() -> {
+                if (!entity.isDead()) {
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
 
-                entity.getEquipment().setItemInOffHand(null);
-                entity.removePotionEffect(PotionEffectType.SLOW);
+                    entity.getEquipment().setItemInOffHand(null);
+                    entity.removePotionEffect(PotionEffectType.SLOW);
+                }
             }, 60);
         }
     }
