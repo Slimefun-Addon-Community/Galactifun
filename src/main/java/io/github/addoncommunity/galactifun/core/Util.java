@@ -8,6 +8,11 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Objects;
 
+/**
+ * A class for various utilities
+ *
+ * @author Seggan
+ */
 @UtilityClass
 public class Util {
 
