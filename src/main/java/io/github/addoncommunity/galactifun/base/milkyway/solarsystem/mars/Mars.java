@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class Mars extends Planet {
 
     public Mars() {
-        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),  Material.RED_SAND, new DayCycle(1.03), 
+        super("Mars", 233_500_000L, 55_910_000L, new Gravity(.378),  Material.RED_SAND, new DayCycle(1.03),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
 

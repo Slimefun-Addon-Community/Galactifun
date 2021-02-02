@@ -25,7 +25,7 @@ import java.util.Random;
 public class Venus extends Planet {
 
     public Venus() {
-        super("Venus", 67_621_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
+        super("Venus", 108_860_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
                 new DayCycle(116.75), new Atmosphere(
             0,
             false,

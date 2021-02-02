@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
@@ -59,7 +59,7 @@ public final class Earth extends Planet {
     }
     
     public Earth(@Nonnull TheMoon theMoon) {
-        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
+        super("Earth", 149_600_000L, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
                 DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVERNS, theMoon);
     }
 

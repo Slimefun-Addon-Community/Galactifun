@@ -9,7 +9,6 @@ import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -28,7 +27,7 @@ public abstract class CelestialObject implements GalacticComponent {
     @Nonnull protected final Gravity gravity;
 
     /**
-     * Distance in miles from the object that this it orbiting
+     * Distance in kilometers from the object that this it orbiting
      */
     @Getter protected final long distance;
 

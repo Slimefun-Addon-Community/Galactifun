@@ -5,11 +5,11 @@ import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.Moon;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Saturn;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.TheMoon;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.TheMoon;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars.Mars;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
 import lombok.experimental.UtilityClass;
 
 /**
