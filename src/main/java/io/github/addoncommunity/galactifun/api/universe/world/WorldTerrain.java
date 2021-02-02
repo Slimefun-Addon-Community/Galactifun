@@ -1,7 +1,8 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.terrain;
+package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.features.TerrainFeature;
-import lombok.Getter;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.features.CaveFeature;
+import io.github.addoncommunity.galactifun.api.universe.world.features.TerrainFeature;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -15,63 +16,59 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Defines the terrain of a celestial object
+ * Defines the terrain of a celestial world
  * 
  * @author Mooy1
  * 
  */
-public final class Terrain {
+public class WorldTerrain extends Terrain {
 
-    public static final Terrain HILLY_CAVERNS = new Terrain( "Hilly Caverns",
-            40, 35, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
+    public static final WorldTerrain HILLY_CAVERNS = new WorldTerrain( "Hilly Caverns",
+            40, 35, 8, 0.01, .5, .5, CaveFeature.CAVERNS
     );
     
-    public static final Terrain SMOOTH = new Terrain( "Smooth",
+    public static final WorldTerrain SMOOTH = new WorldTerrain( "Smooth",
             20, 45, 8,0.01, .5, .5
     );
 
     /**
-     * Short description of the terrain
-     */
-    @Nonnull @Getter private final String desc;
-
-    /**
      * Maximum y deviation
      */
-    private final int maxDeviation;
+    protected final int maxDeviation;
 
     /**
      * Minimum y value
      */
-    private final int minHeight;
+    protected final int minHeight;
 
     /**
      * Octave generator octaves
      */
-    private final int octaves;
+    protected final int octaves;
 
     /**
      * Octave generator scale
      */
-    private final double scale;
+    protected final double scale;
 
     /**
      * noise amplitude
      */
-    private final double amplitude;
+    protected final double amplitude;
     
     /**
      * noise frequency
      */
-    private final double frequency;
+    protected final double frequency;
 
     /**
      * Features
      */
-    @Nonnull private final TerrainFeature[] features;
+    @Nonnull
+    protected final TerrainFeature[] features;
 
-    public Terrain(@Nonnull String desc, int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
-        this.desc = desc;
+    public WorldTerrain(@Nonnull String name, int maxDeviation, int minHeight, int octaves, double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
+        super(name);
         this.maxDeviation = maxDeviation;
         this.minHeight = minHeight;
         this.octaves = octaves;
@@ -82,7 +79,7 @@ public final class Terrain {
     }
 
     /**
-     * Creates a new ChunkGenerator based on this terrain
+     * Creates a new ChunkGenerator based on this terrain, be careful if overriding
      */
     @Nonnull
     public ChunkGenerator createGenerator(@Nonnull BiomeSupplier biomeSupplier,
@@ -93,8 +90,8 @@ public final class Terrain {
             @Override
             public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
                 ChunkData chunk = createChunkData(world);
-                SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, Terrain.this.octaves);
-                generator.setScale(Terrain.this.scale);
+                SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, WorldTerrain.this.octaves);
+                generator.setScale(WorldTerrain.this.scale);
 
                 int height;
                 int startX = chunkX << 4;
@@ -108,16 +105,16 @@ public final class Terrain {
                         int realZ = startZ + z;
 
                         // find max height
-                        height = (int) (Terrain.this.minHeight + Terrain.this.maxDeviation * (1 + generator.noise(
+                        height = (int) (WorldTerrain.this.minHeight + WorldTerrain.this.maxDeviation * (1 + generator.noise(
                                 realX,
                                 realZ,
-                                Terrain.this.frequency,
-                                Terrain.this.amplitude,
+                                WorldTerrain.this.frequency,
+                                WorldTerrain.this.amplitude,
                                 true)
                         ));
 
                         // features
-                        for (TerrainFeature feature : Terrain.this.features) {
+                        for (TerrainFeature feature : WorldTerrain.this.features) {
                             feature.generate(generator, chunk, realX, realZ, x, z, height);
                         }
 
@@ -163,5 +160,5 @@ public final class Terrain {
     public interface BiomeSupplier {
         @Nonnull Biome get(@Nonnull Random random, int chunkX, int chunkZ);
     }
-    
+
 }

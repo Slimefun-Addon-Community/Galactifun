@@ -1,15 +1,15 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
-import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
@@ -26,12 +26,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Mooy1
  *
  */
-public final class Mars extends Planet {
+public final class Mars extends PlanetWorld {
 
     public Mars() {
-        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),  Material.RED_SAND, new DayCycle(1.03), 
-                new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
-                Terrain.HILLY_CAVERNS);
+        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),
+                Material.RED_SAND, new DayCycle(1.03), WorldTerrain.HILLY_CAVERNS,
+                new Atmosphere(0, false, false, false, false, World.Environment.NETHER));
 
         new Martian().register();
     }

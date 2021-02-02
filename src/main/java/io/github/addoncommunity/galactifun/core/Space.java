@@ -1,5 +1,6 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -12,39 +13,28 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The moon
- *
- * @author Seggan
- * @author Mooy1
- *
- */
-public final class TheMoon extends MoonWorld {
-    
-    public TheMoon() {
-        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE,
-                        Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE);
+public final class Space extends CelestialWorld {
+
+    public Space() {
+        super("Space", 0, 0, new Gravity(0),Material.BLACK_STAINED_GLASS_PANE,
+                DayCycle.ETERNAL_NIGHT, WorldTerrain.HILLY_CAVERNS, Atmosphere.NONE);
     }
-    
+
     @Nonnull
     @Override
     protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (random.nextFloat() > .03) {
-            return Material.ANDESITE;
-        } else {
-            return Material.GOLD_ORE;
-        }
+        return Material.AIR;
     }
 
     @Nonnull
     @Override
     protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.BADLANDS;
+        return Biome.THE_VOID;
     }
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        
+        // TODO add comet and asteroid populators
     }
 
 }

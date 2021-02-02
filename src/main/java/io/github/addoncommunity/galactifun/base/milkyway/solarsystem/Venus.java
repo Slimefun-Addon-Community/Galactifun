@@ -1,12 +1,11 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.LakePopulator;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators.VolcanoPopulator;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
+import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -22,20 +21,20 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Venus extends Planet {
+public class Venus extends PlanetWorld {
 
     public Venus() {
         super("Venus", 67_621_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
-                new DayCycle(116.75), new Atmosphere(
-            0,
-            false,
-            true,
-            true,
-            true,
-            World.Environment.NETHER,
-            new PotionEffectType[0],
-            new PotionEffectType[]{PotionEffectType.WITHER}
-        ), new Terrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3));
+                        new DayCycle(116.75), new WorldTerrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3), new Atmosphere(
+                    0,
+                    false,
+                    true,
+                    true,
+                    true,
+                    World.Environment.NETHER,
+                    new PotionEffectType[0],
+                    new PotionEffectType[]{PotionEffectType.WITHER}
+                ));
     }
 
     @Nonnull

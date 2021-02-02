@@ -33,7 +33,7 @@ public final class GalacticListener implements Listener {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
         
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 
@@ -42,7 +42,7 @@ public final class GalacticListener implements Listener {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
 
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 
@@ -51,7 +51,7 @@ public final class GalacticListener implements Listener {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
 
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 
