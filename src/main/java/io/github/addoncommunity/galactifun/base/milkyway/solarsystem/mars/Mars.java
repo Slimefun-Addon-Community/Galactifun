@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
+import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
 import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -10,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
@@ -33,7 +35,7 @@ public final class Mars extends Planet {
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 Terrain.HILLY_CAVERNS);
 
-        new Martian().register();
+        new Martian().register(this);
     }
 
     @Nonnull
@@ -73,14 +75,11 @@ public final class Mars extends Planet {
     @Override
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            if (e.getEntityType() == EntityType.MAGMA_CUBE) {
-                // Shouldn't be null
-                Mob martian = Objects.requireNonNull(MobManager.INSTANCE.getById("MARTIAN"));
-
-
-                if (MobManager.countInChunk(e.getLocation().getChunk(), martian) < martian.getMaxAmountInChunk(e.getLocation().getChunk()) &&
-                    ThreadLocalRandom.current().nextDouble(100) <= martian.getChanceToSpawn(e.getLocation().getChunk())) {
-                    MobManager.INSTANCE.spawn(martian, e.getLocation());
+            for (AbstractAlien alien : getNativeSpecies()) {
+                if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&
+                    alien.canSpawn(e.getLocation().getChunk())) {
+                    alien.spawn(e.getLocation());
+                    break;
                 }
             }
 

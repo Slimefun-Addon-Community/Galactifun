@@ -1,10 +1,14 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.core.Util;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -19,6 +23,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,17 +32,14 @@ import java.util.Objects;
  *
  * @author Seggan
  */
-class Martian extends Mob implements Listener {
+class Martian extends AbstractAlien implements Listener {
 
     private final Map<Material, ItemStack> trades = new HashMap<>();
 
     protected Martian() {
-        super("MARTIAN", "Martian", EntityType.ZOMBIE_VILLAGER, 32);
+        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
 
         Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
-
-        this.setArmor(new ItemStack[] {new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)})
-            .setMainHandItem(new ItemStack(Material.IRON_SWORD));
 
         setupTrades();
     }
@@ -48,14 +50,17 @@ class Martian extends Mob implements Listener {
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity self, @Nonnull BlockPosition position) {
-        self.setCanPickupItems(false);
-        self.setRemoveWhenFarAway(true);
+    public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
+        spawned.setCanPickupItems(false);
+        spawned.setRemoveWhenFarAway(true);
+
+        spawned.getEquipment().setArmorContents(new ItemStack[]{new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)});
+        spawned.getEquipment().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
     }
 
     @Override
-    public boolean canSpawn(@Nonnull World world) {
-        return world.getName().equals("mars");
+    public boolean canSpawn(@Nonnull Chunk chunk) {
+        return chunk.getWorld().getName().equals("mars") && Util.countInChunk(chunk, this) < getMaxAmountInChunk(chunk);
     }
 
     @Override
@@ -69,29 +74,22 @@ class Martian extends Mob implements Listener {
     }
 
     @Override
-    public void onMobTick(@Nonnull LivingEntity self) {
-        super.onMobTick(self);
-    }
-
-    @EventHandler
-    public void onRightClick(PlayerInteractEntityEvent e) {
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         Entity entity = e.getRightClicked();
-        if (Objects.equals(MobManager.INSTANCE.getByEntity(entity), this)) {
-            PlayerInventory inv = e.getPlayer().getInventory();
-            ItemStack item = inv.getItem(e.getHand());
+        PlayerInventory inv = e.getPlayer().getInventory();
+        ItemStack item = inv.getItem(e.getHand());
 
-            ItemStack trade = this.trades.get(item.getType());
+        ItemStack trade = this.trades.get(item.getType());
 
-            if (trade != null) {
-                Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {
-                    entity.getWorld().dropItemNaturally(entity.getLocation(), trade);
+        if (trade != null) {
+            Bukkit.getScheduler().runTaskLater(Galactifun.getInstance(), () -> {
+                entity.getWorld().dropItemNaturally(entity.getLocation(), trade);
 
-                    if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                        item.setAmount(item.getAmount() - 1);
-                        inv.setItem(e.getHand(), item);
-                    }
-                }, 100);
-            }
+                if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                    item.setAmount(item.getAmount() - 1);
+                    inv.setItem(e.getHand(), item);
+                }
+            }, 60);
         }
     }
 

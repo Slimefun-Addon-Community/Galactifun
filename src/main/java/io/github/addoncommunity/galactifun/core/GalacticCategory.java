@@ -6,7 +6,9 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -22,7 +24,7 @@ public final class GalacticCategory extends FlexCategory {
     }
     
     private GalacticCategory() {
-        super(PluginUtils.getKey("galactic_category"), null);
+        super(PluginUtils.getKey("galactic_category"), new ItemStack(Material.GRAY_CONCRETE));
     }
 
     @Override

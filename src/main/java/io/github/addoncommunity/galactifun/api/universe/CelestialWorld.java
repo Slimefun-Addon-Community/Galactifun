@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
+import io.github.addoncommunity.galactifun.api.mob.AbstractAlien;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -16,14 +17,18 @@ import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * A class representing any celestial object with a world
@@ -32,7 +37,7 @@ import java.util.Random;
  * @author Mooy1
  *
  */
-public abstract class CelestialWorld extends CelestialObject {
+public abstract class CelestialWorld extends CelestialObject implements Listener {
     
     /**
      * Minimum border size
@@ -40,6 +45,8 @@ public abstract class CelestialWorld extends CelestialObject {
     private static final double MIN_BORDER = 600D;
     
     @Getter @Nonnull private final World world;
+
+    @Getter @Nonnull private final Set<AbstractAlien> nativeSpecies = new HashSet<>();
 
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
                           @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
@@ -130,6 +137,13 @@ public abstract class CelestialWorld extends CelestialObject {
         }
 
         // other stuff?
+    }
+
+    @EventHandler
+    public final void onCreatureSpawn(CreatureSpawnEvent e) {
+        if (e.getLocation().getWorld().getName().equals(world.getName())) {
+            onMobSpawn(e);
+        }
     }
 
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {

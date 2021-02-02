@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.api.mob.AlienListener;
 import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ public final class GalacticListener implements Listener {
 
     public static void setup() {
         new GalacticListener();
+        new AlienListener();
     }
     
     private GalacticListener() {
