@@ -6,6 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 
+/**
+ * Ticker for aliens
+ *
+ * @author Seggan
+ */
 public class AlienTicker implements Runnable {
 
     public final int INTERVAL;
