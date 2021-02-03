@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
  * A star system filled with celestial objects
  *
  * @author Mooy1
- *
  */
 public class StarSystem extends UniversalObject<CelestialBody> {
 

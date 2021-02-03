@@ -25,16 +25,17 @@ import java.util.Random;
 public class Venus extends CelestialWorld {
 
     public Venus() {
-        super("Venus", 67_621_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
-                        new DayCycle(116.75), new WorldTerrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3), new Atmosphere(
-                    0,
-                    false,
-                    true,
-                    true,
-                    true,
-                    World.Environment.NETHER,
-                    new PotionEffectType[0],
-                    new PotionEffectType[]{PotionEffectType.WITHER}
+        super("Venus", 108_860_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
+                new DayCycle(116.75), new WorldTerrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3),
+                new Atmosphere(
+                        0,
+                        false,
+                        true,
+                        true,
+                        true,
+                        World.Environment.NETHER,
+                        new PotionEffectType[0],
+                        new PotionEffectType[] {PotionEffectType.WITHER}
                 ));
     }
 
@@ -45,12 +46,11 @@ public class Venus extends CelestialWorld {
             return Material.BLACKSTONE;
         } else if (y > 10) {
             return Material.BASALT;
-        } else if (y > 8){
+        } else if (y > 8) {
             return Material.YELLOW_TERRACOTTA;
         } else if (y > 0) {
             return Material.BASALT;
         }
-
         throw new IllegalArgumentException(String.valueOf(y));
     }
 
@@ -65,5 +65,5 @@ public class Venus extends CelestialWorld {
         populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
         populators.add(new LakePopulator(75, Material.LAVA));
     }
-    
+
 }

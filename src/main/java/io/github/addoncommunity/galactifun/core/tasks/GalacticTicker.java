@@ -1,9 +1,12 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.core.galactic;
 
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 
 /**
  * Task applying effects for celestial objects
+ * 
+ * @author Mooy1
  */
 public final class GalacticTicker implements Runnable {
 

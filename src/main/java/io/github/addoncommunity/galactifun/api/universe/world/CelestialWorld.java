@@ -1,9 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
+import io.github.addoncommunity.galactifun.api.mob.Alien;
+import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
@@ -19,6 +21,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -28,16 +31,19 @@ import java.util.Random;
  *
  * @author Seggan
  * @author Mooy1
- *
  */
 public abstract class CelestialWorld extends ACelestialWorld {
 
     private static final double MIN_BORDER = 600D;
     
+    @Nonnull
+    private final List<Alien> species = new ArrayList<>();
+
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
-                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere) {
-        super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);
+                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere, @Nonnull CelestialBody... celestialBodies) {
+        super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere, celestialBodies);
     }
+    
     /**
      * Sets up and creates the world
      */
@@ -94,6 +100,10 @@ public abstract class CelestialWorld extends ACelestialWorld {
      */
     public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
+    public final void addSpecies(@Nonnull Alien alien) {
+        this.species.add(alien);
+    }
+    
     /**
      * Ticks the world
      */

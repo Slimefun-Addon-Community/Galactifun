@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
  * A galaxy filled with star systems
  *
  * @author Mooy1
- *
  */
 public class Galaxy extends UniversalObject<StarSystem> {
 

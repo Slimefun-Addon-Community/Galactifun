@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -6,11 +6,13 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.base.aliens.AlienCreeper;
+import io.github.addoncommunity.galactifun.base.aliens.Martian;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Mob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
@@ -30,11 +32,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class Mars extends CelestialWorld {
 
     public Mars() {
-        super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),
-                Material.RED_SAND, new DayCycle(1.03), WorldTerrain.HILLY_CAVERNS,
+        super("Mars", 233_500_000L, 55_910_000L, new Gravity(3.711), Material.RED_SAND,
+                new DayCycle(1.03), WorldTerrain.HILLY_CAVERNS,
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER));
-
-        new Martian().register();
     }
 
     @Nonnull
@@ -73,14 +73,26 @@ public final class Mars extends CelestialWorld {
     @Override
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+
             if (e.getEntityType() == EntityType.MAGMA_CUBE) {
-                // Shouldn't be null
-                Mob martian = Objects.requireNonNull(MobManager.INSTANCE.getById("MARTIAN"));
+                Martian alien = (Martian) GalacticRegistry.getAlien("MARTIAN");
 
+                Objects.requireNonNull(alien);
 
-                if (MobManager.countInChunk(e.getLocation().getChunk(), martian) < martian.getMaxAmountInChunk(e.getLocation().getChunk()) &&
-                    ThreadLocalRandom.current().nextDouble(100) <= martian.getChanceToSpawn(e.getLocation().getChunk())) {
-                    MobManager.INSTANCE.spawn(martian, e.getLocation());
+                if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&
+                    alien.canSpawn(e.getLocation().getChunk())) {
+                    alien.spawn(e.getLocation());
+                }
+            }
+
+            if (e.getEntityType() == EntityType.ENDERMAN) {
+                AlienCreeper alien = (AlienCreeper) GalacticRegistry.getAlien("ALIEN_CREEPER");
+
+                Objects.requireNonNull(alien);
+
+                if (ThreadLocalRandom.current().nextDouble(100) <= alien.getChanceToSpawn(e.getLocation().getChunk()) &&
+                        alien.canSpawn(e.getLocation().getChunk())) {
+                    alien.spawn(e.getLocation());
                 }
             }
 

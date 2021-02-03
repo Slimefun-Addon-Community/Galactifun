@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
@@ -18,7 +18,6 @@ import java.util.logging.Level;
  * A class to connect the default earth world into the api
  *
  * @author Mooy1
- * 
  */
 public final class Earth extends ACelestialWorld {
     
@@ -54,8 +53,8 @@ public final class Earth extends ACelestialWorld {
     }
     
     public Earth(@Nonnull TheMoon theMoon) {
-        super("Earth", 91_565_000, SURFACE_AREA, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
-                DayCycle.EARTH_LIKE, WorldTerrain.HILLY_CAVERNS, Atmosphere.EARTH_LIKE);
+        super("Earth", 149_600_000L, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
+                DayCycle.EARTH_LIKE, WorldTerrain.HILLY_CAVERNS, Atmosphere.EARTH_LIKE, theMoon);
     }
 
     @Nonnull

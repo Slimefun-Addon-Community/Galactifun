@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -18,13 +18,12 @@ import java.util.Random;
  *
  * @author Seggan
  * @author Mooy1
- *
  */
 public final class TheMoon extends CelestialWorld {
     
     public TheMoon() {
-        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE,
-                        Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE);
+        super("The Moon", 382_500L, 14_600_000L, Gravity.MOON_LIKE,
+                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE);
     }
     
     @Nonnull
