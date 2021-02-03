@@ -17,7 +17,7 @@ public final class EarthOrbit extends CelestialWorld {
 
     public EarthOrbit() {
         super("Earth Orbit", 0, 0, Gravity.ZERO, Material.BLACK_STAINED_GLASS_PANE,
-                DayCycle.ETERNAL_NIGHT, WorldTerrain.VOID, Atmosphere.NONE, 0, avgHeight);
+                DayCycle.ETERNAL_NIGHT, WorldTerrain.VOID, Atmosphere.NONE, 0, 0);
     }
 
     @Nonnull
