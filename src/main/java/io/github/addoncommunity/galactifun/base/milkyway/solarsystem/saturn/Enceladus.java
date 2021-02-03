@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
 import io.github.addoncommunity.galactifun.api.universe.Moon;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
@@ -7,6 +7,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
@@ -14,37 +16,43 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The moon
+ * Class for the Saturnian moon Enceladus
  *
  * @author Seggan
- * @author Mooy1
  */
-public final class TheMoon extends Moon {
-    
-    public TheMoon() {
-        super("The Moon", 238_900, 14_600_000L, Gravity.MOON_LIKE,
-                Material.ANDESITE, DayCycle.EARTH_LIKE, Atmosphere.NONE, Terrain.SMOOTH);
+public class Enceladus extends Moon {
+
+    public Enceladus() {
+        super("Enceladus", 237_948L, 308_359L, new Gravity(0.0113), Material.ICE, DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Terrain.FLAT);
     }
-    
+
     @Nonnull
     @Override
     protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (random.nextFloat() > .03) {
-            return Material.ANDESITE;
+        if (y >= 30) {
+            return Material.PACKED_ICE;
         } else {
-            return Material.GOLD_ORE;
+            return Material.BLUE_ICE;
         }
     }
 
     @Nonnull
     @Override
     protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.BADLANDS;
+        return Biome.FROZEN_OCEAN;
     }
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        
+
     }
 
+    @Override
+    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            if (e.getEntityType() == EntityType.POLAR_BEAR) {
+                e.setCancelled(true);
+            }
+        }
+    }
 }

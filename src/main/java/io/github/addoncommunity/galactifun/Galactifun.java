@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import io.github.addoncommunity.galactifun.core.AlienTicker;
 import io.github.addoncommunity.galactifun.core.GalacticCategory;
 import io.github.addoncommunity.galactifun.core.GalacticListener;
 import io.github.addoncommunity.galactifun.core.GalacticTicker;
@@ -36,6 +37,9 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         BaseRegistry.setup();
         
         PluginUtils.scheduleRepeatingSync(new GalacticTicker(), 10, GalacticTicker.INTERVAL);
+
+        AlienTicker ticker = new AlienTicker();
+        PluginUtils.scheduleRepeatingSync(ticker, ticker.INTERVAL, ticker.INTERVAL);
         
     }
 
