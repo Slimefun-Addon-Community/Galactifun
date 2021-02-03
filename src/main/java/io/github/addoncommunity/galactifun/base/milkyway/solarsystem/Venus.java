@@ -26,7 +26,7 @@ public class Venus extends CelestialWorld {
 
     public Venus() {
         super("Venus", 108_860_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
-                new DayCycle(116.75), new WorldTerrain("Volcanic", 50, 50, 8, 0.02, 0.5, 0.3),
+                new DayCycle(116.75), new WorldTerrain("Volcanic", 45, 8, 0.02, 0.5, 0.3),
                 new Atmosphere(
                         0,
                         false,
@@ -36,7 +36,7 @@ public class Venus extends CelestialWorld {
                         World.Environment.NETHER,
                         new PotionEffectType[0],
                         new PotionEffectType[] {PotionEffectType.WITHER}
-                ), 30, avgHeight);
+                ), 30, 80);
     }
 
     @Nonnull

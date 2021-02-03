@@ -90,9 +90,9 @@ public class WorldTerrain extends AWorldTerrain {
                 int realZ = startZ + z;
 
                 // find max height
-                height = (int) (celestialWorld.getAvgHeight() + this.maxDeviation * (1 + generator.noise(
+                height = (int) (celestialWorld.getAvgHeight() + this.maxDeviation * generator.noise(
                         realX, realZ, this.frequency, this.amplitude, true)
-                ));
+                );
 
                 // features
                 for (TerrainFeature feature : this.features) {

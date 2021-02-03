@@ -28,7 +28,7 @@ public final class Mars extends CelestialWorld {
         super("Mars", 233_500_000L, 55_910_000L, new Gravity(3.711), Material.RED_SAND,
                 new DayCycle(1.03), WorldTerrain.HILLY_CAVERNS,
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
-                50, avgHeight);
+                50, 75);
     }
 
     @Nonnull

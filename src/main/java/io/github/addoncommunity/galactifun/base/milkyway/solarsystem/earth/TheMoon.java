@@ -23,7 +23,7 @@ public final class TheMoon extends CelestialWorld {
     
     public TheMoon() {
         super("The Moon", 382_500L, 14_600_000L, Gravity.MOON_LIKE,
-                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE, 30, avgHeight);
+                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE, 30, 80);
     }
     
     @Nonnull
