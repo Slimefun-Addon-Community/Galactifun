@@ -39,9 +39,18 @@ public class CelestialBody extends UniversalObject<CelestialBody> {
     protected final long surfaceArea;
     
     public CelestialBody(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
-                         @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
-        super(name, null);
-
+                         @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere, @Nonnull CelestialBody... celestialBodies) {
+        super(name, new CustomItem(
+                material,
+                name,
+                "&7Distance: " + distance + " km",
+                "&7Surface Area: " + surfaceArea + " blocks",
+                "&7Gravity: " + gravity.getPercent() + "%",
+                "&7Oxygen: " + atmosphere.getOxygenPercentage() + "%",
+                "&7Terrain: " + terrain.getName(),
+                "&7Day Length: " + dayCycle.getDayLength()
+        ), celestialBodies);
+        
         Validate.notNull(dayCycle);
         Validate.notNull(atmosphere);
         Validate.notNull(terrain);
@@ -53,18 +62,6 @@ public class CelestialBody extends UniversalObject<CelestialBody> {
         this.surfaceArea = surfaceArea;
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
-        this.unknownItem = new CustomItem(
-                material,
-                name,
-                "&7Distance: " + distance + " miles",
-                "&7Surface Area: " + surfaceArea + " blocks",
-                "&7Gravity: " + gravity.getPercent() + "%"
-        );
-        this.knownItem = new CustomItem(this.unknownItem,
-                "&7Oxygen: " + atmosphere.getOxygenPercentage() + "%",
-                "&7Terrain: " + terrain.getName(),
-                "&7Day Length: " + dayCycle.getDayLength()
-        );
     }
     
 }

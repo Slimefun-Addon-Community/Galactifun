@@ -25,11 +25,10 @@ import java.util.logging.Level;
  * 
  */
 public final class Earth extends PlanetWorld {
-
-    /**
-     * The world used for earth
-     */
-    public static final World WORLD = getMainWorld();
+    
+    private static final World WORLD = getMainWorld();
+    private static final long SURFACE_AREA = 196_900_000;
+    public static final double BORDER_SURFACE_RATIO =  WORLD.getWorldBorder().getSize() / Math.sqrt(SURFACE_AREA);
     
     @Nonnull
     private static World getMainWorld() {
@@ -59,7 +58,7 @@ public final class Earth extends PlanetWorld {
     }
     
     public Earth(@Nonnull TheMoon theMoon) {
-        super("Earth", 91_565_000, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
+        super("Earth", 91_565_000, SURFACE_AREA, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
                 DayCycle.EARTH_LIKE, WorldTerrain.HILLY_CAVERNS, Atmosphere.EARTH_LIKE);
     }
 

@@ -36,7 +36,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     public UniversalObject(@Nonnull String name, @Nonnull ItemStack item, @Nonnull T... orbiters) {
         Validate.notNull(name);
         Validate.notNull(item);
-
+        
         this.name = name;
         this.item = item;
         

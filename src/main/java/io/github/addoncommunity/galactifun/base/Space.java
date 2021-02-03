@@ -1,6 +1,6 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.base;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;

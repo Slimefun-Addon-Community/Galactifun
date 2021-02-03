@@ -1,10 +1,11 @@
-package io.github.addoncommunity.galactifun.api.universe;
+package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Earth;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
@@ -30,9 +32,6 @@ import java.util.Random;
  */
 public abstract class CelestialWorld extends AbstractCelestialWorld {
 
-    /**
-     * Minimum border size
-     */
     private static final double MIN_BORDER = 600D;
     
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
@@ -43,13 +42,14 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
      * Sets up and creates the world
      */
     @Nonnull
+    @Override
     protected final World createWorld() {
 
         String worldName = ChatColor.stripColor(this.name).toLowerCase(Locale.ROOT).replace(' ', '_');
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(((WorldTerrain) this.terrain).createGenerator(this::getBiome, this::generateBlock, this::getPopulators))
+                .generator(((WorldTerrain) this.terrain).createGenerator(this))
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
 
@@ -61,8 +61,16 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
 
         // border
         WorldBorder border = world.getWorldBorder();
-        border.setSize(Math.max(MIN_BORDER, Earth.WORLD.getWorldBorder().getSize() * this.surfaceArea / 196_900_000));
         border.setCenter(0, 0);
+        border.setSize(Math.max(MIN_BORDER, Math.sqrt(this.surfaceArea) * Earth.BORDER_SURFACE_RATIO));
+
+        // register
+        GalacticRegistry.register(world, this);
+
+        // block storage
+        if (BlockStorage.getStorage(world) == null) {
+            new BlockStorage(world);
+        }
 
         return world;
     }
@@ -73,23 +81,22 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
      * The top value is used so that you can set the top 3 blocks to a different material for ex.
      */
     @Nonnull
-    protected abstract Material generateBlock(@Nonnull Random random, int top, int x, int y, int z);
+    public abstract Material generateBlock(@Nonnull Random random, int top, int x, int y, int z);
 
     /**
      * The biome that should be used for the chunk at the specified x and z
      */
     @Nonnull
-    protected abstract Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ);
+    public abstract Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ);
 
     /**
      * Add all chunk populators to this list
      */
-    protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
+    public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     /**
      * Ticks the world
      */
-    @Override
     public void tickWorld() {
         // time
         this.dayCycle.applyTime(this.world);
@@ -105,7 +112,6 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     /**
      * All effects that should be applied to the player
      */
-    @Override
     public void applyEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
@@ -116,6 +122,11 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         }
 
         // other stuff?
+    }
+    
+    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+        // spawn native mobs here?
+        e.setCancelled(true);
     }
     
 }

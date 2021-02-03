@@ -1,8 +1,9 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.universe.AbstractCelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.AbstractCelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -17,7 +18,7 @@ public final class GalacticRegistry {
 
     static final Map<String, Galaxy> GALAXIES = new HashMap<>();
     static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
-    static final Map<World, AbstractCelestialWorld> CELESTIAL_WORLDS = new HashMap<>();
+    static final Map<World, CelestialWorld> CELESTIAL_WORLDS = new HashMap<>();
     
     public static void register(@Nonnull Galaxy galaxy) {
         GALAXIES.put(galaxy.getName(), galaxy);
@@ -27,7 +28,7 @@ public final class GalacticRegistry {
         STAR_SYSTEMS.put(system.getName(), system);
     }
     
-    public static void register(@Nonnull World world, @Nonnull AbstractCelestialWorld object) {
+    public static void register(@Nonnull World world, @Nonnull CelestialWorld object) {
         CELESTIAL_WORLDS.put(world, object);
     }
 
@@ -42,12 +43,12 @@ public final class GalacticRegistry {
     }
 
     @Nullable
-    public static AbstractCelestialWorld getCelestialWorld(@Nonnull World world) {
+    public static CelestialWorld getCelestialWorld(@Nonnull World world) {
         return CELESTIAL_WORLDS.get(world);
     }
 
     @Nullable
-    public static AbstractCelestialWorld getCelestialWorld(@Nonnull String worldName) {
+    public static CelestialWorld getCelestialWorld(@Nonnull String worldName) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             return null;

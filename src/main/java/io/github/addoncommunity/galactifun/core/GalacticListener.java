@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +31,6 @@ public final class GalacticListener implements Listener {
     @EventHandler
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-        
         if (object != null) {
             object.applyEffects(e.getPlayer());
         }
@@ -40,7 +39,6 @@ public final class GalacticListener implements Listener {
     @EventHandler
     public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-
         if (object != null) {
             object.applyEffects(e.getPlayer());
         }
@@ -49,7 +47,6 @@ public final class GalacticListener implements Listener {
     @EventHandler
     public void onPlanetRespawn(@Nonnull PlayerRespawnEvent e) {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-
         if (object != null) {
             object.applyEffects(e.getPlayer());
         }

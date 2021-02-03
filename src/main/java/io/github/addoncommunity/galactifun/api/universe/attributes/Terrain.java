@@ -12,10 +12,7 @@ import javax.annotation.Nonnull;
  */
 @AllArgsConstructor
 public class Terrain {
-
-    /**
-     * Name
-     */
+    
     @Nonnull @Getter 
     protected final String name;
     
