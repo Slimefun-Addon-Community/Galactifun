@@ -21,9 +21,11 @@ public class WorldTerrain extends AWorldTerrain {
     public static final WorldTerrain HILLY_CAVERNS = new WorldTerrain( "Hilly Caverns",
             40, 35, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
     );
-    
     public static final WorldTerrain SMOOTH = new WorldTerrain( "Smooth",
             20, 45, 8,0.01, .5, .5
+    );
+    public static final WorldTerrain FLAT = new WorldTerrain( "Flat",
+            0, 70, 0,0, 0, 0
     );
 
     /**

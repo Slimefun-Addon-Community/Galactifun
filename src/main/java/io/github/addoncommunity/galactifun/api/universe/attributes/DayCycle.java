@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.core.GalacticTicker;
+import io.github.addoncommunity.galactifun.core.tasks.GalacticTicker;
 import lombok.Getter;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  *
  * @author Mooy1
  *
- */
+ */ // TODO add days and hours constructor
 public class DayCycle {
     
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.galactic;
+package io.github.addoncommunity.galactifun.core.listener;
 
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;

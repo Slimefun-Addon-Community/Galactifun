@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.alien;
+package io.github.addoncommunity.galactifun.core.listener;
 
 import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;

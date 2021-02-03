@@ -21,9 +21,9 @@ public abstract class ACelestialWorld extends CelestialBody {
     @Getter @Nonnull
     protected final World world;
 
-    public ACelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
-                           @Nonnull Material material, @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
-        super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);
+    public ACelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
+                           @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere, @Nonnull CelestialBody... celestialBodies) {
+        super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere, celestialBodies);
         this.world = createWorld();
     }
 
