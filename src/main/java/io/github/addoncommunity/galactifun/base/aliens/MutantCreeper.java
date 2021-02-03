@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.mob.Alien;
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,11 +20,9 @@ import javax.annotation.Nonnull;
  *
  * @author GallowsDove
  */
-public class AlienCreeper extends Alien {
-    public AlienCreeper(@Nonnull CelestialWorld... worlds) {
-        super("ALIEN_CREEPER", "Alien Creeper", EntityType.CREEPER, 40, worlds);
-
-
+public final class MutantCreeper extends Alien {
+    public MutantCreeper(@Nonnull CelestialWorld... worlds) {
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, worlds);
     }
 
     @Override
@@ -36,7 +34,9 @@ public class AlienCreeper extends Alien {
     }
 
     @Override
-    public double getChanceToSpawn(@Nonnull Chunk chunk) { return 40; }
+    public double getChanceToSpawn(@Nonnull Chunk chunk) {
+        return 40;
+    }
 
     @Override
     public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
@@ -44,12 +44,12 @@ public class AlienCreeper extends Alien {
     }
 
     @Override
-    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
     }
 
     @Override
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    public void onHit(@Nonnull EntityDamageByEntityEvent e) {
         Creeper creeper = (Creeper) e.getEntity();
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();

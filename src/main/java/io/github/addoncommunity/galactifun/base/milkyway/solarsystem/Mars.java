@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
-import io.github.addoncommunity.galactifun.base.aliens.AlienCreeper;
+import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import org.bukkit.Material;
@@ -86,7 +86,7 @@ public final class Mars extends CelestialWorld {
             }
 
             if (e.getEntityType() == EntityType.ENDERMAN) {
-                AlienCreeper alien = (AlienCreeper) GalacticRegistry.getAlien("ALIEN_CREEPER");
+                MutantCreeper alien = (MutantCreeper) GalacticRegistry.getAlien("ALIEN_CREEPER");
 
                 Objects.requireNonNull(alien);
 

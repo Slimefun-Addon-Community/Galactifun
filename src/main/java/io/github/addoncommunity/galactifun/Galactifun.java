@@ -1,14 +1,13 @@
 package io.github.addoncommunity.galactifun;
 
-import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.listener.AlienListener;
-import io.github.addoncommunity.galactifun.core.tasks.AlienTicker;
 import io.github.addoncommunity.galactifun.core.GalacticCategory;
-import io.github.addoncommunity.galactifun.core.listener.GalacticListener;
-import io.github.addoncommunity.galactifun.core.tasks.GalacticTicker;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.core.listener.AlienListener;
+import io.github.addoncommunity.galactifun.core.listener.GalacticListener;
+import io.github.addoncommunity.galactifun.core.tasks.AlienTicker;
+import io.github.addoncommunity.galactifun.core.tasks.GalacticTicker;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;

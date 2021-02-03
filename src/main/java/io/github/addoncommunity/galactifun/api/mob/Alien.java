@@ -104,7 +104,7 @@ public abstract class Alien {
 
     public abstract int getMaxAmountInChunk(@Nonnull Chunk chunk);
 
-    public int countInChunk(@Nonnull Chunk chunk) {
+    private int countInChunk(@Nonnull Chunk chunk) {
         int i = 0;
         for (Entity entity : chunk.getEntities()) {
             if (entity instanceof LivingEntity) {
