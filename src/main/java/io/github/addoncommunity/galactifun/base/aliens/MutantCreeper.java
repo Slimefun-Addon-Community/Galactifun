@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  */
 public final class MutantCreeper extends Alien {
     public MutantCreeper(@Nonnull CelestialWorld... worlds) {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, worlds);
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
     }
 
     @Override
@@ -31,11 +31,6 @@ public final class MutantCreeper extends Alien {
         spawned.setCanPickupItems(false);
         spawned.setRemoveWhenFarAway(true);
         spawnedCreeper.setPowered(true);
-    }
-
-    @Override
-    public double getChanceToSpawn(@Nonnull Chunk chunk) {
-        return 40;
     }
 
     @Override

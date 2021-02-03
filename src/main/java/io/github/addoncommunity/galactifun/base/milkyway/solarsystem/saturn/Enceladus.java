@@ -24,7 +24,7 @@ public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
         super("Enceladus", 237_948L, 308_359L, new Gravity(0.0113), Material.ICE,
-                DayCycle.ETERNAL_NIGHT, WorldTerrain.FLAT, Atmosphere.NONE);
+                DayCycle.ETERNAL_NIGHT, WorldTerrain.FLAT, Atmosphere.NONE, 20, avgHeight);
     }
 
     @Nonnull
@@ -39,7 +39,7 @@ public class Enceladus extends CelestialWorld {
 
     @Nonnull
     @Override
-    public Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
         return Biome.FROZEN_OCEAN;
     }
 

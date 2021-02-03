@@ -7,7 +7,9 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,10 +23,10 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A class representing any celestial object with a world
@@ -37,11 +39,19 @@ public abstract class CelestialWorld extends ACelestialWorld {
     private static final double MIN_BORDER = 600D;
     
     @Nonnull
-    private final List<Alien> species = new ArrayList<>();
-
+    private final RandomizedSet<Alien> species = new RandomizedSet<>();
+    
+    @Getter
+    private final int alienSpawnChance;
+    
+    @Getter
+    private final int avgHeight;
+    
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
-                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere, @Nonnull CelestialBody... celestialBodies) {
+                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere, int alienSpawnChance, int avgHeight, @Nonnull CelestialBody... celestialBodies) {
         super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere, celestialBodies);
+        this.alienSpawnChance = alienSpawnChance;
+        this.avgHeight = avgHeight;
     }
     
     /**
@@ -93,7 +103,7 @@ public abstract class CelestialWorld extends ACelestialWorld {
      * The biome that should be used for the chunk at the specified x and z
      */
     @Nonnull
-    public abstract Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ);
+    public abstract Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ);
 
     /**
      * Add all chunk populators to this list
@@ -101,7 +111,7 @@ public abstract class CelestialWorld extends ACelestialWorld {
     public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     public final void addSpecies(@Nonnull Alien alien) {
-        this.species.add(alien);
+        this.species.add(alien, alien.getChance());
     }
     
     /**
@@ -133,10 +143,20 @@ public abstract class CelestialWorld extends ACelestialWorld {
 
         // other stuff?
     }
-    
+
+    /**
+     * Careful when overriding, this spawns aliens
+     */
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
-        // spawn native mobs here?
-        e.setCancelled(true);
+        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            e.setCancelled(true);
+            if (ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
+                Alien alien = this.species.getRandom();
+                if (alien.canSpawn(e.getLocation())) {
+                    alien.spawn(e.getLocation());
+                }
+            }
+        }
     }
     
 }

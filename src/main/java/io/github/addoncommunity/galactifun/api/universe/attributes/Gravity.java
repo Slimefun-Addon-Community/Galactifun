@@ -27,7 +27,7 @@ public class Gravity {
     public static final Gravity ZERO = new Gravity(0) {
         @Override
         public void applyGravity(@Nonnull Player p) {
-            p.addPotionEffect(PotionEffectType.SLOW_FALLING.createEffect(Integer.MAX_VALUE, 0));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, false, false));
         }
     };
     
@@ -65,9 +65,9 @@ public class Gravity {
     
     public void applyGravity(@Nonnull Player p) {
         if (this.jump != -1) {
-            new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump).apply(p);
+            new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump, false, false).apply(p);
             if (this.speed != -1) {
-                new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, this.speed).apply(p);
+                new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, this.speed, false, false).apply(p);
             }
         }
     }

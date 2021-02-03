@@ -36,7 +36,7 @@ public class Venus extends CelestialWorld {
                         World.Environment.NETHER,
                         new PotionEffectType[0],
                         new PotionEffectType[] {PotionEffectType.WITHER}
-                ));
+                ), 30, avgHeight);
     }
 
     @Nonnull
@@ -56,7 +56,7 @@ public class Venus extends CelestialWorld {
 
     @Nonnull
     @Override
-    public Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
         return Biome.BASALT_DELTAS;
     }
 

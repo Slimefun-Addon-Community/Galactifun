@@ -14,29 +14,22 @@ import java.util.Random;
  * Defines the terrain of a celestial world
  * 
  * @author Mooy1
+ * @author Seggan
  * 
  */
 public class WorldTerrain extends AWorldTerrain {
 
     public static final WorldTerrain HILLY_CAVERNS = new WorldTerrain( "Hilly Caverns",
-            40, 35, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
+            40, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
     );
     public static final WorldTerrain SMOOTH = new WorldTerrain( "Smooth",
-            20, 45, 8,0.01, .5, .5
-    );
-    public static final WorldTerrain FLAT = new WorldTerrain( "Flat",
-            0, 70, 0,0, 0, 0
+            15, 8,0.01, .5, .5
     );
 
     /**
      * Maximum y deviation
      */
     protected final int maxDeviation;
-
-    /**
-     * Minimum y value
-     */
-    protected final int minHeight;
 
     /**
      * Octave generator octaves
@@ -64,11 +57,10 @@ public class WorldTerrain extends AWorldTerrain {
     @Nonnull
     protected final TerrainFeature[] features;
 
-    public WorldTerrain(@Nonnull String name, int maxDeviation, int minHeight, int octaves,
-                        double scale, double amplitude, double frequency, @Nonnull TerrainFeature... features) {
+    public WorldTerrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
+                        double frequency, @Nonnull TerrainFeature... features) {
         super(name);
         this.maxDeviation = maxDeviation;
-        this.minHeight = minHeight;
         this.octaves = octaves;
         this.scale = scale;
         this.amplitude = amplitude;
@@ -98,7 +90,7 @@ public class WorldTerrain extends AWorldTerrain {
                 int realZ = startZ + z;
 
                 // find max height
-                height = (int) (this.minHeight + this.maxDeviation * (1 + generator.noise(
+                height = (int) (celestialWorld.getAvgHeight() + this.maxDeviation * (1 + generator.noise(
                         realX, realZ, this.frequency, this.amplitude, true)
                 ));
 
@@ -115,7 +107,7 @@ public class WorldTerrain extends AWorldTerrain {
                 }
 
                 // set biome
-                Biome biome = celestialWorld.getBiome(random, chunkX, chunkZ);
+                Biome biome = celestialWorld.generateBiome(random, chunkX, chunkZ);
                 for (int y = 0 ; y < 256 ; y++) {
                     grid.setBiome(x, y, z, biome);
                 }

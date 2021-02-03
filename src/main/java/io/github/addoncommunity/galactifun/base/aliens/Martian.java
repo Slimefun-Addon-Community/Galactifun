@@ -41,7 +41,7 @@ public final class Martian extends Alien {
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
     public Martian(@Nonnull CelestialWorld... worlds) {
-        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
+        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50);
 
         setupTrades();
     }
@@ -69,11 +69,6 @@ public final class Martian extends Alien {
         spawned.getEquipment().setItemInMainHand(this.sword);
     }
     
-    @Override
-    public double getChanceToSpawn(@Nonnull Chunk chunk) {
-        return 50;
-    }
-
     @Override
     public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
         return 2;
