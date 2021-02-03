@@ -27,7 +27,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     private UniversalObject<UniversalObject<T>> orbiting;
     
     @Nonnull @Getter
-    private final List<T> orbiters = new ArrayList<>();
+    private final List<UniversalObject<?>> orbiters = new ArrayList<>();
     
     @Nonnull @Getter
     private final ItemStack item;
