@@ -10,6 +10,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+/**
+ * A listener class for Aliens
+ *
+ * @author Seggan
+ */
 public class AlienListener implements Listener {
 
     public AlienListener() {

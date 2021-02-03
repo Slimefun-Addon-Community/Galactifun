@@ -15,7 +15,6 @@ import java.util.List;
  * A star system filled with celestial objects
  *
  * @author Mooy1
- *
  */
 @Getter
 public class StarSystem implements GalacticHolder<CelestialObject>, GalacticComponent {

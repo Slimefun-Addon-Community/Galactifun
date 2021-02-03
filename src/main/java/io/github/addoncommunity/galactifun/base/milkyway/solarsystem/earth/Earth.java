@@ -22,7 +22,6 @@ import java.util.logging.Level;
  * A class to connect the default earth world into the api
  *
  * @author Mooy1
- * 
  */
 public final class Earth extends Planet {
 

@@ -1,6 +1,7 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
+package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.mob.Alien;
+import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.Util;
 import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
@@ -24,15 +25,15 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Class for the martian, a mob spawning naturally on mars
+ * Class for the martian
  *
  * @author Seggan
  */
-class Martian extends Alien {
+public class Martian extends Alien {
 
     private final Map<Material, ItemStack> trades = new HashMap<>();
 
-    protected Martian() {
+    public Martian(@Nonnull CelestialWorld... worlds) {
         super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
 
         setupTrades();
