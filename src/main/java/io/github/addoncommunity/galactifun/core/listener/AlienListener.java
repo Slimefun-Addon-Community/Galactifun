@@ -1,8 +1,8 @@
-package io.github.addoncommunity.galactifun.api.mob;
+package io.github.addoncommunity.galactifun.core.listener;
 
-import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.core.GalacticRegistry;
-import org.bukkit.Bukkit;
+import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -10,19 +10,21 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+import javax.annotation.Nonnull;
+
 /**
  * A listener class for Aliens
  *
  * @author Seggan
  */
-public class AlienListener implements Listener {
-
+public final class AlienListener implements Listener {
+    
     public AlienListener() {
-        Bukkit.getPluginManager().registerEvents(this, Galactifun.getInstance());
+        PluginUtils.registerListener(this);
     }
 
     @EventHandler
-    public final void onAlienTarget(EntityTargetEvent e) {
+    public void onAlienTarget(@Nonnull EntityTargetEvent e) {
         Alien alien = GalacticRegistry.getAlien(e.getEntity());
         if (alien != null) {
             alien.onTarget(e);
@@ -30,7 +32,7 @@ public class AlienListener implements Listener {
     }
 
     @EventHandler
-    public final void onAlienInteract(PlayerInteractEntityEvent e) {
+    public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
         Alien alien = GalacticRegistry.getAlien(e.getRightClicked());
         if (alien != null) {
             alien.onInteract(e);
@@ -38,7 +40,7 @@ public class AlienListener implements Listener {
     }
 
     @EventHandler
-    public final void onAlienHit(EntityDamageByEntityEvent e) {
+    public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
         Alien alien = GalacticRegistry.getAlien(e.getEntity());
         if (alien != null) {
             alien.onHit(e);
@@ -46,7 +48,7 @@ public class AlienListener implements Listener {
     }
 
     @EventHandler
-    public final void onAlienDie(EntityDeathEvent e) {
+    public void onAlienDie(@Nonnull EntityDeathEvent e) {
         Alien alien = GalacticRegistry.getAlien(e.getEntity());
         if (alien != null) {
             alien.onDeath(e);

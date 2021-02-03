@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.terrain.populators;
+package io.github.addoncommunity.galactifun.api.universe.world.populators;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Chunk;

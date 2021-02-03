@@ -1,7 +1,8 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.core.tasks;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.mob.Alien;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.mooy1.infinitylib.misc.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -10,15 +11,12 @@ import org.bukkit.entity.LivingEntity;
  * Ticker for aliens
  *
  * @author Seggan
+ * @author Mooy1
  */
-public class AlienTicker implements Runnable {
+public final class AlienTicker implements Runnable {
 
-    public final int INTERVAL;
-
-    public AlienTicker() {
-        INTERVAL = Galactifun.getInstance().getConfig().getInt("mob-tick-interval", 2);
-    }
-
+    public static final int INTERVAL = ConfigUtils.getOrDefault("mob-tick-interval", 1, 20, 2);
+    
     @Override
     public void run() {
         for (World world : Bukkit.getWorlds()) {
@@ -30,4 +28,5 @@ public class AlienTicker implements Runnable {
             }
         }
     }
+    
 }

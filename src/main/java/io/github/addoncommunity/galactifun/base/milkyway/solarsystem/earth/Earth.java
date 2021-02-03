@@ -1,21 +1,17 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.Planet;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.ACelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 
 /**
@@ -23,12 +19,11 @@ import java.util.logging.Level;
  *
  * @author Mooy1
  */
-public final class Earth extends Planet {
-
-    /**
-     * The world used for earth
-     */
-    public static final World WORLD = getMainWorld();
+public final class Earth extends ACelestialWorld {
+    
+    private static final World WORLD = getMainWorld();
+    private static final long SURFACE_AREA = 196_900_000;
+    public static final double BORDER_SURFACE_RATIO =  WORLD.getWorldBorder().getSize() / Math.sqrt(SURFACE_AREA);
     
     @Nonnull
     private static World getMainWorld() {
@@ -59,30 +54,13 @@ public final class Earth extends Planet {
     
     public Earth(@Nonnull TheMoon theMoon) {
         super("Earth", 149_600_000L, 196_900_000, Gravity.EARTH_LIKE, Material.GRASS_BLOCK,
-                DayCycle.EARTH_LIKE, Atmosphere.EARTH_LIKE, Terrain.HILLY_CAVERNS, theMoon);
+                DayCycle.EARTH_LIKE, WorldTerrain.HILLY_CAVERNS, Atmosphere.EARTH_LIKE, theMoon);
     }
 
     @Nonnull
     @Override
-    protected World setupWorld() {
+    protected World createWorld() {
         return WORLD;
-    }
-
-    @Nonnull
-    @Override
-    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        throw new IllegalStateException("Earth shouldn't be generating blocks!");
-    }
-
-    @Nonnull
-    @Override
-    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        throw new IllegalStateException("Earth shouldn't be generating biomes!");
-    }
-
-    @Override
-    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        throw new IllegalStateException("Earth shouldn't be generating populators!");
     }
 
 }

@@ -1,7 +1,7 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.core.listener;
 
-import io.github.addoncommunity.galactifun.api.mob.AlienListener;
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,40 +19,32 @@ import javax.annotation.Nonnull;
  * @author GallowsDove
  */
 public final class GalacticListener implements Listener {
-
-    public static void setup() {
-        new GalacticListener();
-        new AlienListener();
-    }
     
-    private GalacticListener() {
+    public GalacticListener() {
         PluginUtils.registerListener(this);
     }
     
     @EventHandler
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-        
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlanetRespawn(@Nonnull PlayerRespawnEvent e) {
         CelestialWorld object = GalacticRegistry.getCelestialWorld(e.getPlayer().getWorld());
-
         if (object != null) {
-            object.applyWorldEffects(e.getPlayer());
+            object.applyEffects(e.getPlayer());
         }
     }
 

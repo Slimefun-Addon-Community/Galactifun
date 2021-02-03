@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
@@ -14,12 +14,10 @@ import org.bukkit.World;
  * @author Mooy1
  */
 public final class Saturn extends CelestialBody {
-    
-    // TODO better material and terrain
+
     public Saturn() {
-        super("Saturn", 1_490_500_000L, 16_490_000_000L, new Gravity(1.06),
-            Material.QUARTZ_BLOCK, new DayCycle(.445), Terrain.GASEOUS,
-                new Atmosphere(0, false, true, false, false, World.Environment.NORMAL)
+        super("Saturn", 926_200_000L, 16_490_000_000L, new Gravity(10.44), Material.QUARTZ_BLOCK, new DayCycle(.445),
+                Terrain.GASEOUS, new Atmosphere(0, false, true, false, false, World.Environment.NORMAL)
         );
     }
 

@@ -1,9 +1,9 @@
 package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.mob.Alien;
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.bukkit.Bukkit;
@@ -21,10 +21,9 @@ import java.util.Map;
 @UtilityClass
 public final class GalacticRegistry {
 
-    static final Map<String, Galaxy> GALAXIES = new HashMap<>();
-    static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
-    static final Map<World, CelestialWorld> CELESTIAL_WORLDS = new HashMap<>();
-
+    public static final Map<String, Galaxy> GALAXIES = new HashMap<>();
+    public static final Map<String, StarSystem> STAR_SYSTEMS = new HashMap<>();
+    public static final Map<World, CelestialWorld> CELESTIAL_WORLDS = new HashMap<>();
     public static final Map<String, Alien> ALIENS = new HashMap<>();
     
     public static void register(@Nonnull Galaxy galaxy) {

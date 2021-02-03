@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.api.universe.Moon;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
@@ -20,16 +20,19 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Enceladus extends Moon {
+public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
-        super("Enceladus", 237_948L, 308_359L, new Gravity(0.0113), Material.ICE, DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Terrain.FLAT);
+        super("Enceladus", 237_948L, 308_359L, new Gravity(0.0113), Material.ICE,
+                DayCycle.ETERNAL_NIGHT, WorldTerrain.FLAT, Atmosphere.NONE, 20, 75);
     }
 
     @Nonnull
     @Override
-    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (y >= 30) {
+    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+        if (y >= 60) {
+            return Material.ICE;
+        } else if (y >= 30) {
             return Material.PACKED_ICE;
         } else {
             return Material.BLUE_ICE;
@@ -38,12 +41,12 @@ public class Enceladus extends Moon {
 
     @Nonnull
     @Override
-    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
         return Biome.FROZEN_OCEAN;
     }
 
     @Override
-    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
+    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
 
     }
 

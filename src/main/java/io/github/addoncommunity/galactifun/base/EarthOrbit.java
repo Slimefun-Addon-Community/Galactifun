@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
+package io.github.addoncommunity.galactifun.base;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -13,38 +13,28 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The moon
- *
- * @author Seggan
- * @author Mooy1
- */
-public final class TheMoon extends CelestialWorld {
-    
-    public TheMoon() {
-        super("The Moon", 382_500L, 14_600_000L, Gravity.MOON_LIKE,
-                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE, 30, 80);
+public final class EarthOrbit extends CelestialWorld {
+
+    public EarthOrbit() {
+        super("Earth Orbit", 0, 0, Gravity.ZERO, Material.BLACK_STAINED_GLASS_PANE,
+                DayCycle.ETERNAL_NIGHT, WorldTerrain.VOID, Atmosphere.NONE, 0, 0);
     }
-    
+
     @Nonnull
     @Override
     public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (random.nextFloat() > .03) {
-            return Material.ANDESITE;
-        } else {
-            return Material.GOLD_ORE;
-        }
+        return Material.AIR; // probably won't be called
     }
 
     @Nonnull
     @Override
     public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.BADLANDS;
+        return Biome.THE_VOID; // probably won't be called
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        
+        // TODO add comet and asteroid populators, maybe rocket debris
     }
 
 }

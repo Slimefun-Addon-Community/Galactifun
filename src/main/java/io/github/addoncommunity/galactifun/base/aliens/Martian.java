@@ -1,8 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.mob.Alien;
-import io.github.addoncommunity.galactifun.api.universe.CelestialWorld;
-import io.github.addoncommunity.galactifun.core.Util;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;
@@ -22,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -29,12 +29,19 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Seggan
  */
-public class Martian extends Alien {
+public final class Martian extends Alien {
 
     private final Map<Material, ItemStack> trades = new HashMap<>();
-
+    private final ItemStack[] armor = {
+            new ItemStack(Material.IRON_BOOTS),
+            new ItemStack(Material.IRON_LEGGINGS),
+            new ItemStack(Material.IRON_CHESTPLATE),
+            new ItemStack(Material.IRON_HELMET)
+    };
+    private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
+    
     public Martian(@Nonnull CelestialWorld... worlds) {
-        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
+        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50);
 
         setupTrades();
     }
@@ -56,28 +63,19 @@ public class Martian extends Alien {
             spawned.setCustomName(ChatColor.RED + "The Zerix");
             spawned.setCustomNameVisible(true);
         }
+        Objects.requireNonNull(spawned.getEquipment());
 
-        spawned.getEquipment().setArmorContents(new ItemStack[]{new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_HELMET)});
-        spawned.getEquipment().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
+        spawned.getEquipment().setArmorContents(this.armor);
+        spawned.getEquipment().setItemInMainHand(this.sword);
     }
-
-    @Override
-    public boolean canSpawn(@Nonnull Chunk chunk) {
-        return chunk.getWorld().getName().equals("mars") && Util.countInChunk(chunk, this) < getMaxAmountInChunk(chunk);
-    }
-
-    @Override
-    public double getChanceToSpawn(@Nonnull Chunk chunk) {
-        return 50;
-    }
-
+    
     @Override
     public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
         return 2;
     }
 
     @Override
-    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.IRON_INGOT, 2));
         e.getDrops().add(new ItemStack(Material.RED_SAND));
@@ -92,7 +90,7 @@ public class Martian extends Alien {
         ItemStack trade = this.trades.get(item.getType());
 
         if (trade != null) {
-            entity.getEquipment().setItemInOffHand(item);
+            Objects.requireNonNull(entity.getEquipment()).setItemInOffHand(item);
             entity.addPotionEffect(new PotionEffect(
                 PotionEffectType.SLOW,
                 Integer.MAX_VALUE,

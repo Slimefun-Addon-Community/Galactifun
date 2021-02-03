@@ -1,8 +1,11 @@
+# earth-world-name
 # The name of your world that is earth.
 # This should be the name main world where people work on stuff and make bases.
 # By default, it is "world"
-earth-world-name: world
-
+# 
+# mob-tick-interval
 # How often aliens tick in Minecraft ticks
 # By default, mobs tick once every 2 Minecraft ticks (every 0.1 second)
+# 
+earth-world-name: world
 mob-tick-interval: 2
