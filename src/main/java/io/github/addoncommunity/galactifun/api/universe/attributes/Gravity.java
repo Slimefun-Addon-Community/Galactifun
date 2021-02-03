@@ -31,19 +31,19 @@ public class Gravity {
     
     @Nonnull
     public static Gravity jumpHeight(double blocks) {
-        return new Gravity(blocks / DEFAULT_JUMP);
+        return new Gravity((float) (blocks / DEFAULT_JUMP));
     }
 
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
-        return new Gravity(ratio);
+        return new Gravity((float) ratio);
     }
 
-    public Gravity(float gravity) {
-        this(gravity / EARTH_GRAVITY);
+    public Gravity(double gravity) {
+        this((float) (gravity / EARTH_GRAVITY));
     }
 
-    private Gravity(double boost) {
+    private Gravity(float boost) {
         int level = (int) (Math.log(boost) / LOG_JUMP_BOOST);
         this.jump = level - 1;
         this.speed = -1 * (level & 1) == 0 ? level / 2 - 1 : level / 2;

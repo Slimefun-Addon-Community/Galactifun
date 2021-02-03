@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
+import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import org.bukkit.entity.Player;
 
@@ -15,13 +16,13 @@ import java.util.UUID;
  * @author Mooy1
  */
 public final class GalacticExplorer {
-
-    private static final Map<UUID, UniversalHolder<?>> history = new HashMap<>();
+    
+    private static final Map<UUID, UniversalObject<?>> HISTORY = new HashMap<>();
     
     public static void explore(@Nonnull Player p) {
-        UniversalHolder<?> holder = history.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.INSTANCE);
-
-        ChestMenu menu = new ChestMenu(holder.getName());
+        UniversalObject<?> object = HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance());
+        
+        ChestMenu menu = new ChestMenu(object.getName());
         
         menu.setEmptySlotsClickable(false);
         

@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.mars;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
 import org.bukkit.Material;
@@ -26,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Mooy1
  *
  */
-public final class Mars extends PlanetWorld {
+public final class Mars extends CelestialWorld {
 
     public Mars() {
         super("Mars", 144_610_000L, 55_910_000L, new Gravity(.378),
@@ -38,7 +39,7 @@ public final class Mars extends PlanetWorld {
 
     @Nonnull
     @Override
-    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
         // top 4 blocks
         if (y > top - 4) {
             return Material.RED_SAND;
@@ -59,17 +60,16 @@ public final class Mars extends PlanetWorld {
 
     @Nonnull
     @Override
-    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    public Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
         return Biome.NETHER_WASTES;
     }
 
     @Override
-    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
+    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
     }
     
-    // TODO clean up
-
+    // TODO clean up A LOT
     @Override
     public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
@@ -87,4 +87,5 @@ public final class Mars extends PlanetWorld {
             e.setCancelled(true);
         }
     }
+    
 }

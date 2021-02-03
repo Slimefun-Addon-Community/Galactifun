@@ -9,7 +9,9 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  * @author Mooy1
  */
 public interface TerrainFeature {
-
+    
+    TerrainFeature CAVERNS = new CaveFeature(.3, .5, .3, 10);
+    
     /**
      * Generate the feature in the chunk, x and z are the cords within the chunk.
      */

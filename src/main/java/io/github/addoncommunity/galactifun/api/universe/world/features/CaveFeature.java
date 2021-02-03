@@ -14,8 +14,6 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  */
 @AllArgsConstructor
 public class CaveFeature implements TerrainFeature {
-    
-    public static final TerrainFeature CAVERNS = new CaveFeature(.3, .5, .3, 10);
 
     /**
      * Density threshold 0-1

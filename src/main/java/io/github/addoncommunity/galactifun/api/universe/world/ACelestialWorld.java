@@ -16,18 +16,18 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public abstract class AbstractCelestialWorld extends CelestialBody {
+public abstract class ACelestialWorld extends CelestialBody {
 
     @Getter @Nonnull
     protected final World world;
 
-    public AbstractCelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
-                                  @Nonnull Material material, @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
+    public ACelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity,
+                           @Nonnull Material material, @Nonnull DayCycle dayCycle, @Nonnull Terrain terrain, @Nonnull Atmosphere atmosphere) {
         super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);
         this.world = createWorld();
     }
-    
+
     @Nonnull
     protected abstract World createWorld();
-    
+
 }

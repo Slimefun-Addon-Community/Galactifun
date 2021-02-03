@@ -40,13 +40,11 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         this.name = name;
         this.item = item;
         
-        addOrbiter(orbiters);
+        addOrbiters(orbiters);
     }
     
     @SafeVarargs
-    public final void addOrbiter(@Nonnull T... orbiters) {
-        Validate.notNull(orbiters);
-        
+    public final void addOrbiters(@Nonnull T... orbiters) {
         Collections.addAll(this.orbiters, orbiters);
     }
 

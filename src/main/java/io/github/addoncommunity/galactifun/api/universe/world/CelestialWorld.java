@@ -30,12 +30,12 @@ import java.util.Random;
  * @author Mooy1
  *
  */
-public abstract class CelestialWorld extends AbstractCelestialWorld {
+public abstract class CelestialWorld extends ACelestialWorld {
 
     private static final double MIN_BORDER = 600D;
     
     public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
-                          @Nonnull DayCycle dayCycle, @Nonnull WorldTerrain terrain, @Nonnull Atmosphere atmosphere) {
+                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere) {
         super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere);
     }
     /**
@@ -49,7 +49,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(((WorldTerrain) this.terrain).createGenerator(this))
+                .generator(((AWorldTerrain) this.terrain).createGenerator(this))
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
 

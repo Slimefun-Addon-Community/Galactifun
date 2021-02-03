@@ -4,18 +4,14 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.world.ACelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.entity.Player;
-import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 
 /**
@@ -24,7 +20,7 @@ import java.util.logging.Level;
  * @author Mooy1
  * 
  */
-public final class Earth extends PlanetWorld {
+public final class Earth extends ACelestialWorld {
     
     private static final World WORLD = getMainWorld();
     private static final long SURFACE_AREA = 196_900_000;
@@ -64,35 +60,8 @@ public final class Earth extends PlanetWorld {
 
     @Nonnull
     @Override
-    protected World setupWorld() {
+    protected World createWorld() {
         return WORLD;
-    }
-
-    @Nonnull
-    @Override
-    protected Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Nonnull
-    @Override
-    protected Biome getBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void tickWorld() {
-        // do nothing
-    }
-
-    @Override
-    public void applyEffects(@Nonnull Player p) {
-        // do nothing
     }
 
 }
