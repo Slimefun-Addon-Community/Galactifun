@@ -1,6 +1,3 @@
-## Description
-<!-- Please explain what you changed/added and why you did it in detail. -->
-
 ## Changes
 <!-- Please list all the changes you have made. -->
 
