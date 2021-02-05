@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
  * @author GallowsDove
  */
 public final class MutantCreeper extends Alien {
+
     public MutantCreeper(@Nonnull CelestialWorld... worlds) {
         super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
     }
@@ -51,8 +52,7 @@ public final class MutantCreeper extends Alien {
             if (p.getGameMode() != GameMode.CREATIVE) {
                 creeper.setTarget((Player) e.getDamager());
             }
-        }
-        else if (e.getDamager() instanceof Projectile) {
+        } else if (e.getDamager() instanceof Projectile) {
             Projectile pr = (Projectile) e.getDamager();
             if (pr.getShooter() instanceof Player) {
                 Player p = (Player) pr.getShooter();
