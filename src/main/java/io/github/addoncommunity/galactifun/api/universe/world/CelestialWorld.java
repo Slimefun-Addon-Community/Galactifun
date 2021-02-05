@@ -152,7 +152,7 @@ public abstract class CelestialWorld extends ACelestialWorld {
             e.setCancelled(true);
             if (ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
                 Alien alien = this.species.getRandom();
-                if (alien.canSpawn(e.getLocation())) {
+                if (alien != null && alien.canSpawn(e.getLocation())) {
                     alien.spawn(e.getLocation());
                 }
             }

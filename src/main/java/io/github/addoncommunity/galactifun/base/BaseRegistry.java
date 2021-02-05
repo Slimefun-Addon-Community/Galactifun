@@ -30,7 +30,7 @@ public final class BaseRegistry {
     public static final CelestialWorld VENUS = new Venus();
     public static final CelestialBody SATURN = new Saturn();
 
-    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new ItemStack(Material.DAYLIGHT_DETECTOR), VENUS, EARTH, MARS, SATURN);
+    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new ItemStack(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN);
     
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new ItemStack(Material.MILK_BUCKET), SOLAR_SYSTEM);
 

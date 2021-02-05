@@ -41,7 +41,7 @@ public final class Martian extends Alien {
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
     public Martian(@Nonnull CelestialWorld... worlds) {
-        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50);
+        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50, worlds);
 
         setupTrades();
     }
