@@ -13,10 +13,22 @@ import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Titan extends CelestialWorld {
+
+    private static final Set<Biome> forests = EnumSet.of(
+        Biome.FOREST,
+        Biome.BIRCH_FOREST,
+        Biome.TALL_BIRCH_FOREST,
+        Biome.WOODED_HILLS,
+        Biome.BIRCH_FOREST_HILLS,
+        Biome.FLOWER_FOREST,
+        Biome.TALL_BIRCH_FOREST
+    );
 
     public Titan() {
         super("Titan", 1_200_000L, 31_944_800L, new Gravity(1.352), Material.SAND, DayCycle.EARTH_LIKE, new TitanTerrain(), new Atmosphere(
@@ -48,10 +60,13 @@ public class Titan extends CelestialWorld {
                     for (int i = 1; i < amount; i++) {
                         int x = random.nextInt(15);
                         int z = random.nextInt(15);
-                        int y = world.getHighestBlockYAt(x, z);
-                        Block b = chunk.getBlock(x, y, z);
-                        if (b.getBiome() == Biome.FOREST) {
-                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                        Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                        if (forests.contains(b.getBiome())) {
+                            if (random.nextBoolean()) {
+                                world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                            } else {
+                                world.generateTree(b.getLocation(), TreeType.CRIMSON_FUNGUS);
+                            }
                         }
                     }
                 }

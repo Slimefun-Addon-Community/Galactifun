@@ -60,7 +60,11 @@ public class TitanTerrain extends AWorldTerrain {
                     case TALL_BIRCH_FOREST:
                     case TALL_BIRCH_HILLS:
                     case FOREST:
-                        chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
+                        if (random.nextBoolean()) {
+                            chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
+                        } else {
+                            chunk.setBlock(x, height + 1, z, Material.CRIMSON_NYLIUM);
+                        }
                         generateRest(height, chunk, random, x, z);
                         break;
                     default:
