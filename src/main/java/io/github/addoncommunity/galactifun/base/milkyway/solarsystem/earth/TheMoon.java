@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -25,7 +26,9 @@ public final class TheMoon extends CelestialWorld {
     
     public TheMoon() {
         super("The Moon", new Orbit(382_500L), 14_600_000L, Gravity.MOON_LIKE,
-                Atmosphere.NONE, DayCycle.EARTH_LIKE, CelestialType.TERRESTRIAL, 80, 30, Terrain.SMOOTH);
+                Atmosphere.NONE, DayCycle.EARTH_LIKE, CelestialType.TERRESTRIAL, 80, 30,
+                Terrain.SMOOTH, new ItemChoice(Material.ANDESITE)
+        );
     }
     
     @Nonnull
@@ -47,12 +50,6 @@ public final class TheMoon extends CelestialWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         
-    }
-    
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.ANDESITE);
     }
 
 }

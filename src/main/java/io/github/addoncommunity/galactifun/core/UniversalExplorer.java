@@ -2,9 +2,16 @@ package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.core.util.Util;
+import io.github.mooy1.infinitylib.items.LoreUtils;
+import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -45,23 +52,46 @@ public final class UniversalExplorer {
         menu.setEmptySlotsClickable(false);
 
         // back button
+        menu.addItem(0, ChestMenuUtils.getBackButton(p));
         if (object.getOrbiting() == null) {
-            menu.addMenuClickHandler(1, ChestMenuUtils.getEmptyClickHandler());
+            menu.addMenuClickHandler(0, ChestMenuUtils.getEmptyClickHandler());
         } else {
-            menu.addMenuClickHandler(1, (p1, slot, item, action) -> {
+            menu.addMenuClickHandler(0, (p1, slot, item, action) -> {
                 open(p1, object.getOrbiting(), true);
                 return false;
             });
         }
+        
+        UniversalObject<?> current = CelestialWorld.getByWorld(p.getWorld());
+        boolean known = current != null;
 
         // objects
-        for (int i = 1 ; i < Math.min(54, orbiters.size()); i++) {
+        for (int i = 0 ; i < Math.min(52, orbiters.size()); i++) {
             UniversalObject<?> orbiter = orbiters.get(i);
-            menu.addItem(i, orbiter.getDistanceItem(object));
+            ItemStack item = orbiter.getItem();
+            if (known) {
+                // add distance from current
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    List<String> lore = meta.getLore();
+                    if (lore != null) {
+                        double distance = orbiter.getDistanceTo(current);
+                        lore.remove(lore.size() - 1);
+                        lore.add("&7Distance: " + (distance < 1
+                                ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers"
+                                : distance + " Light Years")
+                        );
+                        meta.setLore(lore);
+                        item = item.clone();
+                        item.setItemMeta(meta);
+                    }
+                }
+            }
+            menu.addItem(i + 1, item);
             if (orbiter.getOrbiters().size() == 0) {
-                menu.addMenuClickHandler(i, ChestMenuUtils.getEmptyClickHandler());
+                menu.addMenuClickHandler(i + 1, ChestMenuUtils.getEmptyClickHandler());
             } else {
-                menu.addMenuClickHandler(i, (p1, slot, item, action) -> {
+                menu.addMenuClickHandler(i + 1, (p1, slot, item1, action) -> {
                     open(p1, orbiter, true);
                     return false;
                 });

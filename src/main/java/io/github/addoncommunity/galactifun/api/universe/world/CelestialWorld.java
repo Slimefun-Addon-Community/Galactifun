@@ -8,6 +8,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Util;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -59,7 +60,8 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     }
     
     private static final double MIN_BORDER = 600D;
-
+    private static final double MAX_BORDER = 30_000_000D;
+    
     /**
      * All alien species that can spawn on this planet
      */
@@ -98,10 +100,11 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     private boolean enabled;
     
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
-                          @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, int avgHeight, int alienSpawnChance, @Nonnull AbstractTerrain terrain,
-                          @Nonnull CelestialBody... celestialBodies) {
+                          @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type,
+                          int avgHeight, int alienSpawnChance, @Nonnull AbstractTerrain terrain,
+                          @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
         
-        super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, celestialBodies);
+        super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, choice, celestialBodies);
         
         Validate.isTrue(alienSpawnChance >= 0 && alienSpawnChance <= 100);
         Validate.isTrue(avgHeight >= 0 && avgHeight <= 256);
@@ -111,12 +114,12 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         this.avgHeight = avgHeight;
         this.terrain = terrain;
         
-        String worldName = Util.stripUntranslatedColors(this.name).toLowerCase(Locale.ROOT).replace(' ', '_');
+        String worldName = Util.stripUntranslatedColors(name).toLowerCase(Locale.ROOT).replace(' ', '_');
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(this.terrain.createGenerator(this))
-                .environment(this.atmosphere.getEnvironment())
+                .generator(terrain.createGenerator(this))
+                .environment(atmosphere.getEnvironment())
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
@@ -124,11 +127,11 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         // border
         WorldBorder border = world.getWorldBorder();
         border.setCenter(0, 0);
-        border.setSize(Math.max(MIN_BORDER, Math.sqrt(this.surfaceArea) * Earth.BORDER_SURFACE_RATIO));
+        border.setSize(Math.min(MAX_BORDER, Math.max(MIN_BORDER, Math.sqrt(surfaceArea) * Earth.BORDER_SURFACE_RATIO)));
 
         // load effects
-        this.dayCycle.applyEffects(world);
-        this.atmosphere.applyEffects(world);
+        dayCycle.applyEffects(world);
+        atmosphere.applyEffects(world);
         
         // block storage
         if (BlockStorage.getStorage(world) == null) {
@@ -219,7 +222,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     @Override
     protected void getItemStats(@Nonnull List<String> stats) {
         super.getItemStats(stats);
-        stats.add("&7Terrain: " + this.terrain.getName());
+        stats.add("&6Terrain: &e" + this.terrain.getName());
     }
 
 }

@@ -31,7 +31,7 @@ public enum CelestialType {
     /**
      * Frozen planets ex: neptune
      */
-    ICE_GIANT("Ice Giant"),
+    FROZEN("Frozen"),
     
     /**
      * Mostly liquid planets

@@ -1,15 +1,15 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Util;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -46,21 +46,23 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Getter
     private UniversalObject<?> orbiting;
     @Nonnull
+    @Getter
     private final ItemStack item;
     
     @SafeVarargs
-    public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull T... orbiters) {
+    public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull ItemChoice choice, @Nonnull T... orbiters) {
         Validate.notNull(name);
         Validate.notNull(orbit);
         
         this.orbit = orbit;
-        this.name = name;
-        this.item = new CustomItem(getBaseItem().item, name);
+        this.name = ChatColor.WHITE + name;
+        this.item = new CustomItem(choice.getItem(), name);
 
         // add stats after subclass constructor completes
         PluginUtils.runSync(() -> {
             List<String> stats = new ArrayList<>();
             getItemStats(stats);
+            stats.add("&7Distance: &8Unknown");
             LoreUtils.setLore(this.item, stats);
         });
         
@@ -104,39 +106,8 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         }
     }
     
-    @Nonnull // TODO move this part to where its actually used eventually
-    public final ItemStack getDistanceItem(@Nonnull UniversalObject<?> current) {
-        ItemStack item = this.item.clone();
-        double distance = getDistanceTo(current);
-        LoreUtils.addLore(item, "&7Distance: " + (distance < 1 ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers" : distance + " Light Years"));
-        return item;
-    }
-    
-    @Nonnull
-    protected abstract ItemChoice getBaseItem();
-    
     protected abstract void getItemStats(@Nonnull List<String> stats);
     
-    /**
-     * A utility class that lets people choose between using a material or head texture for the item
-     */
-    protected static final class ItemChoice {
-
-        @Nonnull
-        private final ItemStack item;
-
-        public ItemChoice(@Nonnull String texture) {
-            Validate.notNull(texture);
-            this.item = SkullItem.fromBase64(texture);
-        }
-
-        public ItemChoice(@Nonnull Material material) {
-            Validate.notNull(material);
-            this.item = new ItemStack(material);
-        }
-
-    }
-        
     @Override
     public final int hashCode() {
         return this.name.hashCode();

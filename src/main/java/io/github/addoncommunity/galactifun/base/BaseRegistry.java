@@ -14,7 +14,9 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.TheMoon;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Material;
 
 /**
  * Registry of constants for the base celestial objects
@@ -34,10 +36,15 @@ public final class BaseRegistry {
     public static final CelestialWorld VENUS = new Venus();
     public static final CelestialBody SATURN = new Saturn(ENCELADUS);
 
-    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D), VENUS, EARTH, MARS, SATURN);
+    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),
+            new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN) {
+        
+    };
     
-    public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D), SOLAR_SYSTEM);
-
+    public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D),
+            new ItemChoice(Material.MILK_BUCKET), SOLAR_SYSTEM) {
+    };
+    
     public static final Martian MARTIAN = new Martian(MARS);
     public static final MutantCreeper ALIEN_CREEPER = new MutantCreeper(THE_MOON);
 

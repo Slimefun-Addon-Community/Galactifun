@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -24,7 +25,7 @@ public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
         super("Enceladus", new Orbit(237_948L), 308_359L, new Gravity(0.0113), Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.TERRESTRIAL, 75, 20, Terrain.FLAT);
+                CelestialType.FROZEN, 75, 20, Terrain.FLAT, new ItemChoice(Material.ICE));
     }
 
     @Nonnull
@@ -48,12 +49,6 @@ public class Enceladus extends CelestialWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
 
-    }
-
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.ICE);
     }
 
 }

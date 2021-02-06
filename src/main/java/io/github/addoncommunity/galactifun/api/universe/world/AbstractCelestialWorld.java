@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
@@ -17,10 +18,10 @@ import javax.annotation.Nonnull;
  */
 public abstract class AbstractCelestialWorld extends CelestialBody {
 
-    public AbstractCelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea,
-                                  @Nonnull Gravity gravity, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type,
-                                  @Nonnull Atmosphere atmosphere, @Nonnull CelestialBody... celestialBodies) {
-        super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, celestialBodies);
+    public AbstractCelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
+                                  @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, @Nonnull Atmosphere atmosphere,
+                                  @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
+        super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, choice, celestialBodies);
     }
 
     @Nonnull

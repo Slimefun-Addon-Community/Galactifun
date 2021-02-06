@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,14 +17,8 @@ import java.util.List;
  */
 public class StarSystem extends UniversalObject<CelestialBody> {
 
-    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialBody... orbiters) {
-        super(name, orbit, orbiters);
-    }
-
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.NETHER_STAR);
+    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull ItemChoice choice, @Nonnull CelestialBody... orbiters) {
+        super(name, orbit, choice, orbiters);
     }
 
     @Override

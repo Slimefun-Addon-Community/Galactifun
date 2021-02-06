@@ -31,7 +31,7 @@ public final class Sphere {
     /**
      * Generates a sphere by looping through combos of x, y, z where no combo contains the same values
      *
-     * Stuff for testing:
+     * Stuff for thinking about how to implement:
      * 
      * radius 5 max 25
      *  a 0 | 00000 | 0000 000 00 | 1111 111 1 222 2
@@ -74,16 +74,19 @@ public final class Sphere {
         int aPlusBSquared;
         int aPlusBPlusCSquared;
         
-        // 0 moves, always within radius
+        // 0 moves
         gen(0, 0, 0, material());
-        // 1 move, always within radius
+        // 1 move
         for (a = 1; a <= radius ; a++) {
+            // always within radius
             genThree(a, 0);
             genThree(-a, 0);
         }
         // 2 moves
         for (a = 1, aSquared = 1; a < radius ; a++) {
+            // 2nd move is >= 1st move
             for (b = a, aPlusBSquared = aSquared + b * b ; b < radius ; b++) {
+                // check within radius
                 if (aPlusBSquared < radiusSquared) {
                     genTwelve(a, b);
                     if (a != b) {
@@ -98,10 +101,13 @@ public final class Sphere {
         }
         // 3 moves
         for (a = 1, aSquared = 1; a < radius - 1 ; a++) {
+            // 2nd move is >= 1st move
             for (b = a, aPlusBSquared = aSquared + b * b ; b < radius - 1 ; b++) {
+                // 3rd move is >= 2nd move
                 for (c = b, aPlusBPlusCSquared = aPlusBSquared + c * c ; c < radius ; c++) {
+                    // check within radius
                     if (aPlusBPlusCSquared < radiusSquared) {
-                        // ? ? ? -> always
+                        // ? ? ? -> no swaps
                         genEight(a, b, c);
                         if (a != b) {
                             // a b ? -> swap ab ac

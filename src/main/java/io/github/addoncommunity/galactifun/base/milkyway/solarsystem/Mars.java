@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -31,7 +32,7 @@ public final class Mars extends CelestialWorld {
         super("&cMars", new Orbit(233_500_000L), 55_910_000L, new Gravity(3.711),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
                 new DayCycle(1.03), CelestialType.TERRESTRIAL, 75, 50, Terrain.HILLY_CAVERNS,
-                celestialBodies);
+                new ItemChoice(Material.RED_SAND), celestialBodies);
     }
 
     @Nonnull
@@ -64,12 +65,6 @@ public final class Mars extends CelestialWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
-    }
-
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.RED_SAND);
     }
 
 }

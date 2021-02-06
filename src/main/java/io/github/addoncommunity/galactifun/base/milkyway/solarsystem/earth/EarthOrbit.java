@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Sphere;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -25,7 +26,8 @@ public final class EarthOrbit extends CelestialWorld {
     
     public EarthOrbit() {
         super("Earth Orbit", new Orbit(37000), 1_000_000_000, Gravity.ZERO, Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.SPACE, 0, 0, Terrain.VOID);
+                CelestialType.SPACE, 0, 0, Terrain.VOID, new ItemChoice(Material.BLACK_STAINED_GLASS)
+        );
     }
 
     @Nonnull
@@ -60,12 +62,6 @@ public final class EarthOrbit extends CelestialWorld {
                 }
             }
         });
-    }
-
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.BLACK_STAINED_GLASS);
     }
 
 }

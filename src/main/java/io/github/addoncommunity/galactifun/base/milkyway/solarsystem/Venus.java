@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -30,7 +31,8 @@ public class Venus extends CelestialWorld {
         super("Venus", new Orbit(108_860_000L), 177_700_000L, new Gravity(1.105),
                 new Atmosphere(0, false, true, true, true, World.Environment.NETHER, new PotionEffectType[0], new PotionEffectType[] {PotionEffectType.WITHER}),
                 new DayCycle(116.75), CelestialType.TERRESTRIAL, 80, 30,
-                new Terrain("Volcanic", 45, 8, 0.02, 0.5, 0.3)
+                new Terrain("Volcanic", 45, 8, 0.02, 0.5, 0.3),
+                new ItemChoice(Material.BLACK_TERRACOTTA)
         );
     }
 
@@ -59,12 +61,6 @@ public class Venus extends CelestialWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
         populators.add(new LakePopulator(75, Material.LAVA));
-    }
-
-    @Nonnull
-    @Override
-    protected ItemChoice getBaseItem() {
-        return new ItemChoice(Material.BLACK_TERRACOTTA);
     }
 
 }
