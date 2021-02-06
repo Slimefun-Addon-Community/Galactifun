@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.mob.Alien;
+import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import org.bukkit.Chunk;
 import org.bukkit.Location;

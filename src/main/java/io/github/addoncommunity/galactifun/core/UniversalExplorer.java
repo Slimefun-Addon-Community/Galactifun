@@ -8,6 +8,8 @@ import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -70,20 +72,22 @@ public final class UniversalExplorer {
             UniversalObject<?> orbiter = orbiters.get(i);
             ItemStack item = orbiter.getItem();
             if (known) {
-                // add distance from current
-                ItemMeta meta = item.getItemMeta();
-                if (meta != null) {
-                    List<String> lore = meta.getLore();
-                    if (lore != null) {
-                        double distance = orbiter.getDistanceTo(current);
-                        lore.remove(lore.size() - 1);
-                        lore.add("&7Distance: " + (distance < 1
-                                ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers"
-                                : distance + " Light Years")
-                        );
-                        meta.setLore(lore);
-                        item = item.clone();
-                        item.setItemMeta(meta);
+                double distance = orbiter.getDistanceTo(current);
+                if (distance > 0) {
+                    // add distance from current
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        List<String> lore = meta.getLore();
+                        if (lore != null) {
+                            lore.remove(lore.size() - 1);
+                            lore.add(ChatColors.color("&7Distance: " + (distance < 1
+                                    ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers"
+                                    : distance + " Light Years")
+                            ));
+                            meta.setLore(lore);
+                            item = item.clone();
+                            item.setItemMeta(meta);
+                        }
                     }
                 }
             }

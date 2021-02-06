@@ -53,11 +53,11 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     @Override
     @OverridingMethodsMustInvokeSuper
     protected void getItemStats(@Nonnull List<String> stats) {
-        stats.add("&bSurface Area: &7" + this.surfaceArea + " kilometers");
+        stats.add("&bSurface Area: &7" + this.surfaceArea + " square kilometers");
         stats.add("&bGravity: &7" + this.gravity.getPercent() + "%");
         stats.add("&bOxygen: &7" + this.atmosphere.getOxygenPercentage() + "%");
         stats.add("&6Type: &e" + this.type.getName());
-        stats.add("&6Day Length: &e" + this.dayCycle.getDayLength());
+        stats.add("&6Day Cycle: &e" + this.dayCycle.getDayLength());
     }
 
 }

@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core.tasks;
 
-import io.github.addoncommunity.galactifun.api.mob.Alien;
+import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

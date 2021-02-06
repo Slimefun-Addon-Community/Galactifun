@@ -34,9 +34,9 @@ public class DayCycle {
     public DayCycle(int days, int hours) {
         StringBuilder builder = new StringBuilder();
         if (days > 0) {
-            builder.append(hours);
+            builder.append(days);
             builder.append(" day");
-            if (hours != 1) {
+            if (days != 1) {
                 builder.append('s');
             }
             builder.append(' ');

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.mob;
+package io.github.addoncommunity.galactifun.api.alien;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;

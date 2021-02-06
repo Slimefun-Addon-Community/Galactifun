@@ -35,7 +35,7 @@ public final class GenSphereCommand extends AbstractCommand {
             return;
         }
         
-        if (radius < 3 || radius > 128) {
+        if (radius < 3 || radius > 125) {
             return;
         }
         

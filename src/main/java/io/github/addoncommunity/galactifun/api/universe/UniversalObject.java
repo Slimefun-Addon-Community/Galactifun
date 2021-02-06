@@ -55,7 +55,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         Validate.notNull(orbit);
         
         this.orbit = orbit;
-        this.name = ChatColor.WHITE + name;
+        this.name = ChatColor.AQUA + name;
         this.item = new CustomItem(choice.getItem(), name);
 
         // add stats after subclass constructor completes
