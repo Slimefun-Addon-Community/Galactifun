@@ -207,7 +207,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             e.setCancelled(true);
-            if (this.species.size() != 0 && ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
+            if (!this.species.isEmpty() && ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
                 Alien alien = this.species.getRandom();
                 if (alien.canSpawn(e.getLocation())) {
                     alien.spawn(e.getLocation());

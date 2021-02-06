@@ -85,8 +85,10 @@ public class Terrain extends AbstractTerrain {
                 int realZ = startZ + z;
                 
                 // find max height
-                height = (int) Math.floor(celestialWorld.getAvgHeight() + this.maxDeviation * generator.noise(realX, realZ, this.frequency, this.amplitude, true)) ;
-
+                height = (int) Math.floor(celestialWorld.getAvgHeight() + this.maxDeviation * 
+                        generator.noise(realX, realZ, this.frequency, this.amplitude, true)
+                );
+                
                 // features
                 for (TerrainFeature feature : this.features) {
                     feature.generate(generator, chunk, realX, realZ, x, z, height);

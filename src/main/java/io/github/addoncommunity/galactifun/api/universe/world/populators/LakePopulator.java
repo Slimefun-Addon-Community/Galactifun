@@ -32,7 +32,7 @@ public class LakePopulator extends BlockPopulator {
                 Block b = world.getHighestBlockAt(startX + x, startZ + z);
                 if (b.getY() < this.maxY) {
                     for (int y = this.maxY ; y > b.getY(); y--) {
-                        chunk.getBlock(x, y, z).setType(this.liquid);
+                        chunk.getBlock(x, y, z).setType(this.liquid, false);
                     }
                 }
             }

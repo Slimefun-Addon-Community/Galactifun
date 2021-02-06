@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  */
 public final class MutantCreeper extends Alien {
-    
+
     public MutantCreeper(@Nonnull CelestialWorld... worlds) {
         super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
     }
@@ -32,5 +32,6 @@ public final class MutantCreeper extends Alien {
     public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
         return 1;
     }
-    
+
+
 }
