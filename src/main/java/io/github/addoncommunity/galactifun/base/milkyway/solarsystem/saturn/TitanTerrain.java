@@ -67,6 +67,10 @@ public class TitanTerrain extends AWorldTerrain {
                         }
                         generateRest(height, chunk, random, x, z);
                         break;
+                    case OCEAN:
+                        chunk.setBlock(x, height + 1, z, Material.WATER);
+                        generateRest(height, chunk, random, x, z);
+                        break;
                     default:
                         chunk.setBlock(x, height + 1, z, Material.SAND);
                         generateRest(height, chunk, random, x, z);
