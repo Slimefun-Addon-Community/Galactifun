@@ -1,10 +1,13 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
+import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,11 +27,11 @@ import java.util.Random;
  */
 public final class Mars extends CelestialWorld {
 
-    public Mars() {
-        super("Mars", 233_500_000L, 55_910_000L, new Gravity(3.711), Material.RED_SAND,
-                new DayCycle(1.03), WorldTerrain.HILLY_CAVERNS,
+    public Mars(@Nonnull CelestialBody... celestialBodies) {
+        super("&cMars", new Orbit(233_500_000L), 55_910_000L, new Gravity(3.711),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
-                50, 75);
+                new DayCycle(1.03), CelestialType.TERRESTRIAL, 75, 50, Terrain.HILLY_CAVERNS,
+                celestialBodies);
     }
 
     @Nonnull
@@ -62,5 +65,11 @@ public final class Mars extends CelestialWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
     }
-    
+
+    @Nonnull
+    @Override
+    protected ItemChoice getBaseItem() {
+        return new ItemChoice(Material.RED_SAND);
+    }
+
 }

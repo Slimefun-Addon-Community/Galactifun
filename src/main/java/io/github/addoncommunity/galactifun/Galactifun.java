@@ -1,13 +1,14 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.GalacticCategory;
+import io.github.addoncommunity.galactifun.core.UniversalCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
 import io.github.addoncommunity.galactifun.core.listener.AlienListener;
-import io.github.addoncommunity.galactifun.core.listener.GalacticListener;
+import io.github.addoncommunity.galactifun.core.listener.CelestialListener;
 import io.github.addoncommunity.galactifun.core.tasks.AlienTicker;
-import io.github.addoncommunity.galactifun.core.tasks.GalacticTicker;
+import io.github.addoncommunity.galactifun.core.tasks.CelestialTicker;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -28,17 +29,17 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
 
         CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
-                new GalactiportCommand(), new AlienSpawnCommand()
+                new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
         
-        new GalacticListener();
+        new CelestialListener();
         new AlienListener();
 
-        GalacticCategory.setup(this);
+        UniversalCategory.setup(this);
         
         BaseRegistry.setup();
         
-        PluginUtils.scheduleRepeatingSync(new GalacticTicker(), 10, GalacticTicker.INTERVAL);
+        PluginUtils.scheduleRepeatingSync(new CelestialTicker(), 10, CelestialTicker.INTERVAL);
         PluginUtils.scheduleRepeatingSync(new AlienTicker(), 10, AlienTicker.INTERVAL);
         
     }

@@ -17,7 +17,7 @@ import java.util.UUID;
  * 
  * @author Mooy1
  */
-public final class GalacticExplorer {
+public final class UniversalExplorer {
     
     private static final Map<UUID, UniversalObject<?>> HISTORY = new HashMap<>();
     
@@ -57,7 +57,7 @@ public final class GalacticExplorer {
         // objects
         for (int i = 1 ; i < Math.min(54, orbiters.size()); i++) {
             UniversalObject<?> orbiter = orbiters.get(i);
-            menu.addItem(i, orbiter.getItem());
+            menu.addItem(i, orbiter.getDistanceItem(object));
             if (orbiter.getOrbiters().size() == 0) {
                 menu.addMenuClickHandler(i, ChestMenuUtils.getEmptyClickHandler());
             } else {
@@ -67,6 +67,8 @@ public final class GalacticExplorer {
                 });
             }
         }
+        
+        menu.open(p);
 
     }
     

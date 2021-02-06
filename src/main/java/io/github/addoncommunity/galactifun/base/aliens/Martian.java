@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -28,10 +29,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * Class for the martian
  *
  * @author Seggan
+ * @author Mooy
  */
 public final class Martian extends Alien {
 
-    private final Map<Material, ItemStack> trades = new HashMap<>();
+    private final Map<Material, ItemStack> trades = new EnumMap<>(Material.class);
     private final ItemStack[] armor = {
             new ItemStack(Material.IRON_BOOTS),
             new ItemStack(Material.IRON_LEGGINGS),
@@ -49,20 +51,19 @@ public final class Martian extends Alien {
     private void setupTrades() {
         // Fixes the sword
         this.trades.put(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
-
         this.trades.put(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
     }
 
     @Override
     public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
         spawned.setCanPickupItems(false);
-        spawned.setRemoveWhenFarAway(true);
 
         // 1/64 chance
         if (ThreadLocalRandom.current().nextDouble() <= 0.015625) {
             spawned.setCustomName(ChatColor.RED + "The Zerix");
             spawned.setCustomNameVisible(true);
         }
+        
         Objects.requireNonNull(spawned.getEquipment());
 
         spawned.getEquipment().setArmorContents(this.armor);
@@ -84,8 +85,7 @@ public final class Martian extends Alien {
     @Override
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         LivingEntity entity = (LivingEntity) e.getRightClicked();
-        PlayerInventory inv = e.getPlayer().getInventory();
-        ItemStack item = inv.getItem(e.getHand());
+        ItemStack item = e.getPlayer().getInventory().getItem(e.getHand());
 
         ItemStack trade = this.trades.get(item.getType());
 
@@ -104,7 +104,7 @@ public final class Martian extends Alien {
             }
 
             PluginUtils.runSync(() -> {
-                if (!entity.isDead()) {
+                if (entity.isValid()) {
                     entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
 
                     entity.getEquipment().setItemInOffHand(null);

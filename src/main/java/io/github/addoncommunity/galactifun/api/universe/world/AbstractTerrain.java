@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Terrain;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -18,9 +19,13 @@ import java.util.Random;
  * @author Mooy1
  * @author Seggan
  */
-public abstract class AWorldTerrain extends Terrain {
+@AllArgsConstructor
+public abstract class AbstractTerrain {
     
-    public static final AWorldTerrain FLAT = new AWorldTerrain("Flat") {
+    @Nonnull @Getter
+    private final String name;
+    
+    public static final AbstractTerrain FLAT = new AbstractTerrain("Flat") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                      @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
@@ -28,7 +33,7 @@ public abstract class AWorldTerrain extends Terrain {
                 for (int z = 0; z < 16; z++) {
                     chunk.setBlock(x, 0, z, Material.BEDROCK);
 
-                    for (int y = 1 ; y < celestialWorld.getAvgHeight() ; y++) {
+                    for (int y = 1 ; y <= celestialWorld.getAvgHeight() ; y++) {
                         chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
                     }
 
@@ -40,17 +45,13 @@ public abstract class AWorldTerrain extends Terrain {
             }
         }
     };
-    public static final AWorldTerrain VOID = new AWorldTerrain("Void") {
+    public static final AbstractTerrain VOID = new AbstractTerrain("Void") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                      @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
             // add nothing
         }
     };
-    
-    public AWorldTerrain(@Nonnull String name) {
-        super(name);
-    }
 
     /**
      * Creates a new ChunkGenerator based on this terrain

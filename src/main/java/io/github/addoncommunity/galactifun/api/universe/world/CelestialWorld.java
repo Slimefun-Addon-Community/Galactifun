@@ -3,15 +3,17 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 import io.github.addoncommunity.galactifun.api.mob.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
-import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.core.util.Util;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -23,8 +25,11 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -34,61 +39,113 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Seggan
  * @author Mooy1
  */
-public abstract class CelestialWorld extends ACelestialWorld {
+public abstract class CelestialWorld extends AbstractCelestialWorld {
 
-    private static final double MIN_BORDER = 600D;
-    
-    @Nonnull
-    private final RandomizedSet<Alien> species = new RandomizedSet<>();
-    
-    @Getter
-    private final int alienSpawnChance;
-    
-    @Getter
-    private final int avgHeight;
-    
-    public CelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
-                          @Nonnull DayCycle dayCycle, @Nonnull AWorldTerrain terrain, @Nonnull Atmosphere atmosphere, int alienSpawnChance, int avgHeight, @Nonnull CelestialBody... celestialBodies) {
-        super(name, distance, surfaceArea, gravity, material, dayCycle, terrain, atmosphere, celestialBodies);
-        this.alienSpawnChance = alienSpawnChance;
-        this.avgHeight = avgHeight;
+    public static final Map<World, CelestialWorld> WORLDS = new HashMap<>();
+
+    @Nullable
+    public static CelestialWorld getByWorld(@Nonnull World world) {
+        return WORLDS.get(world);
+    }
+
+    @Nullable
+    public static CelestialWorld getByName(@Nonnull String worldName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            return null;
+        } else {
+            return getByWorld(world);
+        }
     }
     
+    private static final double MIN_BORDER = 600D;
+
     /**
-     * Sets up and creates the world
+     * All alien species that can spawn on this planet
      */
     @Nonnull
-    @Override
-    protected final World createWorld() {
+    private final RandomizedSet<Alien> species = new RandomizedSet<>();
 
-        String worldName = ChatColor.stripColor(this.name).toLowerCase(Locale.ROOT).replace(' ', '_');
+    /**
+     * Chance of an alien spawning whenever a mob would spawn from 0-100
+     */
+    @Getter
+    private final int alienSpawnChance;
+
+    /**
+     * Average block height of the world, similar to sea level
+     */
+    @Getter
+    private final int avgHeight;
+
+    /**
+     * Terrain used to generate this world
+     */
+    @Nonnull
+    private final AbstractTerrain terrain;
+
+    /**
+     * This world
+     */
+    @Getter 
+    @Nonnull
+    protected final World world;
+
+    /**
+     * Whether this world is enabled
+     */
+    @Getter
+    private boolean enabled;
+    
+    public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
+                          @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, int avgHeight, int alienSpawnChance, @Nonnull AbstractTerrain terrain,
+                          @Nonnull CelestialBody... celestialBodies) {
+        
+        super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, celestialBodies);
+        
+        Validate.isTrue(alienSpawnChance >= 0 && alienSpawnChance <= 100);
+        Validate.isTrue(avgHeight >= 0 && avgHeight <= 256);
+        Validate.notNull(terrain);
+        
+        this.alienSpawnChance = alienSpawnChance;
+        this.avgHeight = avgHeight;
+        this.terrain = terrain;
+        
+        String worldName = Util.stripUntranslatedColors(this.name).toLowerCase(Locale.ROOT).replace(' ', '_');
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(((AWorldTerrain) this.terrain).createGenerator(this))
+                .generator(this.terrain.createGenerator(this))
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
 
-        Validate.notNull(world, "There was an error loading the world for " + this.name);
-
-        // load effects
-        this.dayCycle.applyEffects(world);
-        this.atmosphere.applyEffects(world);
-
+        Validate.notNull(world, "There was an error loading the world for " + worldName);
+        
         // border
         WorldBorder border = world.getWorldBorder();
         border.setCenter(0, 0);
         border.setSize(Math.max(MIN_BORDER, Math.sqrt(this.surfaceArea) * Earth.BORDER_SURFACE_RATIO));
 
-        // register
-        GalacticRegistry.register(world, this);
-
+        // load effects
+        this.dayCycle.applyEffects(world);
+        this.atmosphere.applyEffects(world);
+        
         // block storage
         if (BlockStorage.getStorage(world) == null) {
             new BlockStorage(world);
         }
 
-        return world;
+        // register
+        WORLDS.put(world, this);
+        
+        // setup
+        setupWorld(world);
+
+        this.world = world;
+    }
+    
+    protected void setupWorld(@Nonnull World world) {
+        // can be overridden
     }
     
     /**
@@ -117,7 +174,7 @@ public abstract class CelestialWorld extends ACelestialWorld {
     /**
      * Ticks the world
      */
-    public void tickWorld() {
+    public final void tickWorld() {
         // time
         this.dayCycle.applyTime(this.world);
 
@@ -132,7 +189,7 @@ public abstract class CelestialWorld extends ACelestialWorld {
     /**
      * All effects that should be applied to the player
      */
-    public void applyEffects(@Nonnull Player p) {
+    public final void applyEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
 
@@ -147,10 +204,10 @@ public abstract class CelestialWorld extends ACelestialWorld {
     /**
      * Careful when overriding, this spawns aliens
      */
-    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
+    public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             e.setCancelled(true);
-            if (ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
+            if (this.species.size() != 0 && ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
                 Alien alien = this.species.getRandom();
                 if (alien.canSpawn(e.getLocation())) {
                     alien.spawn(e.getLocation());
@@ -158,5 +215,11 @@ public abstract class CelestialWorld extends ACelestialWorld {
             }
         }
     }
-    
+
+    @Override
+    protected void getItemStats(@Nonnull List<String> stats) {
+        super.getItemStats(stats);
+        stats.add("&7Terrain: " + this.terrain.getName());
+    }
+
 }

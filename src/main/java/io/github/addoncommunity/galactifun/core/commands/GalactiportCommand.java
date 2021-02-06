@@ -26,7 +26,7 @@ public final class GalactiportCommand extends AbstractCommand {
 
     @Override
     public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        if (!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player) || strings.length != 2) {
             return;
         }
         

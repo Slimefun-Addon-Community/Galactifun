@@ -16,14 +16,14 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public final class GalacticCategory extends FlexCategory {
+public final class UniversalCategory extends FlexCategory {
 
     public static void setup(@Nonnull Galactifun galactifun) {
-        new GalacticCategory().register(galactifun);
+        new UniversalCategory().register(galactifun);
     }
     
-    private GalacticCategory() {
-        super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE));
+    private UniversalCategory() {
+        super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE, "&bThe Universe"));
     }
 
     @Override
@@ -33,7 +33,7 @@ public final class GalacticCategory extends FlexCategory {
 
     @Override
     public void open(@Nonnull Player player, @Nonnull PlayerProfile playerProfile, @Nonnull SlimefunGuideMode slimefunGuideMode) {
-        GalacticExplorer.explore(player);
+        UniversalExplorer.explore(player);
         playerProfile.getGuideHistory().add(this, 1);
     }
 

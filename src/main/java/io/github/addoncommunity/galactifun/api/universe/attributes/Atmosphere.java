@@ -23,15 +23,22 @@ public class Atmosphere {
             0, false, false, false, false, World.Environment.NORMAL
     );
 
-    @Getter private final int oxygenPercentage;
+    @Getter 
+    private final int oxygenPercentage;
     private final boolean weatherCycle;
     private final boolean storming;
     private final boolean thundering;
     private final boolean flammable;
     
-    @Nonnull @Getter private final PotionEffectType[] normalEffects;
-    @Nonnull @Getter private final PotionEffectType[] unprotectedEffects;
-    @Nonnull @Getter private final World.Environment environment;
+    @Nonnull 
+    @Getter 
+    private final PotionEffectType[] normalEffects;
+    @Nonnull 
+    @Getter 
+    private final PotionEffectType[] unprotectedEffects;
+    @Nonnull
+    @Getter 
+    private final World.Environment environment;
     
     public Atmosphere(int oxygenPercentage, boolean weatherCycle, boolean storming, boolean thundering, boolean flammable, @Nonnull World.Environment environment,
                       @Nonnull PotionEffectType[] normalEffects, @Nonnull PotionEffectType[] unprotectedEffects) {

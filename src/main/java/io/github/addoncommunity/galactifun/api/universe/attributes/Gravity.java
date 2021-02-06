@@ -51,11 +51,19 @@ public class Gravity {
         this(validateAndDiv(gravity, EARTH_GRAVITY));
     }
 
-    private Gravity(float boost) {
-        this.percent = (int) (boost * 100);
-        int level = (int) (Math.log(boost) / LOG_JUMP_BOOST);
+    protected Gravity(float boost) {
+        // supports negative, 0, and positive
+        int level;
+        if (boost > 0) {
+            level = (int) (Math.log(boost) / LOG_JUMP_BOOST);
+        } else if (boost < 0) {
+            level = (int) (Math.log(boost * -1) / LOG_JUMP_BOOST) * -1;
+        } else {
+            level = 0;
+        }
         this.jump = level - 1;
         this.speed = (level >> 1) - 1;
+        this.percent = (int) (boost * 100);
     }
     
     private static float validateAndDiv(double num, double div) {
@@ -75,6 +83,7 @@ public class Gravity {
     public static void removeGravity(@Nonnull Player p) {
         p.removePotionEffect(PotionEffectType.JUMP);
         p.removePotionEffect(PotionEffectType.SPEED);
+        p.removePotionEffect(PotionEffectType.SLOW_FALLING);
     }
     
 }

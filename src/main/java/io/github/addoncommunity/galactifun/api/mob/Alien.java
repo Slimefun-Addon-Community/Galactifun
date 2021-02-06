@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.api.mob;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.core.GalacticRegistry;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -20,9 +19,9 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -33,8 +32,21 @@ import java.util.Objects;
  * @author Mooy1
  */
 public abstract class Alien {
-    
-    public static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
+
+    public static final Map<String, Alien> ALIENS = new HashMap<>();
+
+    @Nullable
+    public static Alien getByID(@Nonnull String id) {
+        return ALIENS.get(id);
+    }
+
+    @Nullable
+    public static Alien getByEntity(@Nonnull Entity entity) {
+        String id = PersistentDataAPI.getString(entity, Alien.KEY);
+        return id == null ? null : getByID(id);
+    }
+
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
 
     @Nonnull
     private final String id;
@@ -45,8 +57,6 @@ public abstract class Alien {
     private final int chance;
     @Nonnull
     private final EntityType type;
-    @Nonnull
-    private final List<CelestialWorld> worlds;
 
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int chance, int health, @Nonnull CelestialWorld... worlds) {
         Validate.notNull(id);
@@ -59,13 +69,12 @@ public abstract class Alien {
         this.name = ChatColors.color(name);
         this.health = health;
         this.type = type;
-        this.worlds = new ArrayList<>(Arrays.asList(worlds));
-
-        for (CelestialWorld world : this.worlds) {
+        
+        for (CelestialWorld world : worlds) {
             world.addSpecies(this);
         }
 
-        GalacticRegistry.register(this.id, this);
+        ALIENS.put(id, this);
 
     }
 
@@ -105,13 +114,12 @@ public abstract class Alien {
         int i = 0;
         for (Entity entity : chunk.getEntities()) {
             if (entity instanceof LivingEntity) {
-                Alien alien = GalacticRegistry.getAlien(entity);
+                Alien alien = getByEntity(entity);
                 if (alien != null && alien.id.equals(this.id)) {
                     i++;
                 }
             }
         }
-
         return i;
     }
     

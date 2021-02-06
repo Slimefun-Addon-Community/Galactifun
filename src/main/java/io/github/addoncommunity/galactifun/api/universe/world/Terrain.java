@@ -11,25 +11,25 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 /**
- * Defines the terrain of a celestial world
+ * Defines the terrain of a celestial world, default implementation
  * 
  * @author Mooy1
  * @author Seggan
  * 
  */
-public class WorldTerrain extends AWorldTerrain {
+public class Terrain extends AbstractTerrain {
 
-    public static final WorldTerrain HILLY_CAVERNS = new WorldTerrain( "Hilly Caverns",
+    public static final Terrain HILLY_CAVERNS = new Terrain( "Hilly Caverns",
             40, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
     );
-    public static final WorldTerrain SMOOTH = new WorldTerrain( "Smooth",
+    public static final Terrain SMOOTH = new Terrain( "Smooth",
             15, 8,0.01, .5, .5
     );
 
     /**
      * Maximum y deviation
      */
-    protected final int maxDeviation;
+    protected final double maxDeviation;
 
     /**
      * Octave generator octaves
@@ -57,8 +57,8 @@ public class WorldTerrain extends AWorldTerrain {
     @Nonnull
     protected final TerrainFeature[] features;
 
-    public WorldTerrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
-                        double frequency, @Nonnull TerrainFeature... features) {
+    public Terrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
+                   double frequency, @Nonnull TerrainFeature... features) {
         super(name);
         this.maxDeviation = maxDeviation;
         this.octaves = octaves;
@@ -67,10 +67,6 @@ public class WorldTerrain extends AWorldTerrain {
         this.frequency = frequency;
         this.features = features;
     }
-
-    /**
-     * Generate a chunk
-     */
     @Override
     protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                  @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
@@ -84,23 +80,29 @@ public class WorldTerrain extends AWorldTerrain {
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                chunk.setBlock(x, 0, z, Material.BEDROCK);
 
                 int realX = startX + x;
                 int realZ = startZ + z;
-
+                
                 // find max height
-                height = (int) (celestialWorld.getAvgHeight() + this.maxDeviation * generator.noise(
-                        realX, realZ, this.frequency, this.amplitude, true)
-                );
+                height = (int) Math.floor(celestialWorld.getAvgHeight() + this.maxDeviation * generator.noise(realX, realZ, this.frequency, this.amplitude, true)) ;
 
                 // features
                 for (TerrainFeature feature : this.features) {
                     feature.generate(generator, chunk, realX, realZ, x, z, height);
                 }
 
+                // bedrock
+                chunk.setBlock(x, 0, z, Material.BEDROCK);
+                if (random.nextBoolean()) {
+                    chunk.setBlock(x, 1, z, Material.BEDROCK);
+                    if (random.nextBoolean()) {
+                        chunk.setBlock(x, 2, z, Material.BEDROCK);
+                    }
+                }
+
                 // generate the rest
-                for (int y = 1 ; y < height ; y++) {
+                for (int y = 1 ; y <= height ; y++) {
                     if (chunk.getType(x, y, z) == Material.AIR) {
                         chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, height, x, y, z));
                     }

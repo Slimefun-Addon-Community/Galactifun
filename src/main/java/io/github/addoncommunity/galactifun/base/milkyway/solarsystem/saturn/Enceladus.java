@@ -1,14 +1,14 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
@@ -23,8 +23,8 @@ import java.util.Random;
 public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
-        super("Enceladus", 237_948L, 308_359L, new Gravity(0.0113), Material.ICE,
-                DayCycle.ETERNAL_NIGHT, WorldTerrain.FLAT, Atmosphere.NONE, 20, 75);
+        super("Enceladus", new Orbit(237_948L), 308_359L, new Gravity(0.0113), Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
+                CelestialType.TERRESTRIAL, 75, 20, Terrain.FLAT);
     }
 
     @Nonnull
@@ -50,12 +50,10 @@ public class Enceladus extends CelestialWorld {
 
     }
 
+    @Nonnull
     @Override
-    public void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
-        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            if (e.getEntityType() == EntityType.POLAR_BEAR) {
-                e.setCancelled(true);
-            }
-        }
+    protected ItemChoice getBaseItem() {
+        return new ItemChoice(Material.ICE);
     }
+
 }

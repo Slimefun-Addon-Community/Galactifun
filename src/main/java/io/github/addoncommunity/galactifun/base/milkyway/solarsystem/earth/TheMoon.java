@@ -1,10 +1,12 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -22,8 +24,8 @@ import java.util.Random;
 public final class TheMoon extends CelestialWorld {
     
     public TheMoon() {
-        super("The Moon", 382_500L, 14_600_000L, Gravity.MOON_LIKE,
-                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE, 30, 80);
+        super("The Moon", new Orbit(382_500L), 14_600_000L, Gravity.MOON_LIKE,
+                Atmosphere.NONE, DayCycle.EARTH_LIKE, CelestialType.TERRESTRIAL, 80, 30, Terrain.SMOOTH);
     }
     
     @Nonnull
@@ -45,6 +47,12 @@ public final class TheMoon extends CelestialWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         
+    }
+    
+    @Nonnull
+    @Override
+    protected ItemChoice getBaseItem() {
+        return new ItemChoice(Material.ANDESITE);
     }
 
 }

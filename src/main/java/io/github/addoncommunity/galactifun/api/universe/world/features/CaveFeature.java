@@ -34,7 +34,7 @@ public class CaveFeature implements TerrainFeature {
 
     @Override
     public void generate(SimplexOctaveGenerator generator, ChunkGenerator.ChunkData chunk, int realX, int realZ, int x, int z, int height) {
-        for (int y = 1 ; y < height - this.blocksBetweenSurface ; y++) {
+        for (int y = 1 ; y <= height - this.blocksBetweenSurface ; y++) {
             double density = generator.noise(
                     realX,
                     y,
