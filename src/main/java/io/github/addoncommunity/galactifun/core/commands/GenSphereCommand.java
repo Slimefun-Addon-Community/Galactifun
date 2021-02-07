@@ -38,22 +38,20 @@ public final class GenSphereCommand extends AbstractCommand {
         
         Player p = (Player) commandSender;
 
-        if (radius < 5 || radius > 125) {
-            p.sendMessage(ChatColor.RED + "Radius must be within [5 - 125]");
+        if (radius < 3 || radius > 125) {
+            p.sendMessage(ChatColor.RED + "Radius must be within [3 - 125]");
             return;
         }
         
         Block target = p.getLocation().getBlock().getRelative(p.getFacing(), radius + 4);
 
-        PluginUtils.runSync(() -> {
-            double time = System.nanoTime();
+        double time = System.nanoTime();
 
-            SPHERE.generate(target, ThreadLocalRandom.current(), radius, 0);
+        SPHERE.generate(target, ThreadLocalRandom.current(), radius, 0);
 
-            time = System.nanoTime() - time;
+        time = System.nanoTime() - time;
 
-            p.sendMessage(ChatColor.GREEN + "Time: " + (time > 1000 ? time / 1000000000D + " s" : time / 1000000D + " ms"));
-        });
+        p.sendMessage(ChatColor.GREEN + "Time: " + (time > 1_000_000_000D ? time / 1_000_000_000D + " s" : time / 1_000_000D + " ms"));
     }
 
     @Nonnull

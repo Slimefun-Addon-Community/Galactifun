@@ -29,9 +29,8 @@ public final class Sphere {
     }
 
     /**
-     * Generates a sphere by looping through combos of x, y, z where no combo contains the same values
-     * 
-     * min 5, max 125
+     * Generates a sphere by looping throughout sets of 1, 2, and 3 moves (a, b, c),
+     * comparing to radius, and generating blocks at all possible corresponding locations
      *
      * Stuff for thinking about how to implement:
      * 
@@ -57,7 +56,8 @@ public final class Sphere {
     public void generate(@Nonnull Block middle, @Nonnull Random random, int min, int dev) {
         Validate.notNull(middle);
         Validate.notNull(random);
-        Validate.isTrue(min >= 5);
+        
+        Validate.isTrue(min >= 3);
         Validate.isTrue(dev >= 0);
         Validate.isTrue(min + dev <= 125);
         
@@ -67,46 +67,46 @@ public final class Sphere {
         // radius
         int radius = min + random.nextInt(dev + 1);
         int radiusSquared = radius * radius;
+        
         // moves in any direction
         int a;
         int b;
         int c;
+        
         // for keeping track of distance
         int aSquared;
         int aPlusBSquared;
         int aPlusBPlusCSquared;
         
-        // 0 moves
+        // 0 moves, middle
         gen(0, 0, 0, material());
-        // 1 move
-        for (a = 1; a <= radius ; a++) {
-            // always within radius
+        
+        // 1 move, on radius
+        genThree(radius, 0);
+        genThree(-radius, 0);
+        
+        for (a = 1, aSquared = 1; a < radius ; aSquared += (a << 1) + 1, a++) {
+            
+            // 1 move, always within radius
             genThree(a, 0);
             genThree(-a, 0);
-        }
-        // 2 moves
-        for (a = 1, aSquared = 1; a < radius - 1 ; aSquared += (a << 1) + 1, a++) {
-            // 2nd move is >= 1st move
+
             for (b = a, aPlusBSquared = aSquared + b * b; b < radius ; aPlusBSquared += (b << 1) + 1, b++) {
-                // check within radius
+                
+                // 2 moves, check within radius
                 if (aPlusBSquared < radiusSquared) {
                     genTwelve(a, b);
                     if (a != b) {
                         genTwelve(b, a);
                     }
                 } else {
-                    // any b past this are outside radius
+                    // any past this are outside radius
                     break;
                 }
-            }
-        }
-        // 3 moves
-        for (a = 1, aSquared = 1; a < radius - 2 ; aSquared += (a << 1) + 1, a++) {
-            // 2nd move is >= 1st move
-            for (b = a, aPlusBSquared = aSquared + b * b ; b < radius - 1 ; aPlusBSquared += (b << 1) + 1, b++) {
-                // 3rd move is >= 2nd move
+
                 for (c = b, aPlusBPlusCSquared = aPlusBSquared + c * c ; c < radius ; aPlusBPlusCSquared += (c << 1) + 1, c++) {
-                    // check within radius
+                    
+                    // 3 moves, check within radius
                     if (aPlusBPlusCSquared < radiusSquared) {
                         // ? ? ? -> no swaps
                         genEight(a, b, c);
@@ -126,7 +126,7 @@ public final class Sphere {
                             genEight(a, c, b);
                         }
                     } else {
-                        // any c past this are outside radius
+                        // any past this are outside radius
                         break;
                     }
                 }

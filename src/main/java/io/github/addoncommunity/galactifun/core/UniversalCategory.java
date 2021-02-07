@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
@@ -17,12 +16,8 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  */
 public final class UniversalCategory extends FlexCategory {
-
-    public static void setup(@Nonnull Galactifun galactifun) {
-        new UniversalCategory().register(galactifun);
-    }
     
-    private UniversalCategory() {
+    public UniversalCategory() {
         super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE, "&bThe Universe"));
     }
 
