@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.core.util.Sphere;
+import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,22 +36,24 @@ public final class GenSphereCommand extends AbstractCommand {
             return;
         }
         
-        if (radius < 3 || radius > 125) {
+        Player p = (Player) commandSender;
+
+        if (radius < 5 || radius > 125) {
+            p.sendMessage(ChatColor.RED + "Radius must be within [5 - 125]");
             return;
         }
         
-        Player p = (Player) commandSender; 
-
         Block target = p.getLocation().getBlock().getRelative(p.getFacing(), radius + 4);
-        
-        double time = System.nanoTime();
-        
-        SPHERE.generate(target, ThreadLocalRandom.current(), radius, 0);
-        
-        time = System.nanoTime() - time;
-        
-        p.sendMessage(ChatColor.GREEN + "Time: " + (time / 1000000D) + " ms");
-        
+
+        PluginUtils.runSync(() -> {
+            double time = System.nanoTime();
+
+            SPHERE.generate(target, ThreadLocalRandom.current(), radius, 0);
+
+            time = System.nanoTime() - time;
+
+            p.sendMessage(ChatColor.GREEN + "Time: " + (time > 1000 ? time / 1000000000D + " s" : time / 1000000D + " ms"));
+        });
     }
 
     @Nonnull

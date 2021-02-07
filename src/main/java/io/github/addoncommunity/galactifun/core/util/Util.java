@@ -5,6 +5,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 /**
  * Utilities
@@ -20,6 +21,13 @@ public final class Util {
     @Nonnull
     public static String stripUntranslatedColors(@Nonnull String string) {
         return ChatColor.stripColor(ChatColors.color(string));
+    }
+
+    /**
+     * Random number from to inclusive
+     */
+    public static int randomFrom(int from, int to, @Nonnull Random random) {
+        return from + random.nextInt(1 + to - from);
     }
     
 }

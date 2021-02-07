@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Sphere;
+import io.github.addoncommunity.galactifun.core.util.Util;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -49,15 +50,15 @@ public final class EarthOrbit extends CelestialWorld {
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 int rand = random.nextInt(50);
                 if (rand < 5) { // 10 % to gen
-                    int x = random.nextInt(4) + 6;
-                    int y = random.nextInt(220) + 18;
-                    int z = random.nextInt(4) + 6;
+                    int x = Util.randomFrom(7, 8, random);
+                    int y = Util.randomFrom(14, 251, random);
+                    int z = Util.randomFrom(7, 8, random);
                     if (rand == 0) { // 2 % debris
                         chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
                     } else if (rand == 1) { // 2 % comet
-                        COMET.generate(random ,chunk, x, y, z, 3, 2);
+                        COMET.generate(random ,chunk, x, y, z, 5, 2);
                     } else { // 6 % asteroid
-                        ASTEROID.generate(random ,chunk, x, y, z, 3, 4);
+                        ASTEROID.generate(random ,chunk, x, y, z, 5, 2);
                     }
                 }
             }
