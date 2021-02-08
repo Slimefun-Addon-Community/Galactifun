@@ -112,10 +112,10 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         }
         if (this.orbiting == null || getLevel() < object.getLevel()) {
             // object.getOrbiting() != null
-            return this.orbit.getCurrentDistance() + getDistanceTo(object.getOrbiting());
+            return object.orbit.getCurrentDistance() + getDistanceTo(object.getOrbiting());
         }
         // object.getOrbiting() == null || getLevel() > object.getLevel()
-        return object.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(object);
+        return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(object);
     }
 
     /**

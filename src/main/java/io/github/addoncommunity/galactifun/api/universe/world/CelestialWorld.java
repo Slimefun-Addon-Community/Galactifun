@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
@@ -105,7 +105,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
      * Configuration
      */
     @Nonnull
-    protected final WorldConfiguration config;
+    protected final WorldConfig config;
     
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
                           @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type,
@@ -122,7 +122,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         
         String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         
-        this.config = WorldConfiguration.loadConfiguration(worldName, enabledByDefault());
+        this.config = WorldConfig.loadConfiguration(worldName, enabledByDefault());
         
         if (!this.config.isEnabled()) {
             this.world = null;

@@ -26,7 +26,7 @@ public final class EarthOrbit extends CelestialWorld {
     private static final Sphere ASTEROID = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
     public EarthOrbit() {
-        super("Earth Orbit", new Orbit(37000), 1_000_000_000, Gravity.ZERO, Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
+        super("Earth Orbit", new Orbit(24000), Earth.SURFACE_AREA * 20, Gravity.ZERO, Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
                 CelestialType.SPACE, 0, Terrain.VOID, new ItemChoice(Material.BLACK_STAINED_GLASS)
         );
     }

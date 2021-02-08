@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldConfiguration;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldConfig;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.UniversalCategories;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
@@ -33,8 +33,6 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
-
-        WorldConfiguration.load(this);
         
         UniversalCategories.setup(this);
         

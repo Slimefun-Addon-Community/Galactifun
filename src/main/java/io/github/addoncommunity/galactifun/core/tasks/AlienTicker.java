@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.core.tasks;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.config.ConfigUtils;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 

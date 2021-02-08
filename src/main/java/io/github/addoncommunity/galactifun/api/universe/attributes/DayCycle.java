@@ -16,7 +16,7 @@ public class DayCycle {
     
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
     public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
-    public static final DayCycle EARTH_LIKE = new DayCycle(1D);
+    public static final DayCycle EARTH_LIKE = new DayCycle(1, 0);
     
     @Nonnull @Getter
     private final String dayLength;
@@ -28,7 +28,7 @@ public class DayCycle {
     }
 
     public DayCycle(int hours) {
-        this(hours % 24, hours / 24);
+        this(hours / 24, hours % 24);
     }
 
     public DayCycle(int days, int hours) {

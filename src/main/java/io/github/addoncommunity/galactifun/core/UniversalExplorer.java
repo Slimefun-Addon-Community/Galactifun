@@ -67,26 +67,33 @@ public final class UniversalExplorer {
         for (int i = 0 ; i < Math.min(52, orbiters.size()); i++) {
             UniversalObject<?> orbiter = orbiters.get(i);
             ItemStack item = orbiter.getItem();
+            
             if (known) {
                 double distance = orbiter.getDistanceTo(current);
-                if (distance > 0) {
-                    // add distance from current
-                    ItemMeta meta = item.getItemMeta();
-                    if (meta != null) {
-                        List<String> lore = meta.getLore();
-                        if (lore != null) {
-                            lore.remove(lore.size() - 1);
+                
+                // add distance from current
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    List<String> lore = meta.getLore();
+                    if (lore != null) {
+                        lore.remove(lore.size() - 1);
+
+                        if (distance > 0) {
                             lore.add(ChatColors.color("&7Distance: " + (distance < 1
                                     ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers"
                                     : distance + " Light Years")
                             ));
-                            meta.setLore(lore);
-                            item = item.clone();
-                            item.setItemMeta(meta);
+                        } else {
+                            lore.add(ChatColors.color("&7You are here!"));
                         }
+                        
+                        meta.setLore(lore);
+                        item = item.clone();
+                        item.setItemMeta(meta);
                     }
                 }
             }
+            
             menu.addItem(i + 1, item);
             if (orbiter.getOrbiters().size() == 0) {
                 menu.addMenuClickHandler(i + 1, ChestMenuUtils.getEmptyClickHandler());

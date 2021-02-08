@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.AbstractCelestialWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.config.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 public final class Earth extends AbstractCelestialWorld {
     
     private static final World WORLD = getMainWorld();
-    private static final double SURFACE_AREA = 196_900_000;
+    public static final long SURFACE_AREA = 196_900_000;
     public static final double BORDER_SURFACE_RATIO =  WORLD.getWorldBorder().getSize() / Math.sqrt(SURFACE_AREA);
     
     @Nonnull
@@ -39,7 +39,7 @@ public final class Earth extends AbstractCelestialWorld {
     }
     
     public Earth(@Nonnull CelestialBody... orbiting) {
-        super("Earth", new Orbit(149_600_000L), 196_900_000, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE,
+        super("Earth", new Orbit(149_600_000L), SURFACE_AREA, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE,
                 CelestialType.TERRESTRIAL, Atmosphere.EARTH_LIKE, new ItemChoice(Material.GRASS_BLOCK), orbiting);
     }
 
