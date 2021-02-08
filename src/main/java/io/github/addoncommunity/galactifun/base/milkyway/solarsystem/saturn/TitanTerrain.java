@@ -67,6 +67,15 @@ class TitanTerrain extends AWorldTerrain {
                         }
                         generateRest(height, chunk, random, x, z);
                         break;
+                    case COLD_OCEAN:
+                    case DEEP_LUKEWARM_OCEAN:
+                    case DEEP_OCEAN:
+                    case DEEP_WARM_OCEAN:
+                    case LUKEWARM_OCEAN:
+                    case DEEP_COLD_OCEAN:
+                    case FROZEN_OCEAN:
+                    case DEEP_FROZEN_OCEAN:
+                    case WARM_OCEAN:
                     case OCEAN:
                         chunk.setBlock(x, height + 1, z, Material.WATER);
                         generateRest(height, chunk, random, x, z);
