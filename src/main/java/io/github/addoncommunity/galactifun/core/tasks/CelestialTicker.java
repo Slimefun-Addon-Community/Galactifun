@@ -13,7 +13,7 @@ public final class CelestialTicker implements Runnable {
     
     @Override
     public void run() {
-        for (CelestialWorld object : CelestialWorld.WORLDS.values()) {
+        for (CelestialWorld object : CelestialWorld.getAll()) {
             object.tickWorld();
         }
     }

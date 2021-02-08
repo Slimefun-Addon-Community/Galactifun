@@ -10,6 +10,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Util;
+import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
@@ -20,6 +22,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
@@ -27,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +46,10 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public abstract class CelestialWorld extends AbstractCelestialWorld {
 
-    public static final Map<World, CelestialWorld> WORLDS = new HashMap<>();
+    /**
+     * All celestial worlds
+     */
+    private static final Map<World, CelestialWorld> WORLDS = new HashMap<>();
 
     @Nullable
     public static CelestialWorld getByWorld(@Nonnull World world) {
@@ -59,21 +66,21 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         }
     }
     
+    @Nonnull
+    public static Collection<CelestialWorld> getAll() {
+        return WORLDS.values();
+    }
+    
     private static final double MIN_BORDER = 600D;
     private static final double MAX_BORDER = 30_000_000D;
+    private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 16, 8);
     
     /**
      * All alien species that can spawn on this planet
      */
     @Nonnull
     private final RandomizedSet<Alien> species = new RandomizedSet<>();
-
-    /**
-     * Chance of an alien spawning whenever a mob would spawn from 0-100
-     */
-    @Getter
-    private final int alienSpawnChance;
-
+    
     /**
      * Average block height of the world, similar to sea level
      */
@@ -101,16 +108,14 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
                           @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type,
-                          int avgHeight, int alienSpawnChance, @Nonnull AbstractTerrain terrain,
-                          @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
+                          int avgHeight, @Nonnull AbstractTerrain terrain, @Nonnull ItemChoice choice,
+                          @Nonnull CelestialBody... celestialBodies) {
         
         super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, choice, celestialBodies);
         
-        Validate.isTrue(alienSpawnChance >= 0 && alienSpawnChance <= 100);
         Validate.isTrue(avgHeight >= 0 && avgHeight <= 256);
         Validate.notNull(terrain);
         
-        this.alienSpawnChance = alienSpawnChance;
         this.avgHeight = avgHeight;
         this.terrain = terrain;
         
@@ -203,19 +208,10 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
 
         // other stuff?
     }
-
-    /**
-     * Careful when overriding, this spawns aliens
-     */
+    
     public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
-        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            e.setCancelled(true);
-            if (!this.species.isEmpty() && ThreadLocalRandom.current().nextInt(100) <= this.alienSpawnChance) {
-                Alien alien = this.species.getRandom();
-                if (alien.canSpawn(e.getLocation())) {
-                    alien.spawn(e.getLocation());
-                }
-            }
+        if (!this.species.isEmpty() && this.world.getLivingEntities().size() < this.world.getPlayers().size() * MAX_ALIENS) {
+            this.species.getRandom().spawn(e.getLocation(), this.world);
         }
     }
 

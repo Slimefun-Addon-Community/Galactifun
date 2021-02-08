@@ -23,15 +23,9 @@ public final class MutantCreeper extends Alien {
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
+    public void onSpawn(@Nonnull LivingEntity spawned) {
         Creeper spawnedCreeper = (Creeper) spawned;
         spawnedCreeper.setPowered(true);
     }
-
-    @Override
-    public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
-        return 1;
-    }
-
 
 }

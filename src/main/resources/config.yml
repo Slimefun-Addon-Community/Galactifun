@@ -1,11 +1,20 @@
-# earth-world-name
+# 
+# worlds:
+# 
+# earth-world-name: default: world 
 # The name of your world that is earth.
 # This should be the name main world where people work on stuff and make bases.
-# By default, it is "world"
 # 
-# mob-tick-interval
-# How often aliens tick in Minecraft ticks
-# By default, mobs tick once every 2 Minecraft ticks (every 0.1 second)
+# mobs:
 # 
-earth-world-name: world
-mob-tick-interval: 2
+# tick-interval: default: 4 range: 1-20
+# How often aliens tick in Minecraft ticks, there are 20 ticks in 1 second
+# 
+# max-per-player: default: 8 range: 1-16
+# maximum number of aliens per player per world
+# 
+worlds:
+  earth-name: world
+aliens:
+  tick-interval: 2
+  max-per-player: 8

@@ -33,7 +33,9 @@ public class Gravity {
     
     @Getter
     private final int percent;
+    @Getter
     private final int jump;
+    @Getter
     private final int speed;
 
     @Nonnull
@@ -61,7 +63,9 @@ public class Gravity {
         } else {
             level = 0;
         }
+        // amplifier is level - 1
         this.jump = level - 1;
+        // speed = jump / 2
         this.speed = (level >> 1) - 1;
         this.percent = (int) (boost * 100);
     }

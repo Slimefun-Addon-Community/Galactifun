@@ -62,9 +62,12 @@ public final class CelestialListener implements Listener {
     
     @EventHandler
     public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
-        CelestialWorld world = CelestialWorld.getByWorld(e.getEntity().getWorld());
-        if (world != null) {
-            world.onMobSpawn(e);
+        if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            CelestialWorld world = CelestialWorld.getByWorld(e.getEntity().getWorld());
+            if (world != null) {
+                e.setCancelled(true);
+                world.onMobSpawn(e);
+            }
         }
     }
     

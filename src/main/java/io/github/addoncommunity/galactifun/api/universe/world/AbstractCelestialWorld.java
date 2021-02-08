@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,9 @@ public abstract class AbstractCelestialWorld extends CelestialBody {
                                   @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, @Nonnull Atmosphere atmosphere,
                                   @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
         super(name, orbit, surfaceArea, gravity, dayCycle, type, atmosphere, choice, celestialBodies);
+        
+        // register the world after subclass loads
+        PluginUtils.runSync(() -> registerWorld(getWorld()));
     }
 
     @Nonnull

@@ -29,7 +29,7 @@ public final class Earth extends AbstractCelestialWorld {
     
     @Nonnull
     private static World getMainWorld() {
-        World world = Bukkit.getWorld(ConfigUtils.getString("earth-world-name", "world"));
+        World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name", "world"));
         if (world == null) {
             Bukkit.getServer().getPluginManager().disablePlugin(Galactifun.getInstance());
             throw new IllegalStateException("Failed to read earth world name from config, no default world found!");

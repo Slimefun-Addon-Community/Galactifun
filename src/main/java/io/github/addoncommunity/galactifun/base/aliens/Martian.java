@@ -53,7 +53,7 @@ public final class Martian extends Alien {
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
+    public void onSpawn(@Nonnull LivingEntity spawned) {
         spawned.setCanPickupItems(false);
 
         // 1/64 chance
@@ -66,11 +66,6 @@ public final class Martian extends Alien {
 
         spawned.getEquipment().setArmorContents(this.armor);
         spawned.getEquipment().setItemInMainHand(this.sword);
-    }
-    
-    @Override
-    public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
-        return 2;
     }
 
     @Override

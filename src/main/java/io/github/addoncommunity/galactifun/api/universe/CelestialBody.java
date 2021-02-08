@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import lombok.Getter;
 import org.apache.commons.lang.Validate;
 
 import javax.annotation.Nonnull;
@@ -19,12 +20,19 @@ import java.util.List;
  */
 public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     
+    @Getter
     @Nonnull 
     protected final DayCycle dayCycle;
+    
+    @Getter
     @Nonnull 
     protected final Atmosphere atmosphere;
+    
+    @Getter
     @Nonnull 
     protected final Gravity gravity;
+    
+    @Getter
     @Nonnull
     private final CelestialType type;
     

@@ -2,15 +2,11 @@ package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.util.Util;
-import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -64,7 +60,7 @@ public final class UniversalExplorer {
             });
         }
         
-        UniversalObject<?> current = CelestialWorld.getByWorld(p.getWorld());
+        UniversalObject<?> current = UniversalObject.getByWorld(p.getWorld());
         boolean known = current != null;
 
         // objects
