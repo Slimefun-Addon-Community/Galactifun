@@ -30,7 +30,7 @@ public class Venus extends CelestialWorld {
     public Venus() {
         super("Venus", new Orbit(108_860_000L), 177_700_000L, new Gravity(1.105),
                 new Atmosphere(0, false, true, true, true, World.Environment.NETHER, new PotionEffectType[0], new PotionEffectType[] {PotionEffectType.WITHER}),
-                new DayCycle(116.75), CelestialType.TERRESTRIAL, 80, 30,
+                new DayCycle(116.75), CelestialType.TERRESTRIAL, 80,
                 new Terrain("Volcanic", 45, 8, 0.02, 0.5, 0.3),
                 new ItemChoice(Material.BLACK_TERRACOTTA)
         );

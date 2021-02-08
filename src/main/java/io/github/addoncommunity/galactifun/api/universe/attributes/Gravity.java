@@ -24,10 +24,15 @@ public class Gravity {
 
     public static final Gravity MOON_LIKE = new Gravity(1.62);
     public static final Gravity EARTH_LIKE = new Gravity(1);
+    
     public static final Gravity ZERO = new Gravity(0) {
         @Override
         public void applyGravity(@Nonnull Player p) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, false, false));
+        }
+        @Override
+        public void removeGravity(@Nonnull Player p) {
+            p.removePotionEffect(PotionEffectType.SLOW_FALLING);
         }
     };
     
@@ -35,8 +40,6 @@ public class Gravity {
     private final int percent;
     @Getter
     private final int jump;
-    @Getter
-    private final int speed;
 
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
@@ -65,8 +68,6 @@ public class Gravity {
         }
         // amplifier is level - 1
         this.jump = level - 1;
-        // speed = jump / 2
-        this.speed = (level >> 1) - 1;
         this.percent = (int) (boost * 100);
     }
     
@@ -78,16 +79,11 @@ public class Gravity {
     public void applyGravity(@Nonnull Player p) {
         if (this.jump != -1) {
             new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump, false, false).apply(p);
-            if (this.speed != -1) {
-                new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, this.speed, false, false).apply(p);
-            }
         }
     }
     
-    public static void removeGravity(@Nonnull Player p) {
+    public void removeGravity(@Nonnull Player p) {
         p.removePotionEffect(PotionEffectType.JUMP);
-        p.removePotionEffect(PotionEffectType.SPEED);
-        p.removePotionEffect(PotionEffectType.SLOW_FALLING);
     }
     
 }

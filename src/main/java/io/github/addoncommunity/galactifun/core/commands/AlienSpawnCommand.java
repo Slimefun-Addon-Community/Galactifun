@@ -12,7 +12,7 @@ import java.util.List;
 public final class AlienSpawnCommand extends AbstractCommand {
 
     public AlienSpawnCommand() {
-        super("spawn", "spawns a custom mob", true);
+        super("spawn", "spawns an alien", true);
     }
 
     @Override
@@ -25,7 +25,7 @@ public final class AlienSpawnCommand extends AbstractCommand {
         Alien alien = Alien.getByID(strings[1]);
 
         if (alien != null) {
-            alien.spawn(p.getLocation());
+            alien.spawn(p.getLocation(), p.getWorld());
         }
     }
 

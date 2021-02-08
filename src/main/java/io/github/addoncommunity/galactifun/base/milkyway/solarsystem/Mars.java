@@ -31,7 +31,7 @@ public final class Mars extends CelestialWorld {
     public Mars(@Nonnull CelestialBody... celestialBodies) {
         super("&cMars", new Orbit(233_500_000L), 55_910_000L, new Gravity(3.711),
                 new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
-                new DayCycle(1.03), CelestialType.TERRESTRIAL, 75, 50, Terrain.HILLY_CAVERNS,
+                new DayCycle(1.03), CelestialType.TERRESTRIAL, 75,  Terrain.HILLY_CAVERNS,
                 new ItemChoice(Material.RED_SAND), celestialBodies);
     }
 

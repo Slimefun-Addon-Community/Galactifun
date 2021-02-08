@@ -25,7 +25,7 @@ public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
         super("Enceladus", new Orbit(237_948L), 308_359L, new Gravity(0.0113), Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.FROZEN, 75, 20, Terrain.FLAT, new ItemChoice(Material.ICE));
+                CelestialType.FROZEN, 75,  Terrain.FLAT, new ItemChoice(Material.ICE));
     }
 
     @Nonnull

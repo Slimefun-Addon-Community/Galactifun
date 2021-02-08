@@ -26,7 +26,7 @@ public final class TheMoon extends CelestialWorld {
     
     public TheMoon() {
         super("The Moon", new Orbit(382_500L), 14_600_000L, Gravity.MOON_LIKE,
-                Atmosphere.NONE, DayCycle.EARTH_LIKE, CelestialType.TERRESTRIAL, 80, 30,
+                Atmosphere.NONE, DayCycle.EARTH_LIKE, CelestialType.TERRESTRIAL, 80, 
                 Terrain.SMOOTH, new ItemChoice(Material.ANDESITE)
         );
     }

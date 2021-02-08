@@ -29,7 +29,10 @@ public final class CelestialListener implements Listener {
     
     @EventHandler
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
-        Gravity.removeGravity(e.getPlayer());
+        CelestialWorld object = CelestialWorld.getByWorld(e.getFrom());
+        if (object != null) {
+            object.getGravity().removeGravity(e.getPlayer());
+        }
         applyWorldEffects(e);
     }
 

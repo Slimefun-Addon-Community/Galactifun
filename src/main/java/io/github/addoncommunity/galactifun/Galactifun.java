@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun;
 
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.UniversalCategories;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
@@ -43,11 +42,6 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         PluginUtils.scheduleRepeatingSync(new CelestialTicker(), 10, CelestialTicker.INTERVAL);
         PluginUtils.scheduleRepeatingSync(new AlienTicker(), 10, AlienTicker.INTERVAL);
         
-        PluginUtils.runSync(() -> {
-            for (CelestialWorld world : CelestialWorld.getAll()) {
-                PluginUtils.log(world.getName(), String.valueOf(world.getGravity().getJump()));
-            }
-        }, 222);
     }
 
     @Override

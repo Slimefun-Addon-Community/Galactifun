@@ -27,7 +27,7 @@ public final class EarthOrbit extends CelestialWorld {
     
     public EarthOrbit() {
         super("Earth Orbit", new Orbit(37000), 1_000_000_000, Gravity.ZERO, Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.SPACE, 0, 0, Terrain.VOID, new ItemChoice(Material.BLACK_STAINED_GLASS)
+                CelestialType.SPACE, 0, Terrain.VOID, new ItemChoice(Material.BLACK_STAINED_GLASS)
         );
     }
 
