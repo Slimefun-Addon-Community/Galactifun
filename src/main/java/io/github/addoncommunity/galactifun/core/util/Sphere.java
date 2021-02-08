@@ -31,27 +31,6 @@ public final class Sphere {
     /**
      * Generates a sphere by looping throughout sets of 1, 2, and 3 moves (a, b, c),
      * comparing to radius, and generating blocks at all possible corresponding locations
-     *
-     * Stuff for thinking about how to implement:
-     * 
-     * radius 6 max 36
-     *  a 0e | 000000e | 00000e 0000e 000e 0x | 11111e 1111e 111e 1x 2222e 2222x 33x x
-     *  b 0e | 000000e | 11111e 2222e 333e 4x | 11111e 2222e 333e 4x 2222e 3334x 33x x
-     *  c 0e | 123456e | 12345e 2345e 345e 4x | 12345e 2345e 345e 4x 2345e 3454x 34x x
-     * 
-     * radius 5 max 25
-     *  a 0e | 00000e | 0000e 000e 00e x | 1111e 111e 1x 222e 2x e
-     *  b 0e | 00000e | 1111e 222e 33e x | 1111e 222e 3x 222e 3x e
-     *  c 0e | 12345e | 1234e 234e 34e x | 1234e 234e 3x 234e 3x e
-     *
-     * radius 4 max 16
-     *  a 0e | 0000e | 000e 00e x | 111e 11e 2x
-     *  b 0e | 0000e | 111e 22e x | 111e 22e 2x
-     *  c 0e | 1234e | 123e 23e x | 123e 23e 2x
-     *  
-     *  (a + 1)^2 == a^2 + 2a + 1
-     *  (a + 1)^2 - a^2 == 2a + 1 == (a << 1) + 1
-     *
      */
     public void generate(@Nonnull Block middle, @Nonnull Random random, int min, int dev) {
         Validate.notNull(middle);

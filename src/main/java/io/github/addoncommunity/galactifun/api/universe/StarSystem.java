@@ -2,9 +2,6 @@ package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;

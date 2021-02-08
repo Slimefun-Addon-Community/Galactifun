@@ -22,7 +22,8 @@ import java.util.Random;
 @AllArgsConstructor
 public abstract class AbstractTerrain {
     
-    @Nonnull @Getter
+    @Getter
+    @Nonnull
     private final String name;
     
     public static final AbstractTerrain FLAT = new AbstractTerrain("Flat") {
@@ -45,6 +46,7 @@ public abstract class AbstractTerrain {
             }
         }
     };
+    
     public static final AbstractTerrain VOID = new AbstractTerrain("Void") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
