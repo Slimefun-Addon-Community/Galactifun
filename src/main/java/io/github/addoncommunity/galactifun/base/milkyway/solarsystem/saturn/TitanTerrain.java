@@ -10,7 +10,7 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class TitanTerrain extends AWorldTerrain {
+class TitanTerrain extends AWorldTerrain {
 
     int height = 50;
 
@@ -38,7 +38,7 @@ public class TitanTerrain extends AWorldTerrain {
                     realX, realZ, 0.5, 0.5, true))
                 );
 
-                switch (grid.getBiome(z, 1, z)) {
+                switch (grid.getBiome(z, height, z)) {
                     case BADLANDS:
                     case MODIFIED_BADLANDS_PLATEAU:
                     case MODIFIED_WOODED_BADLANDS_PLATEAU:

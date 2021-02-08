@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
+import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
@@ -30,7 +31,9 @@ public final class BaseRegistry {
     public static final CelestialBody EARTH = new Earth((TheMoon) THE_MOON);
     public static final CelestialWorld MARS = new Mars();
     public static final CelestialWorld VENUS = new Venus();
-    public static final CelestialBody SATURN = new Saturn(new Titan(), new Enceladus());
+    public static final CelestialWorld TITAN_MOON = new Titan();
+    public static final CelestialWorld ENCELADUS = new Enceladus();
+    public static final CelestialBody SATURN = new Saturn(TITAN_MOON, ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new ItemStack(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN);
     
@@ -38,6 +41,7 @@ public final class BaseRegistry {
 
     public static final Martian MARTIAN = new Martian(MARS);
     public static final MutantCreeper ALIEN_CREEPER = new MutantCreeper(THE_MOON);
+    public static final TitanAlien TITAN_ALIEN = new TitanAlien(TITAN_MOON);
 
     public static void setup() {
         // just loading static fields for now
