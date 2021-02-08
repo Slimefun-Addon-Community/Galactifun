@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun;
 
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.WorldConfiguration;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.UniversalCategories;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
@@ -31,17 +33,34 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
-        
-        new CelestialListener();
-        new AlienListener();
 
+        WorldConfiguration.load(this);
+        
         UniversalCategories.setup(this);
         
         BaseRegistry.setup();
         
-        PluginUtils.scheduleRepeatingSync(new CelestialTicker(), 10, CelestialTicker.INTERVAL);
-        PluginUtils.scheduleRepeatingSync(new AlienTicker(), 10, AlienTicker.INTERVAL);
+        PluginUtils.scheduleRepeatingSync(new CelestialTicker(), CelestialTicker.INTERVAL);
+        PluginUtils.scheduleRepeatingSync(new AlienTicker(), AlienTicker.INTERVAL);
+
+        new CelestialListener();
+        new AlienListener();
         
+        // log after startup
+        PluginUtils.runSync(() -> PluginUtils.log(
+                "",
+                "################# Galactifun " + getPluginVersion() + " #################",
+                "",
+                "Loaded " + CelestialWorld.getWorlds().size() + " worlds: ",
+                CelestialWorld.getEnabled().toString(),
+                "",
+                "Galactifun is open source, you can contribute or report bugs at: ",
+                getBugTrackerURL(),
+                "Join the Slimefun Addon Community Discord: Discord.gg/V2cJR9ADFU",
+                "",
+                "###################################################",
+                ""
+        ));
     }
 
     @Override

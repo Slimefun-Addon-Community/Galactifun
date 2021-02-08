@@ -48,7 +48,8 @@ public enum CelestialType {
      */
     UNKNOWN("Unknown");
     
-    @Getter @Nonnull
+    @Getter
+    @Nonnull
     private final String name;
     
 }

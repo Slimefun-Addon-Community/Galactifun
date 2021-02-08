@@ -9,9 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.addoncommunity.galactifun.core.util.Util;
 import io.github.mooy1.infinitylib.ConfigUtils;
-import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
@@ -22,7 +20,6 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
@@ -36,7 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Set;
 
 /**
  * A class representing any celestial object with a world
@@ -67,7 +64,12 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     }
     
     @Nonnull
-    public static Collection<CelestialWorld> getAll() {
+    public static Set<World> getWorlds() {
+        return WORLDS.keySet();
+    }
+    
+    @Nonnull
+    public static Collection<CelestialWorld> getEnabled() {
         return WORLDS.values();
     }
     
@@ -94,17 +96,16 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     private final AbstractTerrain terrain;
 
     /**
-     * This world
+     * This world, only null if disabled
      */
-    @Getter 
-    @Nonnull
+    @Getter
     protected final World world;
 
     /**
-     * Whether this world is enabled
+     * Configuration
      */
-    @Getter
-    private boolean enabled;
+    @Nonnull
+    protected final WorldConfiguration config;
     
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
                           @Nonnull Atmosphere atmosphere, @Nonnull DayCycle dayCycle, @Nonnull CelestialType type,
@@ -119,8 +120,15 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         this.avgHeight = avgHeight;
         this.terrain = terrain;
         
-        String worldName = Util.stripUntranslatedColors(name).toLowerCase(Locale.ROOT).replace(' ', '_');
-
+        String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+        
+        this.config = WorldConfiguration.loadConfiguration(worldName, enabledByDefault());
+        
+        if (!this.config.isEnabled()) {
+            this.world = null;
+            return;
+        }
+        
         // fetch or create world
         World world = new WorldCreator(worldName)
                 .generator(terrain.createGenerator(this))
@@ -183,6 +191,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
      * Ticks the world
      */
     public final void tickWorld() {
+
         // time
         this.dayCycle.applyTime(this.world);
 
@@ -219,6 +228,10 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     protected void getItemStats(@Nonnull List<String> stats) {
         super.getItemStats(stats);
         stats.add("&6Terrain: &e" + this.terrain.getName());
+    }
+    
+    protected boolean enabledByDefault() {
+        return true;
     }
 
 }

@@ -11,6 +11,7 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Any world that can be travelled to by rockets or other means
@@ -28,7 +29,7 @@ public abstract class AbstractCelestialWorld extends CelestialBody {
         PluginUtils.runSync(() -> registerWorld(getWorld()));
     }
 
-    @Nonnull
+    @Nullable
     public abstract World getWorld();
 
 }

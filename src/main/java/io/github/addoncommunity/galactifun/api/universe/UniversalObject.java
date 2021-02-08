@@ -2,11 +2,10 @@ package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.addoncommunity.galactifun.core.util.Util;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
-import io.github.mooy1.infinitylib.presets.LorePreset;
 import lombok.Getter;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
@@ -36,7 +35,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     
     @Nullable
     public static UniversalObject<?> getByName(@Nonnull String name) {
-        return OBJECTS.get(Util.stripUntranslatedColors(name));
+        return OBJECTS.get(name);
     }
     
     /**
@@ -49,22 +48,28 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         return WORLDS.get(world);
     }
     
-    protected final void registerWorld(@Nonnull World world) {
-        WORLDS.put(world, this);
+    protected final void registerWorld(@Nullable World world) {
+        if (world != null) {
+            WORLDS.put(world, this);
+        }
     }
 
     @Getter
     @Nonnull
     protected final String name;
+    
     @Getter
     @Nonnull
     private final List<UniversalObject<?>> orbiters = new ArrayList<>();
+    
     @Nonnull
     private final Orbit orbit;
+    
     @Getter
     private UniversalObject<?> orbiting;
-    @Nonnull
+    
     @Getter
+    @Nonnull
     private final ItemStack item;
     
     @SafeVarargs
@@ -73,8 +78,8 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         Validate.notNull(orbit);
         
         this.orbit = orbit;
-        this.name = ChatColor.AQUA + name;
-        this.item = new CustomItem(choice.getItem(), name);
+        this.name = ChatColor.stripColor(ChatColors.color(name));
+        this.item = new CustomItem(choice.getItem(), ChatColor.AQUA + name);
 
         // add stats after subclass constructor completes
         PluginUtils.runSync(() -> {
@@ -84,7 +89,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
             LoreUtils.setLore(this.item, stats);
         });
         
-        OBJECTS.put(Util.stripUntranslatedColors(name), this);
+        OBJECTS.put(this.name, this);
 
         addOrbiters(orbiters);
     }
@@ -134,6 +139,11 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Override
     public final boolean equals(Object obj) {
         return this == obj;
+    }
+
+    @Override
+    public final String toString() {
+        return this.name;
     }
 
 }

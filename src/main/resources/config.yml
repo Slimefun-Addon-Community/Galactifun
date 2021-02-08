@@ -13,6 +13,7 @@
 # max-per-player: default: 8 range: 1-16
 # maximum number of aliens per player per world
 # 
+# 
 worlds:
   earth-name: world
 aliens:
