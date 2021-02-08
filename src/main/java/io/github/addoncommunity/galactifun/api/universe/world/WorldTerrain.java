@@ -57,6 +57,8 @@ public class WorldTerrain extends AWorldTerrain {
     @Nonnull
     protected final TerrainFeature[] features;
 
+    private int height = -1;
+
     public WorldTerrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
                         double frequency, @Nonnull TerrainFeature... features) {
         super(name);
@@ -77,10 +79,13 @@ public class WorldTerrain extends AWorldTerrain {
         
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, this.octaves);
         generator.setScale(this.scale);
+
+        if (height == -1) {
+            height = celestialWorld.getAvgHeight();
+        }
         
         int startX = chunkX << 4;
         int startZ = chunkZ << 4;
-        int height;
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {

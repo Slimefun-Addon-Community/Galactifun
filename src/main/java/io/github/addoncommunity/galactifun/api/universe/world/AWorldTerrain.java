@@ -14,12 +14,12 @@ import java.util.Random;
 
 /**
  * Any world terrain
- * 
+ *
  * @author Mooy1
  * @author Seggan
  */
 public abstract class AWorldTerrain extends Terrain {
-    
+
     public static final AWorldTerrain FLAT = new AWorldTerrain("Flat") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
@@ -28,12 +28,12 @@ public abstract class AWorldTerrain extends Terrain {
                 for (int z = 0; z < 16; z++) {
                     chunk.setBlock(x, 0, z, Material.BEDROCK);
 
-                    for (int y = 1 ; y < celestialWorld.getAvgHeight() ; y++) {
+                    for (int y = 1; y < celestialWorld.getAvgHeight(); y++) {
                         chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
                     }
 
                     Biome biome = celestialWorld.generateBiome(random, chunkX, chunkZ);
-                    for (int y = 0 ; y < 256 ; y++) {
+                    for (int y = 0; y < 256; y++) {
                         grid.setBiome(x, y, z, biome);
                     }
                 }
@@ -47,7 +47,7 @@ public abstract class AWorldTerrain extends Terrain {
             // add nothing
         }
     };
-    
+
     public AWorldTerrain(@Nonnull String name) {
         super(name);
     }
@@ -65,6 +65,7 @@ public abstract class AWorldTerrain extends Terrain {
                 generateChunk(celestialWorld, chunkX, chunkZ, random, chunk, grid, world);
                 return chunk;
             }
+
             @Nonnull
             @Override
             public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
@@ -79,6 +80,6 @@ public abstract class AWorldTerrain extends Terrain {
      * Generate a chunk
      */
     protected abstract void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
-                                 @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world);
+                                          @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world);
 
 }
