@@ -2,8 +2,9 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -23,7 +24,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -124,40 +124,45 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         
         this.config = WorldConfig.loadConfiguration(worldName, enabledByDefault());
         
-        if (!this.config.isEnabled()) {
+        if (this.config.isEnabled()) {
+            this.world = loadWorld(worldName);
+        } else {
             this.world = null;
-            return;
         }
+    }
+    
+    @Nonnull
+    private World loadWorld(@Nonnull String worldName) {
         
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(terrain.createGenerator(this))
-                .environment(atmosphere.getEnvironment())
+                .generator(this.terrain.createGenerator(this))
+                .environment(this.atmosphere.getEnvironment())
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
-        
+
         // border
         WorldBorder border = world.getWorldBorder();
         border.setCenter(0, 0);
-        border.setSize(Math.min(MAX_BORDER, Math.max(MIN_BORDER, Math.sqrt(surfaceArea) * Earth.BORDER_SURFACE_RATIO)));
+        border.setSize(Math.min(MAX_BORDER, Math.max(MIN_BORDER, Math.sqrt(this.surfaceArea) * Earth.BORDER_SURFACE_RATIO)));
 
         // load effects
-        dayCycle.applyEffects(world);
-        atmosphere.applyEffects(world);
-        
+        this.dayCycle.applyEffects(world);
+        this.atmosphere.applyEffects(world);
+
         // block storage
         if (BlockStorage.getStorage(world) == null) {
             new BlockStorage(world);
         }
-
-        // register
-        WORLDS.put(world, this);
         
         // setup
         setupWorld(world);
 
-        this.world = world;
+        // register
+        WORLDS.put(world, this);
+        
+        return world;
     }
     
     protected void setupWorld(@Nonnull World world) {
@@ -191,15 +196,12 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
      * Ticks the world
      */
     public final void tickWorld() {
-
         // time
         this.dayCycle.applyTime(this.world);
-
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);
         }
-
         // other stuff?
     }
 
@@ -209,12 +211,8 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     public final void applyEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
-
-        // apply atmospheric effects TODO needs to be improved a lot
-        for (PotionEffectType effectType : this.atmosphere.getNormalEffects()) {
-            effectType.createEffect(180, 0).apply(p);
-        }
-
+        // apply atmospheric effects
+        this.atmosphere.applyEffects(p);
         // other stuff?
     }
     

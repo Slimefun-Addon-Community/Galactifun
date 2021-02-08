@@ -3,7 +3,6 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
@@ -20,7 +19,7 @@ public final class TheUniverse extends UniversalObject<Galaxy> {
     private static final TheUniverse instance = new TheUniverse();
     
     private TheUniverse() {
-        super("The Universe", new Orbit(0), new ItemChoice(Material.BARRIER));
+        super("The Universe", new Orbit(0), () -> "Unused", new ItemChoice(Material.BARRIER));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes;
+package io.github.addoncommunity.galactifun.api.universe.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,20 +6,19 @@ import lombok.Getter;
 import javax.annotation.Nonnull;
 
 /**
- * Types of galaxies
+ * Star system types
  * 
  * @author Mooy1
  */
 @AllArgsConstructor
-public enum GalaxyType {
+public enum StarSystemType implements UniversalType {
+
+    NORMAL("Normal"),
     
-    ELLIPSE("Ellipse"),
-    
-    SPIRAL("Spiral"),
-    
-    IRREGULAR("Irregular");
+    BINARY("Binary");
     
     @Getter
     @Nonnull
     private final String name;
+    
 }

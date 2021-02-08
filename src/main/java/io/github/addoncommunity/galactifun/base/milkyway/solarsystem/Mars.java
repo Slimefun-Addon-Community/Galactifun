@@ -1,17 +1,16 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 
@@ -30,7 +29,7 @@ public final class Mars extends CelestialWorld {
 
     public Mars(@Nonnull CelestialBody... celestialBodies) {
         super("&cMars", new Orbit(233_500_000L), 55_910_000L, new Gravity(3.711),
-                new Atmosphere(0, false, false, false, false, World.Environment.NETHER),
+                new AtmosphereBuilder().addCarbonDioxide(95).setNether().build(),
                 new DayCycle(1.03), CelestialType.TERRESTRIAL, 75,  Terrain.HILLY_CAVERNS,
                 new ItemChoice(Material.RED_SAND), celestialBodies);
     }

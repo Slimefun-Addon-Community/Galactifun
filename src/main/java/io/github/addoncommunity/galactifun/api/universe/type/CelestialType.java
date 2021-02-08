@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes;
+package io.github.addoncommunity.galactifun.api.universe.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  */
 @AllArgsConstructor
-public enum CelestialType {
+public enum CelestialType implements UniversalType {
 
     /**
      * Orbit, asteroid belts, etc

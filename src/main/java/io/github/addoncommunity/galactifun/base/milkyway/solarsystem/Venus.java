@@ -1,20 +1,20 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -29,7 +29,8 @@ public class Venus extends CelestialWorld {
 
     public Venus() {
         super("Venus", new Orbit(108_860_000L), 177_700_000L, new Gravity(1.105),
-                new Atmosphere(0, false, true, true, true, World.Environment.NETHER, new PotionEffectType[0], new PotionEffectType[] {PotionEffectType.WITHER}),
+                new AtmosphereBuilder().setNether().addStorm().addThunder()
+                        .addEffects(new AtmosphericEffect(EffectType.WITHER, 3)).build(),
                 new DayCycle(116.75), CelestialType.TERRESTRIAL, 80,
                 new Terrain("Volcanic", 45, 8, 0.02, 0.5, 0.3),
                 new ItemChoice(Material.BLACK_TERRACOTTA)

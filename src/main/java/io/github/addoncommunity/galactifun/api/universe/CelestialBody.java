@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
@@ -32,10 +32,6 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     @Nonnull 
     protected final Gravity gravity;
     
-    @Getter
-    @Nonnull
-    private final CelestialType type;
-    
     /**
      * Surface area in square kilometers
      */
@@ -44,14 +40,13 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     public CelestialBody(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
                          @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, @Nonnull Atmosphere atmosphere,
                          @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        super(name, orbit, choice, celestialBodies);
+        super(name, orbit, type, choice, celestialBodies);
 
         Validate.notNull(dayCycle);
         Validate.notNull(atmosphere);
         Validate.notNull(type);
         Validate.notNull(gravity);
         
-        this.type = type;
         this.gravity = gravity;
         this.surfaceArea = surfaceArea / 1000000D;
         this.dayCycle = dayCycle;
@@ -64,7 +59,6 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
         stats.add("&bSurface Area: &7" + this.surfaceArea + " square kilometers");
         stats.add("&bGravity: &7" + this.gravity.getPercent() + "%");
         stats.add("&bOxygen: &7" + this.atmosphere.getOxygenPercentage() + "%");
-        stats.add("&6Type: &e" + this.type.getName());
         stats.add("&6Day Cycle: &e" + this.dayCycle.getDayLength());
     }
 

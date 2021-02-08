@@ -28,7 +28,9 @@ public class Gravity {
     public static final Gravity ZERO = new Gravity(0) {
         @Override
         public void applyGravity(@Nonnull Player p) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, Integer.MAX_VALUE, false, false));
+            // slowness?
+            // jump?
         }
         @Override
         public void removeGravity(@Nonnull Player p) {

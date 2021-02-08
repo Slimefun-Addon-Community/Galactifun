@@ -4,6 +4,8 @@ import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.type.GalaxyType;
+import io.github.addoncommunity.galactifun.api.universe.type.StarSystemType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
@@ -37,12 +39,12 @@ public final class BaseRegistry {
     public static final CelestialBody SATURN = new Saturn(ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),
-            new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN) {
+            StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN) {
         
     };
     
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D),
-            new ItemChoice(Material.MILK_BUCKET), SOLAR_SYSTEM) {
+            GalaxyType.SPIRAL, new ItemChoice(Material.MILK_BUCKET), SOLAR_SYSTEM) {
     };
     
     public static final Martian MARTIAN = new Martian(MARS);

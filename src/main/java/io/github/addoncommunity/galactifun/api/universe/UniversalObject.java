@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.type.UniversalType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
@@ -73,9 +74,11 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     private final ItemStack item;
     
     @SafeVarargs
-    public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull ItemChoice choice, @Nonnull T... orbiters) {
+    public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice, @Nonnull T... orbiters) {
         Validate.notNull(name);
         Validate.notNull(orbit);
+        Validate.notNull(type);
+        Validate.notNull(choice);
         
         this.orbit = orbit;
         this.name = ChatColor.stripColor(ChatColors.color(name));
@@ -84,6 +87,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         // add stats after subclass constructor completes
         PluginUtils.runSync(() -> {
             List<String> stats = new ArrayList<>();
+            stats.add("&6Type: " + type.getName());
             getItemStats(stats);
             stats.add("&7Distance: &8Unknown");
             LoreUtils.setLore(this.item, stats);
@@ -129,7 +133,9 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         }
     }
     
-    protected abstract void getItemStats(@Nonnull List<String> stats);
+    protected void getItemStats(@Nonnull List<String> stats) {
+        
+    }
     
     @Override
     public final int hashCode() {

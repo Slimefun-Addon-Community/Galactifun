@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.type.StarSystemType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 
 import javax.annotation.Nonnull;
@@ -13,9 +14,9 @@ import java.util.List;
  * @author Mooy1
  */
 public class StarSystem extends UniversalObject<CelestialBody> {
-
-    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull ItemChoice choice, @Nonnull CelestialBody... orbiters) {
-        super(name, orbit, choice, orbiters);
+    
+    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull StarSystemType type, @Nonnull ItemChoice choice, @Nonnull CelestialBody... orbiters) {
+        super(name, orbit, type, choice, orbiters);
     }
 
     @Override
