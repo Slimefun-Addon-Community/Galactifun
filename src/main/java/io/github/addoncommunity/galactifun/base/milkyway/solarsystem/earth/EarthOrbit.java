@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
@@ -13,8 +13,8 @@ import io.github.addoncommunity.galactifun.core.util.Util;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -37,10 +37,9 @@ public final class EarthOrbit extends CelestialWorld {
         return Material.AIR; // probably won't be called
     }
 
-    @Nonnull
     @Override
-    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.THE_VOID; // probably won't be called
+    public void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, int z) {
+        // probably won't be called
     }
     
     @Override

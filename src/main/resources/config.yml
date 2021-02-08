@@ -10,7 +10,7 @@
 # tick-interval: default: 4 range: 1-20
 # How often aliens tick in Minecraft ticks, there are 20 ticks in 1 second
 # 
-# max-per-player: default: 8 range: 1-16
+# max-per-player: default: 12 range: 1-64
 # maximum number of aliens per player per world
 # 
 # 

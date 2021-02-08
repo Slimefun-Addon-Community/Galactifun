@@ -80,7 +80,7 @@ public class Gravity {
     
     public void applyGravity(@Nonnull Player p) {
         if (this.jump != -1) {
-            new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump, false, false).apply(p);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump, false, false));
         }
     }
     

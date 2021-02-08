@@ -5,8 +5,8 @@ import io.github.addoncommunity.galactifun.api.universe.type.UniversalType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
@@ -81,7 +81,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         Validate.notNull(choice);
         
         this.orbit = orbit;
-        this.name = ChatColor.stripColor(ChatColors.color(name));
+        this.name = ChatUtils.removeColorCodes(name);
         this.item = new CustomItem(choice.getItem(), ChatColor.AQUA + name);
 
         // add stats after subclass constructor completes

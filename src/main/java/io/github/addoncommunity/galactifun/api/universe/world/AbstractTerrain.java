@@ -37,10 +37,9 @@ public abstract class AbstractTerrain {
                     for (int y = 1 ; y <= celestialWorld.getAvgHeight() ; y++) {
                         chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
                     }
-
-                    Biome biome = celestialWorld.generateBiome(random, chunkX, chunkZ);
+                    
                     for (int y = 0 ; y < 256 ; y++) {
-                        grid.setBiome(x, y, z, biome);
+                        celestialWorld.generateBiome(grid, x, y, y);
                     }
                 }
             }
@@ -51,7 +50,13 @@ public abstract class AbstractTerrain {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                      @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
-            // add nothing
+            for (int x = 0 ; x < 16 ; x++) {
+                for (int y = 0 ; y < 256 ; y++) {
+                    for (int z = 0 ; z < 16 ; z++) {
+                        grid.setBiome(x, y, z, Biome.THE_VOID);
+                    }
+                }
+            }
         }
     };
 

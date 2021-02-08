@@ -21,7 +21,7 @@ public final class Orbit {
     private final double dev;
 
     /**
-     * Time in milliseconds to go from min > min + dev > min
+     * Time in milliseconds to complete an orbit
      */
     private final long time;
 

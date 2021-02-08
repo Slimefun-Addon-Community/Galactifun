@@ -93,16 +93,10 @@ public class Terrain extends AbstractTerrain {
                 for (TerrainFeature feature : this.features) {
                     feature.generate(generator, chunk, realX, realZ, x, z, height);
                 }
-
+                
                 // bedrock
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
-                if (random.nextBoolean()) {
-                    chunk.setBlock(x, 1, z, Material.BEDROCK);
-                    if (random.nextBoolean()) {
-                        chunk.setBlock(x, 2, z, Material.BEDROCK);
-                    }
-                }
-
+                
                 // generate the rest
                 for (int y = 1 ; y <= height ; y++) {
                     if (chunk.getType(x, y, z) == Material.AIR) {
@@ -111,9 +105,8 @@ public class Terrain extends AbstractTerrain {
                 }
 
                 // set biome
-                Biome biome = celestialWorld.generateBiome(random, chunkX, chunkZ);
                 for (int y = 0 ; y < 256 ; y++) {
-                    grid.setBiome(x, y, z, biome);
+                    celestialWorld.generateBiome(grid, chunkX, y, chunkZ);
                 }
             }
         }

@@ -15,6 +15,7 @@ import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -52,10 +53,9 @@ public class Venus extends CelestialWorld {
         throw new IllegalArgumentException(String.valueOf(y));
     }
 
-    @Nonnull
     @Override
-    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.BASALT_DELTAS;
+    public void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, int z) {
+        grid.setBiome(x, y, z, Biome.BASALT_DELTAS); 
     }
 
     @Override

@@ -33,14 +33,13 @@ public final class BaseRegistry {
     public static final CelestialWorld ENCELADUS = new Enceladus();
     public static final CelestialWorld EARTH_ORBIT = new EarthOrbit();
     
-    public static final CelestialBody EARTH = new Earth(THE_MOON, EARTH_ORBIT);
+    public static final CelestialBody EARTH = new Earth(EARTH_ORBIT, THE_MOON);
     public static final CelestialWorld MARS = new Mars();
     public static final CelestialWorld VENUS = new Venus();
     public static final CelestialBody SATURN = new Saturn(ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),
             StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN) {
-        
     };
     
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D),

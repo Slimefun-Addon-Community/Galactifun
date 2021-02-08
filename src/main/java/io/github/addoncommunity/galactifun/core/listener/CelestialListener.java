@@ -43,6 +43,7 @@ public final class CelestialListener implements Listener {
 
     @EventHandler
     public void onPlanetRespawn(@Nonnull PlayerRespawnEvent e) {
+        // TODO test if this works or if we should just wait til next world tick
         applyWorldEffects(e);
     }
 
@@ -58,7 +59,8 @@ public final class CelestialListener implements Listener {
         if (!e.getPlayer().hasPermission("galactifun.admin") && e.getTo() != null && e.getTo().getWorld() != null) {
             CelestialWorld world = CelestialWorld.getByWorld(e.getTo().getWorld());
             if (world != null) {
-                e.setCancelled(true); // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
+                e.setCancelled(true);
+                // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
             }
         }
     }

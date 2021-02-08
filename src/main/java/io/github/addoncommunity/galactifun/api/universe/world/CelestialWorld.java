@@ -24,6 +24,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -75,7 +76,7 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     
     private static final double MIN_BORDER = 600D;
     private static final double MAX_BORDER = 30_000_000D;
-    private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 16, 8);
+    private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
     
     /**
      * All alien species that can spawn on this planet
@@ -178,10 +179,9 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     public abstract Material generateBlock(@Nonnull Random random, int top, int x, int y, int z);
 
     /**
-     * The biome that should be used for the chunk at the specified x and z
+     * Generate the biome for a block in the chunk at x, y, z
      */
-    @Nonnull
-    public abstract Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ);
+    public abstract void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, int z);
 
     /**
      * Add all chunk populators to this list
