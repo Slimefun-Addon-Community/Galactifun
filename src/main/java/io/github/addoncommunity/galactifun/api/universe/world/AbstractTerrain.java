@@ -15,7 +15,7 @@ import java.util.Random;
 
 /**
  * Any world terrain
- * 
+ *
  * @author Mooy1
  * @author Seggan
  */
@@ -25,34 +25,48 @@ public abstract class AbstractTerrain {
     @Getter
     @Nonnull
     private final String name;
-    
+
     public static final AbstractTerrain FLAT = new AbstractTerrain("Flat") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                      @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    chunk.setBlock(x, 0, z, Material.BEDROCK);
+            int x;
+            int y;
+            int z;
+            for (x = 0; x < 16; x++) {
+                for (z = 0; z < 16; z++) {
 
-                    for (int y = 1 ; y <= celestialWorld.getAvgHeight() ; y++) {
-                        chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
+                    // y = 0, add bedrock and biome
+                    chunk.setBlock(x, 0, z, Material.BEDROCK);
+                    celestialWorld.generateBiome(grid, x, 0, z);
+
+                    // y = 1 to height, generate and add biome
+                    for (y = 1 ; y <= celestialWorld.getAvgHeight() ; y++) {
+                        if (chunk.getType(x, y, z) == Material.AIR) {
+                            chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
+                        }
+                        celestialWorld.generateBiome(grid, x, y, z);
                     }
-                    
-                    for (int y = 0 ; y < 256 ; y++) {
-                        celestialWorld.generateBiome(grid, x, y, y);
+
+                    // y = height to 256, just add biome
+                    for (; y < 256 ; y++) {
+                        celestialWorld.generateBiome(grid, x, y, z);
                     }
                 }
             }
         }
     };
-    
+
     public static final AbstractTerrain VOID = new AbstractTerrain("Void") {
         @Override
         protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                      @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
-            for (int x = 0 ; x < 16 ; x++) {
-                for (int y = 0 ; y < 256 ; y++) {
-                    for (int z = 0 ; z < 16 ; z++) {
+            int x;
+            int y;
+            int z;
+            for (x = 0 ; x < 16 ; x++) {
+                for (y = 0 ; y < 256 ; y++) {
+                    for (z = 0 ; z < 16 ; z++) {
                         grid.setBiome(x, y, z, Biome.THE_VOID);
                     }
                 }
@@ -73,6 +87,7 @@ public abstract class AbstractTerrain {
                 generateChunk(celestialWorld, chunkX, chunkZ, random, chunk, grid, world);
                 return chunk;
             }
+
             @Nonnull
             @Override
             public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
@@ -87,6 +102,6 @@ public abstract class AbstractTerrain {
      * Generate a chunk
      */
     protected abstract void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
-                                 @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world);
+                                          @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world);
 
 }

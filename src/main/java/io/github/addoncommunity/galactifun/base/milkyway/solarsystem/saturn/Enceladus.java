@@ -26,15 +26,13 @@ public class Enceladus extends CelestialWorld {
 
     public Enceladus() {
         super("Enceladus", new Orbit(237_948L), 308_359L, new Gravity(0.0113), Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.FROZEN, 75,  Terrain.FLAT, new ItemChoice(Material.ICE));
+                CelestialType.FROZEN, 60,  Terrain.FLAT, new ItemChoice(Material.ICE));
     }
 
     @Nonnull
     @Override
     public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (y >= 60) {
-            return Material.ICE;
-        } else if (y >= 30) {
+        if (y >= 30) {
             return Material.PACKED_ICE;
         } else {
             return Material.BLUE_ICE;

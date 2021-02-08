@@ -3,7 +3,6 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 import io.github.addoncommunity.galactifun.api.universe.world.features.TerrainFeature;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
@@ -57,6 +56,7 @@ public class Terrain extends AbstractTerrain {
     @Nonnull
     protected final TerrainFeature[] features;
 
+
     public Terrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
                    double frequency, @Nonnull TerrainFeature... features) {
         super(name);
@@ -67,6 +67,7 @@ public class Terrain extends AbstractTerrain {
         this.frequency = frequency;
         this.features = features;
     }
+    
     @Override
     protected void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
                                  @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world) {
@@ -74,15 +75,15 @@ public class Terrain extends AbstractTerrain {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, this.octaves);
         generator.setScale(this.scale);
         
-        int startX = chunkX << 4;
-        int startZ = chunkZ << 4;
         int height;
+        int realX;
+        int realZ;
+        int x;
+        int y;
+        int z;
 
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-
-                int realX = startX + x;
-                int realZ = startZ + z;
+        for (x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
                 
                 // find max height
                 height = (int) Math.floor(celestialWorld.getAvgHeight() + this.maxDeviation * 
@@ -94,19 +95,21 @@ public class Terrain extends AbstractTerrain {
                     feature.generate(generator, chunk, realX, realZ, x, z, height);
                 }
                 
-                // bedrock
+                // y = 0, add bedrock and biome
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
+                celestialWorld.generateBiome(grid, x, 0, z);
                 
-                // generate the rest
-                for (int y = 1 ; y <= height ; y++) {
+                // y = 1 to height, generate and add biome
+                for (y = 1 ; y <= height ; y++) {
                     if (chunk.getType(x, y, z) == Material.AIR) {
                         chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, height, x, y, z));
                     }
+                    celestialWorld.generateBiome(grid, x, y, z);
                 }
 
-                // set biome
-                for (int y = 0 ; y < 256 ; y++) {
-                    celestialWorld.generateBiome(grid, chunkX, y, chunkZ);
+                // y = height to 256, just add biome
+                for (; y < 256 ; y++) {
+                    celestialWorld.generateBiome(grid, x, y, z);
                 }
             }
         }
