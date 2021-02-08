@@ -41,12 +41,6 @@ public final class CelestialListener implements Listener {
         applyWorldEffects(e);
     }
 
-    @EventHandler
-    public void onPlanetRespawn(@Nonnull PlayerRespawnEvent e) {
-        // TODO test if this works or if we should just wait til next world tick
-        applyWorldEffects(e);
-    }
-
     private static void applyWorldEffects(@Nonnull PlayerEvent e) {
         CelestialWorld object = CelestialWorld.getByWorld(e.getPlayer().getWorld());
         if (object != null) {

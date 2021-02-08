@@ -135,9 +135,8 @@ public final class Sphere {
     }
     
     private void genThree(int a, int b) {
-        Material material = material();
-        gen(a, b, 0, material);
-        gen(0, a, b, material);
+        gen(a, b, 0, material());
+        gen(0, a, b, material());
         gen(b, 0, a, material());
     }
     

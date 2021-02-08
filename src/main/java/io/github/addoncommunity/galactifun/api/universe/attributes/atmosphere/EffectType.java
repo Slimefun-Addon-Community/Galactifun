@@ -18,6 +18,7 @@ public final class EffectType {
     public static final EffectType WITHER = new EffectType("Radioactive", PotionEffectType.WITHER);
     public static final EffectType HEAT = new EffectType("Heat", (p, level) -> {
         if (level > 0) {
+            // TODO find a way to increase fire damage?
             p.setFireTicks(200);
         }
     });

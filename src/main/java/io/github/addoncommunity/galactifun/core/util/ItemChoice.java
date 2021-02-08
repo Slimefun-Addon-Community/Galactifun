@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public class ItemChoice {
+public final class ItemChoice {
 
     @Getter
     @Nonnull

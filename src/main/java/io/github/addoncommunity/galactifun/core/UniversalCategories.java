@@ -8,7 +8,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
 
 /**
- * Slimefun categories 
+ * Slimefun item categories 
  * 
  * @author Mooy1
  */

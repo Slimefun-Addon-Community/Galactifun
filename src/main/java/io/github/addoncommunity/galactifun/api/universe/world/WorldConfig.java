@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.mooy1.infinitylib.config.CustomConfig;
-import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

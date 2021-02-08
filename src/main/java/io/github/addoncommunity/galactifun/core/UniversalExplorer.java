@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.core;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.core.util.Util;
+import io.github.mooy1.infinitylib.player.LeaveListener;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
@@ -28,6 +29,7 @@ public final class UniversalExplorer {
     
     public static void explore(@Nonnull Player p) {
         open(p, HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance()), false);
+        LeaveListener.add(HISTORY);
     }
     
     private static void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, boolean history) {

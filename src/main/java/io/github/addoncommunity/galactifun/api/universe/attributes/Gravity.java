@@ -58,19 +58,19 @@ public class Gravity {
         this(validateAndDiv(gravity, EARTH_GRAVITY));
     }
 
-    protected Gravity(float boost) {
+    protected Gravity(float comparedToEarth) {
         // supports negative, 0, and positive
         int level;
-        if (boost > 0) {
-            level = (int) (Math.log(boost) / LOG_JUMP_BOOST);
-        } else if (boost < 0) {
-            level = (int) (Math.log(boost * -1) / LOG_JUMP_BOOST) * -1;
+        if (comparedToEarth > 0) {
+            level = (int) (Math.log(comparedToEarth) / LOG_JUMP_BOOST) * -1;
+        } else if (comparedToEarth < 0) {
+            level = (int) (Math.log(comparedToEarth * -1) / LOG_JUMP_BOOST);
         } else {
             level = 0;
         }
         // amplifier is level - 1
         this.jump = level - 1;
-        this.percent = (int) (boost * 100);
+        this.percent = (int) (comparedToEarth * 100);
     }
     
     private static float validateAndDiv(double num, double div) {
