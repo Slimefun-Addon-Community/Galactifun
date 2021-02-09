@@ -13,9 +13,9 @@ import org.bukkit.Material;
  * @author Mooy1
  */
 @UtilityClass
-public final class UniversalCategories {
+public final class CoreCategories {
 
-    public static final UniversalCategory UNIVERSAL_CATEGORY = new UniversalCategory();
+    public static final GalacticCategory UNIVERSAL_CATEGORY = new GalacticCategory();
     public static final Category EQUIPMENT = new Category(PluginUtils.getKey("equipment"), new CustomItem(Material.IRON_HELMET));
     
     public static void setup(Galactifun galactifun) {

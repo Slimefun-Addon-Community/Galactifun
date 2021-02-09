@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.type.GalaxyType;
+import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 
 import javax.annotation.Nonnull;

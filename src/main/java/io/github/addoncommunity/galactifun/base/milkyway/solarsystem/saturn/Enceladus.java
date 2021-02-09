@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -22,7 +22,7 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Enceladus extends AlienWorld {
+public final class Enceladus extends AlienWorld {
 
     public Enceladus() {
         super("Enceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));

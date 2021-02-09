@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.World;

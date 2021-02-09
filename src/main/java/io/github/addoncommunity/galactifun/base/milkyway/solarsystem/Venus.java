@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;

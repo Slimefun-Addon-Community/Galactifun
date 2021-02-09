@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.type;
+package io.github.addoncommunity.galactifun.api.universe.types;
 
 import javax.annotation.Nonnull;
 

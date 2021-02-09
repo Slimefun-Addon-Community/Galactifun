@@ -24,7 +24,7 @@ import java.util.UUID;
  * 
  * @author Mooy1
  */
-public final class UniversalExplorer {
+public final class GalacticExplorer {
     
     private static final Map<UUID, UniversalObject<?>> HISTORY = new HashMap<>();
     

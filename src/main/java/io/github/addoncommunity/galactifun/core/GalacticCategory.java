@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public final class UniversalCategory extends FlexCategory {
+public final class GalacticCategory extends FlexCategory {
     
-    public UniversalCategory() {
+    public GalacticCategory() {
         super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE, "&bThe Universe"));
     }
 
@@ -28,7 +28,7 @@ public final class UniversalCategory extends FlexCategory {
 
     @Override
     public void open(@Nonnull Player player, @Nonnull PlayerProfile playerProfile, @Nonnull SlimefunGuideMode slimefunGuideMode) {
-        UniversalExplorer.explore(player);
+        GalacticExplorer.explore(player);
         playerProfile.getGuideHistory().add(this, 1);
     }
 

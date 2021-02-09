@@ -3,10 +3,9 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -16,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
@@ -62,9 +62,21 @@ public abstract class AlienWorld extends CelestialWorld {
         }
     }
     
-    @Nonnull
-    public static Set<World> getWorlds() {
-        return WORLDS.keySet();
+    public static void tickWorlds() {
+        for (AlienWorld world : WORLDS.values()) {
+            world.tickWorld();
+        }
+    }
+    
+    public static void tickAliens() {
+        for (World world : WORLDS.keySet()) {
+            for (LivingEntity entity : world.getLivingEntities()) {
+                Alien alien = Alien.getByEntity(entity);
+                if (alien != null) {
+                    alien.onMobTick(entity);
+                }
+            }
+        }
     }
     
     @Nonnull

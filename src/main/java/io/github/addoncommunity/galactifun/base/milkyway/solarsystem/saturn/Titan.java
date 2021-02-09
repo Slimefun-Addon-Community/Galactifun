@@ -5,7 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Chunk;
@@ -29,7 +29,7 @@ import java.util.Set;
  *
  * @author Seggan
  */
-public class Titan extends AlienWorld {
+public final class Titan extends AlienWorld {
 
     private static final Set<Biome> forests = EnumSet.of(
         Biome.FOREST,
