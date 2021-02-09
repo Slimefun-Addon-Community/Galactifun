@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.util.Util;
 import io.github.mooy1.infinitylib.player.LeaveListener;
 import io.github.mooy1.infinitylib.presets.LorePreset;
@@ -62,7 +63,7 @@ public final class UniversalExplorer {
             });
         }
         
-        UniversalObject<?> current = UniversalObject.getByWorld(p.getWorld());
+        CelestialWorld current = CelestialWorld.getByWorld(p.getWorld());
         boolean known = current != null;
 
         // objects

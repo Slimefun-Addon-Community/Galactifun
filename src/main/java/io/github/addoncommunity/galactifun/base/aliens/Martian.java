@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;
@@ -38,7 +38,7 @@ public final class Martian extends Alien {
     };
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
-    public Martian(@Nonnull CelestialWorld... worlds) {
+    public Martian(@Nonnull AlienWorld... worlds) {
         super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50, worlds);
 
         setupTrades();

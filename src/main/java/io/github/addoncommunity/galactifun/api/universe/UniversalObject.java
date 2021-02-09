@@ -10,7 +10,6 @@ import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -37,22 +36,6 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Nullable
     public static UniversalObject<?> getByName(@Nonnull String name) {
         return OBJECTS.get(name);
-    }
-    
-    /**
-     * All objects in the universe with a corresponding world
-     */
-    private static final Map<World, UniversalObject<?>> WORLDS = new HashMap<>();
-
-    @Nullable
-    public static UniversalObject<?> getByWorld(@Nonnull World world) {
-        return WORLDS.get(world);
-    }
-    
-    protected final void registerWorld(@Nullable World world) {
-        if (world != null) {
-            WORLDS.put(world, this);
-        }
     }
 
     @Getter

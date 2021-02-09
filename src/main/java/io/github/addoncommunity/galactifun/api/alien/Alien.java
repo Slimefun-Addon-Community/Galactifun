@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.alien;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -60,7 +60,7 @@ public abstract class Alien {
     private final int health;
     
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
-                 int chance, int health, @Nonnull CelestialWorld... worlds) {
+                 int chance, int health, @Nonnull AlienWorld... worlds) {
 
         Validate.notNull(id);
         Validate.notNull(name);
@@ -75,7 +75,7 @@ public abstract class Alien {
         this.health = health;
         this.type = type;
 
-        for (CelestialWorld world : worlds) {
+        for (AlienWorld world : worlds) {
             Validate.notNull(world);
             world.addSpecies(this);
         }

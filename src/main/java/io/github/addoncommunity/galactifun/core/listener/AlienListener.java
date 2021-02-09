@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.core.listener;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

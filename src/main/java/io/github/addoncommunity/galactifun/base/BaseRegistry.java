@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.type.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.type.StarSystemType;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
@@ -31,14 +31,14 @@ import org.bukkit.Material;
 @UtilityClass
 public final class BaseRegistry {
     
-    public static final CelestialWorld THE_MOON = new TheMoon();
-    public static final CelestialWorld ENCELADUS = new Enceladus();
-    public static final CelestialWorld EARTH_ORBIT = new EarthOrbit();
+    public static final AlienWorld THE_MOON = new TheMoon();
+    public static final AlienWorld ENCELADUS = new Enceladus();
+    public static final AlienWorld EARTH_ORBIT = new EarthOrbit();
     
     public static final CelestialBody EARTH = new Earth(EARTH_ORBIT, THE_MOON);
-    public static final CelestialWorld MARS = new Mars();
-    public static final CelestialWorld VENUS = new Venus();
-    public static final CelestialWorld TITAN_MOON = new Titan();
+    public static final AlienWorld MARS = new Mars();
+    public static final AlienWorld VENUS = new Venus();
+    public static final AlienWorld TITAN_MOON = new Titan();
     public static final CelestialBody SATURN = new Saturn(TITAN_MOON, ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),

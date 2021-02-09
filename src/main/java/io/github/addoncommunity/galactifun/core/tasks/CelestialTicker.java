@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core.tasks;
 
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 
 /**
  * Task applying effects for celestial objects
@@ -13,7 +13,7 @@ public final class CelestialTicker implements Runnable {
     
     @Override
     public void run() {
-        for (CelestialWorld object : CelestialWorld.getEnabled()) {
+        for (AlienWorld object : AlienWorld.getEnabled()) {
             object.tickWorld();
         }
     }

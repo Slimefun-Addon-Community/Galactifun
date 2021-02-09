@@ -5,14 +5,14 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.core.util.Sphere;
 import io.github.addoncommunity.galactifun.core.util.Util;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -20,28 +20,30 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-public final class EarthOrbit extends CelestialWorld {
+public final class EarthOrbit extends AlienWorld {
 
     private static final Sphere COMET = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private static final Sphere ASTEROID = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
     public EarthOrbit() {
-        super("Earth Orbit", new Orbit(24000), Earth.SURFACE_AREA * 20, Gravity.ZERO, Atmosphere.NONE, DayCycle.ETERNAL_NIGHT,
-                CelestialType.SPACE, 0, Terrain.VOID, new ItemChoice(Material.BLACK_STAINED_GLASS)
-        );
-    }
-
-    @Nonnull
-    @Override
-    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
-        return Material.AIR; // probably won't be called
-    }
-
-    @Override
-    public void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, int z) {
-        // probably won't be called
+        super("Earth Orbit", new Orbit(24000), CelestialType.SPACE, new ItemChoice(Material.BLACK_STAINED_GLASS));
     }
     
+    @Override
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
+                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
+        int x;
+        int y;
+        int z;
+        for (x = 0 ; x < 16 ; x++) {
+            for (y = 0 ; y < 256 ; y++) {
+                for (z = 0 ; z < 16 ; z++) {
+                    grid.setBiome(x, y, z, Biome.THE_VOID);
+                }
+            }
+        }
+    }
+
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BlockPopulator() {
@@ -62,6 +64,29 @@ public final class EarthOrbit extends CelestialWorld {
                 }
             }
         });
+    }
+
+    @Nonnull
+    @Override
+    protected DayCycle createDayCycle() {
+        return DayCycle.EARTH_LIKE;
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return Atmosphere.NONE;
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return Gravity.ZERO;
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return Earth.SURFACE_AREA * 20;
     }
 
 }

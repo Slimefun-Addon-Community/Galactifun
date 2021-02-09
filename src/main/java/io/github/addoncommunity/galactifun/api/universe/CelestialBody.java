@@ -23,11 +23,11 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     @Getter
     @Nonnull 
     protected final DayCycle dayCycle;
-    
+
     @Getter
     @Nonnull 
     protected final Atmosphere atmosphere;
-    
+
     @Getter
     @Nonnull 
     protected final Gravity gravity;
@@ -35,23 +35,37 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     /**
      * Surface area in square kilometers
      */
+    @Getter
     protected final double surfaceArea;
     
-    public CelestialBody(@Nonnull String name, @Nonnull Orbit orbit, long surfaceArea, @Nonnull Gravity gravity,
-                         @Nonnull DayCycle dayCycle, @Nonnull CelestialType type, @Nonnull Atmosphere atmosphere,
+    public CelestialBody(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
                          @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
         super(name, orbit, type, choice, celestialBodies);
-
-        Validate.notNull(dayCycle);
-        Validate.notNull(atmosphere);
-        Validate.notNull(type);
-        Validate.notNull(gravity);
         
-        this.gravity = gravity;
-        this.surfaceArea = surfaceArea / 1000000D;
-        this.dayCycle = dayCycle;
-        this.atmosphere = atmosphere;
+        this.gravity = createGravity();
+        Validate.notNull(this.gravity);
+        
+        this.dayCycle = createDayCycle();
+        Validate.notNull(this.dayCycle);
+        
+        this.atmosphere = createAtmosphere();
+        Validate.notNull(this.atmosphere);
+
+        this.surfaceArea = createSurfaceArea() / 1000000D;
+        Validate.isTrue(this.surfaceArea > 0);
+        
     }
+    
+    @Nonnull
+    protected abstract DayCycle createDayCycle();
+    
+    @Nonnull
+    protected abstract Atmosphere createAtmosphere();
+    
+    @Nonnull
+    protected abstract Gravity createGravity();
+    
+    protected abstract long createSurfaceArea();
     
     @Override
     @OverridingMethodsMustInvokeSuper

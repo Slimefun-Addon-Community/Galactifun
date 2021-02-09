@@ -4,10 +4,10 @@ import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.terrain.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
@@ -26,18 +26,15 @@ import java.util.Random;
  * @author Mooy1
  *
  */
-public final class Mars extends CelestialWorld {
+public final class Mars extends SimpleAlienWorld {
 
     public Mars(@Nonnull CelestialBody... celestialBodies) {
-        super("&cMars", new Orbit(233_500_000L), 55_910_000L, new Gravity(3.711),
-                new AtmosphereBuilder().addCarbonDioxide(95).setNether().build(),
-                new DayCycle(1.03), CelestialType.TERRESTRIAL, 75,  Terrain.HILLY_CAVERNS,
-                new ItemChoice(Material.RED_SAND), celestialBodies);
+        super("&cMars", new Orbit(233_500_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND), celestialBodies);
     }
-
+    
     @Nonnull
     @Override
-    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
+    protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
         // top 4 blocks
         if (y > top - 4) {
             return Material.RED_SAND;
@@ -57,13 +54,51 @@ public final class Mars extends CelestialWorld {
     }
 
     @Override
-    public void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int chunkX, int y, int chunkZ) {
-        grid.setBiome(chunkX, y, chunkZ, Biome.NETHER_WASTES);
+    protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, int realX, int realZ,  int x, int z, int height) {
+        
+        // generate caves
+        for (int y = 1 ; y <= height - 16 ; y++) {
+            double density = this.generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
+
+            // Choose a narrow selection of blocks
+            if (density > 0.35) {
+                chunk.setBlock(x, y, z, Material.CAVE_AIR);
+            }
+        }
+    }
+
+    @Nonnull
+    @Override
+    protected Biome getBiome() {
+        return Biome.NETHER_WASTES;
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
+    }
+
+    @Nonnull
+    @Override
+    protected DayCycle createDayCycle() {
+        return new DayCycle(1.03);
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return new AtmosphereBuilder().addCarbonDioxide(95).setNether().build();
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return new Gravity(3.711);
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return 55_910_000L;
     }
 
 }

@@ -1,9 +1,13 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -12,6 +16,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
@@ -24,7 +29,7 @@ import java.util.Set;
  *
  * @author Seggan
  */
-public class Titan extends CelestialWorld {
+public class Titan extends AlienWorld {
 
     private static final Set<Biome> forests = EnumSet.of(
         Biome.FOREST,
@@ -37,23 +42,133 @@ public class Titan extends CelestialWorld {
     );
 
     public Titan() {
-        super("Titan", 1_200_000L, 31_944_800L, new Gravity(1.352), Material.SAND, DayCycle.EARTH_LIKE, new TitanTerrain(), new Atmosphere(
-            0, true, false, false, true, World.Environment.NORMAL
-        ), 30, 55);
+        super("Titan", new Orbit(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
     }
 
-    // Unused
-    @Nonnull
     @Override
-    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
-        return Material.AIR;
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
+                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
+        generator.setScale(0.004);
+
+        int height;
+        int x;
+        int z;
+        int realX;
+        int realZ;
+
+        for (x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
+                
+                chunk.setBlock(x, 0, z, Material.BEDROCK);
+                
+                // find max height
+                height = (int) (55 + 30 * (1 + generator.noise(realX, realZ, 0.5, 0.5, true)));
+
+                Biome biome = grid.getBiome(x, height, z);
+
+                if (biome == Biome.RIVER || biome == Biome.FROZEN_RIVER) {
+                    biome = removeRiver(grid, x, z, height);
+                }
+
+                switch (biome) {
+                    case BADLANDS:
+                    case MODIFIED_BADLANDS_PLATEAU:
+                    case MODIFIED_WOODED_BADLANDS_PLATEAU:
+                    case WOODED_BADLANDS_PLATEAU:
+                    case BADLANDS_PLATEAU:
+                    case ERODED_BADLANDS:
+                        if (random.nextDouble() < 0.1) {
+                            for (int y = height + random.nextInt(4); y > height; y--) {
+                                chunk.setBlock(x, y, z, Material.COAL_BLOCK);
+                            }
+                        }
+                        generateRest(height, chunk, random, x, z);
+                        break;
+                    case BIRCH_FOREST:
+                    case WOODED_HILLS:
+                    case WOODED_MOUNTAINS:
+                    case FLOWER_FOREST:
+                    case BIRCH_FOREST_HILLS:
+                    case TALL_BIRCH_FOREST:
+                    case TALL_BIRCH_HILLS:
+                    case FOREST:
+                        if (random.nextBoolean()) {
+                            chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
+                        } else {
+                            chunk.setBlock(x, height + 1, z, Material.CRIMSON_NYLIUM);
+                        }
+                        generateRest(height, chunk, random, x, z);
+                        break;
+                    case COLD_OCEAN:
+                    case DEEP_LUKEWARM_OCEAN:
+                    case DEEP_OCEAN:
+                    case DEEP_WARM_OCEAN:
+                    case LUKEWARM_OCEAN:
+                    case DEEP_COLD_OCEAN:
+                    case FROZEN_OCEAN:
+                    case DEEP_FROZEN_OCEAN:
+                    case WARM_OCEAN:
+                    case OCEAN:
+                        chunk.setBlock(x, height + 1, z, Material.WATER);
+                        generateRest(height, chunk, random, x, z);
+                        break;
+                    default:
+                        chunk.setBlock(x, height + 1, z, Material.SAND);
+                        generateRest(height, chunk, random, x, z);
+                }
+            }
+        }
     }
 
-    // Unused
-    @Nonnull
-    @Override
-    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
-        return Biome.PLAINS;
+    /**
+     * Replaces river with the closest biome it finds
+     */ // TODO try to find an easier way to do this
+    private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
+        int dev = 1;
+        Biome biome = grid.getBiome(x, height, z);
+        while (dev < 16) {
+            if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x - dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x + dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z - dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z + dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            dev++;
+        }
+        return biome;
+    }
+
+    private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
+        for (int y = height; y > 0; y--) {
+            if (random.nextBoolean()) {
+                chunk.setBlock(x, y, z, Material.STONE);
+            } else {
+                chunk.setBlock(x, y, z, Material.COAL_ORE);
+            }
+        }
     }
 
     @Override
@@ -79,4 +194,28 @@ public class Titan extends CelestialWorld {
             }
         });
     }
+
+    @Nonnull
+    @Override
+    protected DayCycle createDayCycle() {
+        return DayCycle.EARTH_LIKE;
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return new AtmosphereBuilder().enableWeather().enableFire().build(); 
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return new Gravity(1.352);
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return 31_944_800L;
+    }
+
 }

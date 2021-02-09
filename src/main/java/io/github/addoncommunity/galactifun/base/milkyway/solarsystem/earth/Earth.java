@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.world.AbstractCelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
  *
  * @author Mooy1
  */
-public final class Earth extends AbstractCelestialWorld {
+public final class Earth extends CelestialWorld {
     
     private static final World WORLD = getMainWorld();
     public static final long SURFACE_AREA = 196_900_000;
@@ -39,14 +39,36 @@ public final class Earth extends AbstractCelestialWorld {
     }
     
     public Earth(@Nonnull CelestialBody... orbiting) {
-        super("Earth", new Orbit(149_600_000L), SURFACE_AREA, Gravity.EARTH_LIKE, DayCycle.EARTH_LIKE,
-                CelestialType.TERRESTRIAL, Atmosphere.EARTH_LIKE, new ItemChoice(Material.GRASS_BLOCK), orbiting);
+        super("Earth", new Orbit(149_600_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK), orbiting);
     }
 
     @Nonnull
     @Override
     public World getWorld() {
         return WORLD;
+    }
+
+    @Nonnull
+    @Override
+    protected DayCycle createDayCycle() {
+        return DayCycle.EARTH_LIKE;
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return Atmosphere.EARTH_LIKE;
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return Gravity.EARTH_LIKE;
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return SURFACE_AREA;
     }
 
 }
