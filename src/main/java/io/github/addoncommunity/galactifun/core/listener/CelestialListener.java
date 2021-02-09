@@ -33,7 +33,7 @@ public final class CelestialListener implements Listener {
         }
         applyWorldEffects(e);
     }
-
+    
     @EventHandler
     public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         applyWorldEffects(e);

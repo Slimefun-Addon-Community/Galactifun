@@ -15,6 +15,10 @@ import java.util.Map;
 /**
  * Any world that can be travelled to by rockets or other means
  * 
+ * this should only be used to allow worlds from vanilla or other plugins to be travelled to
+ * 
+ * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
+ * 
  * @author Mooy1
  */
 public abstract class CelestialWorld extends CelestialBody {
@@ -41,6 +45,7 @@ public abstract class CelestialWorld extends CelestialBody {
                 WORLDS.put(world, this);
             }
         });
+        
     }
 
     @Nullable

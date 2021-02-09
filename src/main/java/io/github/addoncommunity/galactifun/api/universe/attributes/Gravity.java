@@ -55,7 +55,7 @@ public final class Gravity {
             throw new IllegalArgumentException("Cannot create a new Gravity of 0, use Gravity.ZERO instead!");
         }
         // amplifier is level - 1
-        this.effect = new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, level - 1, false, false);
+        this.effect = new PotionEffect(PotionEffectType.JUMP, 200, level - 1, false, false);
         this.percent = (int) (comparedToEarth * 100);
     }
 
@@ -63,7 +63,7 @@ public final class Gravity {
      * 0 gravity constructor
      */
     private Gravity() {
-        this.effect = new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, false, false);
+        this.effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
         this.percent = 0;
     }
     

@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -54,17 +55,17 @@ public final class Mars extends SimpleAlienWorld {
     }
 
     @Override
-    protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, int realX, int realZ,  int x, int z, int height) {
-        
-        // generate caves
-        for (int y = 1 ; y <= height - 16 ; y++) {
-            double density = this.generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
+    protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull SimplexOctaveGenerator generator,
+                                @Nonnull Random random, int realX, int realZ, int x, int z, int height) {
+            // generate caves
+            for (int y = 1 ; y <= height - 16 ; y++) {
+                double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
-            // Choose a narrow selection of blocks
-            if (density > 0.35) {
-                chunk.setBlock(x, y, z, Material.CAVE_AIR);
+                // Choose a narrow selection of blocks
+                if (density > 0.35) {
+                    chunk.setBlock(x, y, z, Material.CAVE_AIR);
+                }
             }
-        }
     }
 
     @Nonnull

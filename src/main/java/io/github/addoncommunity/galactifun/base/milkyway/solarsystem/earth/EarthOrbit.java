@@ -69,7 +69,7 @@ public final class EarthOrbit extends AlienWorld {
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return DayCycle.EARTH_LIKE;
+        return DayCycle.ETERNAL_NIGHT;
     }
 
     @Nonnull

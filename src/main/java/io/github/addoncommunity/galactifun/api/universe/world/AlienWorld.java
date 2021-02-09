@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -33,6 +34,8 @@ import java.util.Set;
 
 /**
  * Any alien world
+ * 
+ * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit
  *
  * @author Seggan
  * @author Mooy1
@@ -105,10 +108,14 @@ public abstract class AlienWorld extends CelestialWorld {
         } else {
             this.world = null;
         }
+        
     }
     
     @Nonnull
     private World loadWorld(@Nonnull String worldName) {
+        
+        // before
+        beforeWorldLoad();
         
         // fetch or create world
         World world = new WorldCreator(worldName)
@@ -149,17 +156,31 @@ public abstract class AlienWorld extends CelestialWorld {
         if (BlockStorage.getStorage(world) == null) {
             new BlockStorage(world);
         }
-        
-        // setup
-        setupWorld(world);
 
         // register
         WORLDS.put(world, this);
         
+        // after
+        afterWorldLoad(world);
+        
         return world;
     }
+
+    /**
+     * Called before the world is loaded
+     * 
+     * use this to validate or initialize anything that is used in the chunk generator
+     */
+    protected void beforeWorldLoad() {
+        // can be overridden
+    }
     
-    protected void setupWorld(@Nonnull World world) {
+    /**
+     * Called after the world is loaded
+     * 
+     * use this to add any custom world settings you want
+     */
+    protected void afterWorldLoad(@Nonnull World world) {
         // can be overridden
     }
     

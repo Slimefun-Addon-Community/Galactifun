@@ -17,36 +17,33 @@ import java.util.Random;
 /**
  * A simple alien world
  * 
+ * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars
+ * 
  * @author Mooy1
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
     
-    /**
-     * Octave generator for this world, only null for disabled worlds
-     */
-    protected final SimplexOctaveGenerator generator;
-    
     public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
                             @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        
         super(name, orbit, type, choice, celestialBodies);
+    }
 
+    @Override
+    protected void beforeWorldLoad() {
+        // validate stuff before it is used in generators
         Validate.isTrue(getMaxDeviation() >= 0);
         Validate.isTrue(getAverageHeight() >= 0 && getAverageHeight() + getMaxDeviation() <= 256);
         Validate.isTrue(getOctaves() > 0);
-        
-        // testing
-        if (this.world != null) {
-            this.generator = new SimplexOctaveGenerator(this.world, getOctaves());
-        } else {
-            this.generator = null;
-        }
+        Validate.isTrue(getScale() > 0);
     }
 
     @Override
     protected final void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-
+        
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, getOctaves());
+        generator.setScale(getScale());
+        
         int height;
         int realX;
         int realZ;
@@ -59,7 +56,7 @@ public abstract class SimpleAlienWorld extends AlienWorld {
 
                 // find max height
                 height = (int) Math.floor(getAverageHeight() + getMaxDeviation() *
-                        this.generator.noise(realX, realZ, getFrequency(), getAmplitude(), true)
+                        generator.noise(realX, realZ, getFrequency(), getAmplitude(), true)
                 );
 
                 // y = 0, add bedrock and biome
@@ -78,7 +75,7 @@ public abstract class SimpleAlienWorld extends AlienWorld {
                 }
                 
                 // more
-                generateMore(chunk, random, realX, realZ, x, z, height);
+                generateMore(chunk, generator, random, realX, realZ, x, z, height);
                 
             }
         }
@@ -93,8 +90,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
     /**
      * Generate additional things after the main materials and biomes have been generated
      */
-    protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random,
-                                int realX, int realZ, int x, int z, int height) {
+    protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull SimplexOctaveGenerator generator,
+                                @Nonnull Random random, int realX, int realZ, int x, int z, int height) {
         
     }
 

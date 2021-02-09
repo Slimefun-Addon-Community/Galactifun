@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  *
  */
-public class DayCycle {
+public final class DayCycle {
     
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
     public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
