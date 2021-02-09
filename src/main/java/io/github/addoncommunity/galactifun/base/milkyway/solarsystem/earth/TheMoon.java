@@ -1,10 +1,12 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -19,17 +21,44 @@ import java.util.Random;
  * @author Seggan
  * @author Mooy1
  */
-public final class TheMoon extends CelestialWorld {
+public final class TheMoon extends SimpleAlienWorld {
     
     public TheMoon() {
-        super("The Moon", 382_500L, 14_600_000L, Gravity.MOON_LIKE,
-                Material.ANDESITE, DayCycle.EARTH_LIKE, WorldTerrain.SMOOTH, Atmosphere.NONE, 30, 80);
+        super("The Moon", new Orbit(382_500L), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
     }
     
+    @Override
+    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        
+    }
+
     @Nonnull
     @Override
-    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
-        if (random.nextFloat() > .03) {
+    protected DayCycle createDayCycle() {
+        return DayCycle.EARTH_LIKE;
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return Atmosphere.NONE;
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return Gravity.MOON_LIKE;
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return 14_600_000L;
+    }
+
+    @Nonnull
+    @Override
+    protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
+        if (random.nextFloat() > .02) {
             return Material.ANDESITE;
         } else {
             return Material.GOLD_ORE;
@@ -38,13 +67,13 @@ public final class TheMoon extends CelestialWorld {
 
     @Nonnull
     @Override
-    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    protected Biome getBiome() {
         return Biome.BADLANDS;
     }
 
     @Override
-    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        
+    protected int getAverageHeight() {
+        return 50;
     }
 
 }

@@ -1,15 +1,14 @@
-package io.github.addoncommunity.galactifun.api.mob;
+package io.github.addoncommunity.galactifun.api.alien;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.core.GalacticRegistry;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -20,9 +19,9 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -33,46 +32,60 @@ import java.util.Objects;
  * @author Mooy1
  */
 public abstract class Alien {
-    
-    public static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
+
+    public static final Map<String, Alien> ALIENS = new HashMap<>();
+
+    @Nullable
+    public static Alien getByID(@Nonnull String id) {
+        return ALIENS.get(id);
+    }
+
+    @Nullable
+    public static Alien getByEntity(@Nonnull Entity entity) {
+        String id = PersistentDataAPI.getString(entity, Alien.KEY);
+        return id == null ? null : getByID(id);
+    }
+
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
 
     @Nonnull
     private final String id;
     @Nonnull
     private final String name;
-    private final int health;
-    @Getter
-    private final int chance;
     @Nonnull
     private final EntityType type;
-    @Nonnull
-    private final List<CelestialWorld> worlds;
+    
+    @Getter
+    private final int chance;
+    private final int health;
+    
+    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
+                 int chance, int health, @Nonnull AlienWorld... worlds) {
 
-    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int chance, int health, @Nonnull CelestialWorld... worlds) {
         Validate.notNull(id);
         Validate.notNull(name);
         Validate.notNull(type);
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
-
-        this.id = id;
+        Validate.isTrue(health > 0);
+        Validate.isTrue(chance > 0 && chance <= 100);
+        
         this.chance = chance;
+        this.id = id;
         this.name = ChatColors.color(name);
         this.health = health;
         this.type = type;
-        this.worlds = new ArrayList<>(Arrays.asList(worlds));
 
-        for (CelestialWorld world : this.worlds) {
+        for (AlienWorld world : worlds) {
+            Validate.notNull(world);
             world.addSpecies(this);
         }
 
-        GalacticRegistry.register(this.id, this);
+        ALIENS.put(id, this);
 
     }
 
-    public final void spawn(@Nonnull Location loc) {
-        Objects.requireNonNull(loc.getWorld());
-        
-        LivingEntity entity = (LivingEntity) loc.getWorld().spawnEntity(loc, this.type);
+    public final void spawn(@Nonnull Location loc, @Nonnull World world) {
+        LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
         PersistentDataAPI.setString(entity, KEY, this.id);
 
         Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.health);
@@ -80,14 +93,10 @@ public abstract class Alien {
         entity.setCustomName(this.name);
         entity.setCustomNameVisible(true);
 
-        onSpawn(entity, loc);
+        onSpawn(entity);
     }
-
-    public boolean canSpawn(@Nonnull Location l) {
-        return countInChunk(l.getChunk()) < getMaxAmountInChunk(l.getChunk());
-    }
-
-    public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) { }
+    
+    public void onSpawn(@Nonnull LivingEntity spawned) { }
 
     public void onMobTick(@Nonnull LivingEntity mob) { }
 
@@ -98,21 +107,5 @@ public abstract class Alien {
     public void onTarget(@Nonnull EntityTargetEvent e) { }
 
     public void onDeath(@Nonnull EntityDeathEvent e) { }
-    
-    protected abstract int getMaxAmountInChunk(@Nonnull Chunk chunk);
-    
-    protected final int countInChunk(@Nonnull Chunk chunk) {
-        int i = 0;
-        for (Entity entity : chunk.getEntities()) {
-            if (entity instanceof LivingEntity) {
-                Alien alien = GalacticRegistry.getAlien(entity);
-                if (alien != null && alien.id.equals(this.id)) {
-                    i++;
-                }
-            }
-        }
-
-        return i;
-    }
     
 }

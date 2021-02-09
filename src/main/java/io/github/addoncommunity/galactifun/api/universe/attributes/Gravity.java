@@ -16,65 +16,63 @@ import javax.annotation.Nonnull;
  * @author Seggan
  *
  */
-public class Gravity {
+public final class Gravity {
 
-    private static final double EARTH_GRAVITY = 9.81;
-    private static final double DEFAULT_JUMP = 1.25;
+    private static final float EARTH_GRAVITY = 9.81F;
+    private static final float DEFAULT_JUMP = 1.25F;
     private static final double LOG_JUMP_BOOST = Math.log(1.45);
 
     public static final Gravity MOON_LIKE = new Gravity(1.62);
     public static final Gravity EARTH_LIKE = new Gravity(1);
-    public static final Gravity ZERO = new Gravity(0) {
-        @Override
-        public void applyGravity(@Nonnull Player p) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 0, false, false));
-        }
-    };
+    public static final Gravity ZERO = new Gravity();
     
     @Getter
     private final int percent;
-    private final int jump;
-    private final int speed;
+    @Nonnull
+    private final PotionEffect effect;
 
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
-        Validate.isTrue(ratio > 0);
         return new Gravity((float) ratio);
     }
 
     @Nonnull
     public static Gravity jumpHeight(double blocks) {
-        return new Gravity(validateAndDiv(blocks, DEFAULT_JUMP));
+        return new Gravity((float) blocks / DEFAULT_JUMP);
     }
 
     public Gravity(double gravity) {
-        this(validateAndDiv(gravity, EARTH_GRAVITY));
+        this((float) gravity / EARTH_GRAVITY);
     }
 
-    private Gravity(float boost) {
-        this.percent = (int) (boost * 100);
-        int level = (int) (Math.log(boost) / LOG_JUMP_BOOST);
-        this.jump = level - 1;
-        this.speed = (level >> 1) - 1;
+    private Gravity(float comparedToEarth) {
+        int level;
+        if (comparedToEarth > 0) {
+            level = (int) (Math.log(comparedToEarth) / LOG_JUMP_BOOST) * -1;
+        } else if (comparedToEarth < 0) {
+            level = (int) (Math.log(comparedToEarth * -1) / LOG_JUMP_BOOST);
+        } else {
+            throw new IllegalArgumentException("Cannot create a new Gravity of 0, use Gravity.ZERO instead!");
+        }
+        // amplifier is level - 1
+        this.effect = new PotionEffect(PotionEffectType.JUMP, 200, level - 1, false, false);
+        this.percent = (int) (comparedToEarth * 100);
     }
-    
-    private static float validateAndDiv(double num, double div) {
-        Validate.isTrue(num > 0);
-        return (float) (num / div);
+
+    /**
+     * 0 gravity constructor
+     */
+    private Gravity() {
+        this.effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
+        this.percent = 0;
     }
     
     public void applyGravity(@Nonnull Player p) {
-        if (this.jump != -1) {
-            new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, this.jump, false, false).apply(p);
-            if (this.speed != -1) {
-                new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, this.speed, false, false).apply(p);
-            }
-        }
+        p.addPotionEffect(this.effect);
     }
     
-    public static void removeGravity(@Nonnull Player p) {
-        p.removePotionEffect(PotionEffectType.JUMP);
-        p.removePotionEffect(PotionEffectType.SPEED);
+    public void removeGravity(@Nonnull Player p) {
+        p.removePotionEffect(this.effect.getType());
     }
     
 }

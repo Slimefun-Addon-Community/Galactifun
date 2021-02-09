@@ -1,17 +1,20 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.WorldTerrain;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -22,48 +25,79 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Venus extends CelestialWorld {
+public class Venus extends SimpleAlienWorld {
 
     public Venus() {
-        super("Venus", 108_860_000L, 177_700_000L, new Gravity(1.105), Material.RED_STAINED_GLASS,
-                new DayCycle(116.75), new WorldTerrain("Volcanic", 45, 8, 0.02, 0.5, 0.3),
-                new Atmosphere(
-                        0,
-                        false,
-                        true,
-                        true,
-                        true,
-                        World.Environment.NETHER,
-                        new PotionEffectType[0],
-                        new PotionEffectType[] {PotionEffectType.WITHER}
-                ), 30, 80);
+        super("Venus", new Orbit(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
+    }
+    
+    @Override
+    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new LakePopulator(75, Material.LAVA));
     }
 
     @Nonnull
     @Override
-    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+    protected DayCycle createDayCycle() {
+        return new DayCycle(116.75);
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return new AtmosphereBuilder().setNether().addStorm().addThunder().addEffects(new AtmosphericEffect(EffectType.WITHER, 3)).build();
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return new Gravity(1.105);
+    }
+
+    @Override
+    protected long createSurfaceArea() {
+        return 177_700_000L;
+    }
+
+    @Nonnull
+    @Override
+    protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
         if (y > 75) {
             return Material.BLACKSTONE;
         } else if (y > 10) {
             return Material.BASALT;
         } else if (y > 8) {
             return Material.YELLOW_TERRACOTTA;
-        } else if (y > 0) {
+        } else {
             return Material.BASALT;
         }
-        throw new IllegalArgumentException(String.valueOf(y));
     }
 
     @Nonnull
     @Override
-    public Biome generateBiome(@Nonnull Random random, int chunkX, int chunkZ) {
+    protected Biome getBiome() {
         return Biome.BASALT_DELTAS;
     }
 
     @Override
-    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
-        populators.add(new LakePopulator(75, Material.LAVA));
+    protected int getAverageHeight() {
+        return 80;
+    }
+
+    @Override
+    protected int getMaxDeviation() {
+        return 45;
+    }
+
+    @Override
+    protected double getScale() {
+        return .02;
+    }
+
+    @Override
+    protected double getFrequency() {
+        return .3;
     }
 
 }

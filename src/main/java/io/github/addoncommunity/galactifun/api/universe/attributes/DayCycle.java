@@ -12,11 +12,11 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  *
  */
-public class DayCycle {
+public final class DayCycle {
     
     public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
     public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
-    public static final DayCycle EARTH_LIKE = new DayCycle(1D);
+    public static final DayCycle EARTH_LIKE = new DayCycle(1, 0);
     
     @Nonnull @Getter
     private final String dayLength;
@@ -28,17 +28,33 @@ public class DayCycle {
     }
 
     public DayCycle(int hours) {
-        this(hours % 24, hours / 24);
+        this(hours / 24, hours % 24);
     }
 
     public DayCycle(int days, int hours) {
-        this.dayLength = (hours > 24 ? hours / 24 + " Days " + hours % 24 : hours) + " Hours";
+        StringBuilder builder = new StringBuilder();
+        if (days > 0) {
+            builder.append(days);
+            builder.append(" day");
+            if (days != 1) {
+                builder.append('s');
+            }
+            builder.append(' ');
+        }
+        if (hours > 0) {
+            builder.append(hours);
+            builder.append(" hour");
+            if (hours != 1) {
+                builder.append('s');
+            }
+        }
+        this.dayLength = builder.toString();
         this.time = 0;
         this.cycle = true;
     }
 
     public DayCycle(long time) {
-        this.dayLength = time >= 0 && time < 12000 ? "Eternal" : "Zero";
+        this.dayLength = time >= 0 && time < 12000 ? "Eternal" : "Never";
         this.time = time;
         this.cycle = false;
     }
@@ -51,7 +67,7 @@ public class DayCycle {
     }
     
     public void applyTime(@Nonnull World world) {
-        // dunno how to implement
+        // dunno how to implement, it wud slow down/speed up time
     }
     
 }

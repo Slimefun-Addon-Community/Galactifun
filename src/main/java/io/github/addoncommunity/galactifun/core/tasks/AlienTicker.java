@@ -1,9 +1,8 @@
 package io.github.addoncommunity.galactifun.core.tasks;
 
-import io.github.addoncommunity.galactifun.api.mob.Alien;
-import io.github.addoncommunity.galactifun.core.GalacticRegistry;
-import io.github.mooy1.infinitylib.misc.ConfigUtils;
-import org.bukkit.Bukkit;
+import io.github.addoncommunity.galactifun.api.alien.Alien;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.mooy1.infinitylib.config.ConfigUtils;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 
@@ -15,13 +14,13 @@ import org.bukkit.entity.LivingEntity;
  */
 public final class AlienTicker implements Runnable {
 
-    public static final int INTERVAL = ConfigUtils.getOrDefault("mob-tick-interval", 1, 20, 2);
+    public static final int INTERVAL = ConfigUtils.getInt("aliens.tick-interval", 1, 20, 4);
     
     @Override
     public void run() {
-        for (World world : Bukkit.getWorlds()) {
+        for (World world : AlienWorld.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
-                Alien alien = GalacticRegistry.getAlien(entity);
+                Alien alien = Alien.getByEntity(entity);
                 if (alien != null) {
                     alien.onMobTick(entity);
                 }

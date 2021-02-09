@@ -1,10 +1,8 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.mob.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import org.bukkit.Chunk;
+import io.github.addoncommunity.galactifun.api.alien.Alien;
+import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -16,29 +14,23 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import javax.annotation.Nonnull;
 
 /**
- * A class for an alien creeper
+ * A class for a charged alien creeper, passive until attacked
  *
  * @author GallowsDove
+ * @author Mooy1
  */
 public final class MutantCreeper extends Alien {
 
-    public MutantCreeper(@Nonnull CelestialWorld... worlds) {
+    public MutantCreeper(@Nonnull AlienWorld... worlds) {
         super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned, @Nonnull Location loc) {
+    public void onSpawn(@Nonnull LivingEntity spawned) {
         Creeper spawnedCreeper = (Creeper) spawned;
-        spawned.setCanPickupItems(false);
-        spawned.setRemoveWhenFarAway(true);
         spawnedCreeper.setPowered(true);
     }
-
-    @Override
-    public int getMaxAmountInChunk(@Nonnull Chunk chunk) {
-        return 1;
-    }
-
+    
     @Override
     public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
@@ -62,4 +54,5 @@ public final class MutantCreeper extends Alien {
             }
         }
     }
+    
 }
