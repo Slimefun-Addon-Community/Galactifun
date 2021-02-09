@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Class for the Saturnian moon Titan
+ *
+ * @author Seggan
+ */
 public class Titan extends CelestialWorld {
 
     private static final Set<Biome> forests = EnumSet.of(

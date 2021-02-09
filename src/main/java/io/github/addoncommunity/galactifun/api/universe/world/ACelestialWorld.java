@@ -18,7 +18,8 @@ import javax.annotation.Nonnull;
  */
 public abstract class ACelestialWorld extends CelestialBody {
 
-    @Getter @Nonnull
+    @Getter
+    @Nonnull
     protected final World world;
 
     public ACelestialWorld(@Nonnull String name, long distance, long surfaceArea, @Nonnull Gravity gravity, @Nonnull Material material,
