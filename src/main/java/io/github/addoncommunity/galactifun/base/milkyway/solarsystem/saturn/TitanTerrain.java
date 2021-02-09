@@ -113,28 +113,28 @@ class TitanTerrain extends AWorldTerrain {
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
-                break;
+                return biome;
             }
             else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x + dev, height, z);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
-                break;
+                return biome;
             }
             else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z - dev);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
-                break;
+                return biome;
             }
             else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z + dev);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
-                break;
+                return biome;
             }
             dev++;
         }
