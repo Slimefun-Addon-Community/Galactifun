@@ -17,6 +17,7 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
@@ -32,6 +33,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
+        
+        GalacticProfile.load();
         
         CoreCategories.setup(this);
         
@@ -57,6 +60,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 "###################################################",
                 ""
         ));
+        
+        PluginUtils.runSync(() -> GalacticProfile.get(UUID.fromString("0629ebca-3a33-4a4d-bd29-fafe4aa32719")), 100);
     }
     
     private static void scheduleTasks() {
@@ -69,7 +74,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
     public void onDisable() {
         instance = null;
 
-        GalacticProfile.closeAll();
+        GalacticProfile.unload();
         GalacticProfile.saveAll();
         
     }

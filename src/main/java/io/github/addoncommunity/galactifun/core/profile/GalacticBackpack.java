@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public final class GalacticBackpack {
+public final class  GalacticBackpack {
     
     /**
      * The menu for this backpack
@@ -25,9 +25,7 @@ public final class GalacticBackpack {
      */
     GalacticBackpack(@Nonnull GalacticProfile profile, @Nonnull Config config) {
         ChestMenu menu = new ChestMenu(Galactifun.getInstance(), "&7Galactic Backpack", profile::dirty);
-        
-        
-        
+
         this.menu = menu;
     }
     

@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.mooy1.infinitylib.config.CustomConfig;
+import io.github.mooy1.infinitylib.config.ConfigUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,28 +17,28 @@ import javax.annotation.Nullable;
 public final class WorldConfig {
 
     /**
-     * The config object used to save and load
+     * The config object
      */
-    private static final CustomConfig customConfig = new CustomConfig("worlds.yml");
+    private static final Config config = ConfigUtils.loadConfig("worlds.yml");
 
     /**
-     * The file configuration used to read and write
+     * The file configuration
      */
-    private static final FileConfiguration config = customConfig.getConfig();
+    private static final FileConfiguration fileConfig = config.getConfiguration();
     
     @Nonnull
     public static WorldConfig loadConfiguration(@Nonnull String worldName, boolean defaultEnabled) {
-        if (!config.isConfigurationSection(worldName)) {
+        if (!fileConfig.isConfigurationSection(worldName)) {
             
-            ConfigurationSection section = config.createSection(worldName);
+            ConfigurationSection section = fileConfig.createSection(worldName);
             
             section.set("enabled", defaultEnabled);
             
-            customConfig.save();
+            config.save();
             
             return new WorldConfig(section);
         } else {
-            return new WorldConfig(config.getConfigurationSection(worldName));
+            return new WorldConfig(fileConfig.getConfigurationSection(worldName));
         }
     }
     
