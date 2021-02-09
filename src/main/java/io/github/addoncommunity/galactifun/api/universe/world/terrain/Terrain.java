@@ -1,6 +1,8 @@
-package io.github.addoncommunity.galactifun.api.universe.world;
+package io.github.addoncommunity.galactifun.api.universe.world.terrain;
 
-import io.github.addoncommunity.galactifun.api.universe.world.features.TerrainFeature;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.terrain.features.TerrainFeature;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
@@ -16,7 +18,7 @@ import java.util.Random;
  * @author Seggan
  * 
  */
-public class Terrain extends AbstractTerrain {
+public abstract class Terrain extends AbstractTerrain {
 
     public static final Terrain HILLY_CAVERNS = new Terrain( "Hilly Caverns",
             40, 8, 0.01, .5, .5, TerrainFeature.CAVERNS
@@ -50,22 +52,15 @@ public class Terrain extends AbstractTerrain {
      */
     protected final double frequency;
 
-    /**
-     * Features
-     */
-    @Nonnull
-    protected final TerrainFeature[] features;
-
 
     public Terrain(@Nonnull String name, int maxDeviation, int octaves, double scale, double amplitude,
-                   double frequency, @Nonnull TerrainFeature... features) {
+                   double frequency) {
         super(name);
         this.maxDeviation = maxDeviation;
         this.octaves = octaves;
         this.scale = scale;
         this.amplitude = amplitude;
         this.frequency = frequency;
-        this.features = features;
     }
     
     @Override
@@ -102,7 +97,7 @@ public class Terrain extends AbstractTerrain {
                 // y = 1 to height, generate and add biome
                 for (y = 1 ; y <= height ; y++) {
                     if (chunk.getType(x, y, z) == Material.AIR) {
-                        chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, height, x, y, z));
+                        chunk.setBlock(x, y, z, celestialWorld.generate(random, , x, y, z, height, ));
                     }
                     celestialWorld.generateBiome(grid, x, y, z);
                 }
@@ -114,5 +109,8 @@ public class Terrain extends AbstractTerrain {
             }
         }
     }
+    
+    protected abstract void generate(@Nonnull Chunk chunk, @Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, 
+                                     @Nonnull CelestialWorld world, @Nonnull SimplexOctaveGenerator generator);
 
 }

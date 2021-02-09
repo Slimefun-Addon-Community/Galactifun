@@ -1,5 +1,6 @@
-package io.github.addoncommunity.galactifun.api.universe.world;
+package io.github.addoncommunity.galactifun.api.universe.world.terrain;
 
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -38,19 +39,18 @@ public abstract class AbstractTerrain {
 
                     // y = 0, add bedrock and biome
                     chunk.setBlock(x, 0, z, Material.BEDROCK);
-                    celestialWorld.generateBiome(grid, x, 0, z);
+                    celestialWorld.generate(random, grid, x, 0, z, celestialWorld.getAvgHeight());
 
                     // y = 1 to height, generate and add biome
                     for (y = 1 ; y <= celestialWorld.getAvgHeight() ; y++) {
                         if (chunk.getType(x, y, z) == Material.AIR) {
-                            chunk.setBlock(x, y, z, celestialWorld.generateBlock(random, celestialWorld.getAvgHeight(), x, y, z));
+                            celestialWorld.generate(random, grid, x, y, z, celestialWorld.getAvgHeight());
                         }
-                        celestialWorld.generateBiome(grid, x, y, z);
                     }
 
                     // y = height to 256, just add biome
                     for (; y < 256 ; y++) {
-                        celestialWorld.generateBiome(grid, x, y, z);
+                        celestialWorld.generate(random, grid, x, y, z, celestialWorld.getAvgHeight());
                     }
                 }
             }
@@ -73,35 +73,5 @@ public abstract class AbstractTerrain {
             }
         }
     };
-
-    /**
-     * Creates a new ChunkGenerator based on this terrain
-     */
-    @Nonnull
-    public final ChunkGenerator createGenerator(@Nonnull CelestialWorld celestialWorld) {
-        return new ChunkGenerator() {
-            @Nonnull
-            @Override
-            public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
-                ChunkData chunk = createChunkData(world);
-                generateChunk(celestialWorld, chunkX, chunkZ, random, chunk, grid, world);
-                return chunk;
-            }
-
-            @Nonnull
-            @Override
-            public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                List<BlockPopulator> list = new ArrayList<>(4);
-                celestialWorld.getPopulators(list);
-                return list;
-            }
-        };
-    }
-
-    /**
-     * Generate a chunk
-     */
-    protected abstract void generateChunk(@Nonnull CelestialWorld celestialWorld, int chunkX, int chunkZ, @Nonnull Random random,
-                                          @Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull World world);
-
+    
 }

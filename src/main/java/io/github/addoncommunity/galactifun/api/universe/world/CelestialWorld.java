@@ -3,11 +3,11 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.world.terrain.AbstractTerrain;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
@@ -20,7 +20,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
@@ -28,6 +27,7 @@ import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -91,12 +91,6 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     private final int avgHeight;
 
     /**
-     * Terrain used to generate this world
-     */
-    @Nonnull
-    private final AbstractTerrain terrain;
-
-    /**
      * This world, only null if disabled
      */
     @Getter
@@ -137,7 +131,22 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(this.terrain.createGenerator(this))
+                .generator(new ChunkGenerator() {
+                    @Nonnull
+                    @Override
+                    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
+                        ChunkData chunk = createChunkData(world);
+                        generateChunk(chunk, grid, random, world, chunkX, chunkZ);
+                        return chunk;
+                    }
+                    @Nonnull
+                    @Override
+                    public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
+                        List<BlockPopulator> list = new ArrayList<>(4);
+                        getPopulators(list);
+                        return list;
+                    }
+                })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
 
@@ -171,23 +180,19 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
     }
     
     /**
-     * The material for the block that should be generated at the specified x, y, z value of the chunk.
-     *
-     * The top value is used so that you can set the top 3 blocks to a different material for ex.
+     * Generate a chunk
      */
-    @Nonnull
-    public abstract Material generateBlock(@Nonnull Random random, int top, int x, int y, int z);
-
-    /**
-     * Generate the biome for a block in the chunk at x, y, z
-     */
-    public abstract void generateBiome(@Nonnull ChunkGenerator.BiomeGrid grid, int x, int y, int z);
-
+    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, 
+                                          @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ);
+    
     /**
      * Add all chunk populators to this list
      */
     public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
+    /**
+     * Adds a aliens species to this world
+     */
     public final void addSpecies(@Nonnull Alien alien) {
         this.species.add(alien, alien.getChance());
     }
@@ -215,19 +220,19 @@ public abstract class CelestialWorld extends AbstractCelestialWorld {
         this.atmosphere.applyEffects(p);
         // other stuff?
     }
-    
+
+    /**
+     * Spawns aliens
+     */
     public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
         if (!this.species.isEmpty() && this.world.getLivingEntities().size() < this.world.getPlayers().size() * MAX_ALIENS) {
             this.species.getRandom().spawn(e.getLocation(), this.world);
         }
     }
 
-    @Override
-    protected void getItemStats(@Nonnull List<String> stats) {
-        super.getItemStats(stats);
-        stats.add("&6Terrain: &e" + this.terrain.getName());
-    }
-    
+    /**
+     * Override and set to false if your world is not required/needed for your plugin to work.
+     */
     protected boolean enabledByDefault() {
         return true;
     }

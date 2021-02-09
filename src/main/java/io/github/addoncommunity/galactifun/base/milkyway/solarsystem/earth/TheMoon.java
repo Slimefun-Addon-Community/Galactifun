@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.terrain.Terrain;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -34,7 +34,7 @@ public final class TheMoon extends CelestialWorld {
     
     @Nonnull
     @Override
-    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
         if (random.nextFloat() > .03) {
             return Material.ANDESITE;
         } else {

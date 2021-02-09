@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.world.features;
+package io.github.addoncommunity.galactifun.api.universe.world.terrain.features;
 
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;

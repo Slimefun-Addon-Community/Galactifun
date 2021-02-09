@@ -8,7 +8,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.Terrain;
+import io.github.addoncommunity.galactifun.api.universe.world.terrain.Terrain;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
@@ -40,7 +40,7 @@ public class Venus extends CelestialWorld {
 
     @Nonnull
     @Override
-    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
         if (y > 75) {
             return Material.BLACKSTONE;
         } else if (y > 10) {

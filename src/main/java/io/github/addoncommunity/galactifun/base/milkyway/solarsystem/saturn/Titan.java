@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
@@ -39,7 +40,7 @@ public class Titan extends CelestialWorld {
     // Unused
     @Nonnull
     @Override
-    public Material generateBlock(@Nonnull Random random, int top, int x, int y, int z) {
+    public Material generate(@Nonnull Random random, @Nonnull ChunkGenerator.BiomeGrid biomeGrid, int x, int y, int z, int top) {
         return Material.AIR;
     }
 
