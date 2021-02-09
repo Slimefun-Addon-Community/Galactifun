@@ -4,12 +4,19 @@ import io.github.addoncommunity.galactifun.api.universe.world.AWorldTerrain;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
+/**
+ * A class representing Titan's terrain
+ *
+ * @author Seggan
+ * @author GallowsDove
+ */
 class TitanTerrain extends AWorldTerrain {
 
     int height = 50;
@@ -38,7 +45,13 @@ class TitanTerrain extends AWorldTerrain {
                     realX, realZ, 0.5, 0.5, true))
                 );
 
-                switch (grid.getBiome(z, height, z)) {
+                Biome biome = grid.getBiome(x, height, z);
+
+                if (biome == Biome.RIVER || biome == Biome.FROZEN_RIVER) {
+                    biome = removeRiver(grid, x, z, height);
+                }
+
+                switch (biome) {
                     case BADLANDS:
                     case MODIFIED_BADLANDS_PLATEAU:
                     case MODIFIED_WOODED_BADLANDS_PLATEAU:
@@ -86,6 +99,46 @@ class TitanTerrain extends AWorldTerrain {
                 }
             }
         }
+    }
+
+    /**
+     * Replaces river with the closest biome it finds
+     */
+    private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
+        int dev = 1;
+        Biome biome = grid.getBiome(x, height, z);
+        while (dev < 16) {
+            if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x - dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x + dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z - dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z + dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            dev++;
+        }
+        return biome;
     }
 
     private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
