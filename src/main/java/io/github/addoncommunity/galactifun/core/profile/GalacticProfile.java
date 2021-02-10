@@ -46,13 +46,14 @@ public final class GalacticProfile {
                 i++;
             }
         }
-        PluginUtils.log("Auto saved a total of " + i + " Galactic Profiles");
+        PluginUtils.log("Saved a total of " + i + " Galactic Profiles");
     }
 
     /**
      * Closes all profiles
      */
     public static void unload() {
+        PluginUtils.log("Closing Galactic Profiles...");
         for (GalacticProfile profile : PROFILES.values()) {
             profile.close();
         }
@@ -62,6 +63,7 @@ public final class GalacticProfile {
      * Creates the profile directory if needed
      */
     public static void load() {
+        PluginUtils.log("Loading Galactic Profiles...");
         if (!FILE.exists()) {
             FILE.mkdir();
         }
@@ -89,8 +91,13 @@ public final class GalacticProfile {
      * Loads or creates a profile for the uuid
      */
     private GalacticProfile(@Nonnull UUID uuid) {
+        // load config
         Config config = ConfigUtils.loadConfig(FILE, uuid.toString() + ".yml", "profile.yml");
+        
+        // attempt to add the players name to config which could help server admins
         config.setValue("player", Bukkit.getOfflinePlayer(uuid).getName());
+        
+        // load objects
         this.backpack = new GalacticBackpack(this, config);
         this.config = config;
     }
@@ -113,7 +120,7 @@ public final class GalacticProfile {
     /**
      * Marks this profile to be saved
      */
-    void dirty() {
+    void markDirty() {
         this.dirty = true;
     }
     

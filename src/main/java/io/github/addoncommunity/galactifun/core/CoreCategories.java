@@ -15,11 +15,11 @@ import org.bukkit.Material;
 @UtilityClass
 public final class CoreCategories {
 
-    public static final GalacticCategory UNIVERSAL_CATEGORY = new GalacticCategory();
+    public static final GalacticCategory GALACTIC_CATEGORY = new GalacticCategory();
     public static final Category EQUIPMENT = new Category(PluginUtils.getKey("equipment"), new CustomItem(Material.IRON_HELMET));
     
     public static void setup(Galactifun galactifun) {
-        UNIVERSAL_CATEGORY.register(galactifun);
+        GALACTIC_CATEGORY.register(galactifun);
         EQUIPMENT.register(galactifun);
     }
     

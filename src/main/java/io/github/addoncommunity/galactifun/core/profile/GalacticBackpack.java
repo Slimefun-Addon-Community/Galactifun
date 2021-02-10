@@ -24,8 +24,10 @@ public final class  GalacticBackpack {
      * Loads or creates a new galactic backpack
      */
     GalacticBackpack(@Nonnull GalacticProfile profile, @Nonnull Config config) {
-        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), "&7Galactic Backpack", profile::dirty);
-
+        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), "&7Galactic Backpack", profile::markDirty);
+        
+        
+        
         this.menu = menu;
     }
     
