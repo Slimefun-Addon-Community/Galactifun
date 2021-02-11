@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
+import org.bukkit.entity.EnderDragon;
 
 import javax.annotation.Nonnull;
 
@@ -32,6 +33,11 @@ public final class AtmosphereBuilder {
         return this;
     }
 
+    /**
+     * Note that adding this method <b>will</b> spawn the {@link EnderDragon}
+     *
+     * @return this object
+     */
     public AtmosphereBuilder setEnd() {
         this.environment = World.Environment.THE_END;
         return this;

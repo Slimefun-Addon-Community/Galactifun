@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ import java.util.Random;
 public class Enceladus extends AlienWorld {
 
     public Enceladus() {
-        super("Enceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEnceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Enceladus extends AlienWorld {
 
     @Override
     protected long createSurfaceArea() {
-        return 308_359L;
+        return 798_648L;
     }
 
 }

@@ -52,12 +52,12 @@ public class Venus extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(1.105);
+        return new Gravity(8.87);
     }
 
     @Override
     protected long createSurfaceArea() {
-        return 177_700_000L;
+        return 460_234_317L;
     }
 
     @Nonnull

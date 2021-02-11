@@ -52,7 +52,7 @@ public final class TheMoon extends SimpleAlienWorld {
 
     @Override
     protected long createSurfaceArea() {
-        return 14_600_000L;
+        return 37_900_000L;
     }
 
     @Nonnull
