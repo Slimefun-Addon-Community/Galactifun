@@ -8,13 +8,14 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
 
 public class Jupiter extends CelestialBody {
 
-    public Jupiter(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        super("Jupiter", new Orbit(), CelestialType.GAS_GIANT, choice, celestialBodies);
+    public Jupiter(@Nonnull CelestialBody... moons) {
+        super("Jupiter", new Orbit(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE), moons);
     }
 
     @Nonnull

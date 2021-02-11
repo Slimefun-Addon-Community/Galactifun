@@ -15,10 +15,12 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.TheMoon;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Io;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Jupiter;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Titan;
+import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 
@@ -34,15 +36,17 @@ public final class BaseRegistry {
     public static final AlienWorld THE_MOON = new TheMoon();
     public static final AlienWorld ENCELADUS = new Enceladus();
     public static final AlienWorld EARTH_ORBIT = new EarthOrbit();
-    
+
+    public static final AlienWorld VENUS = new Venus();
     public static final CelestialBody EARTH = new Earth(EARTH_ORBIT, THE_MOON);
     public static final AlienWorld MARS = new Mars();
-    public static final AlienWorld VENUS = new Venus();
+    public static final AlienWorld IO = new Io();
+    public static final CelestialBody JUPITER = new Jupiter(IO);
     public static final AlienWorld TITAN_MOON = new Titan();
     public static final CelestialBody SATURN = new Saturn(TITAN_MOON, ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),
-            StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, SATURN) {
+            StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, JUPITER, SATURN) {
     };
     
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D),

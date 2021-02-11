@@ -77,7 +77,7 @@ public class Enceladus extends AlienWorld {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(0.0113);
+        return Gravity.relativeToEarth(0.0113);
     }
 
     @Override
