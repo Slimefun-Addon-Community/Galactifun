@@ -5,8 +5,8 @@ import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
-import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * Any alien world
  * 
- * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit
+ * @see EarthOrbit
  *
  * @author Seggan
  * @author Mooy1

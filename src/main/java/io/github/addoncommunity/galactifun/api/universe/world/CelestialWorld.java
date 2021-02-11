@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.World;
@@ -13,11 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Any world that can be travelled to by rockets or other means
+ * Any world that can be travelled to by rockets or other means. This should only be used
+ * to allow worlds from vanilla or other plugins to be travelled to
  * 
- * this should only be used to allow worlds from vanilla or other plugins to be travelled to
- * 
- * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
+ * @see Earth
  * 
  * @author Mooy1
  */
