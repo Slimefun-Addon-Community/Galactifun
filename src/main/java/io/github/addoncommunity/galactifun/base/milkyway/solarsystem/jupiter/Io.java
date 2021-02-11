@@ -7,6 +7,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
+import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -47,7 +49,8 @@ public class Io extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-
+        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new LakePopulator(75, Material.LAVA));
     }
 
     @Nonnull

@@ -15,6 +15,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.TheMoon;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Europa;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Io;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Jupiter;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Enceladus;
@@ -41,7 +42,8 @@ public final class BaseRegistry {
     public static final CelestialBody EARTH = new Earth(EARTH_ORBIT, THE_MOON);
     public static final AlienWorld MARS = new Mars();
     public static final AlienWorld IO = new Io();
-    public static final CelestialBody JUPITER = new Jupiter(IO);
+    public static final AlienWorld EUROPA = new Europa();
+    public static final CelestialBody JUPITER = new Jupiter(IO, EUROPA);
     public static final AlienWorld TITAN_MOON = new Titan();
     public static final CelestialBody SATURN = new Saturn(TITAN_MOON, ENCELADUS);
 
