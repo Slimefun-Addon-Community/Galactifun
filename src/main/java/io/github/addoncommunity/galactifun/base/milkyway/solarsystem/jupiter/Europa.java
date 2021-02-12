@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -17,20 +17,37 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Class for the Saturnian moon Enceladus
- *
- * @author Seggan
- */
-public class Enceladus extends AlienWorld {
+public class Europa extends AlienWorld {
 
-    public Enceladus() {
-        super("&bEnceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+    public Europa() {
+        super("&bEuropa", new Orbit(671_100), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+    }
+
+    @Nonnull
+    @Override
+    protected DayCycle createDayCycle() {
+        return DayCycle.ETERNAL_NIGHT;
+    }
+
+    @Nonnull
+    @Override
+    protected Atmosphere createAtmosphere() {
+        return Atmosphere.NONE;
+    }
+
+    @Nonnull
+    @Override
+    protected Gravity createGravity() {
+        return new Gravity(1.315);
     }
 
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
-                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
+    protected long createSurfaceArea() {
+        return 30_612_893;
+    }
+
+    @Override
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
         int x;
         int y;
         int z;
@@ -61,28 +78,4 @@ public class Enceladus extends AlienWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
 
     }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.ETERNAL_NIGHT;
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return Atmosphere.NONE;
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.relativeToEarth(0.0113);
-    }
-
-    @Override
-    protected long createSurfaceArea() {
-        return 798_648L;
-    }
-
 }

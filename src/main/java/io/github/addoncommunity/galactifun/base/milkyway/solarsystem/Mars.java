@@ -30,7 +30,7 @@ import java.util.Random;
 public final class Mars extends SimpleAlienWorld {
 
     public Mars(@Nonnull CelestialBody... celestialBodies) {
-        super("&cMars", new Orbit(233_500_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND), celestialBodies);
+        super("&cMars", new Orbit(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND), celestialBodies);
     }
     
     @Nonnull
@@ -99,7 +99,7 @@ public final class Mars extends SimpleAlienWorld {
 
     @Override
     protected long createSurfaceArea() {
-        return 55_910_000L;
+        return 144_371_391L;
     }
 
 }
