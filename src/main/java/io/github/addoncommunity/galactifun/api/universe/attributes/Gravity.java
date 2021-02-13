@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import lombok.Getter;
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -41,8 +40,8 @@ public final class Gravity {
         return new Gravity((float) blocks / DEFAULT_JUMP);
     }
 
-    public Gravity(double gravity) {
-        this((float) gravity / EARTH_GRAVITY);
+    public Gravity(double metersPerSecond) {
+        this((float) metersPerSecond / EARTH_GRAVITY);
     }
 
     private Gravity(float comparedToEarth) {

@@ -64,7 +64,10 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     
     @Nonnull
     protected abstract Gravity createGravity();
-    
+
+    /**
+     * @return Surface area of the planet in square kilometers
+     */
     protected abstract long createSurfaceArea();
     
     @Override

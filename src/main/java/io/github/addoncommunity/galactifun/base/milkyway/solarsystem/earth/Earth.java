@@ -2,11 +2,11 @@ package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 public final class Earth extends CelestialWorld {
     
     private static final World WORLD = getMainWorld();
-    public static final long SURFACE_AREA = 196_900_000;
+    public static final long SURFACE_AREA = 509_600_000;
     public static final double BORDER_SURFACE_RATIO =  WORLD.getWorldBorder().getSize() / Math.sqrt(SURFACE_AREA);
     
     @Nonnull
