@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.core.util.Util;
+import io.github.addoncommunity.galactifun.util.Util;
 import org.apache.commons.lang.Validate;
 
 /**

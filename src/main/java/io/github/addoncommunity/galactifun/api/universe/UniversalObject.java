@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -116,9 +116,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         }
     }
     
-    protected void getItemStats(@Nonnull List<String> stats) {
-        
-    }
+    protected abstract void getItemStats(@Nonnull List<String> stats);
     
     @Override
     public final int hashCode() {

@@ -11,7 +11,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -52,7 +52,7 @@ public class Venus extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(8.87);
+        return Gravity.metersPerSec(8.87);
     }
 
     @Override

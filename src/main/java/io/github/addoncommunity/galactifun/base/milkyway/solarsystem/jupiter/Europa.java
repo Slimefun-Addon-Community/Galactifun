@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -38,7 +38,7 @@ public final class Europa extends AlienWorld {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(1.315);
+        return Gravity.metersPerSec(1.315);
     }
 
     @Override

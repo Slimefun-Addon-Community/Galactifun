@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -39,7 +39,7 @@ public final class Io extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(1.796);
+        return Gravity.metersPerSec(1.796);
     }
 
     @Override

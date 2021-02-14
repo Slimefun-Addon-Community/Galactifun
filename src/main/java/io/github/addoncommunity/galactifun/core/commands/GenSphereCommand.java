@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.addoncommunity.galactifun.core.util.Sphere;
+import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.mooy1.infinitylib.command.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

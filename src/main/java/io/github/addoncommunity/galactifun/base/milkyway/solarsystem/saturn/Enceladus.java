@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;

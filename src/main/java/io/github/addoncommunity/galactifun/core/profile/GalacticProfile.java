@@ -52,7 +52,7 @@ public final class GalacticProfile {
     /**
      * Closes all profiles
      */
-    public static void unload() {
+    public static void unloadAll() {
         PluginUtils.log("Closing Galactic Profiles...");
         for (GalacticProfile profile : PROFILES.values()) {
             profile.close();
@@ -62,7 +62,7 @@ public final class GalacticProfile {
     /**
      * Creates the profile directory if needed
      */
-    public static void load() {
+    public static void loadAll() {
         PluginUtils.log("Loading Galactic Profiles...");
         if (!FILE.exists()) {
             FILE.mkdir();

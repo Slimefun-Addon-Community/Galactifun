@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
@@ -38,7 +38,7 @@ public final class Saturn extends CelestialBody {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(1.06);
+        return Gravity.relativeToEarth(1.06);
     }
 
     @Override

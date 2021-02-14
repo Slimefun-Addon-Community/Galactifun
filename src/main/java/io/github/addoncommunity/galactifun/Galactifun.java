@@ -34,14 +34,13 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
         
-        GalacticProfile.load();
+        GalacticProfile.loadAll();
         
         CoreCategories.setup(this);
         
         BaseRegistry.setup();
         
-        new CelestialListener();
-        new AlienListener();
+        registerListeners();
         
         scheduleTasks();
         
@@ -64,6 +63,11 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         PluginUtils.runSync(() -> GalacticProfile.get(UUID.fromString("0629ebca-3a33-4a4d-bd29-fafe4aa32719")), 100);
     }
     
+    private static void registerListeners() {
+        new CelestialListener();
+        new AlienListener();
+    }
+    
     private static void scheduleTasks() {
         PluginUtils.scheduleRepeatingSync(AlienWorld::tickWorlds, 100);
         PluginUtils.scheduleRepeatingSync(AlienWorld::tickAliens, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 4));
@@ -74,7 +78,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
     public void onDisable() {
         instance = null;
 
-        GalacticProfile.unload();
+        GalacticProfile.unloadAll();
         GalacticProfile.saveAll();
         
     }

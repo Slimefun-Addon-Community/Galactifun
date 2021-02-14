@@ -21,7 +21,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Jup
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Titan;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 
@@ -48,12 +48,10 @@ public final class BaseRegistry {
     public static final CelestialBody SATURN = new Saturn(TITAN_MOON, ENCELADUS);
 
     public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", new Orbit(27_000D),
-            StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, JUPITER, SATURN) {
-    };
+            StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER), VENUS, EARTH, MARS, JUPITER, SATURN);
     
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", new Orbit(12_000_000_000D),
-            GalaxyType.SPIRAL, new ItemChoice(Material.MILK_BUCKET), SOLAR_SYSTEM) {
-    };
+            GalaxyType.SPIRAL, new ItemChoice(Material.MILK_BUCKET), SOLAR_SYSTEM);
     
     public static final Martian MARTIAN = new Martian(MARS);
     public static final MutantCreeper ALIEN_CREEPER = new MutantCreeper(THE_MOON);
