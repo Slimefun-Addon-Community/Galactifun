@@ -21,8 +21,8 @@ public final class Gravity {
     private static final double DEFAULT_JUMP = 1.25F;
     private static final double LOG_JUMP_BOOST = Math.log(1.45);
 
-    public static final Gravity MOON_LIKE = metersPerSec(1.62);
-    public static final Gravity EARTH_LIKE = relativeToEarth(1);
+    public static final Gravity MOON_LIKE = Gravity.metersPerSec(1.62);
+    public static final Gravity EARTH_LIKE = Gravity.relativeToEarth(1);
     public static final Gravity ZERO = new Gravity();
     
     @Getter
