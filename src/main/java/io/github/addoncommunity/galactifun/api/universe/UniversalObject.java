@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.type.UniversalType;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,24 +45,25 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     
     @Getter
     @Nonnull
-    private final List<UniversalObject<?>> orbiters = new ArrayList<>();
-    
-    @Nonnull
     private final Orbit orbit;
-    
-    @Getter
-    private UniversalObject<?> orbiting;
     
     @Getter
     @Nonnull
     private final ItemStack item;
+
+    @Getter
+    private UniversalObject<?> orbiting;
+
+    @Getter
+    @Nonnull
+    private final List<UniversalObject<?>> orbiters = new ArrayList<>();
     
     @SafeVarargs
     public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice, @Nonnull T... orbiters) {
-        Validate.notNull(name);
-        Validate.notNull(orbit);
-        Validate.notNull(type);
-        Validate.notNull(choice);
+        Validate.notNull(name, "Name cannot be null");
+        Validate.notNull(orbit, "Orbit cannot be null");
+        Validate.notNull(type, "Type cannot be null");
+        Validate.notNull(choice, "Item Choice cannot be null");
         
         this.orbit = orbit;
         this.name = ChatUtils.removeColorCodes(name);
@@ -84,7 +86,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @SafeVarargs
     public final void addOrbiters(@Nonnull T... orbiters) {
         for (UniversalObject<?> orbiter : orbiters) {
-            Validate.notNull(orbiter);
+            Validate.notNull(orbiter, "Cannot add a null orbiter");
             this.orbiters.add(orbiter);
             orbiter.orbiting = this;
         }
@@ -116,8 +118,11 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         }
     }
     
-    protected void getItemStats(@Nonnull List<String> stats) {
-        
+    protected abstract void getItemStats(@Nonnull List<String> stats);
+    
+    @OverridingMethodsMustInvokeSuper
+    protected void register() {
+        // add stuff that needs to be called after subclasses are loaded
     }
     
     @Override

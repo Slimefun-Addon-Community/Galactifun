@@ -17,12 +17,12 @@ import javax.annotation.Nonnull;
  */
 public final class Gravity {
 
-    private static final float EARTH_GRAVITY = 9.81F;
-    private static final float DEFAULT_JUMP = 1.25F;
+    private static final double EARTH_GRAVITY = 9.81F;
+    private static final double DEFAULT_JUMP = 1.25F;
     private static final double LOG_JUMP_BOOST = Math.log(1.45);
 
-    public static final Gravity MOON_LIKE = new Gravity(1.62);
-    public static final Gravity EARTH_LIKE = new Gravity(1);
+    public static final Gravity MOON_LIKE = Gravity.metersPerSec(1.62);
+    public static final Gravity EARTH_LIKE = Gravity.relativeToEarth(1);
     public static final Gravity ZERO = new Gravity();
     
     @Getter
@@ -32,19 +32,20 @@ public final class Gravity {
 
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
-        return new Gravity((float) ratio);
+        return new Gravity(ratio);
     }
 
     @Nonnull
-    public static Gravity jumpHeight(double blocks) {
-        return new Gravity((float) blocks / DEFAULT_JUMP);
+    public static Gravity jumpHeightOf(double blocks) {
+        return new Gravity(blocks / DEFAULT_JUMP);
     }
-
-    public Gravity(double metersPerSecond) {
-        this((float) metersPerSecond / EARTH_GRAVITY);
+    
+    @Nonnull
+    public static Gravity metersPerSec(double metersPerSec) {
+        return new Gravity(metersPerSec / EARTH_GRAVITY);
     }
-
-    private Gravity(float comparedToEarth) {
+    
+    private Gravity(double comparedToEarth) {
         int level;
         if (comparedToEarth > 0) {
             level = (int) (Math.log(comparedToEarth) / LOG_JUMP_BOOST) * -1;

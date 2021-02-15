@@ -1,12 +1,12 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -22,7 +22,7 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Enceladus extends AlienWorld {
+public final class Enceladus extends AlienWorld {
 
     public Enceladus() {
         super("&bEnceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));

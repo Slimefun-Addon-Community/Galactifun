@@ -24,10 +24,6 @@ public final class AtmosphereBuilder {
     @Nonnull
     private AtmosphericEffect[] effects = new AtmosphericEffect[0];
     
-    public AtmosphereBuilder() {
-        
-    }
-    
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
         return this;
@@ -83,8 +79,8 @@ public final class AtmosphereBuilder {
     
     @Nonnull
     public Atmosphere build() {
-        return new Atmosphere(this.oxygenPercentage, this.carbonDioxidePercentage, this.weatherCycle, this.storming,
-                this.thundering, this.flammable, this.environment, this.effects);
+        return new Atmosphere(this.oxygenPercentage, this.carbonDioxidePercentage, this.weatherCycle,
+                this.storming, this.thundering, this.flammable, this.environment, this.effects);
     }
     
 }

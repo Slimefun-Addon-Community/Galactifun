@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.util;
+package io.github.addoncommunity.galactifun.util;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;

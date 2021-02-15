@@ -4,13 +4,12 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.List;
 
 /**
@@ -51,8 +50,8 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
         this.atmosphere = createAtmosphere();
         Validate.notNull(this.atmosphere);
 
-        this.surfaceArea = createSurfaceArea() / 1000000D;
-        Validate.isTrue(this.surfaceArea > 0);
+        this.surfaceArea = createSurfaceArea();
+        Validate.isTrue(this.surfaceArea > 0, "Surface area must be greater than 0!");
         
     }
     
@@ -71,8 +70,7 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     protected abstract long createSurfaceArea();
     
     @Override
-    @OverridingMethodsMustInvokeSuper
-    protected void getItemStats(@Nonnull List<String> stats) {
+    protected final void getItemStats(@Nonnull List<String> stats) {
         stats.add("&bSurface Area: &7" + this.surfaceArea + " square kilometers");
         stats.add("&bGravity: &7" + this.gravity.getPercent() + "%");
         stats.add("&bOxygen: &7" + this.atmosphere.getOxygenPercentage() + "%");

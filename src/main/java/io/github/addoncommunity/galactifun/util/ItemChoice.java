@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.util;
+package io.github.addoncommunity.galactifun.util;
 
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
