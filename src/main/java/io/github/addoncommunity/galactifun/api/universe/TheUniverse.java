@@ -19,12 +19,12 @@ public final class TheUniverse extends UniversalObject<Galaxy> {
     private static final TheUniverse instance = new TheUniverse();
     
     private TheUniverse() {
-        super("The Universe", Orbit.ZERO, () -> { throw new IllegalStateException(); }, new ItemChoice(Material.BARRIER));
+        super("The Universe", Orbit.ZERO, () -> "ERROR", new ItemChoice(Material.BARRIER));
     }
 
     @Override
     protected final void getItemStats(@Nonnull List<String> stats) {
-        throw new IllegalStateException();
+        
     }
 
 }
