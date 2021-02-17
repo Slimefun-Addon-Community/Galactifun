@@ -42,7 +42,7 @@ public final class Earth extends CelestialWorld {
 
     @Nonnull
     @Override
-    public World getWorld() {
+    public World loadWorld() {
         return WORLD;
     }
 

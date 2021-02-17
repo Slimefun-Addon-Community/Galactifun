@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
@@ -9,7 +8,6 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
-import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
@@ -44,7 +42,7 @@ import java.util.Random;
 public abstract class AlienWorld extends CelestialWorld {
 
     /**
-     * All alien worlds
+     * All enabled alien worlds
      */
     private static final Map<World, AlienWorld> WORLDS = new HashMap<>();
     
@@ -54,7 +52,7 @@ public abstract class AlienWorld extends CelestialWorld {
     }
 
     @Nullable
-    public static AlienWorld getByName(@Nonnull String worldName) {
+    public static AlienWorld getByWorldName(@Nonnull String worldName) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             return null;
@@ -102,41 +100,33 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * This world, only null if disabled
      */
-    @Getter
-    protected final World world;
+    private World world;
 
     /**
      * Configuration
      */
-    @Nonnull
-    protected final WorldConfig config;
+    private WorldConfig config;
     
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
-        
         super(name, orbit, type, choice);
-        
+    }
+
+    @Nullable
+    @Override
+    protected World loadWorld() {
         String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         
-        this.config = WorldConfig.loadConfiguration(worldName, enabledByDefault());
-        
-        if (this.config.isEnabled()) {
-            this.world = loadWorld(worldName);
-        } else {
-            this.world = null;
+        if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
+            return null;
         }
-        
-    }
-    
-    @Nonnull
-    private World loadWorld(@Nonnull String worldName) {
         
         // before
         beforeWorldLoad();
-        
+
         // fetch or create world
         World world = new WorldCreator(worldName)
                 .generator(new ChunkGenerator() {
-                    
+
                     @Nonnull
                     @Override
                     public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
@@ -144,7 +134,7 @@ public abstract class AlienWorld extends CelestialWorld {
                         generateChunk(chunk, grid, random, world, chunkX, chunkZ);
                         return chunk;
                     }
-                    
+
                     @Nonnull
                     @Override
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
@@ -152,7 +142,7 @@ public abstract class AlienWorld extends CelestialWorld {
                         getPopulators(list);
                         return list;
                     }
-                    
+
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
@@ -175,15 +165,15 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // register
         WORLDS.put(world, this);
-        
+
         // after
         afterWorldLoad(world);
-        
-        return world;
+
+        return this.world = world;
     }
 
     /**
-     * Called before the world is loaded
+     * Called before the world is loaded, while this is being registered
      * 
      * use this to validate or initialize anything that is used in the chunk generator
      */
@@ -192,7 +182,7 @@ public abstract class AlienWorld extends CelestialWorld {
     }
     
     /**
-     * Called after the world is loaded
+     * Called after the world is loaded, while this is being registered
      * 
      * use this to add any custom world settings you want
      */
@@ -209,7 +199,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Add all chunk populators to this list
      */
-    public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
+    protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     /**
      * Adds alien species to this world
@@ -223,7 +213,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Ticks the world every 5 seconds
      */
-    public final void tickWorld() {
+    private void tickWorld() {
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);

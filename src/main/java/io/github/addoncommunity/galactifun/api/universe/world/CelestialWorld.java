@@ -37,16 +37,19 @@ public abstract class CelestialWorld extends CelestialBody {
         super(name, orbit, type, choice);
     }
 
-    @Nullable
-    protected abstract World getWorld();
-
     @Override
     public final void register() {
         super.register();
-        World world = getWorld();
+        World world = loadWorld();
         if (world != null) {
             WORLDS.put(world, this);
         }
     }
+
+    /**
+     * Gets the world, called when registered
+     */
+    @Nullable
+    protected abstract World loadWorld();
 
 }
