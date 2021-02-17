@@ -60,7 +60,7 @@ public abstract class Alien {
     private final int health;
     
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
-                 int chance, int health, @Nonnull AlienWorld... worlds) {
+                 int chance, int health) {
 
         Validate.notNull(id);
         Validate.notNull(name);
@@ -74,12 +74,7 @@ public abstract class Alien {
         this.name = ChatColors.color(name);
         this.health = health;
         this.type = type;
-
-        for (AlienWorld world : worlds) {
-            Validate.notNull(world);
-            world.addSpecies(this);
-        }
-
+        
         ALIENS.put(id, this);
 
     }

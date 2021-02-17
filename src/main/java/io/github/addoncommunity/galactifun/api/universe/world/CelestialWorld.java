@@ -5,7 +5,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
@@ -34,22 +33,21 @@ public abstract class CelestialWorld extends CelestialBody {
         return WORLDS.get(world);
     }
 
-    public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                          @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
+    public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         
-        super(name, orbit, type, choice, celestialBodies);
-        
-        // register the world after subclass loads
-        PluginUtils.runSync(() -> {
-            World world = getWorld();
-            if (world != null) {
-                WORLDS.put(world, this);
-            }
-        });
-        
+        super(name, orbit, type, choice);
     }
 
     @Nullable
     protected abstract World getWorld();
+
+    @Override
+    public final void register() {
+        super.register();
+        World world = getWorld();
+        if (world != null) {
+            WORLDS.put(world, this);
+        }
+    }
 
 }

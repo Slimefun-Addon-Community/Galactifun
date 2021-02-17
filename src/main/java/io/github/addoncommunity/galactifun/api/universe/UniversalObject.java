@@ -3,7 +3,6 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import lombok.Getter;
@@ -38,12 +37,19 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     public static UniversalObject<?> getByName(@Nonnull String name) {
         return OBJECTS.get(name);
     }
+    
+    public static void registerAll(@Nonnull UniversalObject<?>... objects) {
+        for (UniversalObject<?> object : objects) {
+            object.register();
+        }
+    }
 
+    private boolean registered;
+    
     @Getter
     @Nonnull
     protected final String name;
     
-    @Getter
     @Nonnull
     private final Orbit orbit;
     
@@ -51,6 +57,9 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Nonnull
     private final ItemStack item;
 
+    @Nonnull
+    private final UniversalType type;
+    
     @Getter
     private UniversalObject<?> orbiting;
 
@@ -58,8 +67,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Nonnull
     private final List<UniversalObject<?>> orbiters = new ArrayList<>();
     
-    @SafeVarargs
-    public UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice, @Nonnull T... orbiters) {
+    UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice) {
         Validate.notNull(name, "Name cannot be null");
         Validate.notNull(orbit, "Orbit cannot be null");
         Validate.notNull(type, "Type cannot be null");
@@ -68,19 +76,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         this.orbit = orbit;
         this.name = ChatUtils.removeColorCodes(name);
         this.item = new CustomItem(choice.getItem(), ChatColor.AQUA + name);
-
-        // add stats after subclass constructor completes
-        PluginUtils.runSync(() -> {
-            List<String> stats = new ArrayList<>();
-            stats.add("&6Type: " + type.getName());
-            getItemStats(stats);
-            stats.add("&7Distance: &8Unknown");
-            LoreUtils.setLore(this.item, stats);
-        });
-        
-        OBJECTS.put(this.name, this);
-
-        addOrbiters(orbiters);
+        this.type = type;
     }
     
     @SafeVarargs
@@ -117,14 +113,31 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
             return this.orbiting.getLevel() + 1;
         }
     }
-    
-    protected abstract void getItemStats(@Nonnull List<String> stats);
-    
+
+    /**
+     * Call this to register the universal object
+     */
     @OverridingMethodsMustInvokeSuper
-    protected void register() {
-        // add stuff that needs to be called after subclasses are loaded
+    public void register() {
+        if (this.registered) {
+            throw new UnsupportedOperationException("This Universal Object has already been registered!");
+        }
+        this.registered = true;
+        
+        // add to all
+        OBJECTS.put(this.name, this);
+        
+        // add item stats
+        List<String> stats = new ArrayList<>();
+        stats.add("&6Type: " + this.type.getName());
+        getItemStats(stats);
+        stats.add("&7Distance: &8Unknown");
+        LoreUtils.setLore(this.item, stats);
+
     }
     
+    protected abstract void getItemStats(@Nonnull List<String> stats);
+
     @Override
     public final int hashCode() {
         return this.name.hashCode();

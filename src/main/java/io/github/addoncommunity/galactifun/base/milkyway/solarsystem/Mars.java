@@ -29,8 +29,8 @@ import java.util.Random;
  */
 public final class Mars extends SimpleAlienWorld {
 
-    public Mars(@Nonnull CelestialBody... celestialBodies) {
-        super("&cMars", new Orbit(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND), celestialBodies);
+    public Mars() {
+        super("&cMars", Orbit.kilometers(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
     }
     
     @Nonnull
@@ -82,7 +82,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(1.03);
+        return DayCycle.relativeToEarth(1.03);
     }
 
     @Nonnull

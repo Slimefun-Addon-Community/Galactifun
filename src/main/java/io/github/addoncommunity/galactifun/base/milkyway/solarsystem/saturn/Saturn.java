@@ -19,14 +19,14 @@ import javax.annotation.Nonnull;
  */
 public final class Saturn extends CelestialBody {
     
-    public Saturn(@Nonnull CelestialBody... moons) {
-        super("Saturn", new Orbit(1_490_500_000), CelestialType.GAS_GIANT, new ItemChoice(Material.QUARTZ_BLOCK), moons);
+    public Saturn() {
+        super("Saturn", Orbit.kilometers(1_490_500_000), CelestialType.GAS_GIANT, new ItemChoice(Material.QUARTZ_BLOCK));
     }
 
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(.445);
+        return DayCycle.hours(10);
     }
 
     @Nonnull

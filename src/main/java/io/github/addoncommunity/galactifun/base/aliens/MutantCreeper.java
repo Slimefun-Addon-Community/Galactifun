@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
  */
 public final class MutantCreeper extends Alien {
 
-    public MutantCreeper(@Nonnull AlienWorld... worlds) {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
+    public MutantCreeper() {
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40);
     }
 
     @Override

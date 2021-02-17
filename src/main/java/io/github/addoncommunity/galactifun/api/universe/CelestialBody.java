@@ -38,20 +38,13 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     protected final double surfaceArea;
     
     public CelestialBody(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                         @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        super(name, orbit, type, choice, celestialBodies);
+                         @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
         
-        this.gravity = createGravity();
-        Validate.notNull(this.gravity);
-        
-        this.dayCycle = createDayCycle();
-        Validate.notNull(this.dayCycle);
-        
-        this.atmosphere = createAtmosphere();
-        Validate.notNull(this.atmosphere);
-
-        this.surfaceArea = createSurfaceArea();
-        Validate.isTrue(this.surfaceArea > 0, "Surface area must be greater than 0!");
+        Validate.notNull(this.gravity = createGravity(), "Cannot use a null gravity!");
+        Validate.notNull(this.dayCycle = createDayCycle(), "Cannot use a null day cycle!");
+        Validate.notNull(this.atmosphere = createAtmosphere(), "Cannot use a null atmosphere");
+        Validate.isTrue((this.surfaceArea = createSurfaceArea()) > 0, "Surface area must be greater than 0!");
         
     }
     
@@ -74,7 +67,7 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
         stats.add("&bSurface Area: &7" + this.surfaceArea + " square kilometers");
         stats.add("&bGravity: &7" + this.gravity.getPercent() + "%");
         stats.add("&bOxygen: &7" + this.atmosphere.getOxygenPercentage() + "%");
-        stats.add("&6Day Cycle: &e" + this.dayCycle.getDayLength());
+        stats.add("&6Day Cycle: &e" + this.dayCycle.getDescription());
     }
 
 }

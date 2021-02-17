@@ -24,11 +24,6 @@ public final class Gravity {
     public static final Gravity MOON_LIKE = Gravity.metersPerSec(1.62);
     public static final Gravity EARTH_LIKE = Gravity.relativeToEarth(1);
     public static final Gravity ZERO = new Gravity();
-    
-    @Getter
-    private final int percent;
-    @Nonnull
-    private final PotionEffect effect;
 
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
@@ -44,6 +39,11 @@ public final class Gravity {
     public static Gravity metersPerSec(double metersPerSec) {
         return new Gravity(metersPerSec / EARTH_GRAVITY);
     }
+
+    @Getter
+    private final int percent;
+    @Nonnull
+    private final PotionEffect effect;
     
     private Gravity(double comparedToEarth) {
         int level;

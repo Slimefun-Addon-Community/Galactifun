@@ -20,7 +20,7 @@ import java.util.Random;
 public final class Europa extends AlienWorld {
 
     public Europa() {
-        super("&bEuropa", new Orbit(671_100), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEuropa", Orbit.kilometers(671_100), CelestialType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Nonnull

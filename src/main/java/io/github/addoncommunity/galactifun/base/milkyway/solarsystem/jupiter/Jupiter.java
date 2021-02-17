@@ -14,14 +14,14 @@ import javax.annotation.Nonnull;
 
 public final class Jupiter extends CelestialBody {
 
-    public Jupiter(@Nonnull CelestialBody... moons) {
-        super("&6Jupiter", new Orbit(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE), moons);
+    public Jupiter() {
+        super("&6Jupiter", Orbit.kilometers(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
     }
 
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(10);
+        return DayCycle.hours(10);
     }
 
     @Nonnull

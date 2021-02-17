@@ -28,7 +28,7 @@ import java.util.Set;
  * Class for the Saturnian moon Titan
  *
  * @author Seggan
- */
+ */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
     private static final Set<Biome> forests = EnumSet.of(
@@ -42,7 +42,7 @@ public final class Titan extends AlienWorld {
     );
 
     public Titan() {
-        super("&6Titan", new Orbit(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
+        super("&6Titan", Orbit.kilometers(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
     }
 
     @Override

@@ -24,9 +24,8 @@ import java.util.Random;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
     
-    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                            @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        super(name, orbit, type, choice, celestialBodies);
+    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
     }
 
     @Override

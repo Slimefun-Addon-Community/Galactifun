@@ -11,7 +11,6 @@ import io.github.addoncommunity.galactifun.core.listener.CelestialListener;
 import io.github.addoncommunity.galactifun.core.profile.GalacticProfile;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,9 +39,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         
         BaseRegistry.setup();
         
-        registerListeners();
-        
-        scheduleTasks();
+        new CelestialListener();
+        new AlienListener();
         
         // log after startup
         PluginUtils.runSync(() -> PluginUtils.log(
@@ -54,24 +52,11 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 "",
                 "Galactifun is open source, you can contribute or report bugs at: ",
                 getBugTrackerURL(),
-                "Join the Slimefun Addon Community Discord: Discord.gg/V2cJR9ADFU",
+                "Join the Slimefun Addon Community Discord: Discord.gg/", // todo add invite
                 "",
                 "###################################################",
                 ""
         ));
-        
-        PluginUtils.runSync(() -> GalacticProfile.get(UUID.fromString("0629ebca-3a33-4a4d-bd29-fafe4aa32719")), 100);
-    }
-    
-    private static void registerListeners() {
-        new CelestialListener();
-        new AlienListener();
-    }
-    
-    private static void scheduleTasks() {
-        PluginUtils.scheduleRepeatingSync(AlienWorld::tickWorlds, 100);
-        PluginUtils.scheduleRepeatingSync(AlienWorld::tickAliens, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 4));
-        PluginUtils.scheduleRepeatingSync(GalacticProfile::saveAll, 12000);
     }
 
     @Override

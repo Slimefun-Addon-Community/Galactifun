@@ -7,7 +7,8 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
+import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
@@ -46,7 +47,7 @@ public abstract class AlienWorld extends CelestialWorld {
      * All alien worlds
      */
     private static final Map<World, AlienWorld> WORLDS = new HashMap<>();
-
+    
     @Nullable
     public static AlienWorld getByWorld(@Nonnull World world) {
         return WORLDS.get(world);
@@ -62,21 +63,25 @@ public abstract class AlienWorld extends CelestialWorld {
         }
     }
     
-    public static void tickWorlds() {
-        for (AlienWorld world : WORLDS.values()) {
-            world.tickWorld();
-        }
-    }
-    
-    public static void tickAliens() {
-        for (World world : WORLDS.keySet()) {
-            for (LivingEntity entity : world.getLivingEntities()) {
-                Alien alien = Alien.getByEntity(entity);
-                if (alien != null) {
-                    alien.onMobTick(entity);
+    static {
+        // world ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (AlienWorld world : WORLDS.values()) {
+                world.tickWorld();
+            }
+        }, 100);
+        
+        // alien ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (World world : WORLDS.keySet()) {
+                for (LivingEntity entity : world.getLivingEntities()) {
+                    Alien alien = Alien.getByEntity(entity);
+                    if (alien != null) {
+                        alien.onMobTick(entity);
+                    }
                 }
             }
-        }
+        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
     }
     
     @Nonnull
@@ -106,10 +111,9 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nonnull
     protected final WorldConfig config;
     
-    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                      @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
+    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         
-        super(name, orbit, type, choice, celestialBodies);
+        super(name, orbit, type, choice);
         
         String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         
@@ -208,18 +212,18 @@ public abstract class AlienWorld extends CelestialWorld {
     public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     /**
-     * Adds a aliens species to this world
+     * Adds alien species to this world
      */
-    public final void addSpecies(@Nonnull Alien alien) {
-        this.species.add(alien, alien.getChance());
+    public final void addSpecies(@Nonnull Alien... aliens) {
+        for (Alien alien : aliens) {
+            this.species.add(alien, alien.getChance());
+        }
     }
     
     /**
-     * Ticks the world
+     * Ticks the world every 5 seconds
      */
     public final void tickWorld() {
-        // time
-        this.dayCycle.applyTime(this.world);
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);

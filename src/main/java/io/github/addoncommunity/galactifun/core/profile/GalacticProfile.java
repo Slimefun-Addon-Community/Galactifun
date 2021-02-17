@@ -1,17 +1,19 @@
 package io.github.addoncommunity.galactifun.core.profile;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -23,6 +25,7 @@ public final class GalacticProfile {
     
     private static final Map<UUID, GalacticProfile> PROFILES = new HashMap<>();
     private static final File FILE = new File(Galactifun.getInstance().getDataFolder(), "profiles");
+    private static final Configuration DEFAULTS = ConfigUtils.getDefaults("profile.yml");
     
     @Nonnull
     public static GalacticProfile get(@Nonnull Player p) {
@@ -31,7 +34,12 @@ public final class GalacticProfile {
     
     @Nonnull
     public static GalacticProfile get(@Nonnull UUID uuid) {
-        return PROFILES.computeIfAbsent(uuid, GalacticProfile::new);
+        return PROFILES.computeIfAbsent(uuid, k -> new GalacticProfile(new File(FILE, k.toString() + ".yml"), k));
+    }
+    
+    static {
+        // auto saver
+        PluginUtils.scheduleRepeatingSync(GalacticProfile::saveAll, 12000);
     }
 
     /**
@@ -66,6 +74,16 @@ public final class GalacticProfile {
         PluginUtils.log("Loading Galactic Profiles...");
         if (!FILE.exists()) {
             FILE.mkdir();
+        } else {
+            for (File file : Objects.requireNonNull(FILE.listFiles())) {
+                UUID uuid;
+                try {
+                    uuid = UUID.fromString(file.getName());
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+                PROFILES.put(uuid, new GalacticProfile(file, uuid));
+            }
         }
     }
     
@@ -90,9 +108,9 @@ public final class GalacticProfile {
     /**
      * Loads or creates a profile for the uuid
      */
-    private GalacticProfile(@Nonnull UUID uuid) {
+    private GalacticProfile(@Nonnull File file, @Nonnull UUID uuid) {
         // load config
-        Config config = ConfigUtils.loadConfig(FILE, uuid.toString() + ".yml", "profile.yml");
+        Config config = ConfigUtils.loadWithDefaults(file, DEFAULTS);
         
         // attempt to add the players name to config which could help server admins
         config.setValue("player", Bukkit.getOfflinePlayer(uuid).getName());
