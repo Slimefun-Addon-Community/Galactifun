@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
  */
 public final class DayCycle {
     
-    public static final DayCycle ETERNAL_DAY = new DayCycle(6000L);
-    public static final DayCycle ETERNAL_NIGHT = new DayCycle(18000L);
-    public static final DayCycle EARTH_LIKE = new DayCycle(1, 0);
+    public static final DayCycle ETERNAL_DAY = DayCycle.eternal(6000L);
+    public static final DayCycle ETERNAL_NIGHT = DayCycle.eternal(18000L);
+    public static final DayCycle EARTH_LIKE = DayCycle.hours(24);
     
     @Nonnull
     public static DayCycle eternal(long time) {

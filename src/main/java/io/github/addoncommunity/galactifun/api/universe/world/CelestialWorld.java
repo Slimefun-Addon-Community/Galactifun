@@ -34,7 +34,6 @@ public abstract class CelestialWorld extends CelestialBody {
     }
 
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
-        
         super(name, orbit, type, choice);
     }
 
