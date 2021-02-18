@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 public final class MutantCreeper extends Alien {
 
     public MutantCreeper(@Nonnull AlienWorld... worlds) {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40, worlds);
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, worlds);
     }
 
     @Override
@@ -34,6 +34,16 @@ public final class MutantCreeper extends Alien {
     @Override
     public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
+    }
+
+    @Override
+    public double getChance() {
+        return 40;
+    }
+
+    @Override
+    public int getMaxPerPlayer() {
+        return 1;
     }
 
     @Override

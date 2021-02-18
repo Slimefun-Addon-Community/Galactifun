@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.type.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
@@ -14,8 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Any world that can be travelled to by rockets or other means. This should only be used
- * to allow worlds from vanilla or other plugins to be travelled to
+ * Any world that can be travelled to by rockets or other means
+ * this should only be used to allow worlds from vanilla or other plugins to be travelled to,
+ * if you want to make your own world use {@link SimpleAlienWorld} or {@link AlienWorld}
  * 
  * @see Earth
  * 
@@ -49,6 +50,6 @@ public abstract class CelestialWorld extends CelestialBody {
     }
 
     @Nullable
-    public abstract World getWorld();
+    protected abstract World getWorld();
 
 }

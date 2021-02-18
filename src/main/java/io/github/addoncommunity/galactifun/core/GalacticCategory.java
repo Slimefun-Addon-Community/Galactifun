@@ -4,6 +4,7 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,9 +16,9 @@ import javax.annotation.Nonnull;
  * 
  * @author Mooy1
  */
-public final class UniversalCategory extends FlexCategory {
+public final class GalacticCategory extends FlexCategory {
     
-    public UniversalCategory() {
+    public GalacticCategory() {
         super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE, "&bThe Universe"));
     }
 
@@ -28,7 +29,10 @@ public final class UniversalCategory extends FlexCategory {
 
     @Override
     public void open(@Nonnull Player player, @Nonnull PlayerProfile playerProfile, @Nonnull SlimefunGuideMode slimefunGuideMode) {
-        UniversalExplorer.explore(player);
+        GalacticExplorer.explore(player, (player1, i, itemStack, itemStack1, clickAction) -> {
+            playerProfile.getGuideHistory().goBack(SlimefunPlugin.getRegistry().getSlimefunGuide(slimefunGuideMode));
+            return false;
+        });
         playerProfile.getGuideHistory().add(this, 1);
     }
 

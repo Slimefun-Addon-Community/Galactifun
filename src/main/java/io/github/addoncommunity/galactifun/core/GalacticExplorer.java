@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
@@ -7,8 +8,9 @@ import io.github.addoncommunity.galactifun.core.util.Util;
 import io.github.mooy1.infinitylib.player.LeaveListener;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,22 +26,22 @@ import java.util.UUID;
  * 
  * @author Mooy1
  */
-public final class UniversalExplorer {
+public final class GalacticExplorer {
     
     private static final Map<UUID, UniversalObject<?>> HISTORY = new HashMap<>();
     
-    public static void explore(@Nonnull Player p) {
-        open(p, HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance()), false);
+    public static void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
+        open(p, HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance()), exitHandler, false);
         LeaveListener.add(HISTORY);
     }
     
-    private static void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, boolean history) {
+    private static void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
         List<UniversalObject<?>> orbiters = object.getOrbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
-            open(p, TheUniverse.getInstance(), true);
+            open(p, TheUniverse.getInstance(), exitHandler, true);
             return;
         }
         
@@ -49,16 +51,16 @@ public final class UniversalExplorer {
         }
 
         // setup menu
-        ChestMenu menu = new ChestMenu(object.getName());
+        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), object.getName());
         menu.setEmptySlotsClickable(false);
 
         // back button
         menu.addItem(0, ChestMenuUtils.getBackButton(p));
         if (object.getOrbiting() == null) {
-            menu.addMenuClickHandler(0, ChestMenuUtils.getEmptyClickHandler());
+            menu.addMenuClickHandler(0, exitHandler);
         } else {
-            menu.addMenuClickHandler(0, (p1, slot, item, action) -> {
-                open(p1, object.getOrbiting(), true);
+            menu.addMenuClickHandler(0, (p1, slot, item, action, a) -> {
+                open(p1, object.getOrbiting(), exitHandler,true);
                 return false;
             });
         }
@@ -99,10 +101,10 @@ public final class UniversalExplorer {
             
             menu.addItem(i + 1, item);
             if (orbiter.getOrbiters().size() == 0) {
-                menu.addMenuClickHandler(i + 1, ChestMenuUtils.getEmptyClickHandler());
+                menu.addMenuClickHandler(i + 1, (a, b, c, d, e) -> false);
             } else {
-                menu.addMenuClickHandler(i + 1, (p1, slot, item1, action) -> {
-                    open(p1, orbiter, true);
+                menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {
+                    open(p1, orbiter,exitHandler, true);
                     return false;
                 });
             }
