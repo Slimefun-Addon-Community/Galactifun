@@ -238,23 +238,9 @@ public abstract class AlienWorld extends CelestialWorld {
             Collections.shuffle(this.species);
 
             for (Alien alien : this.species) {
-                if (this.world.getLivingEntities().size() <= this.world.getPlayers().size() * MAX_ALIENS) {
-                    if (alien.getMaxPerPlayer() < MAX_ALIENS) {
-                        int amount = 0;
-                        for (LivingEntity entity : this.world.getLivingEntities()) {
-                            Alien alreadySpawned = Alien.getByEntity(entity);
-                            if (alreadySpawned != null && alreadySpawned.equals(alien)) {
-                                amount++;
-                            }
-                        }
-
-                        if (amount >= alien.getMaxPerPlayer() * this.world.getPlayers().size()) {
-                            continue;
-                        }
-                    }
-
+                int players = this.world.getPlayers().size();
+                if (this.world.getLivingEntities().size() - players <= players * MAX_ALIENS) {
                     int spawned = 0;
-
                     for (Chunk chunk : this.world.getLoadedChunks()) {
                         if (ThreadLocalRandom.current().nextDouble(100) < alien.getChance()) {
                             int x = ThreadLocalRandom.current().nextInt(16);

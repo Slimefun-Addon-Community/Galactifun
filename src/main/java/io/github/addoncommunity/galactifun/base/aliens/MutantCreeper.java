@@ -42,11 +42,6 @@ public final class MutantCreeper extends Alien {
     }
 
     @Override
-    public int getMaxPerPlayer() {
-        return 1;
-    }
-
-    @Override
     public void onHit(@Nonnull EntityDamageByEntityEvent e) {
         Creeper creeper = (Creeper) e.getEntity();
         if (e.getDamager() instanceof Player) {

@@ -41,12 +41,12 @@ public final class Enceladus extends AlienWorld {
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
 
                 for (y = 1 ; y <= 30 ; y++) {
-                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
                 for (; y <= 60 ; y++) {
-                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
+                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
@@ -85,4 +85,8 @@ public final class Enceladus extends AlienWorld {
         return 798_648L;
     }
 
+    @Override
+    public boolean canSpawnVanillaMobs() {
+        return true;
+    }
 }

@@ -17,8 +17,4 @@ public class Leech extends Alien {
         return 0;
     }
 
-    @Override
-    public int getMaxPerPlayer() {
-        return 0;
-    }
 }

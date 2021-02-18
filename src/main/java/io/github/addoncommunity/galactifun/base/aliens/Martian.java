@@ -79,11 +79,6 @@ public final class Martian extends Alien {
     }
 
     @Override
-    public int getMaxPerPlayer() {
-        return 5;
-    }
-
-    @Override
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         LivingEntity entity = (LivingEntity) e.getRightClicked();
         ItemStack item = e.getPlayer().getInventory().getItem(e.getHand());

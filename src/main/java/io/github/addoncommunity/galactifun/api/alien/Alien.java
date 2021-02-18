@@ -119,14 +119,6 @@ public abstract class Alien {
     public abstract double getChance();
 
     /**
-     * This will cap the aliens per player if this number is smaller than the aliens-per-player
-     * in the config.
-     *
-     * @return max aliens per player
-     */
-    public abstract int getMaxPerPlayer();
-
-    /**
      * This will return the max possible aliens spawned per spawn attempt
      *
      * @return aliens per group

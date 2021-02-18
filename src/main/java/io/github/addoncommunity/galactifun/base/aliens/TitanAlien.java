@@ -24,9 +24,4 @@ public final class TitanAlien extends Alien {
         return 16;
     }
 
-    @Override
-    public int getMaxPerPlayer() {
-        return 1;
-    }
-
 }
