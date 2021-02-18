@@ -9,7 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import javax.annotation.Nonnull;
 
 /**
- * Types of atmospheric effects
+ * Types of atmospheric effects which can be protected against
  * 
  * @author Mooy1
  */

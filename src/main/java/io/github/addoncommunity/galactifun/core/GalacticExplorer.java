@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.core.util.Util;
+import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.player.LeaveListener;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;

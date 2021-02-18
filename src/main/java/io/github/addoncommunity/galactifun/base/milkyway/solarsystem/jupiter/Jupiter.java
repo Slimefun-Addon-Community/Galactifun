@@ -7,15 +7,15 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.core.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
 
-public class Jupiter extends CelestialBody {
+public final class Jupiter extends CelestialBody {
 
     public Jupiter(@Nonnull CelestialBody... moons) {
-        super("Jupiter", new Orbit(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE), moons);
+        super("&6Jupiter", new Orbit(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE), moons);
     }
 
     @Nonnull
@@ -33,11 +33,12 @@ public class Jupiter extends CelestialBody {
     @Nonnull
     @Override
     protected Gravity createGravity() {
-        return new Gravity(24.79);
+        return Gravity.metersPerSec(24.79);
     }
 
     @Override
     protected long createSurfaceArea() {
-        return 0;
+        return 61_420_000_000L;
     }
+
 }
