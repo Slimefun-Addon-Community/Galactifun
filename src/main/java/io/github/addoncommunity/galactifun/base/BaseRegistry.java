@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.base;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;

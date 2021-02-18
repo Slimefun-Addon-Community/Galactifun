@@ -6,8 +6,6 @@ import io.github.addoncommunity.galactifun.core.CoreCategories;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.core.listener.AlienListener;
-import io.github.addoncommunity.galactifun.core.listener.CelestialListener;
 import io.github.addoncommunity.galactifun.core.profile.GalacticProfile;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
@@ -16,7 +14,6 @@ import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
@@ -38,9 +35,6 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         CoreCategories.setup(this);
         
         BaseRegistry.setup();
-        
-        new CelestialListener();
-        new AlienListener();
         
         // log after startup
         PluginUtils.runSync(() -> PluginUtils.log(

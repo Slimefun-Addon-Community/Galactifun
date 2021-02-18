@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;

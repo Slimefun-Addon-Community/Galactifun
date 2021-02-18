@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;

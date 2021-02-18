@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
@@ -8,6 +7,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
@@ -17,7 +17,12 @@ import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -59,27 +64,6 @@ public abstract class AlienWorld extends CelestialWorld {
         } else {
             return getByWorld(world);
         }
-    }
-    
-    static {
-        // world ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
-            for (AlienWorld world : WORLDS.values()) {
-                world.tickWorld();
-            }
-        }, 100);
-        
-        // alien ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
-            for (World world : WORLDS.keySet()) {
-                for (LivingEntity entity : world.getLivingEntities()) {
-                    Alien alien = Alien.getByEntity(entity);
-                    if (alien != null) {
-                        alien.onMobTick(entity);
-                    }
-                }
-            }
-        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
     }
     
     @Nonnull
@@ -224,7 +208,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * All effects that should be applied to the player
      */
-    public final void applyEffects(@Nonnull Player p) {
+    private void applyEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
         // apply atmospheric effects
@@ -246,6 +230,86 @@ public abstract class AlienWorld extends CelestialWorld {
      */
     protected boolean enabledByDefault() {
         return true;
+    }
+    
+    static {
+        // world ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (AlienWorld world : WORLDS.values()) {
+                world.tickWorld();
+            }
+        }, 100);
+
+        // alien ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (World world : WORLDS.keySet()) {
+                for (LivingEntity entity : world.getLivingEntities()) {
+                    Alien alien = Alien.getByEntity(entity);
+                    if (alien != null) {
+                        alien.onMobTick(entity);
+                    }
+                }
+            }
+        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
+
+        // world listener
+        PluginUtils.registerListener(new Listener() {
+            
+            // remove old effects and apply new effects
+            @EventHandler
+            public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
+                AlienWorld object = getByWorld(e.getFrom());
+                if (object != null) {
+                    object.getGravity().removeGravity(e.getPlayer());
+                }
+                object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (object != null) {
+                    object.applyEffects(e.getPlayer());
+                }
+            }
+
+            // apply effects
+            @EventHandler
+            public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
+                AlienWorld object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (object != null) {
+                    object.applyEffects(e.getPlayer());
+                }
+            }
+            
+            // don't allow teleportation by any means other than this addon
+            @EventHandler
+            public void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
+                if (!e.getPlayer().hasPermission("galactifun.admin") && e.getTo() != null && e.getTo().getWorld() != null) {
+                    AlienWorld world = AlienWorld.getByWorld(e.getTo().getWorld());
+                    if (world != null) {
+                        e.setCancelled(true);
+                        // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
+                    }
+                }
+            }
+
+            // alien spawning for now
+            @EventHandler
+            public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
+                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+                    AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
+                    if (world != null) {
+                        e.setCancelled(true);
+                        world.onMobSpawn(e);
+                    }
+                }
+            }
+
+            // cancel waypoints
+            @EventHandler
+            public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
+                AlienWorld world = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (world != null) {
+                    e.setCancelled(true);
+                }
+            }
+        });
     }
 
 }

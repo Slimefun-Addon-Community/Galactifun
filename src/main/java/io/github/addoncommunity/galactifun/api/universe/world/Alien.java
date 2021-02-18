@@ -1,7 +1,7 @@
-package io.github.addoncommunity.galactifun.api.alien;
+package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -13,6 +13,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -26,10 +28,13 @@ import java.util.Objects;
 
 /**
  * Abstract class for an alien
+ * 
+ * @see io.github.addoncommunity.galactifun.base.aliens.Martian
  *
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
+ *
  */
 public abstract class Alien {
 
@@ -90,17 +95,54 @@ public abstract class Alien {
 
         onSpawn(entity);
     }
-    
-    public void onSpawn(@Nonnull LivingEntity spawned) { }
 
-    public void onMobTick(@Nonnull LivingEntity mob) { }
+    protected void onSpawn(@Nonnull LivingEntity spawned) { }
 
-    public void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+    protected void onMobTick(@Nonnull LivingEntity mob) { }
 
-    public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
+    protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
 
-    public void onTarget(@Nonnull EntityTargetEvent e) { }
+    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
-    public void onDeath(@Nonnull EntityDeathEvent e) { }
+    protected void onTarget(@Nonnull EntityTargetEvent e) { }
+
+    protected void onDeath(@Nonnull EntityDeathEvent e) { }
+
+    static {
+        PluginUtils.registerListener(new Listener() {
+            
+            @EventHandler
+            public void onAlienTarget(@Nonnull EntityTargetEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onTarget(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
+                Alien alien = Alien.getByEntity(e.getRightClicked());
+                if (alien != null) {
+                    alien.onInteract(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onHit(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienDie(@Nonnull EntityDeathEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onDeath(e);
+                }
+            }
+        });
+    }
     
 }
