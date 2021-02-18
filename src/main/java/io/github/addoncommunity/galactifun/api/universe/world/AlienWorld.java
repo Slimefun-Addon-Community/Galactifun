@@ -37,11 +37,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Any alien world
- * 
- * @see EarthOrbit
  *
  * @author Seggan
  * @author Mooy1
+ * @see EarthOrbit
  */
 public abstract class AlienWorld extends CelestialWorld {
 
@@ -64,13 +63,13 @@ public abstract class AlienWorld extends CelestialWorld {
             return getByWorld(world);
         }
     }
-    
+
     public static void tickWorlds() {
         for (AlienWorld world : WORLDS.values()) {
             world.tickWorld();
         }
     }
-    
+
     public static void tickAliens() {
         for (World world : WORLDS.keySet()) {
             for (LivingEntity entity : world.getLivingEntities()) {
@@ -81,16 +80,16 @@ public abstract class AlienWorld extends CelestialWorld {
             }
         }
     }
-    
+
     @Nonnull
     public static Collection<AlienWorld> getEnabled() {
         return WORLDS.values();
     }
-    
+
     private static final double MIN_BORDER = 600D;
     private static final double MAX_BORDER = 30_000_000D;
     private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
-    
+
     /**
      * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
      */
@@ -108,53 +107,53 @@ public abstract class AlienWorld extends CelestialWorld {
      */
     @Nonnull
     protected final WorldConfig config;
-    
+
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
                       @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        
+
         super(name, orbit, type, choice, celestialBodies);
-        
+
         String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
-        
+
         this.config = WorldConfig.loadConfiguration(worldName, enabledByDefault());
-        
+
         if (this.config.isEnabled()) {
             this.world = loadWorld(worldName);
         } else {
             this.world = null;
         }
-        
+
     }
-    
+
     @Nonnull
     private World loadWorld(@Nonnull String worldName) {
-        
+
         // before
         beforeWorldLoad();
-        
+
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(new ChunkGenerator() {
-                    
-                    @Nonnull
-                    @Override
-                    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
-                        ChunkData chunk = createChunkData(world);
-                        generateChunk(chunk, grid, random, world, chunkX, chunkZ);
-                        return chunk;
-                    }
-                    
-                    @Nonnull
-                    @Override
-                    public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                        List<BlockPopulator> list = new ArrayList<>(4);
-                        getPopulators(list);
-                        return list;
-                    }
-                    
-                })
-                .environment(this.atmosphere.getEnvironment())
-                .createWorld();
+            .generator(new ChunkGenerator() {
+
+                @Nonnull
+                @Override
+                public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
+                    ChunkData chunk = createChunkData(world);
+                    generateChunk(chunk, grid, random, world, chunkX, chunkZ);
+                    return chunk;
+                }
+
+                @Nonnull
+                @Override
+                public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
+                    List<BlockPopulator> list = new ArrayList<>(4);
+                    getPopulators(list);
+                    return list;
+                }
+
+            })
+            .environment(this.atmosphere.getEnvironment())
+            .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
 
@@ -174,25 +173,25 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // register
         WORLDS.put(world, this);
-        
+
         // after
         afterWorldLoad(world);
-        
+
         return world;
     }
 
     /**
      * Called before the world is loaded
-     * 
+     * <p>
      * use this to validate or initialize anything that is used in the chunk generator
      */
     protected void beforeWorldLoad() {
         // can be overridden
     }
-    
+
     /**
      * Called after the world is loaded
-     * 
+     * <p>
      * use this to add any custom world settings you want
      */
     protected void afterWorldLoad(@Nonnull World world) {
@@ -202,13 +201,13 @@ public abstract class AlienWorld extends CelestialWorld {
     public boolean canSpawnVanillaMobs() {
         return false;
     }
-    
+
     /**
      * Generate a chunk
      */
-    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, 
+    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                           @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ);
-    
+
     /**
      * Add all chunk populators to this list
      */
@@ -220,7 +219,7 @@ public abstract class AlienWorld extends CelestialWorld {
     public final void addSpecies(@Nonnull Alien alien) {
         this.species.add(alien);
     }
-    
+
     /**
      * Ticks the world
      */

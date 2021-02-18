@@ -7,8 +7,10 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.base.aliens.Leech;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
+import io.github.addoncommunity.galactifun.base.aliens.Skywhale;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
@@ -56,6 +58,8 @@ public final class BaseRegistry {
     public static final Martian MARTIAN = new Martian(MARS);
     public static final MutantCreeper ALIEN_CREEPER = new MutantCreeper(THE_MOON);
     public static final TitanAlien TITAN_ALIEN = new TitanAlien(TITAN_MOON);
+    public static final Leech LEECH = new Leech(TITAN_MOON);
+    public static final Skywhale SKYWHALE = new Skywhale(TITAN_MOON);
 
     public static void setup() {
         // just loading static fields for now

@@ -103,7 +103,19 @@ public abstract class Alien {
 
     public void onMobTick(@Nonnull LivingEntity mob) { }
 
+    /**
+     * Called when the alien is hit by an entity
+     *
+     * @param e the event
+     */
     public void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+
+    /**
+     * Called when the alien hits another entity
+     *
+     * @param e the event
+     */
+    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {}
 
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
@@ -138,5 +150,4 @@ public abstract class Alien {
     public boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel <= 7;
     }
-    
 }

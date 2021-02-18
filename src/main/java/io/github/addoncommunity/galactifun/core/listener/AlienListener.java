@@ -4,6 +4,7 @@ import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -44,6 +45,11 @@ public final class AlienListener implements Listener {
         if (alien != null) {
             alien.onHit(e);
         }
+
+        alien = Alien.getByEntity(e.getDamager());
+        if (alien != null) {
+            alien.onAttack(e);
+        }
     }
 
     @EventHandler
@@ -51,6 +57,14 @@ public final class AlienListener implements Listener {
         Alien alien = Alien.getByEntity(e.getEntity());
         if (alien != null) {
             alien.onDeath(e);
+        }
+    }
+
+    @EventHandler
+    public void onAlienCombust(@Nonnull EntityCombustEvent e) {
+        Alien alien = Alien.getByEntity(e.getEntity());
+        if (alien != null) {
+            e.setCancelled(true);
         }
     }
     
