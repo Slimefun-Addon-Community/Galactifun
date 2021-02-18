@@ -13,6 +13,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -52,24 +53,21 @@ public abstract class Alien {
     private final String id;
     @Nonnull
     private final String name;
+    @Getter
     @Nonnull
     private final EntityType type;
-    
-    @Getter
-    private final int chance;
+
     private final int health;
     
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
-                 int chance, int health, @Nonnull AlienWorld... worlds) {
+                 int health, @Nonnull AlienWorld... worlds) {
 
         Validate.notNull(id);
         Validate.notNull(name);
         Validate.notNull(type);
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
         Validate.isTrue(health > 0);
-        Validate.isTrue(chance > 0 && chance <= 100);
-        
-        this.chance = chance;
+
         this.id = id;
         this.name = ChatColors.color(name);
         this.health = health;
@@ -79,6 +77,9 @@ public abstract class Alien {
             Validate.notNull(world);
             world.addSpecies(this);
         }
+
+        // validation of spawn parameters
+        Validate.isTrue(getChance() > 0 && getChance() <= 100);
 
         ALIENS.put(id, this);
 
@@ -92,6 +93,8 @@ public abstract class Alien {
         entity.setHealth(this.health);
         entity.setCustomName(this.name);
         entity.setCustomNameVisible(true);
+
+        entity.setRemoveWhenFarAway(true);
 
         onSpawn(entity);
     }
@@ -107,5 +110,41 @@ public abstract class Alien {
     public void onTarget(@Nonnull EntityTargetEvent e) { }
 
     public void onDeath(@Nonnull EntityDeathEvent e) { }
+
+    /**
+     * Returns the chance for the alien to spawn per spawn attempt
+     *
+     * @return the chance for the alien to spawn
+     */
+    public abstract double getChance();
+
+    /**
+     * This will cap the aliens per player if this number is smaller than the aliens-per-player
+     * in the config.
+     *
+     * @return max aliens per player
+     */
+    public abstract int getMaxPerPlayer();
+
+    /**
+     * This will return the max possible aliens spawned per spawn attempt
+     *
+     * @return aliens per group
+     */
+    public int getMaxAliensPerGroup() {
+        return 1;
+    }
+
+    /**
+     * This method returns whether the alien can spawn in the given light level. By default uses
+     * the {@link Zombie} light level conditions
+     *
+     * @param lightLevel the light level of the block the alien is attempting to spawn on
+     *
+     * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
+     */
+    public boolean canSpawnInLightLevel(int lightLevel) {
+        return lightLevel <= 7;
+    }
     
 }

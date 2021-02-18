@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.core.listener;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import org.bukkit.event.EventHandler;
@@ -59,11 +60,11 @@ public final class CelestialListener implements Listener {
     
     @EventHandler
     public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
+        // don't want to prevent mobs from spawning from spawners
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-            AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
-            if (world != null) {
-                e.setCancelled(true);
-                world.onMobSpawn(e);
+            CelestialWorld world = CelestialWorld.getByWorld(e.getEntity().getWorld());
+            if (world instanceof AlienWorld) {
+                e.setCancelled(!((AlienWorld) world).canSpawnVanillaMobs());
             }
         }
     }

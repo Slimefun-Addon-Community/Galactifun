@@ -5,19 +5,21 @@ import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.core.util.ItemChoice;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -25,16 +27,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Any alien world
  * 
- * @see io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit
+ * @see EarthOrbit
  *
  * @author Seggan
  * @author Mooy1
@@ -88,10 +92,10 @@ public abstract class AlienWorld extends CelestialWorld {
     private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
     
     /**
-     * All alien species that can spawn on this planet
+     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
      */
     @Nonnull
-    private final RandomizedSet<Alien> species = new RandomizedSet<>();
+    private final List<Alien> species = new ArrayList<>();
 
     /**
      * This world, only null if disabled
@@ -194,6 +198,10 @@ public abstract class AlienWorld extends CelestialWorld {
     protected void afterWorldLoad(@Nonnull World world) {
         // can be overridden
     }
+
+    public boolean canSpawnVanillaMobs() {
+        return false;
+    }
     
     /**
      * Generate a chunk
@@ -210,7 +218,7 @@ public abstract class AlienWorld extends CelestialWorld {
      * Adds a aliens species to this world
      */
     public final void addSpecies(@Nonnull Alien alien) {
-        this.species.add(alien, alien.getChance());
+        this.species.add(alien);
     }
     
     /**
@@ -222,6 +230,69 @@ public abstract class AlienWorld extends CelestialWorld {
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);
+        }
+        // mob spawns
+
+        if (!this.species.isEmpty()) {
+            // shuffles the list so each alien has a fair chance of being first
+            Collections.shuffle(this.species);
+
+            for (Alien alien : this.species) {
+                if (this.world.getLivingEntities().size() <= this.world.getPlayers().size() * MAX_ALIENS) {
+                    if (alien.getMaxPerPlayer() < MAX_ALIENS) {
+                        int amount = 0;
+                        for (LivingEntity entity : this.world.getLivingEntities()) {
+                            Alien alreadySpawned = Alien.getByEntity(entity);
+                            if (alreadySpawned != null && alreadySpawned.equals(alien)) {
+                                amount++;
+                            }
+                        }
+
+                        if (amount >= alien.getMaxPerPlayer() * this.world.getPlayers().size()) {
+                            continue;
+                        }
+                    }
+
+                    int spawned = 0;
+
+                    for (Chunk chunk : this.world.getLoadedChunks()) {
+                        if (ThreadLocalRandom.current().nextDouble(100) < alien.getChance()) {
+                            int x = ThreadLocalRandom.current().nextInt(16);
+                            int y = ThreadLocalRandom.current().nextInt(256);
+                            int z = ThreadLocalRandom.current().nextInt(16);
+
+                            Block b = null;
+
+                            if (chunk.getBlock(x, y, z).getType().isAir()) {
+                                // searches for air with solid block below down
+                                for (int i = y; i > 0; i--) {
+                                    if (chunk.getBlock(x, i, z).getType().isOccluding()) {
+                                        b = chunk.getBlock(x, i, z).getRelative(BlockFace.UP);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // searches for air with solid block below up
+                                for (int i = y; i < 255; i++) {
+                                    if (chunk.getBlock(x, i, z).getType().isAir()) {
+                                        b = chunk.getBlock(x, i, z);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // currently doesn't allow for aquatic aliens
+                            if (b != null && b.getType().isAir() && alien.canSpawnInLightLevel(b.getLightLevel())) {
+                                alien.spawn(b.getLocation(), this.world);
+                                spawned++;
+                                if (spawned >= alien.getMaxAliensPerGroup()) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         // other stuff?
     }
@@ -235,15 +306,6 @@ public abstract class AlienWorld extends CelestialWorld {
         // apply atmospheric effects
         this.atmosphere.applyEffects(p);
         // other stuff?
-    }
-
-    /**
-     * Spawns aliens
-     */
-    public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
-        if (!this.species.isEmpty() && this.world.getLivingEntities().size() < this.world.getPlayers().size() * MAX_ALIENS) {
-            this.species.getRandom().spawn(e.getLocation(), this.world);
-        }
     }
 
     /**

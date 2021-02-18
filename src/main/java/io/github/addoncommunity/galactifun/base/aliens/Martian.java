@@ -39,7 +39,7 @@ public final class Martian extends Alien {
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
     public Martian(@Nonnull AlienWorld... worlds) {
-        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32, 50, worlds);
+        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 50, worlds);
 
         setupTrades();
     }
@@ -71,6 +71,16 @@ public final class Martian extends Alien {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.IRON_INGOT, 2));
         e.getDrops().add(new ItemStack(Material.RED_SAND));
+    }
+
+    @Override
+    public double getChance() {
+        return 50;
+    }
+
+    @Override
+    public int getMaxPerPlayer() {
+        return 5;
     }
 
     @Override
