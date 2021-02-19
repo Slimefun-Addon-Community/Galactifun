@@ -1,13 +1,9 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import com.google.common.math.DoubleMath;
-import com.google.common.math.IntMath;
-import com.google.common.math.LongMath;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sun.java2d.marlin.FloatMath;
 
 import javax.annotation.Nonnull;
 
