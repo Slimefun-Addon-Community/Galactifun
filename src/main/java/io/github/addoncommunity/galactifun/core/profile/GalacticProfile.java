@@ -5,7 +5,10 @@ import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 
@@ -13,7 +16,6 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -23,8 +25,9 @@ import java.util.UUID;
  */
 public final class GalacticProfile {
     
+    private static final NamespacedKey OXYGEN_KEY = PluginUtils.getKey("oxygen");
     private static final Map<UUID, GalacticProfile> PROFILES = new HashMap<>();
-    private static final File FILE = new File(Galactifun.getInstance().getDataFolder(), "profiles");
+    private static final File FOLDER = PluginUtils.getFile("profiles");
     private static final Configuration DEFAULTS = ConfigUtils.getDefaults("profile.yml");
     
     @Nonnull
@@ -34,7 +37,7 @@ public final class GalacticProfile {
     
     @Nonnull
     public static GalacticProfile get(@Nonnull UUID uuid) {
-        return PROFILES.computeIfAbsent(uuid, k -> new GalacticProfile(new File(FILE, k.toString() + ".yml"), k));
+        return PROFILES.computeIfAbsent(uuid, k -> new GalacticProfile(new File(FOLDER, k.toString() + ".yml"), k));
     }
     
     static {
@@ -72,13 +75,14 @@ public final class GalacticProfile {
      */
     public static void loadAll() {
         PluginUtils.log("Loading Galactic Profiles...");
-        if (!FILE.exists()) {
-            FILE.mkdir();
+        File[] files = FOLDER.listFiles();
+        if (files == null || !FOLDER.exists()) {
+            FOLDER.mkdir();
         } else {
-            for (File file : Objects.requireNonNull(FILE.listFiles())) {
+            for (File file : files) {
                 UUID uuid;
                 try {
-                    uuid = UUID.fromString(file.getName());
+                    uuid = UUID.fromString(file.getName().replace(".yml", ""));
                 } catch (IllegalArgumentException e) {
                     continue;
                 }
@@ -99,11 +103,15 @@ public final class GalacticProfile {
     private final Config config;
 
     /**
-     * The backpack of this profile
+     * The menu for items
      */
-    @Getter
     @Nonnull
-    private final GalacticBackpack backpack;
+    private final ChestMenu menu;
+
+    @Getter
+    private int oxygen;
+    @Getter
+    private int maxOxygen;
 
     /**
      * Loads or creates a profile for the uuid
@@ -116,15 +124,41 @@ public final class GalacticProfile {
         config.setValue("player", Bukkit.getOfflinePlayer(uuid).getName());
         
         // load objects
-        this.backpack = new GalacticBackpack(this, config);
+        this.menu = loadMenu(config);
         this.config = config;
+    }
+    
+    private ChestMenu loadMenu(Config config) {
+        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), "&7Galactic Backpack");
+
+        // TODO update oxygen values upon closing
+        menu.addMenuCloseHandler(player -> markDirty());
+
+        // load items
+        for (ItemComponent component : ItemComponent.components) {
+            for (int i = 0 ; i < component.slots.length ; i++) {
+                menu.addItem(component.slots[i], config.getItem(component.path + i));
+            }
+        }
+
+        // add background items
+        
+        return menu;
+    }
+
+    public void openMenu(@Nonnull Player p) {
+        this.menu.open(p);
     }
 
     /**
      * Saves the profile and all of it's objects to the config
      */
     private void save() {
-        this.backpack.save(this.config);
+        for (ItemComponent component : ItemComponent.components) {
+            for (int i = 0 ; i < component.slots.length ; i++) {
+                this.config.setValue(component.path + i, this.menu.getItemInSlot(component.slots[i]));
+            }
+        }
         this.config.save();
     }
 
@@ -132,14 +166,19 @@ public final class GalacticProfile {
      * Closes all player interactions with the profile
      */
     private void close() {
-        this.backpack.close();
+        this.menu.close();
     }
 
     /**
      * Marks this profile to be saved
      */
-    void markDirty() {
+    private void markDirty() {
         this.dirty = true;
+    }
+
+    public void setOxygen(int oxygen) {
+        Validate.isTrue(oxygen >= 0 && oxygen <= getMaxOxygen(), "Cannot set oxygen less than 0 or greater than max!");
+
     }
     
 }

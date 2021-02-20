@@ -30,6 +30,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
         
+        PluginUtils.setupMetrics(10411);
+        
         GalacticProfile.loadAll();
         
         CoreCategories.setup(this);

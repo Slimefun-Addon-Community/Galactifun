@@ -57,10 +57,6 @@
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>io.github.addoncommunity.galactifun.bstats</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>io.github.mooy1.infinitylib</pattern>
                             <shadedPattern>io.github.addoncommunity.galactifun.infinitylib</shadedPattern>
                         </relocation>
@@ -112,15 +108,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>io.github.mooy1</groupId>
             <artifactId>InfinityLib</artifactId>
-            <version>e599a62</version>
+            <version>35825fd</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
