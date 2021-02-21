@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.profile;
+package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.mooy1.infinitylib.ConfigUtils;
@@ -109,9 +109,9 @@ public final class GalacticProfile {
     private final ChestMenu menu;
 
     @Getter
-    private int oxygen;
+    private int oxygen; // todo load this on start and on menu close
     @Getter
-    private int maxOxygen;
+    private int maxOxygen; // todo load this on start and on menu close
 
     /**
      * Loads or creates a profile for the uuid
@@ -134,14 +134,10 @@ public final class GalacticProfile {
         // TODO update oxygen values upon closing
         menu.addMenuCloseHandler(player -> markDirty());
 
-        // load items
-        for (ItemComponent component : ItemComponent.components) {
-            for (int i = 0 ; i < component.slots.length ; i++) {
-                menu.addItem(component.slots[i], config.getItem(component.path + i));
-            }
-        }
+        // todo load items
+        
 
-        // add background items
+        // todo add background items
         
         return menu;
     }
@@ -154,11 +150,8 @@ public final class GalacticProfile {
      * Saves the profile and all of it's objects to the config
      */
     private void save() {
-        for (ItemComponent component : ItemComponent.components) {
-            for (int i = 0 ; i < component.slots.length ; i++) {
-                this.config.setValue(component.path + i, this.menu.getItemInSlot(component.slots[i]));
-            }
-        }
+        // todo save items
+        
         this.config.save();
     }
 
@@ -178,7 +171,7 @@ public final class GalacticProfile {
 
     public void setOxygen(int oxygen) {
         Validate.isTrue(oxygen >= 0 && oxygen <= getMaxOxygen(), "Cannot set oxygen less than 0 or greater than max!");
-
+        // todo do some stuff with pdcs
     }
     
 }

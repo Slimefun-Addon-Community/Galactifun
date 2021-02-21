@@ -92,14 +92,12 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
      * Gets the distance in light years between 2 objects
      */
     public final double getDistanceTo(@Nonnull UniversalObject<?> object) {
-        if (this.orbiting == object.getOrbiting()) { // getLevel() == object.getLevel()
+        if (this.orbiting == object.getOrbiting()) {
             return Math.abs(this.orbit.getCurrentDistance() - object.orbit.getCurrentDistance());
         }
         if (this.orbiting == null || getLevel() < object.getLevel()) {
-            // object.getOrbiting() != null
             return object.orbit.getCurrentDistance() + getDistanceTo(object.getOrbiting());
         }
-        // object.getOrbiting() == null || getLevel() > object.getLevel()
         return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(object);
     }
 
