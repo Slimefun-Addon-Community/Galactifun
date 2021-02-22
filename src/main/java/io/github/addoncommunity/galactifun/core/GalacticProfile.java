@@ -27,7 +27,7 @@ public final class GalacticProfile {
     
     private static final NamespacedKey OXYGEN_KEY = PluginUtils.getKey("oxygen");
     private static final Map<UUID, GalacticProfile> PROFILES = new HashMap<>();
-    private static final File FOLDER = PluginUtils.getFile("profiles");
+    private static final File FOLDER = new File(Galactifun.getInstance().getDataFolder(), "profiles");
     private static final Configuration DEFAULTS = ConfigUtils.getDefaults("profile.yml");
     
     @Nonnull

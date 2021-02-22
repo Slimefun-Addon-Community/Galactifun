@@ -1,13 +1,9 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.alien.PersistentDataHoldingAlien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
-import org.bukkit.NamespacedKey;
+import com.google.common.collect.HashMultimap;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
+import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,24 +18,23 @@ import org.bukkit.inventory.PlayerInventory;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
-public final class Leech extends Alien implements PersistentDataHoldingAlien {
+public final class Leech extends Alien implements PersistentAlien {
 
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "eaten");
+    private final HashMultimap<UUID, ItemStack> eaten = HashMultimap.create();
 
-    private static final Map<UUID, List<ItemStack>> eaten = new HashMap<>();
-
-    public Leech(@Nonnull AlienWorld... worlds) {
-        super("LEECH", "&eLeech", EntityType.SILVERFISH, 10, worlds);
+    public Leech() {
+        super("LEECH", "&eLeech", EntityType.SILVERFISH, 10);
     }
 
     @Override
-    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player && ThreadLocalRandom.current().nextBoolean()) {
             Player p = (Player) e.getEntity();
             PlayerInventory inv = p.getInventory();
@@ -55,11 +50,11 @@ public final class Leech extends Alien implements PersistentDataHoldingAlien {
             if (!availableSlots.isEmpty()) {
                 LivingEntity damager = (LivingEntity) e.getDamager();
                 int slot = ThreadLocalRandom.current().nextInt(availableSlots.size());
-                eaten.computeIfAbsent(damager.getUniqueId(), u -> new ArrayList<>()).add(inv.getItem(slot));
+                this.eaten.put(damager.getUniqueId(), inv.getItem(slot));
                 inv.setItem(slot, null);
                 damager.setHealth(Math.min(
-                    damager.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-                    damager.getHealth() + 2)
+                        Objects.requireNonNull(damager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue(),
+                        damager.getHealth() + 2)
                 );
             }
         }
@@ -69,54 +64,48 @@ public final class Leech extends Alien implements PersistentDataHoldingAlien {
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         UUID uuid = e.getEntity().getUniqueId();
-        List<ItemStack> eatenItems = eaten.get(uuid);
+        Set<ItemStack> eatenItems = this.eaten.removeAll(uuid);
         if (eatenItems != null) {
-            for (ItemStack itemStack : eaten.get(uuid)) {
-                if (ThreadLocalRandom.current().nextBoolean()) {
-                    e.getDrops().add(itemStack);
-                }
+            for (ItemStack itemStack : eatenItems) {
+                e.getDrops().add(itemStack);
             }
         }
-
-        eaten.remove(uuid);
     }
 
     @Override
-    public double getChance() {
+    protected int getSpawnChance() {
         return 1;
     }
-
+    
     @Override
-    public void load(@Nonnull LivingEntity entity) {
-        JsonArray array = PersistentDataAPI.getJsonArray(entity, KEY);
-        if (array != null) {
-            List<ItemStack> list = new ArrayList<>();
-            for (JsonElement element : array) {
-                FileConfiguration configuration = new YamlConfiguration();
-                try {
-                    configuration.loadFromString(element.getAsString());
-                } catch (InvalidConfigurationException e) {
-                    throw new IllegalStateException(e);
-                }
-
-                list.add(configuration.getItemStack("eaten"));
+    public void load(@Nonnull LivingEntity entity, @Nonnull String data) {
+        YamlConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.loadFromString(data);
+        } catch (InvalidConfigurationException e) {
+            PluginUtils.log(Level.SEVERE, "Failed to load a leech's eaten items!");
+            return;
+        }
+        for (String key : configuration.getKeys(false)) {
+            ItemStack item = configuration.getItemStack(key);
+            if (item != null) {
+                this.eaten.put(entity.getUniqueId(), item);
             }
-            eaten.put(entity.getUniqueId(), list);
         }
     }
 
     @Override
-    public void save(@Nonnull LivingEntity entity) {
-        UUID uuid = entity.getUniqueId();
-        if (eaten.containsKey(uuid)) {
-            JsonArray array = new JsonArray();
-            for (ItemStack stack : eaten.get(uuid)) {
-                FileConfiguration configuration = new YamlConfiguration();
-                configuration.set("eaten", stack);
-                array.add(configuration.saveToString());
-            }
-
-            PersistentDataAPI.setJsonArray(entity, KEY, array);
+    public String save(@Nonnull LivingEntity entity) {
+        Set<ItemStack> eaten = this.eaten.get(entity.getUniqueId());
+        if (eaten == null) {
+            return null;
         }
+        FileConfiguration configuration = new YamlConfiguration();
+        int i = 0;
+        for (ItemStack stack : eaten) {
+            configuration.set(String.valueOf(i++), stack);
+        }
+        return configuration.saveToString();
     }
+    
 }

@@ -16,7 +16,6 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +30,7 @@ import org.bukkit.generator.ChunkGenerator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -202,8 +202,8 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Adds alien species to this world
      */
-    public final void addSpecies(@Nonnull Alien alien) {
-        this.species.add(alien);
+    public final void addSpecies(@Nonnull Alien... aliens) {
+        this.species.addAll(Arrays.asList(aliens));
     }
 
     /**

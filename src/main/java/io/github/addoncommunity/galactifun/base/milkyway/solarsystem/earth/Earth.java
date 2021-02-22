@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -28,7 +27,7 @@ public final class Earth extends CelestialWorld {
     
     @Nonnull
     private static World getMainWorld() {
-        World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name"));
+        World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name", "world"));
         if (world == null) {
             throw new IllegalStateException("Failed to read earth world name from config, no default world found!");
         } else {
