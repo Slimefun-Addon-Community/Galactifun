@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.github.addoncommunity.galactifun.util.Three;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -23,7 +23,6 @@ public final class Skywhale extends Alien {
     @Override
     public void onSpawn(@Nonnull LivingEntity spawned) {
         ((Phantom) spawned).setSize(100);
-        PaperLib.teleportAsync(spawned, spawned.getLocation().add(0, 100, 0));
     }
 
     @Override
@@ -50,5 +49,10 @@ public final class Skywhale extends Alien {
     @Override
     public boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel > 7;
+    }
+
+    @Override
+    public Three<Integer, Integer, Integer> getSpawnOffset() {
+        return new Three<>(0, 100, 0);
     }
 }

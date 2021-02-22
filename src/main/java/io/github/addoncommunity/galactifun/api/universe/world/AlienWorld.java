@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.Three;
 import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -268,7 +269,8 @@ public abstract class AlienWorld extends CelestialWorld {
 
                             // currently doesn't allow for aquatic aliens
                             if (b != null && b.getType().isAir() && alien.canSpawnInLightLevel(b.getLightLevel())) {
-                                alien.spawn(b.getLocation(), this.world);
+                                Three<Integer, Integer, Integer> offset = alien.getSpawnOffset();
+                                alien.spawn(b.getLocation().add(offset.getFirst(), offset.getSecond(), offset.getThird()), this.world);
                                 spawned++;
                                 if (spawned >= alien.getMaxAliensPerGroup()) {
                                     break;

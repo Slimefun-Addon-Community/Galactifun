@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.api.alien;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.util.Three;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -149,5 +150,9 @@ public abstract class Alien {
      */
     public boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel <= 7;
+    }
+
+    public Three<Integer, Integer, Integer> getSpawnOffset() {
+        return new Three<>(0, 0, 0);
     }
 }
