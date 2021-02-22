@@ -6,7 +6,6 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.alien.PersistentDataHoldingAlien;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -103,7 +102,6 @@ public final class Leech extends Alien implements PersistentDataHoldingAlien {
                 list.add(configuration.getItemStack("eaten"));
             }
             eaten.put(entity.getUniqueId(), list);
-            PluginUtils.log("loaded");
         }
     }
 
