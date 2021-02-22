@@ -40,5 +40,5 @@ public final class Jupiter extends CelestialBody {
     protected long createSurfaceArea() {
         return 61_420_000_000L;
     }
-    
+
 }

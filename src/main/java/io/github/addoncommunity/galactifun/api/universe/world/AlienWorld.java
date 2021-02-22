@@ -9,12 +9,14 @@ import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.collections.RandomizedSet;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,19 +32,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Any alien world
- * 
- * @see EarthOrbit
  *
  * @author Seggan
  * @author Mooy1
+ * @see EarthOrbit
  */
 public abstract class AlienWorld extends CelestialWorld {
 
@@ -70,16 +73,16 @@ public abstract class AlienWorld extends CelestialWorld {
     public static Collection<AlienWorld> getEnabled() {
         return WORLDS.values();
     }
-    
+
     private static final double MIN_BORDER = 600D;
     private static final double MAX_BORDER = 30_000_000D;
     private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
-    
+
     /**
-     * All alien species that can spawn on this planet
+     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
      */
     @Nonnull
-    private final RandomizedSet<Alien> species = new RandomizedSet<>();
+    private final List<Alien> species = new ArrayList<>(4);
 
     /**
      * This world, only null if disabled
@@ -94,12 +97,12 @@ public abstract class AlienWorld extends CelestialWorld {
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
-
+    
     @Nullable
     @Override
     protected World loadWorld() {
         String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
-        
+
         if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
             return null;
         }
@@ -130,7 +133,7 @@ public abstract class AlienWorld extends CelestialWorld {
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
-
+        
         Validate.notNull(world, "There was an error loading the world for " + worldName);
 
         // border
@@ -152,34 +155,45 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // after
         afterWorldLoad(world);
-
+        
         return this.world = world;
     }
 
     /**
      * Called before the world is loaded, while this is being registered
-     * 
+     *
      * use this to validate or initialize anything that is used in the chunk generator
      */
     protected void beforeWorldLoad() {
         // can be overridden
     }
-    
+
     /**
      * Called after the world is loaded, while this is being registered
-     * 
+     *
      * use this to add any custom world settings you want
      */
     protected void afterWorldLoad(@Nonnull World world) {
         // can be overridden
     }
-    
+
+    protected boolean canSpawnVanillaMobs() {
+        return false;
+    }
+
+    /**
+     * Override and set to false if your world is not required/needed for your plugin to work.
+     */
+    protected boolean enabledByDefault() {
+        return true;
+    }
+
     /**
      * Generate a chunk
      */
-    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, 
+    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                           @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ);
-    
+
     /**
      * Add all chunk populators to this list
      */
@@ -188,12 +202,10 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Adds alien species to this world
      */
-    public final void addSpecies(@Nonnull Alien... aliens) {
-        for (Alien alien : aliens) {
-            this.species.add(alien, alien.getChance());
-        }
+    public final void addSpecies(@Nonnull Alien alien) {
+        this.species.add(alien);
     }
-    
+
     /**
      * Ticks the world every 5 seconds
      */
@@ -201,6 +213,37 @@ public abstract class AlienWorld extends CelestialWorld {
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);
+        }
+        
+        // mob spawns
+        if (!this.species.isEmpty()) {
+            // shuffles the list so each alien has a fair chance of being first
+            Collections.shuffle(this.species);
+            
+            Random rand = ThreadLocalRandom.current();
+            int players = this.world.getPlayers().size();
+            int mobs = this.world.getLivingEntities().size() - players;
+            int max = players * MAX_ALIENS;
+
+            for (Alien alien : this.species) {
+                if (mobs > max) {
+                    break;
+                }
+                int spawned = 0;
+                for (Chunk chunk : this.world.getLoadedChunks()) {
+                    if (rand.nextInt(100) > alien.getSpawnChance() || spawned >= alien.getMaxAliensPerGroup()) {
+                        continue;
+                    }
+                    
+                    Block b = this.world.getHighestBlockAt(rand.nextInt(16) + chunk.getX() << 4, rand.nextInt(16) + chunk.getZ() << 4).getRelative(0, 1, 0);
+                    
+                    // currently doesn't allow for aquatic aliens
+                    if (b.getType().isAir() && alien.getSpawnInLightLevel(b.getLightLevel())) {
+                        alien.spawn(b.getLocation().add(alien.getSpawnOffset()), this.world);
+                        spawned++;
+                    }
+                }
+            }
         }
         // other stuff?
     }
@@ -214,22 +257,6 @@ public abstract class AlienWorld extends CelestialWorld {
         // apply atmospheric effects
         this.atmosphere.applyEffects(p);
         // other stuff?
-    }
-
-    /**
-     * Spawns aliens
-     */
-    public final void onMobSpawn(@Nonnull CreatureSpawnEvent e) {
-        if (!this.species.isEmpty() && this.world.getLivingEntities().size() < this.world.getPlayers().size() * MAX_ALIENS) {
-            this.species.getRandom().spawn(e.getLocation(), this.world);
-        }
-    }
-
-    /**
-     * Override and set to false if your world is not required/needed for your plugin to work.
-     */
-    protected boolean enabledByDefault() {
-        return true;
     }
     
     static {
@@ -289,14 +316,13 @@ public abstract class AlienWorld extends CelestialWorld {
                 }
             }
 
-            // alien spawning for now
+            // cancel natural mobs
             @EventHandler
             public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
                 if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
                     AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
-                    if (world != null) {
+                    if (world != null && !world.canSpawnVanillaMobs()) {
                         e.setCancelled(true);
-                        world.onMobSpawn(e);
                     }
                 }
             }

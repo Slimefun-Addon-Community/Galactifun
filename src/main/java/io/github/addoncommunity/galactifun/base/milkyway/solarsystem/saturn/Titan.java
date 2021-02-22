@@ -110,6 +110,8 @@ public final class Titan extends AlienWorld {
                     case DEEP_FROZEN_OCEAN:
                     case WARM_OCEAN:
                     case OCEAN:
+                    case BEACH:
+                    case SNOWY_BEACH:
                         chunk.setBlock(x, height + 1, z, Material.WATER);
                         generateRest(height, chunk, random, x, z);
                         break;

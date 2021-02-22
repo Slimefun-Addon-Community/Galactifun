@@ -13,12 +13,15 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,29 +60,21 @@ public abstract class Alien {
     private final String id;
     @Nonnull
     private final String name;
+    @Getter
     @Nonnull
     private final EntityType type;
-    
-    @Getter
-    private final int chance;
     private final int health;
     
-    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
-                 int chance, int health) {
-
-        Validate.notNull(id);
-        Validate.notNull(name);
-        Validate.notNull(type);
+    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
+        
+        Validate.notNull(this.id = id);
+        Validate.notNull(this.name = ChatColors.color(name));
+        Validate.notNull(this.type = type);
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
-        Validate.isTrue(health > 0);
-        Validate.isTrue(chance > 0 && chance <= 100);
-        
-        this.chance = chance;
-        this.id = id;
-        this.name = ChatColors.color(name);
-        this.health = health;
-        this.type = type;
-        
+        Validate.isTrue((this.health = health) > 0);
+        Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
+        Validate.notNull(getSpawnOffset());
+
         ALIENS.put(id, this);
 
     }
@@ -93,6 +88,8 @@ public abstract class Alien {
         entity.setCustomName(this.name);
         entity.setCustomNameVisible(true);
 
+        entity.setRemoveWhenFarAway(true);
+
         onSpawn(entity);
     }
 
@@ -101,16 +98,50 @@ public abstract class Alien {
     protected void onMobTick(@Nonnull LivingEntity mob) { }
 
     protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+    
+    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
 
     protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
     protected void onTarget(@Nonnull EntityTargetEvent e) { }
 
     protected void onDeath(@Nonnull EntityDeathEvent e) { }
+    
+    /**
+     * Returns the chance for the alien to spawn per spawn attempt
+     *
+     * @return the chance for the alien to spawn
+     */
+    protected abstract int getSpawnChance();
+
+    /**
+     * This will return the max possible aliens spawned per spawn attempt
+     *
+     * @return aliens per group
+     */
+    protected int getMaxAliensPerGroup() {
+        return 1;
+    }
+
+    /**
+     * This method returns whether the alien can spawn in the given light level. By default uses
+     * the {@link Zombie} light level conditions
+     *
+     * @param lightLevel the light level of the block the alien is attempting to spawn on
+     *
+     * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
+     */
+    protected boolean getSpawnInLightLevel(int lightLevel) {
+        return lightLevel <= 7;
+    }
+
+    protected Vector getSpawnOffset() {
+        return new Vector();
+    }
 
     static {
         PluginUtils.registerListener(new Listener() {
-            
+
             @EventHandler
             public void onAlienTarget(@Nonnull EntityTargetEvent e) {
                 Alien alien = Alien.getByEntity(e.getEntity());
@@ -133,6 +164,10 @@ public abstract class Alien {
                 if (alien != null) {
                     alien.onHit(e);
                 }
+                alien = Alien.getByEntity(e.getDamager());
+                if (alien != null) {
+                    alien.onAttack(e);
+                }
             }
 
             @EventHandler
@@ -140,6 +175,14 @@ public abstract class Alien {
                 Alien alien = Alien.getByEntity(e.getEntity());
                 if (alien != null) {
                     alien.onDeath(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienCombust(@Nonnull EntityCombustEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    e.setCancelled(true);
                 }
             }
         });

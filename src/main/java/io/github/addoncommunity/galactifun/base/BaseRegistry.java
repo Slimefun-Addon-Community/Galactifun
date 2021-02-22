@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.base;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
@@ -9,8 +8,10 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.base.aliens.Leech;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
+import io.github.addoncommunity.galactifun.base.aliens.Skywhale;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
@@ -58,14 +59,17 @@ public final class BaseRegistry {
     public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", Orbit.lightYears(12_000_000_000D),
             GalaxyType.SPIRAL, new ItemChoice(Material.MILK_BUCKET));
     
-    public static final Alien MARTIAN = new Martian();
-    public static final Alien ALIEN_CREEPER = new MutantCreeper();
-    public static final Alien TITAN_ALIEN = new TitanAlien();
+
+    public static final Martian MARTIAN = new Martian();
+    public static final MutantCreeper ALIEN_CREEPER = new MutantCreeper();
+    public static final TitanAlien TITAN_ALIEN = new TitanAlien();
+    public static final Leech LEECH = new Leech();
+    public static final Skywhale SKYWHALE = new Skywhale();
 
     public static void setup() {
         // aliens
         THE_MOON.addSpecies(ALIEN_CREEPER);
-        TITAN_MOON.addSpecies(TITAN_ALIEN);
+        TITAN_MOON.addSpecies(TITAN_ALIEN, LEECH, SKYWHALE);
         MARS.addSpecies(MARTIAN);
         
         // orbiters

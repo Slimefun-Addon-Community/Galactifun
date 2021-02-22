@@ -19,9 +19,9 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  */
 public final class MutantCreeper extends Alien {
-
+    
     public MutantCreeper() {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, 40);
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40);
     }
 
     @Override
@@ -33,6 +33,11 @@ public final class MutantCreeper extends Alien {
     @Override
     public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
+    }
+
+    @Override
+    protected int getSpawnChance() {
+        return 40;
     }
 
     @Override
