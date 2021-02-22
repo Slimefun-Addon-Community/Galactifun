@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -21,8 +22,8 @@ public final class Skywhale extends Alien {
 
     @Override
     public void onSpawn(@Nonnull LivingEntity spawned) {
-        ((Phantom) spawned).setSize(70);
-        PaperLib.teleportAsync(spawned, spawned.getLocation().add(0, 50, 0));
+        ((Phantom) spawned).setSize(100);
+        PaperLib.teleportAsync(spawned, spawned.getLocation().add(0, 100, 0));
     }
 
     @Override
@@ -34,6 +35,11 @@ public final class Skywhale extends Alien {
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.PHANTOM_MEMBRANE, 20));
+    }
+
+    @Override
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+        e.getRightClicked().addPassenger(e.getPlayer());
     }
 
     @Override
