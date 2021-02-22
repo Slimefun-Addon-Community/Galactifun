@@ -1,10 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
@@ -41,12 +41,12 @@ public final class Enceladus extends AlienWorld {
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
 
                 for (y = 1 ; y <= 30 ; y++) {
-                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
                 for (; y <= 60 ; y++) {
-                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
+                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
@@ -85,4 +85,8 @@ public final class Enceladus extends AlienWorld {
         return 798_648L;
     }
 
+    @Override
+    public boolean canSpawnVanillaMobs() {
+        return true;
+    }
 }

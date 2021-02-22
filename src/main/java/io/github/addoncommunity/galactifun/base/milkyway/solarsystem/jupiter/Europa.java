@@ -58,12 +58,12 @@ public final class Europa extends AlienWorld {
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
 
                 for (y = 1 ; y <= 30 ; y++) {
-                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
                 for (; y <= 60 ; y++) {
-                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
+                    chunk.setBlock(x, y, z, Material.ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 

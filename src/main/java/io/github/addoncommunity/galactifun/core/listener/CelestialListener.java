@@ -59,11 +59,11 @@ public final class CelestialListener implements Listener {
     
     @EventHandler
     public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
+        // don't want to prevent mobs from spawning from spawners
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
             if (world != null) {
-                e.setCancelled(true);
-                world.onMobSpawn(e);
+                e.setCancelled(!world.canSpawnVanillaMobs());
             }
         }
     }
