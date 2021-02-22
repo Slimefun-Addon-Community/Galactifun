@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.alien.Alien;
 import io.github.addoncommunity.galactifun.api.alien.PersistentDataHoldingAlien;
@@ -8,6 +10,9 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,15 +20,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import javax.annotation.Nonnull;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,21 +89,21 @@ public final class Leech extends Alien implements PersistentDataHoldingAlien {
 
     @Override
     public void load(@Nonnull LivingEntity entity) {
-        byte[] bytes = PersistentDataAPI.getByteArray(entity, KEY);
-        if (bytes != null) {
-            try (ObjectInputStream stream = new BukkitObjectInputStream(new ByteArrayInputStream(bytes))) {
-                Object obj = stream.readObject();
-                if (obj instanceof List) {
-                    PluginUtils.log("[DEBUG] Loading...");
-                    eaten.put(entity.getUniqueId(), (List<ItemStack>) obj);
-                } else {
-                    throw new IllegalStateException("Deserialized object not a list!");
+        JsonArray array = PersistentDataAPI.getJsonArray(entity, KEY);
+        if (array != null) {
+            List<ItemStack> list = new ArrayList<>();
+            for (JsonElement element : array) {
+                FileConfiguration configuration = new YamlConfiguration();
+                try {
+                    configuration.loadFromString(element.getAsString());
+                } catch (InvalidConfigurationException e) {
+                    throw new IllegalStateException(e);
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                throw new IllegalStateException(e);
+
+                list.add(configuration.getItemStack("eaten"));
             }
-        } else {
-            PluginUtils.log("empty");
+            eaten.put(entity.getUniqueId(), list);
+            PluginUtils.log("loaded");
         }
     }
 
@@ -113,19 +111,14 @@ public final class Leech extends Alien implements PersistentDataHoldingAlien {
     public void save(@Nonnull LivingEntity entity) {
         UUID uuid = entity.getUniqueId();
         if (eaten.containsKey(uuid)) {
-            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                 ObjectOutputStream stream = new BukkitObjectOutputStream(buffer)) {
-
-                stream.writeObject(eaten.get(uuid));
-
-                PersistentDataAPI.setByteArray(entity, KEY, buffer.toByteArray());
-
-                PluginUtils.log("stored");
-
-                buffer.flush();
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
+            JsonArray array = new JsonArray();
+            for (ItemStack stack : eaten.get(uuid)) {
+                FileConfiguration configuration = new YamlConfiguration();
+                configuration.set("eaten", stack);
+                array.add(configuration.saveToString());
             }
+
+            PersistentDataAPI.setJsonArray(entity, KEY, array);
         }
     }
 }
