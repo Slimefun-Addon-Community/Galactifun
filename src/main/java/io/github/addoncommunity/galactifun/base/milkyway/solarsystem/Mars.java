@@ -72,7 +72,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Biome getBiome() {
-        return Biome.NETHER_WASTES;
+        return Biome.DESERT_HILLS;
     }
 
     @Override
@@ -89,7 +89,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().setNether()
+        return new AtmosphereBuilder()
             .addComponent(AtmosphericComponent.CARBON_DIOXIDE, 94.9)
             .addComponent(AtmosphericComponent.NITROGEN, 2.6)
             .addComponent(AtmosphericComponent.ARGON, 1.9)

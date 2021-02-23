@@ -79,6 +79,9 @@ public final class Titan extends AlienWorld {
                     case WOODED_BADLANDS_PLATEAU:
                     case BADLANDS_PLATEAU:
                     case ERODED_BADLANDS:
+                    case DESERT:
+                    case DESERT_HILLS:
+                    case DESERT_LAKES:
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
@@ -117,7 +120,7 @@ public final class Titan extends AlienWorld {
                         generateRest(height, chunk, random, x, z);
                         break;
                     default:
-                        chunk.setBlock(x, height + 1, z, Material.SAND);
+                        chunk.setBlock(x, height + 1, z, Material.ICE);
                         generateRest(height, chunk, random, x, z);
                 }
             }

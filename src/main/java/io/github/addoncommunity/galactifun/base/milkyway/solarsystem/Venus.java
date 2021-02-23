@@ -26,7 +26,7 @@ import java.util.Random;
  *
  * @author Seggan
  */
-public class Venus extends SimpleAlienWorld {
+public final class Venus extends SimpleAlienWorld {
 
     public Venus() {
         super("Venus", new Orbit(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
