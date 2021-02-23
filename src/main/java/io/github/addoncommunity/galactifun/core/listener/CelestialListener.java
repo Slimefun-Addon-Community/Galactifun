@@ -122,8 +122,8 @@ public final class CelestialListener implements Listener {
         Block block = e.getBlock();
         AlienWorld world = AlienWorld.getByWorld(block.getWorld());
         if (world != null && crops.contains(block.getType())) {
-            BigDecimal relative = Atmosphere.EARTH_LIKE.getCarbonDioxidePercentage()
-                .divide(world.getAtmosphere().getCarbonDioxidePercentage(), 50, RoundingMode.HALF_UP)
+            BigDecimal relative = world.getAtmosphere().getCarbonDioxidePercentage()
+                .divide(Atmosphere.EARTH_LIKE.getCarbonDioxidePercentage(), 50, RoundingMode.HALF_UP)
                 .stripTrailingZeros();
 
             int times = relative.intValue();
