@@ -5,6 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
@@ -78,6 +79,9 @@ public final class Titan extends AlienWorld {
                     case WOODED_BADLANDS_PLATEAU:
                     case BADLANDS_PLATEAU:
                     case ERODED_BADLANDS:
+                    case DESERT:
+                    case DESERT_HILLS:
+                    case DESERT_LAKES:
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
@@ -116,7 +120,7 @@ public final class Titan extends AlienWorld {
                         generateRest(height, chunk, random, x, z);
                         break;
                     default:
-                        chunk.setBlock(x, height + 1, z, Material.SAND);
+                        chunk.setBlock(x, height + 1, z, Material.ICE);
                         generateRest(height, chunk, random, x, z);
                 }
             }
@@ -206,7 +210,12 @@ public final class Titan extends AlienWorld {
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().enableWeather().enableFire().build(); 
+        return new AtmosphereBuilder().enableWeather().enableFire()
+            .addNitrogen(97)
+            .addComponent(AtmosphericComponent.METHANE, 2.7)
+            .addComponent(AtmosphericComponent.HYDROCARBONS, 0.2)
+            .addComponent(AtmosphericComponent.HYDROGEN, 0.1)
+            .build();
     }
 
     @Nonnull
