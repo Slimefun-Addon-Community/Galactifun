@@ -5,6 +5,9 @@ import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 
 import javax.annotation.Nonnull;
+import java.math.BigDecimal;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Utility class for making atmospheres
@@ -13,8 +16,8 @@ import javax.annotation.Nonnull;
  */
 public final class AtmosphereBuilder {
 
-    private double oxygenPercentage;
-    private double carbonDioxidePercentage;
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
+
     private boolean weatherCycle;
     private boolean storming;
     private boolean thundering;
@@ -23,6 +26,8 @@ public final class AtmosphereBuilder {
     private World.Environment environment = World.Environment.NORMAL;
     @Nonnull
     private AtmosphericEffect[] effects = new AtmosphericEffect[0];
+    @Nonnull
+    private final Map<AtmosphericComponent, BigDecimal> composition = new EnumMap<AtmosphericComponent, BigDecimal>(AtmosphericComponent.class);
     
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
@@ -44,16 +49,10 @@ public final class AtmosphereBuilder {
         this.effects = effects;
         return this;
     }
-    
-    public AtmosphereBuilder addOxygen(double percentage) {
-        Validate.isTrue(percentage >= 0 && percentage + this.carbonDioxidePercentage <= 100);
-        this.oxygenPercentage = percentage;
-        return this;
-    }
-    
-    public AtmosphereBuilder addCarbonDioxide(double percentage) {
-        Validate.isTrue(percentage >= 0 && percentage + this.oxygenPercentage <= 100);
-        this.carbonDioxidePercentage = percentage;
+
+    public AtmosphereBuilder addComponent(@Nonnull AtmosphericComponent component, double percentage) {
+        Validate.isTrue(percentage > 0 && percentage <= 100);
+        this.composition.put(component, BigDecimal.valueOf(percentage));
         return this;
     }
     
@@ -79,8 +78,15 @@ public final class AtmosphereBuilder {
     
     @Nonnull
     public Atmosphere build() {
-        return new Atmosphere(this.oxygenPercentage, this.carbonDioxidePercentage, this.weatherCycle,
-                this.storming, this.thundering, this.flammable, this.environment, this.effects);
+        BigDecimal percent = BigDecimal.ZERO;
+        for (BigDecimal decimal : composition.values()) percent = percent.add(decimal);
+
+        Validate.isTrue(percent.compareTo(ONE_HUNDRED) <= 0,
+            "Percentage cannot be more than 100%!");
+        composition.put(AtmosphericComponent.OTHER_GASES, ONE_HUNDRED.subtract(percent));
+
+        return new Atmosphere(this.weatherCycle, this.storming, this.thundering, this.flammable, this.environment,
+            this.composition, this.effects);
     }
     
 }
