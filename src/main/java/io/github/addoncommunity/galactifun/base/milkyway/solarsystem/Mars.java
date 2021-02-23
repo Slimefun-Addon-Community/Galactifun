@@ -90,8 +90,8 @@ public final class Mars extends SimpleAlienWorld {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder()
-            .addComponent(AtmosphericComponent.CARBON_DIOXIDE, 94.9)
-            .addComponent(AtmosphericComponent.NITROGEN, 2.6)
+            .addCarbonDioxide(94.9)
+            .addNitrogen(2.6)
             .addComponent(AtmosphericComponent.ARGON, 1.9)
             .build();
     }

@@ -19,11 +19,11 @@ import java.util.Map;
 public final class Atmosphere {
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
-        .addComponent(AtmosphericComponent.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
-        .addComponent(AtmosphericComponent.OXYGEN, 20.946)
+        .addNitrogen(77.084) // subtracted 1 to allow water to fit in
+        .addOxygen(20.946)
         .addComponent(AtmosphericComponent.WATER, 0.95)
         .addComponent(AtmosphericComponent.ARGON, 0.934)
-        .addComponent(AtmosphericComponent.CARBON_DIOXIDE, 0.0415)
+        .addCarbonDioxide(0.0415)
         .build();
     public static final Atmosphere NONE = new AtmosphereBuilder().build();
     private final boolean weatherCycle;

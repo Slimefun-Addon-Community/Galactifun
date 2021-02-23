@@ -55,6 +55,18 @@ public final class AtmosphereBuilder {
         this.composition.put(component, BigDecimal.valueOf(percentage));
         return this;
     }
+
+    public AtmosphereBuilder addOxygen(double percentage) {
+        return addComponent(AtmosphericComponent.OXYGEN, percentage);
+    }
+
+    public AtmosphereBuilder addNitrogen(double percentage) {
+        return addComponent(AtmosphericComponent.NITROGEN, percentage);
+    }
+
+    public AtmosphereBuilder addCarbonDioxide(double percentage) {
+        return addComponent(AtmosphericComponent.CARBON_DIOXIDE, percentage);
+    }
     
     public AtmosphereBuilder enableWeather() {
         this.weatherCycle = true;

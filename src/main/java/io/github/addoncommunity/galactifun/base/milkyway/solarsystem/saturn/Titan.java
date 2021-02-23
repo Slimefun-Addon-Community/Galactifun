@@ -211,7 +211,7 @@ public final class Titan extends AlienWorld {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().enableWeather().enableFire()
-            .addComponent(AtmosphericComponent.NITROGEN, 97)
+            .addNitrogen(97)
             .addComponent(AtmosphericComponent.METHANE, 2.7)
             .addComponent(AtmosphericComponent.HYDROCARBONS, 0.2)
             .addComponent(AtmosphericComponent.HYDROGEN, 0.1)
