@@ -6,6 +6,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.math.BigDecimal;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -15,13 +18,14 @@ import javax.annotation.Nonnull;
  */
 public final class Atmosphere {
 
-    public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().addOxygen(21).addCarbonDioxide(.004).enableWeather().build();
+    public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
+        .addNitrogen(77.084) // subtracted 1 to allow water to fit in
+        .addOxygen(20.946)
+        .addComponent(AtmosphericComponent.WATER, 0.95)
+        .addComponent(AtmosphericComponent.ARGON, 0.934)
+        .addCarbonDioxide(0.0415)
+        .build();
     public static final Atmosphere NONE = new AtmosphereBuilder().build();
-
-    @Getter 
-    private final double oxygenPercentage;
-    @Getter
-    private final double carbonDioxidePercentage;
     private final boolean weatherCycle;
     private final boolean storming;
     private final boolean thundering;
@@ -32,18 +36,21 @@ public final class Atmosphere {
     @Nonnull
     @Getter
     private final AtmosphericEffect[] effects;
+    // BigDecimal for precision
+    @Getter
+    private final Map<AtmosphericComponent, BigDecimal> composition = new EnumMap<>(AtmosphericComponent.class);
     
     // builder's constructor
-    Atmosphere(double oxygenPercentage, double carbonDioxidePercentage, boolean weatherCycle, boolean storming, boolean thundering,
-               boolean flammable, @Nonnull World.Environment environment, @Nonnull AtmosphericEffect[] effects) {
-        
-        this.oxygenPercentage = oxygenPercentage;
+    Atmosphere(boolean weatherCycle, boolean storming, boolean thundering, boolean flammable,
+               @Nonnull World.Environment environment, Map<AtmosphericComponent, BigDecimal> composition,
+               @Nonnull AtmosphericEffect[] effects) {
+
         this.weatherCycle = weatherCycle;
         this.environment = environment;
-        this.carbonDioxidePercentage = carbonDioxidePercentage;
         this.thundering = thundering;
         this.storming = storming;
         this.flammable = flammable;
+        this.composition.putAll(composition);
         this.effects = effects;
     }
     
@@ -65,6 +72,14 @@ public final class Atmosphere {
         for (AtmosphericEffect effect : this.effects) {
             effect.apply(player);
         }
+    }
+
+    public BigDecimal getOxygenPercentage() {
+        return composition.getOrDefault(AtmosphericComponent.OXYGEN, BigDecimal.ZERO);
+    }
+
+    public BigDecimal getCarbonDioxidePercentage() {
+        return composition.getOrDefault(AtmosphericComponent.CARBON_DIOXIDE, BigDecimal.ZERO);
     }
     
 }

@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
@@ -71,7 +72,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Biome getBiome() {
-        return Biome.NETHER_WASTES;
+        return Biome.DESERT_HILLS;
     }
 
     @Override
@@ -88,7 +89,11 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().addCarbonDioxide(95).setNether().build();
+        return new AtmosphereBuilder()
+            .addCarbonDioxide(94.9)
+            .addNitrogen(2.6)
+            .addComponent(AtmosphericComponent.ARGON, 1.9)
+            .build();
     }
 
     @Nonnull

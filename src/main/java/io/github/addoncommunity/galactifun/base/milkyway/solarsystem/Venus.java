@@ -46,7 +46,10 @@ public final class Venus extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().setNether().addStorm().addThunder().addEffects(new AtmosphericEffect(EffectType.WITHER, 3)).build();
+        return new AtmosphereBuilder().setNether().addStorm().addThunder().addEffects(new AtmosphericEffect(EffectType.WITHER, 3))
+            .addCarbonDioxide(96.5)
+            .addNitrogen(3.5)
+            .build();
     }
 
     @Nonnull
