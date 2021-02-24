@@ -6,7 +6,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -17,32 +16,38 @@ import java.util.Map;
  *
  */
 public final class Atmosphere {
+    
+    private static final double EARTH_CARBON_DIOXIDE = 0.0415;
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
         .addNitrogen(77.084) // subtracted 1 to allow water to fit in
         .addOxygen(20.946)
-        .addComponent(AtmosphericComponent.WATER, 0.95)
-        .addComponent(AtmosphericComponent.ARGON, 0.934)
-        .addCarbonDioxide(0.0415)
+        .addComponent(AtmosphericGas.WATER, 0.95)
+        .addComponent(AtmosphericGas.ARGON, 0.934)
+        .addCarbonDioxide(EARTH_CARBON_DIOXIDE)
         .build();
     public static final Atmosphere NONE = new AtmosphereBuilder().build();
+    
     private final boolean weatherCycle;
     private final boolean storming;
     private final boolean thundering;
     private final boolean flammable;
+    
     @Nonnull
     @Getter 
     private final World.Environment environment;
     @Nonnull
     @Getter
     private final AtmosphericEffect[] effects;
-    // BigDecimal for precision
+    @Nonnull
     @Getter
-    private final Map<AtmosphericComponent, BigDecimal> composition = new EnumMap<>(AtmosphericComponent.class);
-    
+    private final Map<AtmosphericGas, Double> composition = new EnumMap<>(AtmosphericGas.class);
+    @Getter
+    private final int growthAttempts;
+
     // builder's constructor
     Atmosphere(boolean weatherCycle, boolean storming, boolean thundering, boolean flammable,
-               @Nonnull World.Environment environment, Map<AtmosphericComponent, BigDecimal> composition,
+               @Nonnull World.Environment environment, Map<AtmosphericGas, Double> composition,
                @Nonnull AtmosphericEffect[] effects) {
 
         this.weatherCycle = weatherCycle;
@@ -52,6 +57,7 @@ public final class Atmosphere {
         this.flammable = flammable;
         this.composition.putAll(composition);
         this.effects = effects;
+        this.growthAttempts = (int) (composition.getOrDefault(AtmosphericGas.CARBON_DIOXIDE, 0.0) / EARTH_CARBON_DIOXIDE);
     }
     
     public void applyEffects(@Nonnull World world) {
@@ -74,12 +80,12 @@ public final class Atmosphere {
         }
     }
 
-    public BigDecimal getOxygenPercentage() {
-        return composition.getOrDefault(AtmosphericComponent.OXYGEN, BigDecimal.ZERO);
+    public double getOxygenPercentage() {
+        return this.composition.getOrDefault(AtmosphericGas.OXYGEN, 0.0);
     }
 
-    public BigDecimal getCarbonDioxidePercentage() {
-        return composition.getOrDefault(AtmosphericComponent.CARBON_DIOXIDE, BigDecimal.ZERO);
+    public double getCarbonDioxidePercentage() {
+        return this.composition.getOrDefault(AtmosphericGas.CARBON_DIOXIDE, 0.0);
     }
     
 }

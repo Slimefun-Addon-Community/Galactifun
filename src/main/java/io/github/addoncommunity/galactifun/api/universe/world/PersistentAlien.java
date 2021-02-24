@@ -44,6 +44,7 @@ public interface PersistentAlien {
     String save(@Nonnull LivingEntity entity);
     
     static void loadAll() {
+        PluginUtils.log("Loading entity data...");
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
                 Alien alien = Alien.getByEntity(entity);

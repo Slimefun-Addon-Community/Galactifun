@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
@@ -34,9 +34,9 @@ public final class Saturn extends CelestialBody {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().enableWeather()
-            .addComponent(AtmosphericComponent.HYDROGEN, 96.3)
-            .addComponent(AtmosphericComponent.HELIUM, 3.25)
-            .addComponent(AtmosphericComponent.METHANE, 0.45)
+            .addComponent(AtmosphericGas.HYDROGEN, 96.3)
+            .addComponent(AtmosphericGas.HELIUM, 3.25)
+            .addComponent(AtmosphericGas.METHANE, 0.45)
             .build();
     }
 
