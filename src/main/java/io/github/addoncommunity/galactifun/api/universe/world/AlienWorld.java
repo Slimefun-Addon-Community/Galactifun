@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
@@ -8,18 +9,24 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -29,15 +36,19 @@ import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -260,6 +271,7 @@ public abstract class AlienWorld extends CelestialWorld {
     }
     
     static {
+        
         // world ticker
         PluginUtils.scheduleRepeatingSync(() -> {
             for (AlienWorld world : WORLDS.values()) {
@@ -333,6 +345,35 @@ public abstract class AlienWorld extends CelestialWorld {
                 AlienWorld world = AlienWorld.getByWorld(e.getPlayer().getWorld());
                 if (world != null) {
                     e.setCancelled(true);
+                }
+            }
+
+            // crops
+            @EventHandler
+            public void onCropGrow(@Nonnull BlockGrowEvent e) {
+                Block block = e.getBlock();
+                AlienWorld world = AlienWorld.getByWorld(block.getWorld());
+                if (world != null && SlimefunTag.CROPS.isTagged(block.getType())) {
+                    BigDecimal relative = world.getAtmosphere().getCarbonDioxidePercentage()
+                            .divide(Atmosphere.EARTH_LIKE.getCarbonDioxidePercentage(), 50, RoundingMode.HALF_UP)
+                            .stripTrailingZeros();
+
+                    int times = relative.intValue();
+                    double chance = relative.remainder(BigDecimal.ONE).doubleValue();
+
+                    for (int i = 0; i < times + 1; i++) {
+                        if (ThreadLocalRandom.current().nextDouble() < chance) {
+                            BlockData data = block.getBlockData();
+
+                            if (data instanceof Ageable) {
+                                Ageable ageable = (Ageable) data;
+                                if (ageable.getAge() < ageable.getMaximumAge()) {
+                                    ageable.setAge(ageable.getAge() + 1);
+                                    block.setBlockData(ageable);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         });
