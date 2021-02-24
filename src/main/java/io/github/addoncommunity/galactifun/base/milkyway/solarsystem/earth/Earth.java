@@ -29,7 +29,7 @@ public final class Earth extends CelestialWorld {
     private static World getMainWorld() {
         World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name", "world"));
         if (world == null) {
-            throw new IllegalStateException("Failed to read earth world name from config, no default world found!");
+            throw new IllegalStateException("Failed to read earth world name from config; no default world found!");
         } else {
             return world;
         }

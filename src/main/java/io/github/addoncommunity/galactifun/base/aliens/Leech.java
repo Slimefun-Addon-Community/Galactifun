@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -95,6 +96,7 @@ public final class Leech extends Alien implements PersistentAlien {
     }
 
     @Override
+    @Nullable
     public String save(@Nonnull LivingEntity entity) {
         Set<ItemStack> eaten = this.eaten.get(entity.getUniqueId());
         if (eaten == null) {
