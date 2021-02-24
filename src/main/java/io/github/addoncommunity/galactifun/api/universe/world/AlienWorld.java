@@ -152,6 +152,20 @@ public abstract class AlienWorld extends CelestialWorld {
                     return list;
                 }
 
+                @Override
+                public boolean shouldGenerateCaves() {
+                    return AlienWorld.this.shouldGenerateCaves();
+                }
+
+                @Override
+                public boolean shouldGenerateDecorations() {
+                    return AlienWorld.this.shouldGenerateStructures();
+                }
+
+                @Override
+                public boolean shouldGenerateStructures() {
+                    return AlienWorld.this.shouldGenerateStructures();
+                }
             })
             .environment(this.atmosphere.getEnvironment())
             .createWorld();
@@ -301,5 +315,33 @@ public abstract class AlienWorld extends CelestialWorld {
     protected boolean enabledByDefault() {
         return true;
     }
+
+    /**
+     * See {@link ChunkGenerator#shouldGenerateCaves()}
+     *
+     * @return true if the server should generate vanilla caves
+     */
+    protected boolean shouldGenerateCaves() {
+        return false;
+    }
+
+    /**
+     * See {@link ChunkGenerator#shouldGenerateStructures()}
+     *
+     * @return true if the server should generate vanilla structures
+     */
+    protected boolean shouldGenerateStructures() {
+        return false;
+    }
+
+    /**
+     * See {@link ChunkGenerator#shouldGenerateDecorations()}
+     *
+     * @return true if the server should generate vanilla decorations
+     */
+    protected boolean shouldGenerateDecorations() {
+        return false;
+    }
+
 
 }
