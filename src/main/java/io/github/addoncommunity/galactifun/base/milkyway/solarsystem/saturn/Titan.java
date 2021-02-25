@@ -10,14 +10,12 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.PluginUtils;
-import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -65,13 +63,8 @@ public final class Titan extends AlienWorld {
             for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
-//                TitanGenerator.GeneratedData data = generator.getData(realX, realZ);
-//
-//                height = data.getHeight();
-//                biome = data.getBiome();
-
-                height = 55;
-                biome = TitanGenerator.TitanBiome.FROZEN_FOREST;
+                height = generator.getHeight(realX, realZ);
+                biome = generator.getBiome(realX, realZ, height);
 
                 switch (biome) {
                     case FOREST:
@@ -173,29 +166,7 @@ public final class Titan extends AlienWorld {
                     } else if (b.getBiome() == Biome.SNOWY_TUNDRA) {
                         if (random.nextDouble() < 0.2) {
                             PluginUtils.log("test1");
-                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS, new BlockChangeDelegate() {
-                                @Override
-                                public boolean setBlockData(int x, int y, int z, @Nonnull BlockData blockData) {
-                                    world.getBlockAt(x, y, z).setType(Material.BLUE_ICE, false);
-                                    return true;
-                                }
-
-                                @Nonnull
-                                @Override
-                                public BlockData getBlockData(int x, int y, int z) {
-                                    return world.getBlockAt(x, y, z).getBlockData();
-                                }
-
-                                @Override
-                                public int getHeight() {
-                                    return 255;
-                                }
-
-                                @Override
-                                public boolean isEmpty(int x, int y, int z) {
-                                    return world.getBlockAt(x, y, z).isEmpty();
-                                }
-                            });
+                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
                         }
                     }
                 }
@@ -211,7 +182,7 @@ public final class Titan extends AlienWorld {
                     int height = world.getHighestBlockYAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     Block b = chunk.getBlock(x, height, z);
                     if (b.getBiome() == Biome.SAVANNA || b.getBiome() == Biome.ICE_SPIKES) {
-                        for (int y = height + random.nextInt(4); y > height; y--) {
+                        for (int y = Math.min(255, height + random.nextInt(4)); y > height; y--) {
                             PluginUtils.log("spiky");
                             if (b.getBiome() == Biome.SAVANNA) {
                                 chunk.getBlock(x, y, z).setType(Material.COAL_BLOCK, false);

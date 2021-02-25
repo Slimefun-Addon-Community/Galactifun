@@ -1,13 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import org.bukkit.block.Biome;
-import org.bukkit.util.noise.OctaveGenerator;
-import org.bukkit.util.noise.SimplexOctaveGenerator;
+import org.bukkit.util.noise.NoiseGenerator;
+import org.bukkit.util.noise.SimplexNoiseGenerator;
 
 import java.util.Random;
 
@@ -18,10 +15,9 @@ final class TitanGenerator {
     private final int seaLevel;
     private final int deviation;
 
-    private final OctaveGenerator MAIN_GENERATOR;
-    private final OctaveGenerator RUGGEDNESS_GENERATOR;
-    private final OctaveGenerator MOISTURE_GENERATOR;
-    private final OctaveGenerator TEMPERATURE_GENERATOR;
+    private final NoiseGenerator MAIN_GENERATOR;
+    private final NoiseGenerator MOISTURE_GENERATOR;
+    private final NoiseGenerator TEMPERATURE_GENERATOR;
 
     public TitanGenerator(long seed, int seaLevel, int deviation) {
         this.seed = seed;
@@ -30,21 +26,9 @@ final class TitanGenerator {
         this.seaLevel = seaLevel;
         this.deviation = deviation;
 
-        this.MAIN_GENERATOR = new SimplexOctaveGenerator(this.seed, 7);
-        this.MAIN_GENERATOR.setScale(0.004);
-        this.RUGGEDNESS_GENERATOR = new SimplexOctaveGenerator(random.nextLong(), 12);
-        this.RUGGEDNESS_GENERATOR.setScale(0.01);
-        this.MOISTURE_GENERATOR = new SimplexOctaveGenerator(random.nextLong(), 5);
-        this.MOISTURE_GENERATOR.setScale(0.0001);
-        this.TEMPERATURE_GENERATOR = new SimplexOctaveGenerator(random.nextLong(), 5);
-        this.TEMPERATURE_GENERATOR.setScale(0.0001);
-    }
-
-    @Builder(access = AccessLevel.PRIVATE)
-    @Data
-    static final class GeneratedData {
-        private final int height;
-        private final TitanBiome biome;
+        this.MAIN_GENERATOR = new SimplexNoiseGenerator(this.seed);
+        this.MOISTURE_GENERATOR = new SimplexNoiseGenerator(random.nextLong());
+        this.TEMPERATURE_GENERATOR = new SimplexNoiseGenerator(random.nextLong());
     }
 
     @Getter
@@ -65,25 +49,18 @@ final class TitanGenerator {
         private final Biome correspondingBiome;
     }
 
-    GeneratedData getData(int x, int z) {
-        GeneratedData.GeneratedDataBuilder data = new GeneratedData.GeneratedDataBuilder();
+    int getHeight(int x, int z) {
+        double height = 1 + MAIN_GENERATOR.noise(x, z, 8,0.2, 0.6, true);
 
-        double height = 1 + MAIN_GENERATOR.noise(x, z, 0.2, 0.6, true);
-        height += RUGGEDNESS_GENERATOR.noise(x, z, 1, 0.25, true);
+        height = seaLevel + deviation * height;
+        height = height * height * height;
 
-        height = Math.pow(seaLevel + deviation * height, 2.5);
-        data.height((int) height);
-
-        data.biome(getBiome(x, z, (int) height));
-
-
-
-        return data.build();
+        return (int) height;
     }
 
-    private TitanBiome getBiome(int x, int z, int height) {
-        double moisture = MOISTURE_GENERATOR.noise(x, z, 0.1, 0.1, true);
-        double temp = TEMPERATURE_GENERATOR.noise(x, z, 0.1, 0.1, true);
+    TitanBiome getBiome(int x, int z, int height) {
+        double moisture = MOISTURE_GENERATOR.noise(x, z, 4, 0.1, 0.1, true);
+        double temp = TEMPERATURE_GENERATOR.noise(x, z, 4, 0.1, 0.1, true);
 
         if (height < seaLevel + 5) return TitanBiome.OCEAN;
         if (height < seaLevel + 7) return TitanBiome.BEACH;
