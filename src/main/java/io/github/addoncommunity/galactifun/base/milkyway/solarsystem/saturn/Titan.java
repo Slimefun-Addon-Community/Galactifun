@@ -52,6 +52,8 @@ public final class Titan extends AlienWorld {
             generator = new TitanGenerator(seed, 50, 45);
         }
 
+        PluginUtils.log("One");
+
         int height;
         int x;
         int z;
@@ -63,12 +65,14 @@ public final class Titan extends AlienWorld {
             for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
-                TitanGenerator.GeneratedData data = generator.getData(realX, realZ);
+//                TitanGenerator.GeneratedData data = generator.getData(realX, realZ);
+//
+//                height = data.getHeight();
+//                biome = data.getBiome();
 
-                height = data.getHeight();
-                biome = data.getBiome();
+                height = 55;
+                biome = TitanGenerator.TitanBiome.FROZEN_FOREST;
 
-                PluginUtils.log("b");
                 switch (biome) {
                     case FOREST:
                     case DENSE_FOREST:
@@ -126,14 +130,17 @@ public final class Titan extends AlienWorld {
                         throw new IllegalStateException("Biome " + biome.name() + " not recognized!");
                 }
 
-                PluginUtils.log("rest");
+                Biome corresponding = biome.getCorrespondingBiome();
                 for (int y = 0; y < height; y++) {
-                    if (random.nextDouble() < generator.getCoalDistribution(realX, y, realZ)) {
+                    if (random.nextBoolean()) {
                         chunk.setBlock(x, y, z, Material.COAL_ORE);
                     } else {
                         chunk.setBlock(x, y, z, Material.STONE);
                     }
-                    grid.setBiome(x, y, z, biome.getCorrespondingBiome());
+                    grid.setBiome(x, y, z, corresponding);
+                }
+                for (int y = height; y < 256; y++) {
+                    grid.setBiome(x, y, z, corresponding);
                 }
             }
         }

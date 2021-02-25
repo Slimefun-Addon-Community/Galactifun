@@ -22,7 +22,6 @@ final class TitanGenerator {
     private final OctaveGenerator RUGGEDNESS_GENERATOR;
     private final OctaveGenerator MOISTURE_GENERATOR;
     private final OctaveGenerator TEMPERATURE_GENERATOR;
-    private final OctaveGenerator COAL_DISTRIBUTION_GENERATOR;
 
     public TitanGenerator(long seed, int seaLevel, int deviation) {
         this.seed = seed;
@@ -39,8 +38,6 @@ final class TitanGenerator {
         this.MOISTURE_GENERATOR.setScale(0.0001);
         this.TEMPERATURE_GENERATOR = new SimplexOctaveGenerator(random.nextLong(), 5);
         this.TEMPERATURE_GENERATOR.setScale(0.0001);
-        this.COAL_DISTRIBUTION_GENERATOR = new SimplexOctaveGenerator(random.nextLong(), 5);
-        this.COAL_DISTRIBUTION_GENERATOR.setScale(0.0001);
     }
 
     @Builder(access = AccessLevel.PRIVATE)
@@ -82,10 +79,6 @@ final class TitanGenerator {
 
 
         return data.build();
-    }
-
-    double getCoalDistribution(int x, int y, int z) {
-        return Math.abs(COAL_DISTRIBUTION_GENERATOR.noise(x, y, z, 0.1, 1, true));
     }
 
     private TitanBiome getBiome(int x, int z, int height) {
