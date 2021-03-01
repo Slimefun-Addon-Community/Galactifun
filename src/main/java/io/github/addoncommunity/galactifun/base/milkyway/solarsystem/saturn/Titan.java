@@ -9,8 +9,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.misc.BlockUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -232,15 +230,6 @@ public final class Titan extends AlienWorld {
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
                         world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
-                        PluginUtils.runSync(() -> {
-                            for (Block block : BlockUtils.getTree(b, TreeType.WARPED_FUNGUS)) {
-                                if (block.getType() == Material.WARPED_WART_BLOCK) {
-                                    block.setType(Material.ICE, false);
-                                } else if (block.getType() == Material.TWISTING_VINES_PLANT) {
-                                    block.setType(Material.AIR, false);
-                                }
-                            }
-                        }, 1);
                     }
                 }
             }
