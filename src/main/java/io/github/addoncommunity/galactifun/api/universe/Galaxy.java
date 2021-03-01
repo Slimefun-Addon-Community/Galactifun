@@ -23,7 +23,7 @@ public final class Galaxy extends UniversalObject<StarSystem> {
     
     @Override
     protected void getItemStats(@Nonnull List<String> stats) {
-
+        
     }
 
 }
