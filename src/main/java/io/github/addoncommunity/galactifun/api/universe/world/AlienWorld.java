@@ -1,15 +1,14 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.addoncommunity.galactifun.util.Three;
 import io.github.mooy1.infinitylib.ConfigUtils;
-import lombok.Getter;
+import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -18,15 +17,24 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,7 +54,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class AlienWorld extends CelestialWorld {
 
     /**
-     * All alien worlds
+     * All enabled alien worlds
      */
     private static final Map<World, AlienWorld> WORLDS = new HashMap<>();
 
@@ -56,29 +64,12 @@ public abstract class AlienWorld extends CelestialWorld {
     }
 
     @Nullable
-    public static AlienWorld getByName(@Nonnull String worldName) {
+    public static AlienWorld getByWorldName(@Nonnull String worldName) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             return null;
         } else {
             return getByWorld(world);
-        }
-    }
-
-    public static void tickWorlds() {
-        for (AlienWorld world : WORLDS.values()) {
-            world.tickWorld();
-        }
-    }
-
-    public static void tickAliens() {
-        for (World world : WORLDS.keySet()) {
-            for (LivingEntity entity : world.getLivingEntities()) {
-                Alien alien = Alien.getByEntity(entity);
-                if (alien != null) {
-                    alien.onMobTick(entity);
-                }
-            }
         }
     }
 
@@ -95,66 +86,57 @@ public abstract class AlienWorld extends CelestialWorld {
      * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
      */
     @Nonnull
-    private final List<Alien> species = new ArrayList<>();
+    private final List<Alien> species = new ArrayList<>(4);
 
     /**
      * This world, only null if disabled
      */
-    @Getter
-    protected final World world;
+    private World world;
 
     /**
      * Configuration
      */
-    @Nonnull
-    protected final WorldConfig config;
+    private WorldConfig config;
 
-    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                      @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-
-        super(name, orbit, type, choice, celestialBodies);
-
-        String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
-
-        this.config = WorldConfig.loadConfiguration(worldName, enabledByDefault());
-
-        if (this.config.isEnabled()) {
-            this.world = loadWorld(worldName);
-        } else {
-            this.world = null;
-        }
-
+    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
     }
 
-    @Nonnull
-    private World loadWorld(@Nonnull String worldName) {
+    @Nullable
+    @Override
+    protected World loadWorld() {
+        String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+
+        if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
+            return null;
+        }
 
         // before
         beforeWorldLoad();
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-            .generator(new ChunkGenerator() {
+                .generator(new ChunkGenerator() {
 
-                @Nonnull
-                @Override
-                public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
-                    ChunkData chunk = createChunkData(world);
-                    generateChunk(chunk, grid, random, world, chunkX, chunkZ);
-                    return chunk;
-                }
+                    @Nonnull
+                    @Override
+                    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
+                        ChunkData chunk = createChunkData(world);
+                        generateChunk(chunk, grid, random, world, chunkX, chunkZ);
+                        return chunk;
+                    }
 
-                @Nonnull
-                @Override
-                public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                    List<BlockPopulator> list = new ArrayList<>(4);
-                    getPopulators(list);
-                    return list;
-                }
+                    @Nonnull
+                    @Override
+                    public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
+                        List<BlockPopulator> list = new ArrayList<>(4);
+                        getPopulators(list);
+                        return list;
+                    }
 
-            })
-            .environment(this.atmosphere.getEnvironment())
-            .createWorld();
+                })
+                .environment(this.atmosphere.getEnvironment())
+                .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
 
@@ -178,12 +160,12 @@ public abstract class AlienWorld extends CelestialWorld {
         // after
         afterWorldLoad(world);
 
-        return world;
+        return this.world = world;
     }
 
     /**
-     * Called before the world is loaded
-     * <p>
+     * Called before the world is loaded, while this is being registered
+     *
      * use this to validate or initialize anything that is used in the chunk generator
      */
     protected void beforeWorldLoad() {
@@ -191,16 +173,23 @@ public abstract class AlienWorld extends CelestialWorld {
     }
 
     /**
-     * Called after the world is loaded
-     * <p>
+     * Called after the world is loaded, while this is being registered
+     *
      * use this to add any custom world settings you want
      */
     protected void afterWorldLoad(@Nonnull World world) {
         // can be overridden
     }
 
-    public boolean canSpawnVanillaMobs() {
+    protected boolean canSpawnVanillaMobs() {
         return false;
+    }
+
+    /**
+     * Override and set to false if your world is not required/needed for your plugin to work.
+     */
+    protected boolean enabledByDefault() {
+        return true;
     }
 
     /**
@@ -212,71 +201,50 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Add all chunk populators to this list
      */
-    public abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
+    protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     /**
-     * Adds a aliens species to this world
+     * Adds alien species to this world
      */
-    public final void addSpecies(@Nonnull Alien alien) {
-        this.species.add(alien);
+    public final void addSpecies(@Nonnull Alien... aliens) {
+        this.species.addAll(Arrays.asList(aliens));
     }
 
     /**
-     * Ticks the world
+     * Ticks the world every 5 seconds
      */
-    public final void tickWorld() {
-        // time
-        this.dayCycle.applyTime(this.world);
+    private void tickWorld() {
         // player effects
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);
         }
-        // mob spawns
 
+        // mob spawns
         if (!this.species.isEmpty()) {
             // shuffles the list so each alien has a fair chance of being first
             Collections.shuffle(this.species);
 
+            Random rand = ThreadLocalRandom.current();
+            int players = this.world.getPlayers().size();
+            int mobs = this.world.getLivingEntities().size() - players;
+            int max = players * MAX_ALIENS;
+
             for (Alien alien : this.species) {
-                int players = this.world.getPlayers().size();
-                if (this.world.getLivingEntities().size() - players <= players * MAX_ALIENS) {
-                    int spawned = 0;
-                    for (Chunk chunk : this.world.getLoadedChunks()) {
-                        if (ThreadLocalRandom.current().nextDouble(100) < alien.getChance()) {
-                            int x = ThreadLocalRandom.current().nextInt(16);
-                            int y = ThreadLocalRandom.current().nextInt(256);
-                            int z = ThreadLocalRandom.current().nextInt(16);
+                if (mobs > max) {
+                    break;
+                }
+                int spawned = 0;
+                for (Chunk chunk : this.world.getLoadedChunks()) {
+                    if (rand.nextInt(100) > alien.getSpawnChance() || spawned >= alien.getMaxAliensPerGroup()) {
+                        continue;
+                    }
 
-                            Block b = null;
+                    Block b = this.world.getHighestBlockAt(rand.nextInt(16) + chunk.getX() << 4, rand.nextInt(16) + chunk.getZ() << 4).getRelative(0, 1, 0);
 
-                            if (chunk.getBlock(x, y, z).getType().isAir()) {
-                                // searches for air with solid block below down
-                                for (int i = y; i > 0; i--) {
-                                    if (chunk.getBlock(x, i, z).getType().isOccluding()) {
-                                        b = chunk.getBlock(x, i, z).getRelative(BlockFace.UP);
-                                        break;
-                                    }
-                                }
-                            } else {
-                                // searches for air with solid block below up
-                                for (int i = y; i < 255; i++) {
-                                    if (chunk.getBlock(x, i, z).getType().isAir()) {
-                                        b = chunk.getBlock(x, i, z);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // currently doesn't allow for aquatic aliens
-                            if (b != null && b.getType().isAir() && alien.canSpawnInLightLevel(b.getLightLevel())) {
-                                Three<Integer, Integer, Integer> offset = alien.getSpawnOffset();
-                                alien.spawn(b.getLocation().add(offset.getFirst(), offset.getSecond(), offset.getThird()), this.world);
-                                spawned++;
-                                if (spawned >= alien.getMaxAliensPerGroup()) {
-                                    break;
-                                }
-                            }
-                        }
+                    // currently doesn't allow for aquatic aliens
+                    if (b.getType().isAir() && alien.getSpawnInLightLevel(b.getLightLevel())) {
+                        alien.spawn(b.getLocation().add(alien.getSpawnOffset()), this.world);
+                        spawned++;
                     }
                 }
             }
@@ -287,7 +255,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * All effects that should be applied to the player
      */
-    public final void applyEffects(@Nonnull Player p) {
+    private void applyEffects(@Nonnull Player p) {
         // apply gravity
         this.gravity.applyGravity(p);
         // apply atmospheric effects
@@ -295,11 +263,111 @@ public abstract class AlienWorld extends CelestialWorld {
         // other stuff?
     }
 
-    /**
-     * Override and set to false if your world is not required/needed for your plugin to work.
-     */
-    protected boolean enabledByDefault() {
-        return true;
+    static {
+
+        // world ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (AlienWorld world : WORLDS.values()) {
+                world.tickWorld();
+            }
+        }, 100);
+
+        // alien ticker
+        PluginUtils.scheduleRepeatingSync(() -> {
+            for (World world : WORLDS.keySet()) {
+                for (LivingEntity entity : world.getLivingEntities()) {
+                    Alien alien = Alien.getByEntity(entity);
+                    if (alien != null) {
+                        alien.onMobTick(entity);
+                    }
+                }
+            }
+        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
+
+        // world listener
+        PluginUtils.registerListener(new Listener() {
+
+            // remove old effects and apply new effects
+            @EventHandler
+            public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
+                AlienWorld object = getByWorld(e.getFrom());
+                if (object != null) {
+                    object.getGravity().removeGravity(e.getPlayer());
+                }
+                object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (object != null) {
+                    object.applyEffects(e.getPlayer());
+                }
+            }
+
+            // apply effects
+            @EventHandler
+            public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
+                AlienWorld object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (object != null) {
+                    object.applyEffects(e.getPlayer());
+                }
+            }
+
+            // don't allow teleportation by any means other than this addon
+            @EventHandler
+            public void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
+                if (!e.getPlayer().hasPermission("galactifun.admin") && e.getTo() != null && e.getTo().getWorld() != null) {
+                    AlienWorld world = AlienWorld.getByWorld(e.getTo().getWorld());
+                    if (world != null) {
+                        e.setCancelled(true);
+                        // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
+                    }
+                }
+            }
+
+            // cancel natural mobs
+            @EventHandler
+            public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
+                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+                    AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
+                    if (world != null && !world.canSpawnVanillaMobs()) {
+                        e.setCancelled(true);
+                    }
+                }
+            }
+
+            // cancel waypoints
+            @EventHandler
+            public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
+                AlienWorld world = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                if (world != null) {
+                    e.setCancelled(true);
+                }
+            }
+
+            // crops
+            @EventHandler
+            public void onCropGrow(@Nonnull BlockGrowEvent e) {
+                Block block = e.getBlock();
+                AlienWorld world = AlienWorld.getByWorld(block.getWorld());
+                if (world != null) {
+                    int attempts = world.getAtmosphere().getGrowthAttempts();
+                    if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
+                        BlockData data = block.getBlockData();
+                        if (data instanceof Ageable) {
+                            Ageable ageable = (Ageable) data;
+
+                            int age = ageable.getAge();
+
+                            for (int i = 0; i <= Math.min(ageable.getMaximumAge() - age, attempts); i++) {
+                                if (ThreadLocalRandom.current().nextBoolean()) {
+                                    age++;
+                                }
+                            }
+
+                            ageable.setAge(age);
+                            block.setBlockData(ageable);
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }

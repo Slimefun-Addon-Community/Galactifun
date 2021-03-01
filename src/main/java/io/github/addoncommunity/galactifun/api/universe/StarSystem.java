@@ -14,8 +14,8 @@ import java.util.List;
  */
 public final class StarSystem extends UniversalObject<CelestialBody> {
     
-    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull StarSystemType type, @Nonnull ItemChoice choice, @Nonnull CelestialBody... orbiters) {
-        super(name, orbit, type, choice, orbiters);
+    public StarSystem(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull StarSystemType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
     }
 
     @Override

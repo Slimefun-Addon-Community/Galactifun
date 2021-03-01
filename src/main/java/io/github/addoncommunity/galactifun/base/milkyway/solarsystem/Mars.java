@@ -1,12 +1,11 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
@@ -30,8 +29,8 @@ import java.util.Random;
  */
 public final class Mars extends SimpleAlienWorld {
 
-    public Mars(@Nonnull CelestialBody... celestialBodies) {
-        super("&cMars", new Orbit(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND), celestialBodies);
+    public Mars() {
+        super("&cMars", Orbit.kilometers(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
     }
     
     @Nonnull
@@ -83,7 +82,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(1.03);
+        return DayCycle.relativeToEarth(1.03);
     }
 
     @Nonnull
@@ -92,7 +91,7 @@ public final class Mars extends SimpleAlienWorld {
         return new AtmosphereBuilder()
             .addCarbonDioxide(94.9)
             .addNitrogen(2.6)
-            .addComponent(AtmosphericComponent.ARGON, 1.9)
+            .addComponent(AtmosphericGas.ARGON, 1.9)
             .build();
     }
 

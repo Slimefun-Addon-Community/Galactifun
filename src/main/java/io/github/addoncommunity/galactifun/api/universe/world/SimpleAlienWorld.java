@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
@@ -24,9 +23,8 @@ import java.util.Random;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
     
-    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type,
-                            @Nonnull ItemChoice choice, @Nonnull CelestialBody... celestialBodies) {
-        super(name, orbit, type, choice, celestialBodies);
+    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
     }
 
     @Override
