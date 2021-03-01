@@ -9,6 +9,7 @@ import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -91,6 +92,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * This world, only null if disabled
      */
+    @Getter
     private World world;
 
     /**

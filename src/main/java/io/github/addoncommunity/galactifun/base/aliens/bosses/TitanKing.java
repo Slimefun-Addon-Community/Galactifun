@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.base.aliens.bosses;
 
-import io.github.addoncommunity.galactifun.api.alien.BossAlien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -19,8 +18,8 @@ import javax.annotation.Nonnull;
 
 public class TitanKing extends BossAlien {
 
-    public TitanKing(@Nonnull AlienWorld... worlds) {
-        super("TITAN_KING", "Titan King", EntityType.EVOKER, 300, worlds);
+    public TitanKing() {
+        super("TITAN_KING", "Titan King", EntityType.EVOKER, 300);
     }
 
     @Override
@@ -50,14 +49,14 @@ public class TitanKing extends BossAlien {
         }
     }
 
-    @Override
-    public double getChance() {
-        return 0.1;
-    }
-
     @Nonnull
     @Override
     protected BossBarStyle getBossBarStyle() {
         return new BossBarStyle("Titan King", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
+    }
+
+    @Override
+    protected int getSpawnChance() {
+        return 1;
     }
 }

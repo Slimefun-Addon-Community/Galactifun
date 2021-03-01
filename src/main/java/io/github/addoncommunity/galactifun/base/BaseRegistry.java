@@ -13,6 +13,7 @@ import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
 import io.github.addoncommunity.galactifun.base.aliens.Skywhale;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
+import io.github.addoncommunity.galactifun.base.aliens.bosses.TitanKing;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
@@ -65,18 +66,19 @@ public final class BaseRegistry {
     public static final TitanAlien TITAN_ALIEN = new TitanAlien();
     public static final Leech LEECH = new Leech();
     public static final Skywhale SKYWHALE = new Skywhale();
+    public static final TitanKing TITAN_KING = new TitanKing();
 
     public static void setup() {
         // aliens
         THE_MOON.addSpecies(ALIEN_CREEPER);
-        TITAN_MOON.addSpecies(TITAN_ALIEN, LEECH, SKYWHALE);
+        TITAN_MOON.addSpecies(TITAN_ALIEN, LEECH, SKYWHALE, TITAN_KING);
         MARS.addSpecies(MARTIAN);
 
         // orbiters
         EARTH.addOrbiters(THE_MOON, EARTH_ORBIT);
         JUPITER.addOrbiters(IO, EUROPA);
         SATURN.addOrbiters(TITAN_MOON, ENCELADUS);
-        SOLAR_SYSTEM.addOrbiters(VENUS, EARTH_ORBIT, MARS, JUPITER, SATURN);
+        SOLAR_SYSTEM.addOrbiters(VENUS, EARTH, MARS, JUPITER, SATURN);
         MILKY_WAY.addOrbiters(SOLAR_SYSTEM);
 
         // register

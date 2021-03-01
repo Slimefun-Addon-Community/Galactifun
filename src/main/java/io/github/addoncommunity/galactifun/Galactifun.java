@@ -57,6 +57,17 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         
         // load entities after aliens are created
         PluginUtils.runSync(PersistentAlien::loadAll);
+
+        // Schedule time tickers for the enabled worlds after world classes are set up
+        PluginUtils.runSync(() -> {
+            for (AlienWorld world : AlienWorld.getEnabled()) {
+                if (!world.getDayCycle().isEternal()) {
+                    PluginUtils.scheduleRepeatingSync(() -> {
+                        world.getDayCycle().tick(world.getWorld());
+                    }, 1, 1);
+                }
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,6 @@
-package io.github.addoncommunity.galactifun.api.alien;
+package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -46,8 +45,8 @@ public abstract class BossAlien extends Alien {
         }
     }
 
-    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health, @Nonnull AlienWorld... worlds) {
-        super(id, name, type, health, worlds);
+    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
+        super(id, name, type, health);
     }
 
     @Nonnull
@@ -68,6 +67,7 @@ public abstract class BossAlien extends Alien {
         BossBarStyle style = getBossBarStyle();
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
+        bossbar.setProgress(1.0);
         this.instances.put(spawned, bossbar);
     }
 
