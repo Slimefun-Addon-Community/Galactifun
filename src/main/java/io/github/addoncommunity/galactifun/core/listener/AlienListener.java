@@ -6,7 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
@@ -60,11 +62,28 @@ public final class AlienListener implements Listener {
         }
     }
 
+    // All aliens are fireproof
     @EventHandler
     public void onAlienCombust(@Nonnull EntityCombustEvent e) {
         Alien alien = Alien.getByEntity(e.getEntity());
         if (alien != null) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onAlienSpellCast(@Nonnull EntitySpellCastEvent e) {
+        Alien alien = Alien.getByEntity(e.getEntity());
+        if (alien != null) {
+            alien.onCastSpell(e);
+        }
+    }
+
+    @EventHandler
+    public void onAlienDamage(@Nonnull EntityDamageEvent e) {
+        Alien alien = Alien.getByEntity(e.getEntity());
+        if (alien != null) {
+            alien.onDamage(e);
         }
     }
     

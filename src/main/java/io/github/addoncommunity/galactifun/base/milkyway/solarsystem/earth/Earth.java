@@ -8,7 +8,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;

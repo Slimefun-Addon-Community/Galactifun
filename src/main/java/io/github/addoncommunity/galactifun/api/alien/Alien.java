@@ -16,7 +16,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
@@ -59,7 +61,7 @@ public abstract class Alien {
     private final EntityType type;
 
     private final int health;
-    
+
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type,
                  int health, @Nonnull AlienWorld... worlds) {
 
@@ -86,7 +88,7 @@ public abstract class Alien {
 
     }
 
-    public final void spawn(@Nonnull Location loc, @Nonnull World world) {
+    public final LivingEntity spawn(@Nonnull Location loc, @Nonnull World world) {
         LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
         PersistentDataAPI.setString(entity, KEY, this.id);
 
@@ -98,31 +100,46 @@ public abstract class Alien {
         entity.setRemoveWhenFarAway(true);
 
         onSpawn(entity);
+
+        return entity;
     }
-    
-    public void onSpawn(@Nonnull LivingEntity spawned) { }
 
-    public void onMobTick(@Nonnull LivingEntity mob) { }
+    public void onSpawn(@Nonnull LivingEntity spawned) {
+    }
+
+    public void onMobTick(@Nonnull LivingEntity mob) {
+    }
 
     /**
-     * Called when the alien is hit by an entity
+     * Called when this alien is hit by an entity
      *
      * @param e the event
      */
-    public void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+    public void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    }
+
+    public void onDamage(@Nonnull EntityDamageEvent e) {
+    }
 
     /**
-     * Called when the alien hits another entity
+     * Called when this alien hits another entity
      *
      * @param e the event
      */
-    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {}
+    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+    }
 
-    public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+    }
 
-    public void onTarget(@Nonnull EntityTargetEvent e) { }
+    public void onTarget(@Nonnull EntityTargetEvent e) {
+    }
 
-    public void onDeath(@Nonnull EntityDeathEvent e) { }
+    public void onDeath(@Nonnull EntityDeathEvent e) {
+    }
+
+    public void onCastSpell(@Nonnull EntitySpellCastEvent e) {
+    }
 
     /**
      * Returns the chance for the alien to spawn per spawn attempt
@@ -145,7 +162,6 @@ public abstract class Alien {
      * the {@link Zombie} light level conditions
      *
      * @param lightLevel the light level of the block the alien is attempting to spawn on
-     *
      * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
      */
     public boolean canSpawnInLightLevel(int lightLevel) {

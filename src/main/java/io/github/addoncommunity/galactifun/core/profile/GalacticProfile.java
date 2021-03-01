@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.core.profile;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import org.bukkit.Bukkit;

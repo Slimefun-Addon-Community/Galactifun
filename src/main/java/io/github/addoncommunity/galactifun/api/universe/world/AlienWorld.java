@@ -8,7 +8,7 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Three;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;

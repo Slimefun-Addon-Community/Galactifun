@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.mooy1.infinitylib.config.ConfigUtils;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
