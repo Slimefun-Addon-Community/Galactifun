@@ -93,11 +93,11 @@ public final class AtmosphereBuilder {
             percent += decimal;
         }
 
-        Validate.isTrue(percent > 100, "Percentage cannot be more than 100%!");
+        // account for rounding and slight impression
+        Validate.isTrue(percent < 101, "Percentage cannot be more than 100%!");
         
         if (percent != 0) {
-            this.composition.put(AtmosphericGas.OTHER,
-                    this.composition.getOrDefault(AtmosphericGas.OTHER, 0.0) + 100 - percent);
+            this.composition.put(AtmosphericGas.OTHER, this.composition.getOrDefault(AtmosphericGas.OTHER, 0.0) + 100 - percent);
         }
 
         return new Atmosphere(this.weatherCycle, this.storming, this.thundering,

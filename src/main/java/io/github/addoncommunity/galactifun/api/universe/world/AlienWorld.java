@@ -294,7 +294,7 @@ public abstract class AlienWorld extends CelestialWorld {
                 if (object != null) {
                     object.getGravity().removeGravity(e.getPlayer());
                 }
-                object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                object = getByWorld(e.getPlayer().getWorld());
                 if (object != null) {
                     object.applyEffects(e.getPlayer());
                 }
@@ -303,7 +303,7 @@ public abstract class AlienWorld extends CelestialWorld {
             // apply effects
             @EventHandler
             public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
-                AlienWorld object = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                AlienWorld object = getByWorld(e.getPlayer().getWorld());
                 if (object != null) {
                     object.applyEffects(e.getPlayer());
                 }
@@ -313,7 +313,7 @@ public abstract class AlienWorld extends CelestialWorld {
             @EventHandler
             public void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
                 if (!e.getPlayer().hasPermission("galactifun.admin") && e.getTo() != null && e.getTo().getWorld() != null) {
-                    AlienWorld world = AlienWorld.getByWorld(e.getTo().getWorld());
+                    AlienWorld world = getByWorld(e.getTo().getWorld());
                     if (world != null) {
                         e.setCancelled(true);
                         // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
@@ -325,7 +325,7 @@ public abstract class AlienWorld extends CelestialWorld {
             @EventHandler
             public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
                 if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-                    AlienWorld world = AlienWorld.getByWorld(e.getEntity().getWorld());
+                    AlienWorld world = getByWorld(e.getEntity().getWorld());
                     if (world != null && !world.canSpawnVanillaMobs()) {
                         e.setCancelled(true);
                     }
@@ -335,7 +335,7 @@ public abstract class AlienWorld extends CelestialWorld {
             // cancel waypoints
             @EventHandler
             public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
-                AlienWorld world = AlienWorld.getByWorld(e.getPlayer().getWorld());
+                AlienWorld world = getByWorld(e.getPlayer().getWorld());
                 if (world != null) {
                     e.setCancelled(true);
                 }
@@ -345,23 +345,14 @@ public abstract class AlienWorld extends CelestialWorld {
             @EventHandler
             public void onCropGrow(@Nonnull BlockGrowEvent e) {
                 Block block = e.getBlock();
-                AlienWorld world = AlienWorld.getByWorld(block.getWorld());
+                AlienWorld world = getByWorld(block.getWorld());
                 if (world != null) {
                     int attempts = world.getAtmosphere().getGrowthAttempts();
                     if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
                         BlockData data = block.getBlockData();
                         if (data instanceof Ageable) {
                             Ageable ageable = (Ageable) data;
-
-                            int age = ageable.getAge();
-
-                            for (int i = 0; i <= Math.min(ageable.getMaximumAge() - age, attempts); i++) {
-                                if (ThreadLocalRandom.current().nextBoolean()) {
-                                    age++;
-                                }
-                            }
-
-                            ageable.setAge(age);
+                            ageable.setAge(ageable.getAge() + attempts);
                             block.setBlockData(ageable);
                         }
                     }
