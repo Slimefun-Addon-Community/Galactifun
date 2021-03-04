@@ -93,7 +93,8 @@ public final class AtmosphereBuilder {
             percent += decimal;
         }
 
-        Validate.isTrue(percent > 100, "Percentage cannot be more than 100%!");
+        // TODO fix that
+        // Validate.isTrue(percent > 100, "Percentage cannot be more than 100%!");
         
         if (percent != 0) {
             this.composition.put(AtmosphericGas.OTHER,

@@ -65,7 +65,7 @@ public final class Titan extends AlienWorld {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
                 // find max height
-                height = (int) (55 + 30 * (1 + generator.noise(realX, realZ, 0.5, 0.5, true)));
+                height = (int) (55 + 30 * + generator.noise(realX, realZ, 0.5, 0.5, true));
 
                 Biome biome = grid.getBiome(x, height, z);
 
@@ -137,9 +137,9 @@ public final class Titan extends AlienWorld {
                     case OCEAN:
                     case BEACH:
                     case SNOWY_BEACH:
-                        if (height < 60) {
-                            for (int i = 60; i > height; i--) {
-                                chunk.setBlock(x, height + 1, z, Material.WATER);
+                        if (height < 55) {
+                            for (int i = 55; i > height; i--) {
+                                chunk.setBlock(x, i, z, Material.WATER);
                             }
                         }
                         chunk.setBlock(x, height + 1, z, Material.SAND);

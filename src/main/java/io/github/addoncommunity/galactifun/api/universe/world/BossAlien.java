@@ -68,6 +68,9 @@ public abstract class BossAlien extends Alien {
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
+
+        spawned.setRemoveWhenFarAway(false);
+
         this.instances.put(spawned, bossbar);
     }
 
