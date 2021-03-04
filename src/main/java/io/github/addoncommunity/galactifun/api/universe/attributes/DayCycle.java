@@ -109,7 +109,7 @@ public final class DayCycle {
     }
 
     public void tick(@Nonnull World world) {
-        if (!world.getPlayers().isEmpty()) {
+        if (world.getPlayers().size() > 0) {
             long time = world.getTime() + longValue;
             if (ThreadLocalRandom.current().nextDouble() < doubleValue) {
                 time++;

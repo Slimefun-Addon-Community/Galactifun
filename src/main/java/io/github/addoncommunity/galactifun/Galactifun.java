@@ -12,6 +12,7 @@ import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -61,7 +62,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         // Schedule time tickers for the enabled worlds after world classes are set up
         PluginUtils.runSync(() -> {
             for (AlienWorld world : AlienWorld.getEnabled()) {
-                if (!world.getDayCycle().isEternal()) {
+                if (!world.getDayCycle().isEternal() && world.getWorld().getEnvironment() == World.Environment.NORMAL) {
                     PluginUtils.scheduleRepeatingSync(() -> {
                         world.getDayCycle().tick(world.getWorld());
                     }, 1, 1);
