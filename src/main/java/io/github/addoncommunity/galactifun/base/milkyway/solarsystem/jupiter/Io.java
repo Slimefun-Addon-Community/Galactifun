@@ -20,13 +20,13 @@ import java.util.Random;
 public final class Io extends SimpleAlienWorld {
 
     public Io() {
-        super("&6Io", new Orbit(421_800L), CelestialType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
+        super("&6Io", Orbit.kilometers(421_800L), CelestialType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
     }
 
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(42);
+        return DayCycle.hours(42);
     }
 
     @Nonnull
@@ -87,4 +87,5 @@ public final class Io extends SimpleAlienWorld {
     protected double getFrequency() {
         return .3;
     }
+    
 }

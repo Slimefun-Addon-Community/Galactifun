@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -20,9 +19,9 @@ import javax.annotation.Nonnull;
  * @author Mooy1
  */
 public final class MutantCreeper extends Alien {
-
-    public MutantCreeper(@Nonnull AlienWorld... worlds) {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40, worlds);
+    
+    public MutantCreeper() {
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40);
     }
 
     @Override
@@ -37,7 +36,7 @@ public final class MutantCreeper extends Alien {
     }
 
     @Override
-    public double getChance() {
+    protected int getSpawnChance() {
         return 40;
     }
 

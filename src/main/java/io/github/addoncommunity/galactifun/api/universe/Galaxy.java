@@ -14,8 +14,8 @@ import java.util.List;
  */
 public final class Galaxy extends UniversalObject<StarSystem> {
 
-    public Galaxy(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull GalaxyType type, @Nonnull ItemChoice choice, @Nonnull StarSystem... orbiters) {
-        super(name, orbit, type, choice, orbiters);
+    public Galaxy(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull GalaxyType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
         
         // all galaxies are in the universe
         TheUniverse.getInstance().addOrbiters(this);
@@ -23,7 +23,7 @@ public final class Galaxy extends UniversalObject<StarSystem> {
     
     @Override
     protected void getItemStats(@Nonnull List<String> stats) {
-
+        
     }
 
 }

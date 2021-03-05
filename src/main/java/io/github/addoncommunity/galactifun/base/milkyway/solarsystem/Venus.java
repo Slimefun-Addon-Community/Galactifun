@@ -28,7 +28,7 @@ import java.util.Random;
 public final class Venus extends SimpleAlienWorld {
 
     public Venus() {
-        super("Venus", new Orbit(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
+        super("Venus", Orbit.kilometers(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
     }
     
     @Override
@@ -40,7 +40,7 @@ public final class Venus extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(116.75);
+        return DayCycle.days(117);
     }
 
     @Nonnull

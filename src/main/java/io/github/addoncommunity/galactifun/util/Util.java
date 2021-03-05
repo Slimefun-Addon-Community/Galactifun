@@ -14,7 +14,7 @@ import java.util.Random;
 @UtilityClass
 public final class Util {
 
-    public static final double LY_TO_KM = 9_700_000_000D;
+    public static final double KM_PER_LY = 9_700_000_000D;
     
     /**
      * Random number from to inclusive

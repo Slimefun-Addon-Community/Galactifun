@@ -1,16 +1,15 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import javax.annotation.Nonnull;
 
 public final class TitanAlien extends Alien {
-
-    public TitanAlien(@Nonnull AlienWorld... worlds) {
-        super("TITAN", "Titan", EntityType.ILLUSIONER, 32, worlds);
+    
+    public TitanAlien() {
+        super("TITAN", "Titan", EntityType.ILLUSIONER, 32);
     }
 
     @Override
@@ -20,7 +19,7 @@ public final class TitanAlien extends Alien {
     }
 
     @Override
-    public double getChance() {
+    protected int getSpawnChance() {
         return 16;
     }
 

@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.addoncommunity.galactifun.api.alien.Alien;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.mooy1.infinitylib.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

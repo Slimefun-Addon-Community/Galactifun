@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
@@ -15,22 +15,22 @@ import javax.annotation.Nonnull;
 
 public final class Jupiter extends CelestialBody {
 
-    public Jupiter(@Nonnull CelestialBody... moons) {
-        super("&6Jupiter", new Orbit(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE), moons);
+    public Jupiter() {
+        super("&6Jupiter", Orbit.kilometers(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
     }
 
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return new DayCycle(10);
+        return DayCycle.hours(10);
     }
 
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().addStorm().addThunder().enableFire().enableWeather()
-            .addComponent(AtmosphericComponent.HYDROGEN, 90)
-            .addComponent(AtmosphericComponent.HELIUM, 10)
+            .addComponent(AtmosphericGas.HYDROGEN, 90)
+            .addComponent(AtmosphericGas.HELIUM, 10)
             .build();
     }
 

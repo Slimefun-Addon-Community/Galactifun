@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -8,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.config.ConfigUtils;
+import io.github.mooy1.infinitylib.ConfigUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -30,19 +29,19 @@ public final class Earth extends CelestialWorld {
     private static World getMainWorld() {
         World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name", "world"));
         if (world == null) {
-            throw new IllegalStateException("Failed to read earth world name from config, no default world found!");
+            throw new IllegalStateException("Failed to read earth world name from config; no default world found!");
         } else {
             return world;
         }
     }
     
-    public Earth(@Nonnull CelestialBody... orbiting) {
-        super("Earth", new Orbit(149_600_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK), orbiting);
+    public Earth() {
+        super("Earth", Orbit.kilometers(149_600_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK));
     }
 
     @Nonnull
     @Override
-    public World getWorld() {
+    public World loadWorld() {
         return WORLD;
     }
 

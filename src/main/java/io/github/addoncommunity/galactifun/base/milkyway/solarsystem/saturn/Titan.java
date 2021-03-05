@@ -5,7 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericComponent;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
@@ -29,7 +29,7 @@ import java.util.Set;
  * Class for the Saturnian moon Titan
  *
  * @author Seggan
- */
+ */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
     private static final Set<Biome> forests = EnumSet.of(
@@ -43,7 +43,7 @@ public final class Titan extends AlienWorld {
     );
 
     public Titan() {
-        super("&6Titan", new Orbit(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
+        super("&6Titan", Orbit.kilometers(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
     }
 
     @Override
@@ -212,9 +212,9 @@ public final class Titan extends AlienWorld {
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().enableWeather().enableFire()
             .addNitrogen(97)
-            .addComponent(AtmosphericComponent.METHANE, 2.7)
-            .addComponent(AtmosphericComponent.HYDROCARBONS, 0.2)
-            .addComponent(AtmosphericComponent.HYDROGEN, 0.1)
+            .addComponent(AtmosphericGas.METHANE, 2.7)
+            .addComponent(AtmosphericGas.HYDROCARBONS, 0.2)
+            .addComponent(AtmosphericGas.HYDROGEN, 0.1)
             .build();
     }
 

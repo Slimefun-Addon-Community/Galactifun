@@ -5,7 +5,6 @@ import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 
 import javax.annotation.Nonnull;
-import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -16,8 +15,6 @@ import java.util.Map;
  */
 public final class AtmosphereBuilder {
 
-    private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
-
     private boolean weatherCycle;
     private boolean storming;
     private boolean thundering;
@@ -27,7 +24,7 @@ public final class AtmosphereBuilder {
     @Nonnull
     private AtmosphericEffect[] effects = new AtmosphericEffect[0];
     @Nonnull
-    private final Map<AtmosphericComponent, BigDecimal> composition = new EnumMap<AtmosphericComponent, BigDecimal>(AtmosphericComponent.class);
+    private final Map<AtmosphericGas, Double> composition = new EnumMap<>(AtmosphericGas.class);
     
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
@@ -36,7 +33,7 @@ public final class AtmosphereBuilder {
 
     /**
      * Note that adding this method <b>will</b> spawn the {@link EnderDragon}
-     *
+     * // TODO see about canceling ender dragon spawn 
      * @return this object
      */
     public AtmosphereBuilder setEnd() {
@@ -50,22 +47,22 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addComponent(@Nonnull AtmosphericComponent component, double percentage) {
+    public AtmosphereBuilder addComponent(@Nonnull AtmosphericGas component, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
-        this.composition.put(component, BigDecimal.valueOf(percentage));
+        this.composition.put(component, percentage);
         return this;
     }
 
     public AtmosphereBuilder addOxygen(double percentage) {
-        return addComponent(AtmosphericComponent.OXYGEN, percentage);
+        return addComponent(AtmosphericGas.OXYGEN, percentage);
     }
 
     public AtmosphereBuilder addNitrogen(double percentage) {
-        return addComponent(AtmosphericComponent.NITROGEN, percentage);
+        return addComponent(AtmosphericGas.NITROGEN, percentage);
     }
 
     public AtmosphereBuilder addCarbonDioxide(double percentage) {
-        return addComponent(AtmosphericComponent.CARBON_DIOXIDE, percentage);
+        return addComponent(AtmosphericGas.CARBON_DIOXIDE, percentage);
     }
     
     public AtmosphereBuilder enableWeather() {
@@ -90,15 +87,21 @@ public final class AtmosphereBuilder {
     
     @Nonnull
     public Atmosphere build() {
-        BigDecimal percent = BigDecimal.ZERO;
-        for (BigDecimal decimal : composition.values()) percent = percent.add(decimal);
+        double percent = 0;
+        
+        for (Double decimal : this.composition.values()) {
+            percent += decimal;
+        }
 
-        Validate.isTrue(percent.compareTo(ONE_HUNDRED) <= 0,
-            "Percentage cannot be more than 100%!");
-        composition.put(AtmosphericComponent.OTHER_GASES, ONE_HUNDRED.subtract(percent));
+        // account for rounding and slight impression
+        Validate.isTrue(percent < 101, "Percentage cannot be more than 100%!");
+        
+        if (percent != 0) {
+            this.composition.put(AtmosphericGas.OTHER, this.composition.getOrDefault(AtmosphericGas.OTHER, 0.0) + 100 - percent);
+        }
 
-        return new Atmosphere(this.weatherCycle, this.storming, this.thundering, this.flammable, this.environment,
-            this.composition, this.effects);
+        return new Atmosphere(this.weatherCycle, this.storming, this.thundering,
+                this.flammable, this.environment, this.composition, this.effects);
     }
     
 }

@@ -1,7 +1,10 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.PluginUtils;
 import org.apache.commons.lang.Validate;
+
+import javax.annotation.Nonnull;
 
 /**
  * Represents an orbit of a celestial object
@@ -9,52 +12,67 @@ import org.apache.commons.lang.Validate;
  * @author Mooy1
  */
 public final class Orbit {
-    
+
     /**
-     * Minimum distance in light years
+     * An orbit of 0, should only be used in special cases
      */
+    public static final Orbit ZERO = new Orbit(0);
+    
+    private static long totalDays;
+
+    static {
+        PluginUtils.scheduleRepeatingSync(() -> totalDays++, 24000);
+    }
+    
+    @Nonnull
+    public static Orbit kilometers(double kilometers) {
+        return new Orbit(kilometers / Util.KM_PER_LY);
+    }
+
+    @Nonnull
+    public static Orbit lightYears(double lightYears) {
+        return new Orbit(lightYears);
+    }
+
+    @Nonnull
+    public static Orbit kilometers(double min, double max, long days) {
+        return new Orbit(min / Util.KM_PER_LY, max / Util.KM_PER_LY, days);
+    }
+
+    @Nonnull
+    public static Orbit lightYears(double min, double max, long days) {
+        return new Orbit(min, max, days);
+    }
+    
     private final double min;
-
-    /**
-     * Max positive deviation divided by time
-     */
     private final double dev;
-
-    /**
-     * Time in milliseconds to complete an orbit
-     */
-    private final long time;
-
-    public Orbit(long minKm, long maxKm, long days) {
-        this(minKm / Util.LY_TO_KM, maxKm / Util.LY_TO_KM, days);
+    private final long days;
+    
+    private Orbit(double min, double max, long days) {
+        Validate.isTrue(max >= 0, "Orbits must be positive!");
+        Validate.isTrue(max > max, "Max orbit must be greater than min orbit!");
+        Validate.isTrue(days > 0, "Variable orbits must last greater than 0 days!");
+        
+        this.min = min;
+        // double the days so that distance is smooth over time
+        this.days = days << 1;
+        // deviation divided by number of days
+        this.dev = max - min / days;
     }
     
-    public Orbit(long distanceKm) {
-        this(distanceKm / Util.LY_TO_KM);
-    }
-    
-    public Orbit(double minLy, double maxLy, long days) {
-        Validate.isTrue(minLy >=0);
-        Validate.isTrue(maxLy >= minLy);
-        Validate.isTrue(days > 0);
-        // days to millis
-        this.time = days * 86400000;
-        this.min = minLy;
-        this.dev = (maxLy - minLy) / this.time;
-    }
-    
-    public Orbit(double distanceLy) {
-        Validate.isTrue(distanceLy >=0);
-        this.min = distanceLy;
+    private Orbit(double distance) {
+        Validate.isTrue(distance >= 0, "Orbits must be positive!");
+        
+        this.min = distance;
+        this.days = 0;
         this.dev = 0;
-        this.time = 0;
     }
     
     public double getCurrentDistance() {
-        if (this.time == 0) {
+        if (this.days == 0) {
             return this.min;
         } else {
-            return this.min + (long) (this.dev * (System.currentTimeMillis() % this.time));
+            return this.min + this.dev * (totalDays % this.days);
         }
     }
     

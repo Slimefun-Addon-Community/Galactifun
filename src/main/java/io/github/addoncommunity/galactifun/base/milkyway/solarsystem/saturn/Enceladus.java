@@ -25,7 +25,7 @@ import java.util.Random;
 public final class Enceladus extends AlienWorld {
 
     public Enceladus() {
-        super("&bEnceladus", new Orbit(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Override

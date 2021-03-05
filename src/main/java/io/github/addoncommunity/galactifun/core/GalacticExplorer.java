@@ -85,7 +85,7 @@ public final class GalacticExplorer {
 
                         if (distance > 0) {
                             lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                                    ? LorePreset.format(distance * Util.LY_TO_KM) + " Kilometers"
+                                    ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
                                     : distance + " Light Years")
                             ));
                         } else {
