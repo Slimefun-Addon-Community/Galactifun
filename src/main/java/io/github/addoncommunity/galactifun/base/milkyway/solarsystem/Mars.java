@@ -82,7 +82,7 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected DayCycle createDayCycle() {
-        return DayCycle.relativeToEarth(1.03);
+        return DayCycle.hours(1);
     }
 
     @Nonnull

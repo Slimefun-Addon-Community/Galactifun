@@ -4,14 +4,15 @@ import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategories;
+import io.github.addoncommunity.galactifun.core.GalacticProfile;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.core.GalacticProfile;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -32,13 +33,13 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         );
         
         PluginUtils.setupMetrics(10411);
-        
+
         GalacticProfile.loadAll();
         
         CoreCategories.setup(this);
         
         BaseRegistry.setup();
-        
+
         // log after startup
         PluginUtils.runSync(() -> PluginUtils.log(
                 "",
@@ -57,6 +58,17 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         
         // load entities after aliens are created
         PluginUtils.runSync(PersistentAlien::loadAll);
+
+        // Schedule time tickers for the enabled worlds after world classes are set up
+        PluginUtils.runSync(() -> {
+            for (AlienWorld world : AlienWorld.getEnabled()) {
+                if (!world.getDayCycle().isEternal() && world.getWorld().getEnvironment() == World.Environment.NORMAL) {
+                    PluginUtils.scheduleRepeatingSync(() -> {
+                        world.getDayCycle().tick(world.getWorld());
+                    }, 1, 1);
+                }
+            }
+        });
     }
 
     @Override

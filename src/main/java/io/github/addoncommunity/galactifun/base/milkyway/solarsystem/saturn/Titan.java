@@ -39,7 +39,8 @@ public final class Titan extends AlienWorld {
         Biome.WOODED_HILLS,
         Biome.BIRCH_FOREST_HILLS,
         Biome.FLOWER_FOREST,
-        Biome.TALL_BIRCH_FOREST
+        Biome.TALL_BIRCH_FOREST,
+        Biome.WOODED_HILLS
     );
 
     public Titan() {
@@ -60,11 +61,11 @@ public final class Titan extends AlienWorld {
 
         for (x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
             for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
-                
+
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
-                
+
                 // find max height
-                height = (int) (55 + 30 * (1 + generator.noise(realX, realZ, 0.5, 0.5, true)));
+                height = (int) (55 + 30 * + generator.noise(realX, realZ, 0.5, 0.5, true));
 
                 Biome biome = grid.getBiome(x, height, z);
 
@@ -76,17 +77,31 @@ public final class Titan extends AlienWorld {
                     case BADLANDS:
                     case MODIFIED_BADLANDS_PLATEAU:
                     case MODIFIED_WOODED_BADLANDS_PLATEAU:
-                    case WOODED_BADLANDS_PLATEAU:
-                    case BADLANDS_PLATEAU:
                     case ERODED_BADLANDS:
                     case DESERT:
-                    case DESERT_HILLS:
-                    case DESERT_LAKES:
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                             }
                         }
+                        chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
+                        generateRest(height, chunk, random, x, z);
+                        break;
+
+                    case WOODED_BADLANDS_PLATEAU:
+                    case BADLANDS_PLATEAU:
+                    case DESERT_HILLS:
+                    case DESERT_LAKES:
+                        if (random.nextDouble() < 0.1) {
+                            for (int y = height + random.nextInt(4); y > height; y--) {
+                                if (random.nextBoolean()) {
+                                    chunk.setBlock(x, y, z, Material.COAL_BLOCK);
+                                } else {
+                                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                                }
+                            }
+                        }
+                        chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
                         generateRest(height, chunk, random, x, z);
                         break;
                     case BIRCH_FOREST:
@@ -104,6 +119,12 @@ public final class Titan extends AlienWorld {
                         }
                         generateRest(height, chunk, random, x, z);
                         break;
+                    case SNOWY_TAIGA:
+                    case SNOWY_TAIGA_HILLS:
+                    case SNOWY_TAIGA_MOUNTAINS:
+                        chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
+                        generateRest(height, chunk, random, x, z);
+                        break;
                     case COLD_OCEAN:
                     case DEEP_LUKEWARM_OCEAN:
                     case DEEP_OCEAN:
@@ -116,11 +137,16 @@ public final class Titan extends AlienWorld {
                     case OCEAN:
                     case BEACH:
                     case SNOWY_BEACH:
-                        chunk.setBlock(x, height + 1, z, Material.WATER);
+                        if (height < 55) {
+                            for (int i = 55; i > height; i--) {
+                                chunk.setBlock(x, i, z, Material.WATER);
+                            }
+                        }
+                        chunk.setBlock(x, height + 1, z, Material.SAND);
                         generateRest(height, chunk, random, x, z);
                         break;
                     default:
-                        chunk.setBlock(x, height + 1, z, Material.ICE);
+                        chunk.setBlock(x, height + 1, z, Material.BLUE_ICE);
                         generateRest(height, chunk, random, x, z);
                 }
             }
@@ -140,22 +166,19 @@ public final class Titan extends AlienWorld {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
-            }
-            else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
+            } else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x + dev, height, z);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
-            }
-            else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
+            } else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z - dev);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
-            }
-            else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
+            } else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z + dev);
                 for (int y = 0; y < 256; y++) {
                     grid.setBiome(x, y, z, biome);
@@ -182,19 +205,31 @@ public final class Titan extends AlienWorld {
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                if (random.nextBoolean()) {
-                    int amount = random.nextInt(2) + 1;
-                    for (int i = 1; i < amount; i++) {
-                        int x = random.nextInt(15);
-                        int z = random.nextInt(15);
-                        Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                        if (forests.contains(b.getBiome())) {
-                            if (random.nextBoolean()) {
-                                world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
-                            } else {
-                                world.generateTree(b.getLocation(), TreeType.CRIMSON_FUNGUS);
-                            }
+                int amount = random.nextInt(2) + 1;
+                for (int i = 1; i < amount; i++) {
+                    int x = random.nextInt(15);
+                    int z = random.nextInt(15);
+                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    if (forests.contains(b.getBiome())) {
+                        if (random.nextBoolean()) {
+                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                        } else {
+                            world.generateTree(b.getLocation(), TreeType.CRIMSON_FUNGUS);
                         }
+                    }
+                }
+            }
+        });
+
+        populators.add(new BlockPopulator() {
+            @Override
+            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+                if (random.nextDouble() < 0.25) {
+                    int x = random.nextInt(15);
+                    int z = random.nextInt(15);
+                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
+                        world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
                     }
                 }
             }
