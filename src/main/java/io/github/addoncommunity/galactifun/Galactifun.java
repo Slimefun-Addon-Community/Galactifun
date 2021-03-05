@@ -73,12 +73,9 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public void onDisable() {
-        instance = null;
-
         GalacticProfile.unloadAll();
         GalacticProfile.saveAll();
         PersistentAlien.saveAll();
-
     }
 
     @Override
