@@ -6,6 +6,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Class for the Titan, an alien of Titan
+ *
+ * @author Seggan
+ */
 public final class TitanAlien extends Alien {
     
     public TitanAlien() {

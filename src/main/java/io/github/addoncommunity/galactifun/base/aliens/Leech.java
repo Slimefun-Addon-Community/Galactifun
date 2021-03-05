@@ -26,6 +26,11 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
+/**
+ * Class for the leech, an alien of Titan. They can steal you items when attacking
+ *
+ * @author Seggan
+ */
 public final class Leech extends Alien implements PersistentAlien {
 
     private final HashMultimap<UUID, ItemStack> eaten = HashMultimap.create();
