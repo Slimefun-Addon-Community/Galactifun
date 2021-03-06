@@ -1,7 +1,7 @@
-package io.github.addoncommunity.galactifun.core.rockets;
+package io.github.addoncommunity.galactifun.implementation.rockets;
 
-import io.github.addoncommunity.galactifun.core.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.core.lists.Heads;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.implementation.lists.Heads;
 import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -30,7 +30,7 @@ public class LaunchPadCore extends AbstractTicker {
 
     private static final BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
 
-    private static final int[] BACKGROUND = new int[]{0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 23, 24, 25, 26, 32, 34, 35, 41, 43, 44, 50, 51, 52, 53};
+    private static final int[] BACKGROUND = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 23, 24, 25, 26, 32, 34, 35, 41, 43, 44, 50, 51, 52, 53};
     private static final int[] BORDER = new int[]{18, 19, 20, 21, 22, 31, 40, 49};
 
     private static final int[] INVENTORY_SLOTS = new int[]{27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48};
@@ -54,14 +54,18 @@ public class LaunchPadCore extends AbstractTicker {
             preset.addItem(i, ChestMenuUtils.getOutputSlotTexture(), ChestMenuUtils.getEmptyClickHandler());
         }
 
+        preset.addItem(15,
+            new CustomItem(
+                Heads.ROCKET.getAsItemStack(),
+                "&4Launch"
+            ), (player, slot, item, action) -> {
+                launch(player);
+                return false;
+            });
+
         preset.addItem(33, new CustomItem(
             HeadTexture.FUEL_BUCKET.getAsItemStack(),
-            "&6Put Fuel Here"
-        ), ChestMenuUtils.getEmptyClickHandler());
-
-        preset.addItem(6, new CustomItem(
-            Heads.ROCKET.getAsItemStack(),
-            "&4Insert Rocket Here"
+            "&6Insert Fuel Here"
         ), ChestMenuUtils.getEmptyClickHandler());
     }
 
@@ -74,13 +78,13 @@ public class LaunchPadCore extends AbstractTicker {
     private void onInteract(PlayerRightClickEvent e) {
         Optional<Block> ob = e.getClickedBlock();
         if (ob.isPresent()) {
+            e.cancel();
             Block b = ob.get();
             Player p = e.getPlayer();
             if (isSurroundedByFloors(b)) {
                 BlockStorage.getInventory(b).open(p);
             } else {
                 p.sendMessage(ChatColor.RED + "Surround this block with 9 launch pad floors before attempting to use it");
-                e.cancel();
             }
         }
     }
@@ -93,5 +97,9 @@ public class LaunchPadCore extends AbstractTicker {
         }
 
         return true;
+    }
+
+    private void launch(Player p) {
+
     }
 }

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.lists;
+package io.github.addoncommunity.galactifun.implementation.lists;
 
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;

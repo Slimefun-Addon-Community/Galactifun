@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun;
 
-import io.github.addoncommunity.galactifun.core.lists.Categories;
-import io.github.addoncommunity.galactifun.core.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.core.rockets.LaunchPadCore;
+import io.github.addoncommunity.galactifun.implementation.lists.Categories;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadCore;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.inventory.ItemStack;

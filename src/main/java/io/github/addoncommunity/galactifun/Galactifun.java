@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.core.GalacticProfile;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.core.lists.Categories;
+import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.command.CommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
