@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.implementation.rockets;
 
+import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.implementation.lists.Heads;
 import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
@@ -9,9 +10,8 @@ import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
@@ -35,8 +35,8 @@ public class LaunchPadCore extends AbstractTicker {
 
     private static final int[] INVENTORY_SLOTS = new int[]{27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48};
 
-    public LaunchPadCore(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, recipeType, recipe);
+    public LaunchPadCore() {
+        super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[9]);
 
         addItemHandler((BlockUseHandler) this::onInteract);
     }
@@ -78,12 +78,18 @@ public class LaunchPadCore extends AbstractTicker {
     private void onInteract(PlayerRightClickEvent e) {
         Optional<Block> ob = e.getClickedBlock();
         if (ob.isPresent()) {
-            e.cancel();
             Block b = ob.get();
             Player p = e.getPlayer();
+
             if (isSurroundedByFloors(b)) {
+                SlimefunItem item = SlimefunItem.getByItem(p.getInventory().getItem(e.getHand()));
+                if (item == null || !item.getId().startsWith("ROCKET_TIER_")) {
+                    e.cancel();
+                }
+
                 BlockStorage.getInventory(b).open(p);
             } else {
+                e.cancel();
                 p.sendMessage(ChatColor.RED + "Surround this block with 9 launch pad floors before attempting to use it");
             }
         }
