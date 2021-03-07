@@ -9,9 +9,7 @@ import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -62,16 +60,6 @@ public abstract class AlienWorld extends CelestialWorld {
     public static AlienWorld getByWorld(@Nonnull World world) {
         return WORLDS.get(world);
     }
-
-    @Nullable
-    public static AlienWorld getByWorldName(@Nonnull String worldName) {
-        World world = Bukkit.getWorld(worldName);
-        if (world == null) {
-            return null;
-        } else {
-            return getByWorld(world);
-        }
-    }
     
     @Nonnull
     public static Collection<AlienWorld> getEnabled() {
@@ -115,7 +103,7 @@ public abstract class AlienWorld extends CelestialWorld {
         beforeWorldLoad();
 
         // fetch or create world
-        World world = new WorldCreator(worldName)
+        World world = new WorldCreator("galactifun_" + worldName)
                 .generator(new ChunkGenerator() {
 
                     @Nonnull
@@ -148,11 +136,6 @@ public abstract class AlienWorld extends CelestialWorld {
         // load effects
         this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
-
-        // block storage
-        if (BlockStorage.getStorage(world) == null) {
-            new BlockStorage(world);
-        }
 
         // register
         WORLDS.put(world, this);

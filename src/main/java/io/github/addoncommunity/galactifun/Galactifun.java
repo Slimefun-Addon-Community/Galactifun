@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategories;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
@@ -54,16 +53,12 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 "###################################################",
                 ""
         ));
-        
-        // load entities after aliens are created
-        PluginUtils.runSync(PersistentAlien::loadAll);
     }
 
     @Override
     public void onDisable() {
         GalacticProfile.unloadAll();
         GalacticProfile.saveAll();
-        PersistentAlien.saveAll();
     }
 
     @Override

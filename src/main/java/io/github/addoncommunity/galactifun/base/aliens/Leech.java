@@ -1,13 +1,10 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import com.google.common.collect.HashMultimap;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
 import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.items.PersistentItemStackArray;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,57 +12,62 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
-public final class Leech extends Alien implements PersistentAlien {
+public final class Leech extends Alien {
 
-    private final HashMultimap<UUID, ItemStack> eaten = HashMultimap.create();
-
+    private static final NamespacedKey EATEN = PluginUtils.getKey("eaten");
+    
     public Leech() {
         super("LEECH", "&eLeech", EntityType.SILVERFISH, 10);
     }
 
     @Override
     protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
-        if (e.getEntity() instanceof Player && ThreadLocalRandom.current().nextBoolean()) {
-            Player p = (Player) e.getEntity();
-            PlayerInventory inv = p.getInventory();
-
-            List<Integer> availableSlots = new ArrayList<>();
-            for (int i = 0; i < inv.getSize(); i++) {
-                ItemStack itemStack = inv.getItem(i);
-                if (itemStack != null && !itemStack.getType().isAir()) {
-                    availableSlots.add(i);
-                }
-            }
-
-            if (!availableSlots.isEmpty()) {
-                LivingEntity damager = (LivingEntity) e.getDamager();
-                int slot = ThreadLocalRandom.current().nextInt(availableSlots.size());
-                this.eaten.put(damager.getUniqueId(), inv.getItem(slot));
-                inv.setItem(slot, null);
-                damager.setHealth(Math.min(
-                        Objects.requireNonNull(damager.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue(),
-                        damager.getHealth() + 2)
-                );
-            }
+        
+        // get random item
+        PlayerInventory inv = ((Player) e.getEntity()).getInventory();
+        
+        int slot = ThreadLocalRandom.current().nextInt(inv.getSize());
+        
+        ItemStack item = inv.getItem(slot);
+        
+        if (item == null) {
+            return;
         }
+        
+        // eat it
+        PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
+        
+        ItemStack[] eatenItems = container.get(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY);
+        if (eatenItems != null) {
+            // add on to the array
+            ItemStack[] arr = new ItemStack[eatenItems.length + 1];
+            System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
+            arr[eatenItems.length] = item;
+            container.set(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY, arr);
+        } else {
+            container.set(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY, new ItemStack[] {item});
+        }
+        
+        inv.setItem(slot, null);
+        
+        // heal
+        LivingEntity attacker = (LivingEntity) e.getDamager();
+        attacker.setHealth(Math.min(
+                Objects.requireNonNull(attacker.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue(),
+                attacker.getHealth() + 2)
+        );
     }
 
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        UUID uuid = e.getEntity().getUniqueId();
-        Set<ItemStack> eatenItems = this.eaten.removeAll(uuid);
+        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY);
         if (eatenItems != null) {
             for (ItemStack itemStack : eatenItems) {
                 e.getDrops().add(itemStack);
@@ -76,38 +78,6 @@ public final class Leech extends Alien implements PersistentAlien {
     @Override
     protected int getSpawnChance() {
         return 1;
-    }
-    
-    @Override
-    public void load(@Nonnull LivingEntity entity, @Nonnull String data) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.loadFromString(data);
-        } catch (InvalidConfigurationException e) {
-            PluginUtils.log(Level.SEVERE, "Failed to load a leech's eaten items!");
-            return;
-        }
-        for (String key : configuration.getKeys(false)) {
-            ItemStack item = configuration.getItemStack(key);
-            if (item != null) {
-                this.eaten.put(entity.getUniqueId(), item);
-            }
-        }
-    }
-
-    @Override
-    @Nullable
-    public String save(@Nonnull LivingEntity entity) {
-        Set<ItemStack> eaten = this.eaten.get(entity.getUniqueId());
-        if (eaten == null) {
-            return null;
-        }
-        FileConfiguration configuration = new YamlConfiguration();
-        int i = 0;
-        for (ItemStack stack : eaten) {
-            configuration.set(String.valueOf(i++), stack);
-        }
-        return configuration.saveToString();
     }
     
 }
