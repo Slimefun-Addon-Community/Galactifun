@@ -2,12 +2,12 @@ package io.github.addoncommunity.galactifun.implementation.rockets;
 
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.implementation.lists.Heads;
 import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -24,16 +24,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class LaunchPadCore extends AbstractTicker {
 
     private static final BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
 
-    private static final int[] BACKGROUND = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 23, 24, 25, 26, 32, 34, 35, 41, 43, 44, 50, 51, 52, 53};
+    private static final int[] BACKGROUND = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 23, 25, 26, 32, 34, 35, 41, 42, 43, 44, 50, 51, 52, 53};
     private static final int[] BORDER = new int[]{18, 19, 20, 21, 22, 31, 40, 49};
 
     private static final int[] INVENTORY_SLOTS = new int[]{27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48};
+
+    private static final Map<ItemStack, Double> fuels = new HashMap<>();
 
     public LaunchPadCore() {
         super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[9]);
@@ -42,8 +46,38 @@ public class LaunchPadCore extends AbstractTicker {
     }
 
     @Override
-    protected void tick(@Nonnull BlockMenu blockMenu, @Nonnull Block block, @Nonnull Config config) {
+    protected void tick(@Nonnull BlockMenu menu, @Nonnull Block block, @Nonnull Config config) {
+        Block b = block.getRelative(BlockFace.UP);
+        for (Rocket rocket : Rocket.values()) {
+            if (BlockStorage.check(b, rocket.getItem().getItemId())) {
+                String s = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
+                int fuel = 0;
+                if (s != null) {
+                    fuel = Integer.parseInt(s);
+                }
+                s = BlockStorage.getLocationInfo(b.getLocation(), "fuelEff");
+                double eff = 0;
+                if (s != null) {
+                    eff = Double.parseDouble(s);
+                }
 
+                if (fuel < rocket.getFuelCapacity()) {
+                    ItemStack slotItem = menu.getItemInSlot(33);
+                    for (ItemStack stack : fuels.keySet()) {
+                        if (SlimefunUtils.isItemSimilar(slotItem, stack, false, false)) {
+                            menu.consumeItem(33);
+                            fuel++;
+                            eff += fuels.get(stack);
+                        }
+                    }
+
+                    BlockStorage.addBlockInfo(b, "fuel", Integer.toString(fuel));
+                    BlockStorage.addBlockInfo(b, "fuelEff", Double.toString(eff));
+                }
+
+                break;
+            }
+        }
     }
 
     @Override
@@ -54,16 +88,7 @@ public class LaunchPadCore extends AbstractTicker {
             preset.addItem(i, ChestMenuUtils.getOutputSlotTexture(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        preset.addItem(15,
-            new CustomItem(
-                Heads.ROCKET.getAsItemStack(),
-                "&4Launch"
-            ), (player, slot, item, action) -> {
-                launch(player);
-                return false;
-            });
-
-        preset.addItem(33, new CustomItem(
+        preset.addItem(24, new CustomItem(
             HeadTexture.FUEL_BUCKET.getAsItemStack(),
             "&6Insert Fuel Here"
         ), ChestMenuUtils.getEmptyClickHandler());
@@ -72,10 +97,10 @@ public class LaunchPadCore extends AbstractTicker {
     @Nonnull
     @Override
     protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
-        return new int[]{42};
+        return new int[]{33};
     }
 
-    private void onInteract(PlayerRightClickEvent e) {
+    private void onInteract(@Nonnull PlayerRightClickEvent e) {
         Optional<Block> ob = e.getClickedBlock();
         if (ob.isPresent()) {
             Block b = ob.get();
@@ -90,7 +115,7 @@ public class LaunchPadCore extends AbstractTicker {
                 BlockStorage.getInventory(b).open(p);
             } else {
                 e.cancel();
-                p.sendMessage(ChatColor.RED + "Surround this block with 9 launch pad floors before attempting to use it");
+                p.sendMessage(ChatColor.RED + "Surround this block with 8 launch pad floors before attempting to use it");
             }
         }
     }
@@ -105,7 +130,7 @@ public class LaunchPadCore extends AbstractTicker {
         return true;
     }
 
-    private void launch(Player p) {
-
+    public static void addFuel(ItemStack fuel, double efficiency) {
+        fuels.put(fuel, efficiency);
     }
 }
