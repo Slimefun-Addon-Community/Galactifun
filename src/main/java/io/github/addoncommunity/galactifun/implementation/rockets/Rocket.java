@@ -1,15 +1,18 @@
 package io.github.addoncommunity.galactifun.implementation.rockets;
 
+import com.google.common.collect.BiMap;
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.StarSystem;
-import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.Heads;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import lombok.Getter;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -19,19 +22,34 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 @Getter
 public enum Rocket {
@@ -70,6 +88,8 @@ public enum Rocket {
 
     @Nullable
     public static Rocket getById(String id) {
+        if (id == null) return null;
+
         for (Rocket rocket : Rocket.values()) {
             if (rocket.getItem().getItemId().equals(id)) {
                 return rocket;
@@ -129,18 +149,7 @@ public enum Rocket {
             double trueEff = eff / fuel;
             long maxDistance = Math.round(2_000_000 * (fuel * trueEff));
 
-            UniversalObject<?> object = world.getOrbiting();
-            while (!(object instanceof StarSystem)) {
-                object = object.getOrbiting();
-            }
-            StarSystem system = (StarSystem) object;
-
-            List<CelestialWorld> reachable = new ArrayList<>();
-            for (UniversalObject<?> body : system.getOrbiters()) {
-                if (body instanceof CelestialWorld && body.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
-                    reachable.add((CelestialWorld) body);
-                }
-            }
+            List<CelestialWorld> reachable = getReachable(world, maxDistance);
 
             if (reachable.isEmpty()) {
                 p.sendMessage(ChatColor.RED + "No known destinations within range!");
@@ -177,7 +186,14 @@ public enum Rocket {
 
                 menu.addItem(i++, item, (p1, slot, it, action) -> {
                     p1.closeInventory();
-                    launch(p1, b, celestialWorld, fuel);
+                    long usedFuel = Math.round(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);
+                    p1.sendMessage(ChatColor.GOLD + "You are going to " + celestialWorld.getName() + " and will use " +
+                        usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
+                    ChatUtils.awaitInput(p1, (input) -> {
+                        if (input.equalsIgnoreCase("yes")) {
+                            launch(p1, b, celestialWorld, (int) (fuel - usedFuel), trueEff);
+                        }
+                    });
                     return false;
                 });
             }
@@ -185,8 +201,101 @@ public enum Rocket {
             menu.open(p);
         }
 
-        private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuel) {
+        private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuelLeft, double eff) {
+            ConfigurationSection section = ConfigUtils.load("config.yml").getConfiguration().getConfigurationSection("rockets");
+            if (section == null) {
+                PluginUtils.log(Level.SEVERE, "Could not load launch messages!");
+                return;
+            }
+            List<String> messages = section.getStringList("launch-msgs");
 
+            // yes ik boolean#tostring isn't needed but just for safety
+            BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
+
+            World world = p.getWorld();
+
+            new BukkitRunnable() {
+                private int times = 0;
+                private final Block pad = b.getRelative(BlockFace.DOWN);
+
+                @Override
+                public void run() {
+                    if (times++ < 20) {
+                        for (BlockFace face : Util.SURROUNDING_FACES) {
+                            Block block = pad.getRelative(face);
+                            world.spawnParticle(Particle.ASH, block.getLocation(), 10, 0.5, 0.5, 0.5);
+                        }
+                    } else {
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(Galactifun.getInstance(), 0, 10);
+
+            World to = worldTo.getWorld();
+
+            Chunk destChunk = to.getChunkAt(0, 0);
+            if (!destChunk.isLoaded()) {
+                destChunk.load(true);
+            }
+
+            Block destBlock = to.getHighestBlockAt(8, 8).getRelative(BlockFace.UP);
+
+            PluginUtils.runSync(() -> {
+                destBlock.setType(Material.CHEST);
+                BlockData data = destBlock.getBlockData();
+                if (data instanceof Rotatable) {
+                    ((Rotatable) data).setRotation(BlockFace.NORTH);
+                }
+                destBlock.setBlockData(data, true);
+
+                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+                if (state instanceof Chest) {
+                    Chest chest = (Chest) state;
+                    Inventory inv = chest.getInventory();
+                    inv.clear(); // just in case
+                    inv.addItem(this.getItem());
+
+                    BiMap<ItemStack, Double> fuels = LaunchPadCore.getFuels();
+                    ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
+                    if (fuel != null) {
+                        fuel = fuel.clone();
+                        fuel.setAmount(fuelLeft);
+                        inv.addItem(fuel);
+                    }
+                }
+                state.update();
+
+                p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
+            }, 40);
+
+            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
+            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
+            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
+            PluginUtils.runSync(() -> {
+                p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
+
+                for (Entity entity : world.getEntities()) {
+                    if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
+                        if (entity.getLocation().distanceSquared(b.getLocation()) <= 25) {
+                            PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                        }
+                    }
+                }
+
+                b.setType(Material.AIR);
+                BlockStorage.clearBlockInfo(b);
+            }, 200);
+        }
+
+        private static List<CelestialWorld> getReachable(CelestialWorld current, long maxDist) {
+            List<CelestialWorld> reachable = new ArrayList<>();
+            for (CelestialWorld world : CelestialWorld.getWorlds().values()) {
+                if (world.getDistanceTo(current) * Util.KM_PER_LY <= maxDist) {
+                    reachable.add(world);
+                }
+            }
+
+            return reachable;
         }
     }
 }
