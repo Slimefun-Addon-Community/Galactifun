@@ -3,11 +3,8 @@ package io.github.addoncommunity.galactifun.base.aliens;
 import com.google.common.collect.HashMultimap;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.addoncommunity.galactifun.util.SerialUtils;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -24,8 +21,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
+/**
+ * Class for the leech, an alien of Titan. They can steal you items when attacking
+ *
+ * @author Seggan
+ */
 public final class Leech extends Alien implements PersistentAlien {
 
     private final HashMultimap<UUID, ItemStack> eaten = HashMultimap.create();
@@ -80,18 +81,8 @@ public final class Leech extends Alien implements PersistentAlien {
     
     @Override
     public void load(@Nonnull LivingEntity entity, @Nonnull String data) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.loadFromString(data);
-        } catch (InvalidConfigurationException e) {
-            PluginUtils.log(Level.SEVERE, "Failed to load a leech's eaten items!");
-            return;
-        }
-        for (String key : configuration.getKeys(false)) {
-            ItemStack item = configuration.getItemStack(key);
-            if (item != null) {
-                this.eaten.put(entity.getUniqueId(), item);
-            }
+        for (ItemStack item : SerialUtils.deserializeItemStacks(data)) {
+            this.eaten.put(entity.getUniqueId(), item);
         }
     }
 
@@ -99,15 +90,7 @@ public final class Leech extends Alien implements PersistentAlien {
     @Nullable
     public String save(@Nonnull LivingEntity entity) {
         Set<ItemStack> eaten = this.eaten.get(entity.getUniqueId());
-        if (eaten == null) {
-            return null;
-        }
-        FileConfiguration configuration = new YamlConfiguration();
-        int i = 0;
-        for (ItemStack stack : eaten) {
-            configuration.set(String.valueOf(i++), stack);
-        }
-        return configuration.saveToString();
+        return SerialUtils.serializeItemStacks(eaten);
     }
     
 }

@@ -102,7 +102,8 @@ public final class DayCycle {
     }
     
     public void applyEffects(@Nonnull World world) {
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, this.cycle);
+        // we manually manage time anyway
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         if (!this.cycle) {
             world.setTime(this.time);
         }

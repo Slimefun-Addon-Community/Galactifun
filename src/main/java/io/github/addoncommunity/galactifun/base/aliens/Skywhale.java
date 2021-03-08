@@ -13,6 +13,11 @@ import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Class for the slywhale, a passive alien of Titan
+ *
+ * @author Seggan
+ */
 public final class Skywhale extends Alien {
 
     public Skywhale() {

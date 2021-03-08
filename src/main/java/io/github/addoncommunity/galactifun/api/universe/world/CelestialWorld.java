@@ -5,6 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import lombok.Getter;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
@@ -26,11 +27,12 @@ public abstract class CelestialWorld extends CelestialBody {
     /**
      * All celestial worlds
      */
-    private static final Map<World, CelestialWorld> WORLDS = new HashMap<>();
+    @Getter()
+    private static final Map<World, CelestialWorld> worlds = new HashMap<>();
 
     @Nullable
     public static CelestialWorld getByWorld(@Nonnull World world) {
-        return WORLDS.get(world);
+        return worlds.get(world);
     }
 
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
@@ -42,7 +44,7 @@ public abstract class CelestialWorld extends CelestialBody {
         super.register();
         World world = loadWorld();
         if (world != null) {
-            WORLDS.put(world, this);
+            worlds.put(world, this);
         }
     }
 
@@ -51,5 +53,16 @@ public abstract class CelestialWorld extends CelestialBody {
      */
     @Nullable
     protected abstract World loadWorld();
+
+    public World getWorld() {
+        for (Map.Entry<World, CelestialWorld> entry : worlds.entrySet()) {
+            if (entry.getValue().equals(this)) {
+                return entry.getKey();
+            }
+        }
+
+        // shouldn't happen so no nonnull or nullable
+        return null;
+    }
 
 }
