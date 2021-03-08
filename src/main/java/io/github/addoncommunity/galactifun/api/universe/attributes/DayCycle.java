@@ -6,7 +6,6 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Represents the amount of sunlight a celestial object gets
@@ -50,10 +49,7 @@ public final class DayCycle {
     private final String description;
     private final boolean cycle;
     private final long time;
-
-    // cached values
-    private final long longValue;
-    private final double doubleValue;
+    private final long extraTicks;
 
     private DayCycle(int days, int hours) {
         Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "Day cycles must last at least 1 hour!");
@@ -77,11 +73,16 @@ public final class DayCycle {
         this.description = builder.toString();
         this.time = 0;
         this.cycle = true;
-
-        // yes, i need the reciprocal
-        double relativeToEarth = 24.0 / (hours + days * 24);
-        this.longValue = (long) relativeToEarth;
-        this.doubleValue = relativeToEarth - this.longValue;
+        
+        // for now we can only support speeding up time
+        // because going backward skips ahead days
+        int extra = (days - 1) * 24000 + hours * 1000;
+        if (extra > 0) {
+            // go from extra per day to extra per 5 seconds (100 ticks)
+            this.extraTicks = extra / 240;
+        } else {
+            this.extraTicks = 0;
+        }
     }
 
     /**
@@ -93,28 +94,20 @@ public final class DayCycle {
         this.description = time < 12000 ? "Eternal" : "Never";
         this.time = time;
         this.cycle = false;
-        this.longValue = 0;
-        this.doubleValue = 0;
-    }
-
-    public boolean isEternal() {
-        return !this.cycle;
+        this.extraTicks = 0;
     }
     
     public void applyEffects(@Nonnull World world) {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, this.cycle);
-        if (!this.cycle) {
-            world.setTime(this.time);
-        }
+        world.setTime(this.time);
     }
 
+    /**
+     * Apply time effects to world every 5 seconds
+     */
     public void tick(@Nonnull World world) {
-        if (world.getPlayers().size() > 0) {
-            long time = world.getTime() + longValue;
-            if (ThreadLocalRandom.current().nextDouble() < doubleValue) {
-                time++;
-            }
-            world.setTime(time);
+        if (this.extraTicks != 0) {
+            world.setTime(world.getTime() + this.extraTicks);
         }
     }
     

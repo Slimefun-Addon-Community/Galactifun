@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 
-public class TitanKing extends BossAlien {
+public final class TitanKing extends BossAlien {
 
     public TitanKing() {
         super("TITAN_KING", "Titan King", EntityType.EVOKER, 300);
@@ -27,8 +27,7 @@ public class TitanKing extends BossAlien {
         Mob entity = e.getEntity();
         if (e.getSpell() == Spellcaster.Spell.SUMMON_VEX) {
             for (int i = 0; i < 3; i++) {
-                Mob spawned = (Mob) BaseRegistry.LEECH.spawn(entity.getLocation(), entity.getWorld());
-                spawned.setTarget(entity.getTarget());
+                ((Mob) BaseRegistry.LEECH.spawn(entity.getLocation(), entity.getWorld())).setTarget(entity.getTarget());
             }
         } else if (e.getSpell() == Spellcaster.Spell.FANGS) {
             entity.addPotionEffect(new PotionEffect(
@@ -51,7 +50,7 @@ public class TitanKing extends BossAlien {
 
     @Nonnull
     @Override
-    protected BossBarStyle getBossBarStyle() {
+    protected BossBarStyle createBossBarStyle() {
         return new BossBarStyle("Titan King", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
     }
 
@@ -59,4 +58,5 @@ public class TitanKing extends BossAlien {
     protected int getSpawnChance() {
         return 1;
     }
+    
 }
