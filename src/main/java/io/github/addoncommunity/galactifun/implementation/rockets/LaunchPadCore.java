@@ -50,7 +50,10 @@ public class LaunchPadCore extends AbstractTicker {
         Block b = block.getRelative(BlockFace.UP);
         for (Rocket rocket : Rocket.values()) {
             if (BlockStorage.check(b, rocket.getItem().getItemId())) {
-                String s = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
+                String s = BlockStorage.getLocationInfo(b.getLocation(), "isLaunching");
+                if (Boolean.parseBoolean(s)) return;
+
+                s = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
                 int fuel = 0;
                 if (s != null) {
                     fuel = Integer.parseInt(s);
