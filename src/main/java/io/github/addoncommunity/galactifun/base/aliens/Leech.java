@@ -18,6 +18,11 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Class for the leech, an alien of Titan. They can steal you items when attacking
+ *
+ * @author Seggan
+ */
 public final class Leech extends Alien {
 
     private static final NamespacedKey EATEN = PluginUtils.getKey("eaten");

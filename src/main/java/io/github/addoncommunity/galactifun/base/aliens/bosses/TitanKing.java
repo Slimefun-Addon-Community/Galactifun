@@ -16,6 +16,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Class for the Titan king, the boss bound on Titan
+ *
+ * @author Seggan
+ */
 public final class TitanKing extends BossAlien {
 
     public TitanKing() {

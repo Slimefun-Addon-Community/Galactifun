@@ -13,9 +13,16 @@
 # max-per-player: default: 12 range: 1-64
 # maximum number of aliens per player per world
 # 
-# 
+# rockets:
+#
+# launch-msgs:
+# the messages that pop up during launch
+#
 worlds:
   earth-name: world
 aliens:
   tick-interval: 2
   max-per-player: 8
+
+rockets:
+  launch-msgs: ["Forgetting parachutes", "Restocking snack bin", "Aligning planets", "Igniting sun", "Exploding rockets", "Running out of fuel"]

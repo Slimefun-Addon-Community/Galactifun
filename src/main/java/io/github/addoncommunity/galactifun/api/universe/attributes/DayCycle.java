@@ -47,9 +47,8 @@ public final class DayCycle {
     @Getter
     @Nonnull
     private final String description;
-    private final boolean cycle;
-    private final long time;
-    private final long extraTicks;
+    private final long startTime;
+    private final long perFiveSeconds;
 
     private DayCycle(int days, int hours) {
         Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "Day cycles must last at least 1 hour!");
@@ -70,19 +69,10 @@ public final class DayCycle {
                 builder.append('s');
             }
         }
-        this.description = builder.toString();
-        this.time = 0;
-        this.cycle = true;
         
-        // for now we can only support speeding up time
-        // because going backward skips ahead days
-        int extra = (days - 1) * 24000 + hours * 1000;
-        if (extra > 0) {
-            // go from extra per day to extra per 5 seconds (100 ticks)
-            this.extraTicks = extra / 240;
-        } else {
-            this.extraTicks = 0;
-        }
+        this.description = builder.toString();
+        this.startTime = 0;
+        this.perFiveSeconds = days * 100L + hours * 4L;
     }
 
     /**
@@ -92,22 +82,21 @@ public final class DayCycle {
         Validate.isTrue(time >= 0 && time < 24000, "Eternal time must be between 0 and 24000!");
 
         this.description = time < 12000 ? "Eternal" : "Never";
-        this.time = time;
-        this.cycle = false;
-        this.extraTicks = 0;
+        this.startTime = time;
+        this.perFiveSeconds = 0;
     }
     
     public void applyEffects(@Nonnull World world) {
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, this.cycle);
-        world.setTime(this.time);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setTime(this.startTime);
     }
 
     /**
      * Apply time effects to world every 5 seconds
      */
     public void tick(@Nonnull World world) {
-        if (this.extraTicks != 0) {
-            world.setTime(world.getTime() + this.extraTicks);
+        if (this.perFiveSeconds != 0) {
+            world.setTime(world.getTime() + this.perFiveSeconds);
         }
     }
     

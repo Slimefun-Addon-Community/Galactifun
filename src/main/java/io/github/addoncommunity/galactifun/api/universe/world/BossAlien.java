@@ -112,15 +112,17 @@ public abstract class BossAlien extends Alien {
             long dist = (long) getBossBarDistance() * getBossBarDistance();
 
             BossBar bossbar = this.instances.get(mob);
-            List<Player> players = bossbar.getPlayers();
+            if (bossbar != null) {
+                List<Player> players = bossbar.getPlayers();
 
-            for (Player player : mob.getWorld().getPlayers()) {
-                double distSquared = l.distanceSquared(player.getLocation());
+                for (Player player : mob.getWorld().getPlayers()) {
+                    double distSquared = l.distanceSquared(player.getLocation());
 
-                if (distSquared <= dist && !players.contains(player)) {
-                    bossbar.addPlayer(player);
-                } else if (distSquared > dist && players.contains(player)) {
-                    bossbar.removePlayer(player);
+                    if (distSquared <= dist && !players.contains(player)) {
+                        bossbar.addPlayer(player);
+                    } else if (distSquared > dist && players.contains(player)) {
+                        bossbar.removePlayer(player);
+                    }
                 }
             }
         }
