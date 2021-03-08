@@ -71,7 +71,7 @@ public final class DayCycle {
         }
         
         this.description = builder.toString();
-        this.startTime = 0;
+        this.startTime = -1;
         this.perFiveSeconds = days * 100L + hours * 4L;
     }
 
@@ -88,7 +88,9 @@ public final class DayCycle {
     
     public void applyEffects(@Nonnull World world) {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        world.setTime(this.startTime);
+        if (this.startTime != -1) {
+            world.setTime(this.startTime);
+        }
     }
 
     /**

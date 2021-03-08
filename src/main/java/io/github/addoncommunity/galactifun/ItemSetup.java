@@ -9,10 +9,9 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import org.bukkit.inventory.ItemStack;
 
-public final class Setup {
+public final class ItemSetup {
 
-    private Setup() {
-    }
+    private ItemSetup() { }
 
     public static void setup(Galactifun addon) {
         LaunchPadCore.addFuel(SlimefunItems.OIL_BUCKET, 0.5);
@@ -23,8 +22,7 @@ public final class Setup {
             null, null, null,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-        })
-            .register(addon);
+        }).register(addon);
 
         Rocket.setup(addon);
     }

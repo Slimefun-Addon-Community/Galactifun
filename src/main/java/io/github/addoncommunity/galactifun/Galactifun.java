@@ -36,7 +36,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
         
         Categories.setup(this);
 
-        Setup.setup(this);
+        ItemSetup.setup(this);
         
         BaseRegistry.setup();
 
