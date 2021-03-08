@@ -9,6 +9,7 @@ import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -55,12 +56,12 @@ public abstract class AlienWorld extends CelestialWorld {
      * All enabled alien worlds
      */
     private static final Map<World, AlienWorld> WORLDS = new HashMap<>();
-    
+
     @Nullable
     public static AlienWorld getByWorld(@Nonnull World world) {
         return WORLDS.get(world);
     }
-    
+
     @Nonnull
     public static Collection<AlienWorld> getEnabled() {
         return WORLDS.values();
@@ -79,17 +80,18 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * This world, only null if disabled
      */
+    @Getter
     private World world;
 
     /**
      * Configuration
      */
     private WorldConfig config;
-    
+
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
-    
+
     @Nullable
     @Override
     protected World loadWorld() {
@@ -98,7 +100,7 @@ public abstract class AlienWorld extends CelestialWorld {
         if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
             return null;
         }
-        
+
         // before
         beforeWorldLoad();
 
@@ -125,7 +127,7 @@ public abstract class AlienWorld extends CelestialWorld {
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
-        
+
         Validate.notNull(world, "There was an error loading the world for " + worldName);
 
         // border
@@ -142,7 +144,7 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // after
         afterWorldLoad(world);
-        
+
         return this.world = world;
     }
 
@@ -202,11 +204,14 @@ public abstract class AlienWorld extends CelestialWorld {
             applyEffects(p);
         }
         
+        // time
+        this.dayCycle.tick(this.world);
+
         // mob spawns
         if (!this.species.isEmpty()) {
             // shuffles the list so each alien has a fair chance of being first
             Collections.shuffle(this.species);
-            
+
             Random rand = ThreadLocalRandom.current();
             int players = this.world.getPlayers().size();
             int mobs = this.world.getLivingEntities().size() - players;
@@ -221,9 +226,9 @@ public abstract class AlienWorld extends CelestialWorld {
                     if (rand.nextInt(100) > alien.getSpawnChance() || spawned >= alien.getMaxAliensPerGroup()) {
                         continue;
                     }
-                    
+
                     Block b = this.world.getHighestBlockAt(rand.nextInt(16) + chunk.getX() << 4, rand.nextInt(16) + chunk.getZ() << 4).getRelative(0, 1, 0);
-                    
+
                     // currently doesn't allow for aquatic aliens
                     if (b.getType().isAir() && alien.getSpawnInLightLevel(b.getLightLevel())) {
                         alien.spawn(b.getLocation().add(alien.getSpawnOffset()), this.world);
@@ -232,22 +237,15 @@ public abstract class AlienWorld extends CelestialWorld {
                 }
             }
         }
-        // other stuff?
-    }
-
-    /**
-     * All effects that should be applied to the player
-     */
-    private void applyEffects(@Nonnull Player p) {
-        // apply gravity
-        this.gravity.applyGravity(p);
-        // apply atmospheric effects
-        this.atmosphere.applyEffects(p);
-        // other stuff?
     }
     
+    private void applyEffects(@Nonnull Player p) {
+        this.gravity.applyGravity(p);
+        this.atmosphere.applyEffects(p);
+    }
+
     static {
-        
+
         // world ticker
         PluginUtils.scheduleRepeatingSync(() -> {
             for (AlienWorld world : WORLDS.values()) {
@@ -269,7 +267,7 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // world listener
         PluginUtils.registerListener(new Listener() {
-            
+
             // remove old effects and apply new effects
             @EventHandler
             public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
@@ -291,7 +289,7 @@ public abstract class AlienWorld extends CelestialWorld {
                     object.applyEffects(e.getPlayer());
                 }
             }
-            
+
             // don't allow teleportation by any means other than this addon
             @EventHandler
             public void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {

@@ -1,12 +1,12 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.mooy1.infinitylib.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -19,11 +19,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.persistence.PersistentDataHolder;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
@@ -35,7 +35,7 @@ import java.util.Objects;
 /**
  * Abstract class for an alien
  * 
- * @see io.github.addoncommunity.galactifun.base.aliens.Martian
+ * @see Martian
  *
  * @author Seggan
  * @author GallowsDove
@@ -82,7 +82,8 @@ public abstract class Alien {
 
     }
 
-    public final void spawn(@Nonnull Location loc, @Nonnull World world) {
+    @Nonnull
+    public final LivingEntity spawn(@Nonnull Location loc, @Nonnull World world) {
         LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
         PersistentDataAPI.setString(entity, KEY, this.id);
 
@@ -94,6 +95,8 @@ public abstract class Alien {
         entity.setRemoveWhenFarAway(true);
 
         onSpawn(entity);
+
+        return entity;
     }
 
     protected void onSpawn(@Nonnull LivingEntity spawned) { }
@@ -109,6 +112,10 @@ public abstract class Alien {
     protected void onTarget(@Nonnull EntityTargetEvent e) { }
 
     protected void onDeath(@Nonnull EntityDeathEvent e) { }
+
+    protected void onCastSpell(EntitySpellCastEvent e) { }
+
+    protected void onDamage(EntityDamageEvent e) { }
     
     /**
      * Returns the chance for the alien to spawn per spawn attempt
@@ -186,6 +193,22 @@ public abstract class Alien {
                 Alien alien = Alien.getByEntity(e.getEntity());
                 if (alien != null) {
                     e.setCancelled(true);
+                }
+            }
+
+            @EventHandler
+            public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onCastSpell(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienDamage(@Nonnull EntityDamageEvent e) {
+                Alien alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onDamage(e);
                 }
             }
         });

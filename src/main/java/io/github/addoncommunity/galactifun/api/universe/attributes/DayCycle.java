@@ -6,6 +6,7 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Represents the amount of sunlight a celestial object gets
@@ -50,6 +51,10 @@ public final class DayCycle {
     private final boolean cycle;
     private final long time;
 
+    // cached values
+    private final long longValue;
+    private final double doubleValue;
+
     private DayCycle(int days, int hours) {
         Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "Day cycles must last at least 1 hour!");
         
@@ -72,8 +77,11 @@ public final class DayCycle {
         this.description = builder.toString();
         this.time = 0;
         this.cycle = true;
-        
-        // TODO add a way to slow/speed up days?
+
+        // yes, i need the reciprocal
+        double relativeToEarth = 24.0 / (hours + days * 24);
+        this.longValue = (long) relativeToEarth;
+        this.doubleValue = relativeToEarth - this.longValue;
     }
 
     /**
@@ -85,12 +93,28 @@ public final class DayCycle {
         this.description = time < 12000 ? "Eternal" : "Never";
         this.time = time;
         this.cycle = false;
+        this.longValue = 0;
+        this.doubleValue = 0;
+    }
+
+    public boolean isEternal() {
+        return !this.cycle;
     }
     
     public void applyEffects(@Nonnull World world) {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, this.cycle);
         if (!this.cycle) {
             world.setTime(this.time);
+        }
+    }
+
+    public void tick(@Nonnull World world) {
+        if (world.getPlayers().size() > 0) {
+            long time = world.getTime() + longValue;
+            if (ThreadLocalRandom.current().nextDouble() < doubleValue) {
+                time++;
+            }
+            world.setTime(time);
         }
     }
     
