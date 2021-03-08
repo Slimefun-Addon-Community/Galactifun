@@ -223,7 +223,7 @@ public enum Rocket {
                     if (times++ < 20) {
                         for (BlockFace face : Util.SURROUNDING_FACES) {
                             Block block = pad.getRelative(face);
-                            world.spawnParticle(Particle.ASH, block.getLocation(), 10, 0.5, 0.5, 0.5);
+                            world.spawnParticle(Particle.ASH, block.getLocation(), 100, 0.5, 0.5, 0.5);
                         }
                     } else {
                         this.cancel();
