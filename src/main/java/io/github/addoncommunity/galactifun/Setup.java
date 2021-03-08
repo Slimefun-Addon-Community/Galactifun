@@ -1,8 +1,11 @@
 package io.github.addoncommunity.galactifun;
 
+import io.github.addoncommunity.galactifun.implementation.items.Circuits;
+import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
+import io.github.addoncommunity.galactifun.implementation.machines.CircuitPress;
 import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadCore;
 import io.github.addoncommunity.galactifun.implementation.rockets.Rocket;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -24,10 +27,13 @@ public final class Setup {
             null, null, null,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-        })
-            .register(addon);
+        }).register(addon);
 
         Rocket.setup(addon);
         Components.setup(addon);
+        Circuits.setup(addon);
+
+        new CircuitPress().register(addon);
+        new AssemblyTable().register(addon);
     }
 }

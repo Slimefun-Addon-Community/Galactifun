@@ -1,8 +1,12 @@
-package io.github.addoncommunity.galactifun.implementation.lists;
+package io.github.addoncommunity.galactifun.implementation.items;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.implementation.lists.Categories;
+import io.github.addoncommunity.galactifun.implementation.lists.Heads;
+import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import lombok.AccessLevel;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -22,14 +26,24 @@ public enum Components {
         SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
     }, 8),
+    NOZZLE("Nozzle", new ItemChoice(Material.IRON_TRAPDOOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
+        null, new ItemStack(Material.IRON_TRAPDOOR), null
+    }, 2),
     ROCKET_ENGINE("Rocket Engine", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
         null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
-        null, null, new ItemStack(Material.IRON_TRAPDOOR), new ItemStack(Material.IRON_TRAPDOOR), null, null,
+        null, null, NOZZLE.getItem(), NOZZLE.getItem(), null, null,
         null, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.FLINT_AND_STEEL), new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.REINFORCED_PLATE, null,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
     }),
+    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(Heads.CORE.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
+        Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
+        Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
+    })
     ;
     private final String name;
     private final RecipeType recipeType;
@@ -56,7 +70,7 @@ public enum Components {
         this.item = new SlimefunItemStack(
             this.name(),
             material.getItem(),
-            name,
+            this.name,
             "",
             "&7A component in construction"
         );
@@ -69,7 +83,7 @@ public enum Components {
 
     public static void setup(Galactifun addon) {
         for (Components component : Components.values()) {
-            SlimefunItem item = new SlimefunItem(Categories.COMPONENTS, component.item, component.recipeType, component.recipe, new SlimefunItemStack(component.item, component.amount));
+            SlimefunItem item = new UnplaceableBlock(Categories.COMPONENTS, component.item, component.recipeType, component.recipe, new SlimefunItemStack(component.item, component.amount));
             item.register(addon);
             if (component.recipeType.equals(RecipeTypes.ASSEMBLY_TABLE)) {
                 item.setHidden(true);

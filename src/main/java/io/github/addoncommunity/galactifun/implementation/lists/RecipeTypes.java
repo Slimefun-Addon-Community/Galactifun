@@ -16,4 +16,6 @@ public class RecipeTypes {
         AssemblyTable.ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
         AssemblyTable.IDS.add(item.getItemId());
     });
+
+    public static final RecipeType CIRCUIT_PRESS = new RecipeType(PluginUtils.getKey("circuit_press"), GalactifunItems.CIRCUIT_PRESS);
 }

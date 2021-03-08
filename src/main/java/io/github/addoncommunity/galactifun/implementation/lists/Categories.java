@@ -17,11 +17,13 @@ import org.bukkit.Material;
 @UtilityClass
 public final class Categories {
 
+    public static final Category RECIPES = new RecipeCategory();
     public static final GalacticCategory GALACTIC_CATEGORY = new GalacticCategory();
+
     public static final Category EQUIPMENT = new Category(PluginUtils.getKey("equipment"), new CustomItem(Material.IRON_HELMET));
     public static final Category MAIN_CATEGORY = new Category(PluginUtils.getKey("main_category"), new CustomItem(Heads.ROCKET.getAsItemStack(), "&fGalactifun"));
     public static final Category COMPONENTS = new Category(PluginUtils.getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components"));
-    public static final Category RECIPES = new RecipeCategory();
+    public static final Category MACHINES = new Category(PluginUtils.getKey("galactifun_machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines"));
 
     public static void setup(Galactifun galactifun) {
         GALACTIC_CATEGORY.register(galactifun);
@@ -29,6 +31,7 @@ public final class Categories {
         MAIN_CATEGORY.register(galactifun);
         COMPONENTS.register(galactifun);
         RECIPES.register(galactifun);
+        MACHINES.register(galactifun);
     }
     
 }

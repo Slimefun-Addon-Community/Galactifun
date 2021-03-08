@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun.implementation.lists;
 
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
+import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Material;
@@ -33,6 +36,21 @@ public final class GalactifunItems {
         Material.SMITHING_TABLE,
         "&fAssembly Table",
         "",
-        "&7Used to construct many things"
+        "&7Used to construct many things",
+        "",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.powerPerSecond(2048)
+    );
+
+    public static final SlimefunItemStack CIRCUIT_PRESS = new SlimefunItemStack(
+        "CIRCUIT_PRESS",
+        Material.PISTON,
+        "&fCircuit Press",
+        "",
+        "&7Creates circuits",
+        "",
+        LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE),
+        LoreBuilder.powerPerSecond(500),
+        LoreBuilder.powerBuffer(1024)
     );
 }

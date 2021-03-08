@@ -2,12 +2,14 @@ package io.github.addoncommunity.galactifun.implementation.rockets;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
@@ -45,7 +47,12 @@ public class LaunchPadCore extends AbstractTicker {
     private static final BiMap<ItemStack, Double> fuels = HashBiMap.create();
 
     public LaunchPadCore() {
-        super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[9]);
+        super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+            SlimefunItems.REINFORCED_PLATE, Components.NOZZLE.getItem(), SlimefunItems.REINFORCED_PLATE,
+            SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
+            SlimefunItems.REINFORCED_PLATE, Components.ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.REINFORCED_PLATE,
+        });
+
 
         addItemHandler((BlockUseHandler) this::onInteract);
     }
