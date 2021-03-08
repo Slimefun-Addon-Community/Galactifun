@@ -101,7 +101,7 @@ public class LaunchPadCore extends AbstractTicker {
         if (rocket != null) {
             rocketBlock.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocketBlock);
-            world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem());
+            world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());
         }
     }
 

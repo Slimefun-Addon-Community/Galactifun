@@ -253,7 +253,7 @@ public enum Rocket {
                     Chest chest = (Chest) state;
                     Inventory inv = chest.getInventory();
                     inv.clear(); // just in case
-                    inv.addItem(this.getItem());
+                    inv.addItem(this.getItem().clone());
 
                     BiMap<ItemStack, Double> fuels = LaunchPadCore.getFuels();
                     ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
