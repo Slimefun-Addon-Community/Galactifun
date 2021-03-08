@@ -27,4 +27,12 @@ public final class GalactifunItems {
         "",
         "&7Used in constructing the Launch Pad"
     );
+
+    public static final SlimefunItemStack ASSEMBLY_TABLE = new SlimefunItemStack(
+        "ASSEMBLY_TABLE",
+        Material.SMITHING_TABLE,
+        "&fAssembly Table",
+        "",
+        "&7Used to construct many things"
+    );
 }

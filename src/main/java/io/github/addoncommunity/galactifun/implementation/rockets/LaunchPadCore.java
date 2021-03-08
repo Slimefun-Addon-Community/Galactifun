@@ -90,15 +90,13 @@ public class LaunchPadCore extends AbstractTicker {
 
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
-        World world = l.getWorld();
-        for (int i : INVENTORY_SLOTS) {
-            world.dropItemNaturally(l, menu.getItemInSlot(i));
-        }
-        world.dropItemNaturally(l, menu.getItemInSlot(33));
+        menu.dropItems(l, INVENTORY_SLOTS);
+        menu.dropItems(l, 33);
 
         Block rocketBlock = l.add(0, 1, 0).getBlock();
         Rocket rocket = Rocket.getById(BlockStorage.checkID(rocketBlock));
         if (rocket != null) {
+            World world = l.getWorld();
             rocketBlock.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocketBlock);
             world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());

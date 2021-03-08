@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
+import io.github.addoncommunity.galactifun.implementation.lists.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadCore;
 import io.github.addoncommunity.galactifun.implementation.rockets.Rocket;
@@ -27,5 +28,6 @@ public final class Setup {
             .register(addon);
 
         Rocket.setup(addon);
+        Components.setup(addon);
     }
 }

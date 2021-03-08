@@ -25,4 +25,10 @@ aliens:
   max-per-player: 8
 
 rockets:
-  launch-msgs: ["Forgetting parachutes", "Restocking snack bin", "Aligning planets", "Igniting sun", "Exploding rockets", "Running out of fuel"]
+  launch-msgs:
+  - Forgetting parachutes
+  - Restocking snack bin
+  - Aligning planets
+  - Igniting sun
+  - Exploding rockets
+  - Running out of fuel
