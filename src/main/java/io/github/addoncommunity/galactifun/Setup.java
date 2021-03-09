@@ -31,9 +31,9 @@ public final class Setup {
 
         Rocket.setup(addon);
         Components.setup(addon);
-        Circuits.setup(addon);
 
-        new CircuitPress().register(addon);
+        new CircuitPress().setEnergyConsumption(25).setCapacity(1024).register(addon);
+        Circuits.setup(addon);
         new AssemblyTable().register(addon);
     }
 }

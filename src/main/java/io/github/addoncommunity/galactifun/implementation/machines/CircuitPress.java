@@ -29,16 +29,6 @@ public class CircuitPress extends AContainer {
     }
 
     @Override
-    public int getCapacity() {
-        return 1024;
-    }
-
-    @Override
-    public int getEnergyConsumption() {
-        return 25;
-    }
-
-    @Override
     public ItemStack getProgressBar() {
         return new ItemStack(Material.PISTON);
     }

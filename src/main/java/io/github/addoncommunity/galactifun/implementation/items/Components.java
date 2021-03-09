@@ -64,6 +64,14 @@ public enum Components {
         Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
         Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
     }),
+    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(Heads.LIFE_SUPPORT_MODULE.getTexture()), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+        SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, Circuits.LAPIS.getItem(), OXYGEN_REGENERATOR.getItem(), OXYGEN_REGENERATOR.getItem(), Circuits.LAPIS.getItem(), SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, Circuits.LAPIS.getItem(), OXYGEN_REGENERATOR.getItem(), OXYGEN_REGENERATOR.getItem(), Circuits.LAPIS.getItem(), SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.STEEL_INGOT,
+        SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
+    }),
     NOSE_CONE("Nose Cone", new ItemChoice(Material.REDSTONE_TORCH), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, null, new ItemStack(Material.REDSTONE_TORCH), new ItemStack(Material.REDSTONE_TORCH), null, null,
         null, null, SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT, null, null,
@@ -72,6 +80,16 @@ public enum Components {
         SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
         SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
     }),
+    HEAVY_DUTY_SHEET("Heavy Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
+        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
+        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
+    }),
+    FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
+        HEAVY_DUTY_SHEET.getItem(), null, HEAVY_DUTY_SHEET.getItem(),
+        HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem()
+    })
     ;
     private final String name;
     private final RecipeType recipeType;

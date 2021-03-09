@@ -3,8 +3,10 @@ package io.github.addoncommunity.galactifun.implementation.rockets;
 import com.google.common.collect.BiMap;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
+import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.Heads;
+import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
@@ -53,7 +55,14 @@ import java.util.logging.Level;
 
 @Getter
 public enum Rocket {
-    ONE(1, 10, 9, new ItemStack[9]),
+    ONE(1, 10, 9, new ItemStack[]{
+        null, null, Components.NOSE_CONE.getItem(), Components.NOSE_CONE.getItem(), null, null,
+        null, null, Components.HEAVY_DUTY_SHEET.getItem(), Components.HEAVY_DUTY_SHEET.getItem(), null, null,
+        null, Components.HEAVY_DUTY_SHEET.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.HEAVY_DUTY_SHEET.getItem(), null,
+        Components.HEAVY_DUTY_SHEET.getItem(), Components.FUEL_TANK.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.FUEL_TANK.getItem(), Components.HEAVY_DUTY_SHEET.getItem(),
+        Components.HEAVY_DUTY_SHEET.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.HEAVY_DUTY_SHEET.getItem(),
+        Components.HEAVY_DUTY_SHEET.getItem(), null, Components.ROCKET_ENGINE.getItem(), Components.ROCKET_ENGINE.getItem(), null, Components.HEAVY_DUTY_SHEET.getItem()
+    }),
     TWO(2, 100, 18, new ItemStack[9]),
     ;
 
@@ -65,7 +74,7 @@ public enum Rocket {
     @Nonnull
     private final SlimefunItemStack item;
 
-    Rocket(int tier, int fuelCapacity, int storageCapacity, @Nonnull ItemStack... recipe) {
+    Rocket(int tier, int fuelCapacity, int storageCapacity, @Nonnull ItemStack[] recipe) {
         this.tier = tier;
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
@@ -82,7 +91,7 @@ public enum Rocket {
 
     public static void setup(Galactifun addon) {
         for (Rocket rocket : Rocket.values()) {
-            new RocketItem(Categories.MAIN_CATEGORY, rocket.getItem(), RecipeType.ENHANCED_CRAFTING_TABLE, rocket.getRecipe()).register(addon);
+            new RocketItem(Categories.MAIN_CATEGORY, rocket.getItem(), RecipeTypes.ASSEMBLY_TABLE, rocket.getRecipe()).register(addon);
         }
     }
 
