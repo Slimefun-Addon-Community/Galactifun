@@ -15,7 +15,7 @@ import java.util.Locale;
 
 @Getter
 public enum Circuits {
-    DIAMOND(new ItemStack(Material.DIAMOND)),
+    DIAMOND(new ItemStack(Material.DIAMOND_BLOCK)),
     REDSTONE(new ItemStack(Material.REDSTONE_BLOCK)),
     LAPIS(new ItemStack(Material.LAPIS_BLOCK)),
     GLOWSTONE(new ItemStack(Material.GLOWSTONE))

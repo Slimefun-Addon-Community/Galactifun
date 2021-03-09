@@ -21,20 +21,40 @@ import javax.annotation.Nonnull;
 
 @Getter
 public enum Components {
+    GOLD_FOIL("&6Gold Foil", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
+        SlimefunItems.GOLD_24K_BLOCK, null, null,
+        null, null, null,
+        null, null, null
+    }, 4),
     REINFORCED_CHANNEL("Reinforced Channel", new ItemChoice(Material.BAMBOO), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
     }, 8),
+    FAN_BLADE("Fan Blade", new ItemChoice(Heads.FAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        null, SlimefunItems.STEEL_INGOT, null,
+        SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
+        null, SlimefunItems.STEEL_INGOT, null
+    }),
     NOZZLE("Nozzle", new ItemChoice(Material.IRON_TRAPDOOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
         null, new ItemStack(Material.IRON_TRAPDOOR), null
     }, 2),
+    FILTER("Filter", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
+        SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
+        SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
+    }),
+    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(Heads.OXYGEN_REGENERATOR.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem(),
+        NOZZLE.getItem(), GOLD_FOIL.getItem(), FILTER.getItem(),
+        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem()
+    }),
     ROCKET_ENGINE("Rocket Engine", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
         null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
-        null, null, NOZZLE.getItem(), NOZZLE.getItem(), null, null,
+        null, Circuits.DIAMOND.getItem(), NOZZLE.getItem(), NOZZLE.getItem(), Circuits.DIAMOND.getItem(), null,
         null, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.FLINT_AND_STEEL), new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.REINFORCED_PLATE, null,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
@@ -43,7 +63,15 @@ public enum Components {
         Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
         Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
         Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
-    })
+    }),
+    NOSE_CONE("Nose Cone", new ItemChoice(Material.REDSTONE_TORCH), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+        null, null, new ItemStack(Material.REDSTONE_TORCH), new ItemStack(Material.REDSTONE_TORCH), null, null,
+        null, null, SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT, null, null,
+        null, SlimefunItems.REINFORCED_ALLOY_INGOT, Circuits.GLOWSTONE.getItem(), Circuits.GLOWSTONE.getItem(), SlimefunItems.REINFORCED_ALLOY_INGOT, null,
+        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+    }),
     ;
     private final String name;
     private final RecipeType recipeType;

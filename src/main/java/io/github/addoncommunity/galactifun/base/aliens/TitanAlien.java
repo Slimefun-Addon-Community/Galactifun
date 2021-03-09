@@ -25,7 +25,7 @@ public final class TitanAlien extends Alien {
 
     @Override
     protected int getSpawnChance() {
-        return 16;
+        return 40;
     }
 
 }

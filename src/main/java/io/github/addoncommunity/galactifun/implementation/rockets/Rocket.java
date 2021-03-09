@@ -186,12 +186,12 @@ public enum Rocket {
 
                 menu.addItem(i++, item, (p1, slot, it, action) -> {
                     p1.closeInventory();
-                    long usedFuel = Math.round(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);
+                    int usedFuel = (int) Math.ceil(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);
                     p1.sendMessage(ChatColor.GOLD + "You are going to " + celestialWorld.getName() + " and will use " +
                         usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                     ChatUtils.awaitInput(p1, (input) -> {
                         if (input.equalsIgnoreCase("yes")) {
-                            launch(p1, b, celestialWorld, (int) (fuel - usedFuel), trueEff);
+                            launch(p1, b, celestialWorld, fuel - usedFuel, trueEff);
                         }
                     });
                     return false;
