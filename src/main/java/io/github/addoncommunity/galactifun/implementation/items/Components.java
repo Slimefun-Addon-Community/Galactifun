@@ -18,18 +18,24 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 @Getter
 public enum Components {
+    ALUMINUM_COMPOSITE_SHEET("Aluminum Composite Sheet", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
+        new SlimefunItemStack(Metals.ALUMINUM_COMPOSITE.getItem(), 8), null, null,
+        null, null, null,
+        null, null, null
+    }),
     GOLD_FOIL("&6Gold Foil", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
         SlimefunItems.GOLD_24K_BLOCK, null, null,
         null, null, null,
         null, null, null
     }, 4),
     REINFORCED_CHANNEL("Reinforced Channel", new ItemChoice(Material.BAMBOO), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
-        SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
-        SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
+        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
     }, 8),
     FAN_BLADE("Fan Blade", new ItemChoice(Heads.FAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         null, SlimefunItems.STEEL_INGOT, null,
@@ -74,16 +80,16 @@ public enum Components {
     }),
     NOSE_CONE("Nose Cone", new ItemChoice(Material.REDSTONE_TORCH), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, null, new ItemStack(Material.REDSTONE_TORCH), new ItemStack(Material.REDSTONE_TORCH), null, null,
-        null, null, SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT, null, null,
-        null, SlimefunItems.REINFORCED_ALLOY_INGOT, Circuits.GLOWSTONE.getItem(), Circuits.GLOWSTONE.getItem(), SlimefunItems.REINFORCED_ALLOY_INGOT, null,
-        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
-        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
-        SlimefunItems.REINFORCED_ALLOY_INGOT, null, null, null, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+        null, null, Metals.ALUMINUM_COMPOSITE.getItem(), Metals.ALUMINUM_COMPOSITE.getItem(), null, null,
+        null, Metals.ALUMINUM_COMPOSITE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Metals.ALUMINUM_COMPOSITE.getItem(), null,
+        Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
+        Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
+        Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
     }),
     HEAVY_DUTY_SHEET("Heavy Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-        SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem()
     }),
     FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
@@ -98,7 +104,8 @@ public enum Components {
     @Getter(AccessLevel.NONE)
     private final int amount;
 
-    Components(@Nonnull String name, @Nonnull ItemChoice material, @Nonnull RecipeType recipeType, @Nonnull ItemStack[] recipe, int amount) {
+    @ParametersAreNonnullByDefault
+    Components(String name, ItemChoice material, RecipeType recipeType, ItemStack[] recipe, int amount) {
         Validate.notNull(name);
         Validate.notNull(material);
         Validate.notNull(recipeType);
@@ -123,11 +130,12 @@ public enum Components {
         this.amount = amount;
     }
 
+    @ParametersAreNonnullByDefault
     Components(@Nonnull String name, @Nonnull ItemChoice material, @Nonnull RecipeType recipeType, @Nonnull ItemStack[] recipe) {
         this(name, material, recipeType, recipe, 1);
     }
 
-    public static void setup(Galactifun addon) {
+    public static void setup(@Nonnull Galactifun addon) {
         for (Components component : Components.values()) {
             SlimefunItem item = new UnplaceableBlock(Categories.COMPONENTS, component.item, component.recipeType, component.recipe, new SlimefunItemStack(component.item, component.amount));
             item.register(addon);

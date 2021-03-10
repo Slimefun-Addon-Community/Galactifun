@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.implementation.items.Circuits;
 import io.github.addoncommunity.galactifun.implementation.items.Components;
+import io.github.addoncommunity.galactifun.implementation.items.Metals;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
@@ -29,10 +30,11 @@ public final class Setup {
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
         }).register(addon);
 
+        Metals.setup(addon);
         Rocket.setup(addon);
         Components.setup(addon);
 
-        new CircuitPress().setEnergyConsumption(25).setCapacity(1024).register(addon);
+        new CircuitPress().setCapacity(1024).setEnergyConsumption(25).register(addon);
         Circuits.setup(addon);
         new AssemblyTable().register(addon);
     }
