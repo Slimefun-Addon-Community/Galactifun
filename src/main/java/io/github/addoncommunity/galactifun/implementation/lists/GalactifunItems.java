@@ -53,4 +53,12 @@ public final class GalactifunItems {
         LoreBuilder.powerPerSecond(500),
         LoreBuilder.powerBuffer(1024)
     );
+
+    public static final SlimefunItemStack MUNPOWDER = new SlimefunItemStack(
+        "MUNPOWDER",
+        Material.GUNPOWDER,
+        "&7Munpowder",
+        "",
+        "&7The gunpowder of the moon"
+    );
 }

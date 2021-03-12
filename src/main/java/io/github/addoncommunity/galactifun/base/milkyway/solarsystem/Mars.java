@@ -62,7 +62,7 @@ public final class Mars extends SimpleAlienWorld {
                 double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
                 // Choose a narrow selection of blocks
-                if (density > 0.35) {
+                if (Math.abs(density) < 0.03) {
                     chunk.setBlock(x, y, z, Material.CAVE_AIR);
                 }
             }
