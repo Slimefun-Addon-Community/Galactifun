@@ -47,7 +47,7 @@ public final class MutantCreeper extends Alien {
 
     @Override
     protected int getSpawnChance() {
-        return 60;
+        return 40;
     }
 
     @Override

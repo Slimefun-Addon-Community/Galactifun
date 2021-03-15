@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.implementation.items;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.implementation.lists.Heads;
 import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
@@ -57,10 +58,23 @@ public enum Components {
         NOZZLE.getItem(), GOLD_FOIL.getItem(), FILTER.getItem(),
         SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem()
     }),
+    SPARK_PLUG("Spark Plug", new ItemChoice(Material.FLINT_AND_STEEL), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
+        SlimefunItems.ALUMINUM_INGOT, null, GalactifunItems.MUNPOWDER,
+        null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
+    }),
     ROCKET_ENGINE("Rocket Engine", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
         null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
         null, Circuits.DIAMOND.getItem(), NOZZLE.getItem(), NOZZLE.getItem(), Circuits.DIAMOND.getItem(), null,
+        null, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.FLINT_AND_STEEL), new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.REINFORCED_PLATE, null,
+        SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
+        SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
+    }),
+    ROCKET_ENGINE_2("Rocket Engine Mk 2", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+        null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
+        null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
+        null, Circuits.DIAMOND.getItem(), SPARK_PLUG.getItem(), SPARK_PLUG.getItem(), Circuits.DIAMOND.getItem(), null,
         null, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.FLINT_AND_STEEL), new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.REINFORCED_PLATE, null,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,

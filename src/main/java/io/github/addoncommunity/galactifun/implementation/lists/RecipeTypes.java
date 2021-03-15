@@ -17,5 +17,8 @@ public class RecipeTypes {
         AssemblyTable.IDS.add(item.getItemId());
     });
 
+    // this is needed as using RecipeType.MOB_DROP looks up vanilla mobs
+    public static final RecipeType CUSTOM_MOB_DROP = new RecipeType(PluginUtils.getKey("gf_mob_drop"), RecipeType.MOB_DROP.toItem());
+
     public static final RecipeType CIRCUIT_PRESS = new RecipeType(PluginUtils.getKey("circuit_press"), GalactifunItems.CIRCUIT_PRESS);
 }

@@ -5,6 +5,7 @@ import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.items.Metals;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
 import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
 import io.github.addoncommunity.galactifun.implementation.machines.CircuitPress;
 import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadCore;
@@ -41,7 +42,7 @@ public final class Setup {
         new AssemblyTable().register(addon);
 
         // drops
-        new SlimefunItem(Categories.MAIN_CATEGORY, GalactifunItems.MUNPOWDER, RecipeType.MOB_DROP, new ItemStack[]{
+        new SlimefunItem(Categories.MAIN_CATEGORY, GalactifunItems.MUNPOWDER, RecipeTypes.CUSTOM_MOB_DROP, new ItemStack[]{
             null, null, null,
             null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper"), null,
             null, null, null
