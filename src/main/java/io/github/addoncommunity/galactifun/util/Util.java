@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  * Utilities
- * 
+ *
  * @author Seggan
  * @author Mooy1
  */
@@ -27,6 +27,13 @@ public final class Util {
         return from + random.nextInt(1 + to - from);
     }
 
+    /**
+     * Gets the closest {@code double} by value in the collection to the search double
+     *
+     * @param collection collection to search
+     * @param search double to search for
+     * @return closest double in the collection to search
+     */
     public static double getClosest(@Nonnull Collection<Double> collection, double search) {
         double dist = Double.MAX_VALUE;
         double closest = search;
@@ -40,5 +47,16 @@ public final class Util {
 
         return closest;
     }
-    
+
+
+    /**
+     * Fast floor, faster than {@code (int) Math.floor(num)}
+     *
+     * @param num the number to floor
+     * @return the floored number
+     */
+    public static int fastFloor(double num) {
+        return num >= 0 ? (int) num : (int) num - 1;
+    }
+
 }

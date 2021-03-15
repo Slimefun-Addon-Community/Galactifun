@@ -105,5 +105,4 @@ public final class Mars extends SimpleAlienWorld {
     protected long createSurfaceArea() {
         return 144_371_391L;
     }
-
 }
