@@ -61,4 +61,12 @@ public final class GalactifunItems {
         "",
         "&7The gunpowder of the moon"
     );
+
+    public static final SlimefunItemStack FALLEN_METEOR = new SlimefunItemStack(
+        "FALLEN_METEOR",
+        Material.ANCIENT_DEBRIS,
+        "&4Fallen Meteor",
+        "",
+        "&7These meteors contain Iridium"
+    );
 }

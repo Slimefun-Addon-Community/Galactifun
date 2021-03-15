@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun;
 
+import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.implementation.items.Circuits;
 import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.items.Metals;
@@ -45,6 +46,12 @@ public final class Setup {
         new SlimefunItem(Categories.MAIN_CATEGORY, GalactifunItems.MUNPOWDER, RecipeTypes.CUSTOM_MOB_DROP, new ItemStack[]{
             null, null, null,
             null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper"), null,
+            null, null, null
+        }).register(addon);
+
+        new SlimefunItem(Categories.MAIN_CATEGORY, GalactifunItems.FALLEN_METEOR, RecipeTypes.PLANET, new ItemStack[]{
+            BaseRegistry.MARS.getItem(), null, null,
+            null, null, null,
             null, null, null
         }).register(addon);
     }

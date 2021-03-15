@@ -6,6 +6,8 @@ import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import org.bukkit.Material;
 
 @UtilityClass
 public class RecipeTypes {
@@ -21,4 +23,11 @@ public class RecipeTypes {
     public static final RecipeType CUSTOM_MOB_DROP = new RecipeType(PluginUtils.getKey("gf_mob_drop"), RecipeType.MOB_DROP.toItem());
 
     public static final RecipeType CIRCUIT_PRESS = new RecipeType(PluginUtils.getKey("circuit_press"), GalactifunItems.CIRCUIT_PRESS);
+
+    public static final RecipeType PLANET = new RecipeType(PluginUtils.getKey("mars"), new CustomItem(
+        Material.END_STONE,
+        "&fNaturally Occurring",
+        "",
+        "&7Find this block on a planet"
+    ));
 }

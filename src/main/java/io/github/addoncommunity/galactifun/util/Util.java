@@ -58,5 +58,4 @@ public final class Util {
     public static int fastFloor(double num) {
         return num >= 0 ? (int) num : (int) num - 1;
     }
-
 }

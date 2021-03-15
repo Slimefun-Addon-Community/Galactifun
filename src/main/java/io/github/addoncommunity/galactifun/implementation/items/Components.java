@@ -28,6 +28,21 @@ public enum Components {
         null, null, null,
         null, null, null
     }),
+    HEAVY_DUTY_SHEET("Heavy Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
+        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem()
+    }),
+    SPACE_GRADE_PLATE("Space Grade Plate", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
+        ALUMINUM_COMPOSITE_SHEET.getItem(), Metals.IRIDIUM.getItem(), null,
+        null, null, null,
+        null, null, null
+    }),
+    ULTRA_DUTY_SHEET("Ultra Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SPACE_GRADE_PLATE.getItem(), SPACE_GRADE_PLATE.getItem(), null,
+        SPACE_GRADE_PLATE.getItem(), SPACE_GRADE_PLATE.getItem(), null,
+        null, null, null
+    }),
     GOLD_FOIL("&6Gold Foil", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
         SlimefunItems.GOLD_24K_BLOCK, null, null,
         null, null, null,
@@ -63,6 +78,11 @@ public enum Components {
         SlimefunItems.ALUMINUM_INGOT, null, GalactifunItems.MUNPOWDER,
         null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
     }),
+    SPARK_PLUG_2("Spark Plug Mk 2", new ItemChoice(Material.FLINT_AND_STEEL), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
+        Metals.IRIDIUM.getItem(), null, GalactifunItems.MUNPOWDER,
+        null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
+    }),
     ROCKET_ENGINE("Rocket Engine", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
         null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
@@ -74,10 +94,18 @@ public enum Components {
     ROCKET_ENGINE_2("Rocket Engine Mk 2", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
         null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
-        null, Circuits.DIAMOND.getItem(), SPARK_PLUG.getItem(), SPARK_PLUG.getItem(), Circuits.DIAMOND.getItem(), null,
-        null, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.FLINT_AND_STEEL), new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.REINFORCED_PLATE, null,
+        null, Circuits.DIAMOND.getItem(), NOZZLE.getItem(), NOZZLE.getItem(), Circuits.DIAMOND.getItem(), null,
+        null, SlimefunItems.REINFORCED_PLATE, SPARK_PLUG.getItem(), SPARK_PLUG.getItem(), SlimefunItems.REINFORCED_PLATE, null,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
         SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
+    }),
+    ROCKET_ENGINE_3("Rocket Engine Mk 3", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+        null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null,
+        null, null, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), null, null,
+        null, Circuits.DIAMOND.getItem(), NOZZLE.getItem(), NOZZLE.getItem(), Circuits.DIAMOND.getItem(), null,
+        null, SPACE_GRADE_PLATE.getItem(), SPARK_PLUG_2.getItem(), SPARK_PLUG_2.getItem(), SPACE_GRADE_PLATE.getItem(), null,
+        SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
+        SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
     }),
     ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(Heads.CORE.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
@@ -100,16 +128,16 @@ public enum Components {
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
     }),
-    HEAVY_DUTY_SHEET("Heavy Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem()
-    }),
     FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), null, HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem()
-    })
+    }),
+    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(),
+        ULTRA_DUTY_SHEET.getItem(), null, ULTRA_DUTY_SHEET.getItem(),
+        ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem()
+    }),
     ;
     private final String name;
     private final RecipeType recipeType;

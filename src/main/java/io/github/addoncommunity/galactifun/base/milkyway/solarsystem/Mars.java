@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -76,7 +77,7 @@ public final class Mars extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
+        populators.add(new BoulderPopulator(1, 2, GalactifunItems.FALLEN_METEOR, Material.RED_SAND));
     }
 
     @Nonnull

@@ -63,13 +63,22 @@ public enum Rocket {
         Components.HEAVY_DUTY_SHEET.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.HEAVY_DUTY_SHEET.getItem(),
         Components.HEAVY_DUTY_SHEET.getItem(), null, Components.ROCKET_ENGINE.getItem(), Components.ROCKET_ENGINE.getItem(), null, Components.HEAVY_DUTY_SHEET.getItem()
     }),
-    TWO(2, 100, 18, new ItemStack[]{null, null, Components.NOSE_CONE.getItem(), Components.NOSE_CONE.getItem(), null, null,
+    TWO(2, 100, 18, new ItemStack[]{
+        null, null, Components.NOSE_CONE.getItem(), Components.NOSE_CONE.getItem(), null, null,
         null, null, Components.HEAVY_DUTY_SHEET.getItem(), Components.HEAVY_DUTY_SHEET.getItem(), null, null,
         null, Components.HEAVY_DUTY_SHEET.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.HEAVY_DUTY_SHEET.getItem(), null,
         Components.HEAVY_DUTY_SHEET.getItem(), Components.FUEL_TANK.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.FUEL_TANK.getItem(), Components.HEAVY_DUTY_SHEET.getItem(),
         Components.HEAVY_DUTY_SHEET.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.HEAVY_DUTY_SHEET.getItem(),
         Components.HEAVY_DUTY_SHEET.getItem(), null, Components.ROCKET_ENGINE_2.getItem(), Components.ROCKET_ENGINE_2.getItem(), null, Components.HEAVY_DUTY_SHEET.getItem()
 
+    }),
+    THREE(3, 500, 36, new ItemStack[]{
+        null, null, Components.NOSE_CONE.getItem(), Components.NOSE_CONE.getItem(), null, null,
+        null, null, Components.ULTRA_DUTY_SHEET.getItem(), Components.ULTRA_DUTY_SHEET.getItem(), null, null,
+        null, Components.HEAVY_DUTY_SHEET.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.ADVANCED_PROCESSING_UNIT.getItem(), Components.ULTRA_DUTY_SHEET.getItem(), null,
+        Components.ULTRA_DUTY_SHEET.getItem(), Components.FUEL_TANK_2.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.LIFE_SUPPORT_MODULE.getItem(), Components.FUEL_TANK_2.getItem(), Components.ULTRA_DUTY_SHEET.getItem(),
+        Components.ULTRA_DUTY_SHEET.getItem(), Components.FUEL_TANK_2.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK.getItem(), Components.FUEL_TANK_2.getItem(), Components.ULTRA_DUTY_SHEET.getItem(),
+        Components.ULTRA_DUTY_SHEET.getItem(), null, Components.ROCKET_ENGINE_3.getItem(), Components.ROCKET_ENGINE_3.getItem(), null, Components.ULTRA_DUTY_SHEET.getItem()
     }),
     ;
 
