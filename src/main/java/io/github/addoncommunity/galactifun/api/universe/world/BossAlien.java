@@ -167,13 +167,7 @@ public abstract class BossAlien extends Alien {
         BossBarStyle style = getBossBarStyle();
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
-        if (entity.isInsideVehicle() && entity.getVehicle() instanceof LivingEntity) {
-            LivingEntity vehicle = (LivingEntity) entity.getVehicle();
-            bossbar.setProgress((entity.getHealth() + vehicle.getHealth()) / (entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() +
-                    vehicle.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
-        } else {
-            bossbar.setProgress(entity.getHealth() / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-        }
+        bossbar.setProgress(entity.getHealth() / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         instances.put(entity, bossbar);
         return bossbar;
     }
