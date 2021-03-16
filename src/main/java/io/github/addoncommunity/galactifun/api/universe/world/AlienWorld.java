@@ -276,6 +276,10 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // alien ticker
         PluginUtils.scheduleRepeatingSync(() -> {
+            for (Alien alien : Alien.ALIENS.values()) {
+                alien.onUniqueTick();
+            }
+
             for (World world : WORLDS.keySet()) {
                 for (LivingEntity entity : world.getLivingEntities()) {
                     Alien alien = Alien.getByEntity(entity);
