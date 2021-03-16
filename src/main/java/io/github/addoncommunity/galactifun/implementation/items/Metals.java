@@ -24,9 +24,9 @@ public enum Metals {
         "&7to name this material"
     }, SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
         SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST),
-    IRIDIUM("Iridium Ingot", Material.NETHERITE_INGOT, new String[]{
+    TUNGSTEN("Tungsten Ingot", Material.NETHERITE_INGOT, new String[]{
         "",
-        "&7A strong metals obtained either from",
+        "&7A strong metal obtained either from",
         "&7giving Martians reinforced plates or",
         "&from smelting fallen meteors"
     }, GalactifunItems.FALLEN_METEOR),

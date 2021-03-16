@@ -34,7 +34,7 @@ public enum Components {
         ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem()
     }),
     SPACE_GRADE_PLATE("Space Grade Plate", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
-        ALUMINUM_COMPOSITE_SHEET.getItem(), Metals.IRIDIUM.getItem(), null,
+        ALUMINUM_COMPOSITE_SHEET.getItem(), Metals.TUNGSTEN.getItem(), null,
         null, null, null,
         null, null, null
     }),
@@ -80,7 +80,7 @@ public enum Components {
     }),
     SPARK_PLUG_2("Spark Plug Mk 2", new ItemChoice(Material.FLINT_AND_STEEL), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
-        Metals.IRIDIUM.getItem(), null, GalactifunItems.MUNPOWDER,
+        Metals.TUNGSTEN.getItem(), null, GalactifunItems.MUNPOWDER,
         null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
     }),
     ROCKET_ENGINE("Rocket Engine", new ItemChoice(Material.FLINT_AND_STEEL), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{

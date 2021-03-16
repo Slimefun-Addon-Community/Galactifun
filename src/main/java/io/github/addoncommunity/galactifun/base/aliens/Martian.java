@@ -48,7 +48,7 @@ public final class Martian extends Alien {
         // Fixes the sword
         addTrade(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
         addTrade(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
-        this.trades.put(SlimefunItems.REINFORCED_PLATE, Metals.IRIDIUM.getItem());
+        this.trades.put(SlimefunItems.REINFORCED_PLATE, Metals.TUNGSTEN.getItem());
         // TODO add more trades
     }
 

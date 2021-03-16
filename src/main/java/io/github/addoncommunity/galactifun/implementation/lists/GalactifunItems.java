@@ -67,6 +67,6 @@ public final class GalactifunItems {
         Material.ANCIENT_DEBRIS,
         "&4Fallen Meteor",
         "",
-        "&7These meteors contain Iridium"
+        "&7These meteors contain Tungsten"
     );
 }
