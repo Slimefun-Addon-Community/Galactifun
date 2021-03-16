@@ -29,4 +29,9 @@ public final class ItemChoice {
         this.item = new ItemStack(material);
     }
 
+    public ItemChoice(@Nonnull ItemStack stack) {
+        Validate.notNull(stack);
+        this.item = stack.clone();
+    }
+
 }
