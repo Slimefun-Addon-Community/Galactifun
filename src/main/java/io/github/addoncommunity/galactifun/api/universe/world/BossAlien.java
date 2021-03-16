@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.base.aliens.bosses.TitanKing;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -17,19 +18,28 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract class for an alien boss
+ *
+ * @see TitanKing
+ *
+ * @author Seggan
+ * @author GallowsDove
+ *
+ */
+
 public abstract class BossAlien extends Alien {
 
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "galactifun_boss");
 
-    private final Map<LivingEntity, BossBar> instances = new HashMap<>();
+    private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
 
-    private int num = 0;
+    private int tick = 0;
 
     protected static final class BossBarStyle {
         private final String name;
@@ -71,7 +81,7 @@ public abstract class BossAlien extends Alien {
 
         spawned.setRemoveWhenFarAway(false);
 
-        this.instances.put(spawned, bossbar);
+        instances.put(spawned, bossbar);
     }
 
     @Override
@@ -80,7 +90,7 @@ public abstract class BossAlien extends Alien {
 
         if (!e.isCancelled() && e.getEntity() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) e.getEntity();
-            BossBar bossbar = this.instances.get(entity);
+            BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
@@ -93,7 +103,7 @@ public abstract class BossAlien extends Alien {
     public void onDamage(@Nonnull EntityDamageEvent e) {
         if (e.getEntity() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) e.getEntity();
-            BossBar bossbar = this.instances.get(entity);
+            BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
@@ -112,40 +122,60 @@ public abstract class BossAlien extends Alien {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onDeath(@Nonnull EntityDeathEvent e) {
-        BossBar bossbar = this.instances.get(e.getEntity());
+        BossBar bossbar = getBossBarForEntity(e.getEntity());
         bossbar.removeAll();
-        this.instances.remove(e.getEntity());
+        instances.remove(e.getEntity());
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    protected void onUniqueTick() {
+        this.tick++;
+        if (this.tick >= 10) {
+            this.tick = 0;
+        }
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onMobTick(@Nonnull LivingEntity mob) {
-        this.num++;
-        if (this.num >= 10) {
+        if (this.tick == 0) {
             Location l = mob.getLocation();
             long dist = (long) getBossBarDistance() * getBossBarDistance();
 
-            BossBar bossbar = this.instances.get(mob);
-            if (bossbar != null) {
-                List<Player> players = bossbar.getPlayers();
+            BossBar bossbar = getBossBarForEntity(mob);
+            List<Player> players = bossbar.getPlayers();
 
-                for (Player player : mob.getWorld().getPlayers()) {
-                    double distSquared = l.distanceSquared(player.getLocation());
+            for (Player player : mob.getWorld().getPlayers()) {
+                double distSquared = l.distanceSquared(player.getLocation());
 
-                    if (distSquared <= dist && !players.contains(player)) {
-                        bossbar.addPlayer(player);
-                    } else if (distSquared > dist && players.contains(player)) {
-                        bossbar.removePlayer(player);
-                    }
+                if (distSquared <= dist && !players.contains(player)) {
+                    bossbar.addPlayer(player);
+                } else if (distSquared > dist && players.contains(player)) {
+                    bossbar.removePlayer(player);
                 }
             }
-
-            this.num = 0;
         }
     }
 
-    @Nullable
+    @Nonnull
     protected final BossBar getBossBarForEntity(LivingEntity entity) {
-        return this.instances.get(entity);
+        if (instances.containsKey(entity)) {
+            return instances.get(entity);
+        }
+
+        BossBarStyle style = getBossBarStyle();
+        BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
+        bossbar.setVisible(true);
+        bossbar.setProgress(entity.getHealth() / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        instances.put(entity, bossbar);
+        return bossbar;
+    }
+
+    public static void removeBossBars() {
+        for (BossBar bossbar: instances.values()) {
+            bossbar.setVisible(false);
+            bossbar.removeAll();
+        }
     }
 }

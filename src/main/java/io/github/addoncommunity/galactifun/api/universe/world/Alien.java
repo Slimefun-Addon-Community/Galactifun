@@ -101,6 +101,8 @@ public abstract class Alien {
 
     protected void onSpawn(@Nonnull LivingEntity spawned) { }
 
+    protected void onUniqueTick() { }
+
     protected void onMobTick(@Nonnull LivingEntity mob) { }
 
     protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
