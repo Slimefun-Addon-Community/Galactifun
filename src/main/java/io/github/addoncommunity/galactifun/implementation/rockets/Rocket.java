@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 @Getter
 public enum Rocket {
@@ -126,6 +127,9 @@ public enum Rocket {
 
     private static class RocketItem extends SlimefunItem {
 
+        private static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
+        private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
+
         public RocketItem(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
             super(category, item, recipeType, recipe);
 
@@ -133,7 +137,7 @@ public enum Rocket {
 
             addItemHandler(new BlockPlaceHandler(true) {
                 @Override
-                public void onPlayerPlace(BlockPlaceEvent e) {
+                public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                     Block b = e.getBlock();
                     BlockData data = b.getBlockData();
                     if (data instanceof Rotatable) {
@@ -227,89 +231,100 @@ public enum Rocket {
         }
 
         private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuelLeft, double eff) {
-            ConfigurationSection section = ConfigUtils.load("config.yml").getConfiguration().getConfigurationSection("rockets");
-            if (section == null) {
-                PluginUtils.log(Level.SEVERE, "Could not load launch messages!");
-                return;
-            }
-            List<String> messages = section.getStringList("launch-msgs");
-
-            // yes ik boolean#tostring isn't needed but just for safety
-            BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
-
-            World world = p.getWorld();
-
-            new BukkitRunnable() {
-                private int times = 0;
-                private final Block pad = b.getRelative(BlockFace.DOWN);
-
-                @Override
-                public void run() {
-                    if (times++ < 20) {
-                        for (BlockFace face : Util.SURROUNDING_FACES) {
-                            Block block = pad.getRelative(face);
-                            world.spawnParticle(Particle.ASH, block.getLocation(), 100, 0.5, 0.5, 0.5);
-                        }
-                    } else {
-                        this.cancel();
-                    }
+            p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z>:");
+            ChatUtils.awaitInput(p, (response) -> {
+                if (!COORD_PATTERN.matcher(response).matches()) {
+                    p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
+                    return;
                 }
-            }.runTaskTimer(Galactifun.getInstance(), 0, 10);
+                String[] split = SPACE_PATTERN.split(response);
+                int x = Integer.parseInt(split[0]);
+                int z = Integer.parseInt(split[1]);
 
-            World to = worldTo.getWorld();
-
-            Chunk destChunk = to.getChunkAt(0, 0);
-            if (!destChunk.isLoaded()) {
-                destChunk.load(true);
-            }
-
-            Block destBlock = to.getHighestBlockAt(8, 8).getRelative(BlockFace.UP);
-
-            PluginUtils.runSync(() -> {
-                destBlock.setType(Material.CHEST);
-                BlockData data = destBlock.getBlockData();
-                if (data instanceof Rotatable) {
-                    ((Rotatable) data).setRotation(BlockFace.NORTH);
+                ConfigurationSection section = ConfigUtils.load("config.yml").getConfiguration().getConfigurationSection("rockets");
+                if (section == null) {
+                    PluginUtils.log(Level.SEVERE, "Could not load launch messages!");
+                    return;
                 }
-                destBlock.setBlockData(data, true);
+                List<String> messages = section.getStringList("launch-msgs");
 
-                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
-                if (state instanceof Chest) {
-                    Chest chest = (Chest) state;
-                    Inventory inv = chest.getInventory();
-                    inv.clear(); // just in case
-                    inv.addItem(this.getItem().clone());
+                // yes ik boolean#tostring isn't needed but just for safety
+                BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
 
-                    BiMap<ItemStack, Double> fuels = LaunchPadCore.getFuels();
-                    ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
-                    if (fuel != null) {
-                        fuel = fuel.clone();
-                        fuel.setAmount(fuelLeft);
-                        inv.addItem(fuel);
-                    }
-                }
-                state.update();
+                World world = p.getWorld();
 
-                p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
-            }, 40);
+                new BukkitRunnable() {
+                    private int times = 0;
+                    private final Block pad = b.getRelative(BlockFace.DOWN);
 
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
-            PluginUtils.runSync(() -> {
-                p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
-
-                for (Entity entity : world.getEntities()) {
-                    if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
-                        if (entity.getLocation().distanceSquared(b.getLocation()) <= 25) {
-                            PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                    @Override
+                    public void run() {
+                        if (times++ < 20) {
+                            for (BlockFace face : Util.SURROUNDING_FACES) {
+                                Block block = pad.getRelative(face);
+                                world.spawnParticle(Particle.ASH, block.getLocation(), 100, 0.5, 0.5, 0.5);
+                            }
+                        } else {
+                            this.cancel();
                         }
                     }
+                }.runTaskTimer(Galactifun.getInstance(), 0, 10);
+
+                World to = worldTo.getWorld();
+
+                Block destBlock = to.getHighestBlockAt(x, z).getRelative(BlockFace.UP);
+
+                Chunk destChunk = destBlock.getChunk();
+                if (!destChunk.isLoaded()) {
+                    destChunk.load(true);
                 }
 
-                b.setType(Material.AIR);
-                BlockStorage.clearBlockInfo(b);
-            }, 200);
+                PluginUtils.runSync(() -> {
+                    destBlock.setType(Material.CHEST);
+                    BlockData data = destBlock.getBlockData();
+                    if (data instanceof Rotatable) {
+                        ((Rotatable) data).setRotation(BlockFace.NORTH);
+                    }
+                    destBlock.setBlockData(data, true);
+
+                    BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+                    if (state instanceof Chest) {
+                        Chest chest = (Chest) state;
+                        Inventory inv = chest.getInventory();
+                        inv.clear(); // just in case
+                        inv.addItem(this.getItem().clone());
+
+                        BiMap<ItemStack, Double> fuels = LaunchPadCore.getFuels();
+                        ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
+                        if (fuel != null) {
+                            fuel = fuel.clone();
+                            fuel.setAmount(fuelLeft);
+                            inv.addItem(fuel);
+                        }
+                    }
+                    state.update();
+
+                    p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
+                }, 40);
+
+                PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
+                PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
+                PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
+                PluginUtils.runSync(() -> {
+                    p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
+
+                    for (Entity entity : world.getEntities()) {
+                        if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
+                            if (entity.getLocation().distanceSquared(b.getLocation()) <= 25) {
+                                PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                            }
+                        }
+                    }
+
+                    b.setType(Material.AIR);
+                    BlockStorage.clearBlockInfo(b);
+                }, 200);
+            });
         }
 
         private static List<CelestialWorld> getReachable(CelestialWorld current, long maxDist) {

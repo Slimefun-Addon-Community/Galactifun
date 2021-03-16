@@ -38,7 +38,7 @@ public final class Setup {
         Rocket.setup(addon);
         Components.setup(addon);
 
-        new CircuitPress().setCapacity(1024).setEnergyConsumption(25).register(addon);
+        new CircuitPress().setCapacity(1024).setEnergyConsumption(25).setProcessingSpeed(1).register(addon);
         Circuits.setup(addon);
         new AssemblyTable().register(addon);
 

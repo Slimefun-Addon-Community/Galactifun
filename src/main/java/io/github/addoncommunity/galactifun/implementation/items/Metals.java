@@ -28,7 +28,7 @@ public enum Metals {
         "",
         "&7A strong metal obtained either from",
         "&7giving Martians reinforced plates or",
-        "&from smelting fallen meteors"
+        "&7from smelting fallen meteors"
     }, GalactifunItems.FALLEN_METEOR),
     ;
     private final String name;
