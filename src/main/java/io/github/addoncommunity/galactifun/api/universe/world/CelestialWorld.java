@@ -27,7 +27,7 @@ public abstract class CelestialWorld extends CelestialBody {
     /**
      * All celestial worlds
      */
-    @Getter()
+    @Getter
     private static final Map<World, CelestialWorld> worlds = new HashMap<>();
 
     @Nullable

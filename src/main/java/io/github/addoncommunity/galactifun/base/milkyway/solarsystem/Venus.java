@@ -85,12 +85,12 @@ public final class Venus extends SimpleAlienWorld {
 
     @Override
     protected int getAverageHeight() {
-        return 80;
+        return 50;
     }
 
     @Override
     protected int getMaxDeviation() {
-        return 45;
+        return 50;
     }
 
     @Override
@@ -103,4 +103,8 @@ public final class Venus extends SimpleAlienWorld {
         return .3;
     }
 
+    @Override
+    protected boolean addOne() {
+        return true;
+    }
 }

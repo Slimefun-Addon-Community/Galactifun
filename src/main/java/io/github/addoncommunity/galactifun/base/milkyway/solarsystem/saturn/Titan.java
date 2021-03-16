@@ -40,7 +40,8 @@ public final class Titan extends AlienWorld {
         Biome.BIRCH_FOREST_HILLS,
         Biome.FLOWER_FOREST,
         Biome.TALL_BIRCH_FOREST,
-        Biome.WOODED_HILLS
+        Biome.WOODED_HILLS,
+        Biome.WOODED_MOUNTAINS
     );
 
     public Titan() {
@@ -65,7 +66,8 @@ public final class Titan extends AlienWorld {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
                 // find max height
-                height = (int) (55 + 30 * + generator.noise(realX, realZ, 0.5, 0.5, true));
+                double startHeight = generator.noise(realX, realZ, 0.5, 0.5, true);
+                height = (int) (55 + 30 * + (startHeight * startHeight));
 
                 Biome biome = grid.getBiome(x, height, z);
 
@@ -137,8 +139,8 @@ public final class Titan extends AlienWorld {
                     case OCEAN:
                     case BEACH:
                     case SNOWY_BEACH:
-                        if (height < 55) {
-                            for (int i = 55; i > height; i--) {
+                        if (height <= 58) {
+                            for (int i = 58; i > height; i--) {
                                 chunk.setBlock(x, i, z, Material.WATER);
                             }
                         }
@@ -202,6 +204,7 @@ public final class Titan extends AlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        // TODO add more vegetation
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {

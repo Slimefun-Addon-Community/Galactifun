@@ -1,7 +1,9 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.implementation.items.Metals;
 import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -15,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.annotation.Nonnull;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,7 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public final class Martian extends Alien {
 
-    private final Map<Material, ItemStack> trades = new EnumMap<>(Material.class);
+    private final Map<ItemStack, ItemStack> trades = new HashMap<>();
     private final ItemStack[] armor = {
             new ItemStack(Material.IRON_BOOTS),
             new ItemStack(Material.IRON_LEGGINGS),
@@ -44,8 +46,14 @@ public final class Martian extends Alien {
 
     private void setupTrades() {
         // Fixes the sword
-        this.trades.put(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
-        this.trades.put(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
+        addTrade(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
+        addTrade(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
+        this.trades.put(SlimefunItems.REINFORCED_PLATE, Metals.TUNGSTEN.getItem());
+        // TODO add more trades
+    }
+
+    private void addTrade(Material material, ItemStack trade) {
+        this.trades.put(new ItemStack(material), trade);
     }
 
     @Override
@@ -81,9 +89,9 @@ public final class Martian extends Alien {
         LivingEntity entity = (LivingEntity) e.getRightClicked();
         ItemStack item = e.getPlayer().getInventory().getItem(e.getHand());
 
-        ItemStack trade = this.trades.get(item.getType());
+        ItemStack trade = this.trades.get(item);
 
-        if (trade != null) {
+        if (trade != null && item.getAmount() >= trade.getAmount()) {
             Objects.requireNonNull(entity.getEquipment()).setItemInOffHand(item);
             entity.addPotionEffect(new PotionEffect(
                 PotionEffectType.SLOW,
@@ -94,7 +102,7 @@ public final class Martian extends Alien {
             ));
 
             if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                ItemUtils.consumeItem(item, true);
+                ItemUtils.consumeItem(item, trade.getAmount(), true);
             }
 
             PluginUtils.runSync(() -> {

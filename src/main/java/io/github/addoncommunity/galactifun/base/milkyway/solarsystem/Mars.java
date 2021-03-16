@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -62,7 +63,7 @@ public final class Mars extends SimpleAlienWorld {
                 double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
                 // Choose a narrow selection of blocks
-                if (density > 0.35) {
+                if (Math.abs(density) < 0.03) {
                     chunk.setBlock(x, y, z, Material.CAVE_AIR);
                 }
             }
@@ -76,7 +77,7 @@ public final class Mars extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BoulderPopulator(2, 20, Material.GRANITE, Material.RED_SAND));
+        populators.add(new BoulderPopulator(1, 2, GalactifunItems.FALLEN_METEOR, Material.RED_SAND));
     }
 
     @Nonnull
@@ -105,5 +106,4 @@ public final class Mars extends SimpleAlienWorld {
     protected long createSurfaceArea() {
         return 144_371_391L;
     }
-
 }
