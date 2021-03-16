@@ -21,7 +21,9 @@ import java.util.Random;
 public class VolcanoPopulator extends BlockPopulator {
     
     private final int minY;
+    @Nonnull
     private final Material belowLiquid;
+    @Nonnull
     private final Material liquid;
     
     @Override

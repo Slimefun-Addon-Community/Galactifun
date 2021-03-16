@@ -27,9 +27,12 @@ import java.util.Random;
 public class BoulderPopulator extends BlockPopulator {
     private final int attempts;
     private final int chance;
-    @Nonnull private final Material ore;
-    @Nullable private final String id;
-    @Nonnull private final List<Material> source;
+    @Nonnull
+    private final Material ore;
+    @Nullable
+    private final String id;
+    @Nonnull
+    private final List<Material> source;
 
 
     public BoulderPopulator(int attempts, int chance, @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
