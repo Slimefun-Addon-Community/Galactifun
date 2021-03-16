@@ -24,9 +24,9 @@ public class RecipeTypes {
 
     public static final RecipeType CIRCUIT_PRESS = new RecipeType(PluginUtils.getKey("circuit_press"), GalactifunItems.CIRCUIT_PRESS);
 
-    public static final RecipeType PLANET = new RecipeType(PluginUtils.getKey("mars"), new CustomItem(
+    public static final RecipeType PLANET = new RecipeType(PluginUtils.getKey("planet"), new CustomItem(
         Material.END_STONE,
-        "&fNaturally Occurring",
+        "&fNaturally Generating",
         "",
         "&7Find this block on a planet"
     ));
