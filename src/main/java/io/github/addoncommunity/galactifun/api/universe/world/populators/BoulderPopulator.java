@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.world.populators;
 
-import io.github.mooy1.infinitylib.PluginUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Chunk;
@@ -63,12 +62,9 @@ public class BoulderPopulator extends BlockPopulator {
                     b.getRelative(BlockFace.UP).setType(this.ore);
 
                     if (this.id != null) {
-                        final int fx = x;
                         final int fy = b.getRelative(BlockFace.UP).getY();
-                        final int fz = z;
 
-                        // Cam produce concurrentModificationException error, currently non-avoidable
-                        PluginUtils.runSync(() -> BlockStorage.store(chunk.getBlock(fx, fy, fz), this.id));
+                        BlockStorage.store(chunk.getBlock(x, fy, z), this.id);
                     }
                 }
             }
