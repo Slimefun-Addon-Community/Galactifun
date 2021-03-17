@@ -158,7 +158,10 @@ public enum Rocket {
             }
 
             CelestialWorld world = CelestialWorld.getByWorld(p.getWorld());
-            if (world == null) return;
+            if (world == null) {
+                p.sendMessage(ChatColor.RED + "You are not in a celestial world!");
+                return;
+            }
 
             s = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
             if (s == null) return;
