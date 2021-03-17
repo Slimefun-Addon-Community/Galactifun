@@ -53,7 +53,7 @@ public enum Components {
         ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
         ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
     }, 8),
-    FAN_BLADE("Fan Blade", new ItemChoice(Heads.FAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FAN_BLADE("Fan Blade", new ItemChoice(Heads.FAN.getAsItemStack()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         null, SlimefunItems.STEEL_INGOT, null,
         SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
         null, SlimefunItems.STEEL_INGOT, null
@@ -63,15 +63,15 @@ public enum Components {
         SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
         null, new ItemStack(Material.IRON_TRAPDOOR), null
     }, 2),
-    FILTER("Filter", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    AIR_FILTER("Air Filter", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
     }),
-    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(Heads.OXYGEN_REGENERATOR.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem(),
-        NOZZLE.getItem(), GOLD_FOIL.getItem(), FILTER.getItem(),
-        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem()
+    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(Heads.OXYGEN_REGENERATOR.getAsItemStack()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), AIR_FILTER.getItem(),
+        NOZZLE.getItem(), GOLD_FOIL.getItem(), AIR_FILTER.getItem(),
+        SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), AIR_FILTER.getItem()
     }),
     SPARK_PLUG("Spark Plug", new ItemChoice(Material.FLINT_AND_STEEL), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
@@ -107,12 +107,12 @@ public enum Components {
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
     }),
-    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(Heads.CORE.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(Heads.CORE.getAsItemStack()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
         Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
         Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
     }),
-    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(Heads.LIFE_SUPPORT_MODULE.getTexture()), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(Heads.LIFE_SUPPORT_MODULE.getAsItemStack()), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, Circuits.LAPIS.getItem(), OXYGEN_REGENERATOR.getItem(), OXYGEN_REGENERATOR.getItem(), Circuits.LAPIS.getItem(), SlimefunItems.STEEL_INGOT,
@@ -128,12 +128,12 @@ public enum Components {
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
     }),
-    FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getAsItemStack()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), null, HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem()
     }),
-    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(Heads.CAN.getAsItemStack()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), null, ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem()
