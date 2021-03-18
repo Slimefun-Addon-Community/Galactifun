@@ -98,8 +98,7 @@ public class LaunchPadCore extends AbstractTicker {
     }
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
-        Rocket rocket = Rocket.getById(BlockStorage.checkID(b.getRelative(BlockFace.UP)));
-        if (rocket != null && Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), "isLaunching"))) {
+        if (Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getRelative(BlockFace.UP).getLocation(), "isLaunching"))) {
             p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
             return false;
         }
@@ -109,21 +108,21 @@ public class LaunchPadCore extends AbstractTicker {
 
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
-        menu.dropItems(l, INVENTORY_SLOTS);
-        menu.dropItems(l, 33);
+        if (canBreak(e.getPlayer(), e.getBlock())) {
+            menu.dropItems(l, INVENTORY_SLOTS);
+            menu.dropItems(l, 33);
 
-        Block rocketBlock = l.add(0, 1, 0).getBlock();
-        Rocket rocket = Rocket.getById(BlockStorage.checkID(rocketBlock));
-        // TODO optimize this; it does 2 checks for rockets
-        if (rocket != null) {
-            if (canBreak(e.getPlayer(), e.getBlock())) {
+            Block rocketBlock = l.add(0, 1, 0).getBlock();
+            Rocket rocket = Rocket.getById(BlockStorage.checkID(rocketBlock));
+            // TODO optimize this; it does 2 checks for rockets
+            if (rocket != null) {
                 World world = l.getWorld();
                 rocketBlock.setType(Material.AIR);
                 BlockStorage.clearBlockInfo(rocketBlock);
                 world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());
-            } else {
-                e.setCancelled(true);
             }
+        } else {
+            e.setCancelled(true);
         }
     }
 
