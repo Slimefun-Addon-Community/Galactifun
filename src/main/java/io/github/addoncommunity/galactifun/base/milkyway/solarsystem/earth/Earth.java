@@ -8,9 +8,9 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.mooy1.infinitylib.ConfigUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +27,8 @@ public final class Earth extends CelestialWorld {
     
     @Nonnull
     private static World getMainWorld() {
-        World world = Bukkit.getWorld(ConfigUtils.getString("worlds.earth-name", "world"));
+        String name = ConfigUtils.getString("worlds.earth-name", "world");
+        World world = new WorldCreator(name).createWorld(); // this will load the world as only the default world loads on startup
         if (world == null) {
             throw new IllegalStateException("Failed to read earth world name from config; no default world found!");
         } else {
