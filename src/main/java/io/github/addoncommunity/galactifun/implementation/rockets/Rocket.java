@@ -11,6 +11,7 @@ import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -40,6 +41,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -108,7 +110,9 @@ public enum Rocket {
 
     public static void setup(Galactifun addon) {
         for (Rocket rocket : Rocket.values()) {
-            new RocketItem(Categories.MAIN_CATEGORY, rocket.getItem(), RecipeTypes.ASSEMBLY_TABLE, rocket.getRecipe()).register(addon);
+            RocketItem rocketItem = new RocketItem(Categories.MAIN_CATEGORY, rocket.getItem(), RecipeTypes.ASSEMBLY_TABLE, rocket.getRecipe());
+            rocketItem.register(addon);
+            rocketItem.setHidden(true);
         }
     }
 
@@ -144,6 +148,16 @@ public enum Rocket {
                         ((Rotatable) data).setRotation(BlockFace.NORTH);
                     }
                     b.setBlockData(data, true);
+                }
+            });
+
+            addItemHandler(new BlockBreakHandler(false, false) {
+                @Override
+                public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack itemStack, @Nonnull List<ItemStack> list) {
+                    if (Boolean.parseBoolean(BlockStorage.getLocationInfo(e.getBlock().getLocation(), "isLaunching"))) {
+                        e.getPlayer().sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
+                        e.setCancelled(true);
+                    }
                 }
             });
         }
@@ -230,8 +244,9 @@ public enum Rocket {
                         if (input.equalsIgnoreCase("yes")) {
                             p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z>:");
                             ChatUtils.awaitInput(p, (response) -> {
-                                if (COORD_PATTERN.matcher(response).matches()) {
-                                    String[] split = SPACE_PATTERN.split(response);
+                                String trimmed = response.trim();
+                                if (COORD_PATTERN.matcher(trimmed).matches()) {
+                                    String[] split = SPACE_PATTERN.split(trimmed);
                                     int x = Integer.parseInt(split[0]);
                                     int z = Integer.parseInt(split[1]);
                                     launch(p1, b, celestialWorld, fuel - usedFuel, trueEff, x, z);

@@ -65,9 +65,7 @@ public class BoulderPopulator extends BlockPopulator {
                     b.getRelative(BlockFace.UP).setType(this.ore);
 
                     if (this.id != null) {
-                        final int fy = b.getRelative(BlockFace.UP).getY();
-
-                        BlockStorage.store(chunk.getBlock(x, fy, z), this.id);
+                        BlockStorage.store(chunk.getBlock(x, b.getRelative(BlockFace.UP).getY(), z), this.id);
                     }
                 }
             }

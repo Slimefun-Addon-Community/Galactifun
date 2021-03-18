@@ -59,6 +59,8 @@ public class LaunchPadCore extends AbstractTicker {
 
     @Override
     protected void tick(@Nonnull BlockMenu menu, @Nonnull Block block, @Nonnull Config config) {
+        if (!isSurroundedByFloors(block)) return;
+
         Block b = block.getRelative(BlockFace.UP);
         for (Rocket rocket : Rocket.values()) {
             if (BlockStorage.check(b, rocket.getItem().getItemId())) {
@@ -95,6 +97,16 @@ public class LaunchPadCore extends AbstractTicker {
         }
     }
 
+    public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
+        Rocket rocket = Rocket.getById(BlockStorage.checkID(b.getRelative(BlockFace.UP)));
+        if (rocket != null && Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), "isLaunching"))) {
+            p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
         menu.dropItems(l, INVENTORY_SLOTS);
@@ -102,11 +114,16 @@ public class LaunchPadCore extends AbstractTicker {
 
         Block rocketBlock = l.add(0, 1, 0).getBlock();
         Rocket rocket = Rocket.getById(BlockStorage.checkID(rocketBlock));
+        // TODO optimize this; it does 2 checks for rockets
         if (rocket != null) {
-            World world = l.getWorld();
-            rocketBlock.setType(Material.AIR);
-            BlockStorage.clearBlockInfo(rocketBlock);
-            world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());
+            if (canBreak(e.getPlayer(), e.getBlock())) {
+                World world = l.getWorld();
+                rocketBlock.setType(Material.AIR);
+                BlockStorage.clearBlockInfo(rocketBlock);
+                world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());
+            } else {
+                e.setCancelled(true);
+            }
         }
     }
 

@@ -10,9 +10,9 @@ import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
 import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
 import io.github.addoncommunity.galactifun.implementation.machines.CircuitPress;
 import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadCore;
+import io.github.addoncommunity.galactifun.implementation.rockets.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.implementation.rockets.Rocket;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
@@ -26,13 +26,9 @@ public final class Setup {
     public static void setup(Galactifun addon) {
         LaunchPadCore.addFuel(SlimefunItems.OIL_BUCKET, 0.5);
         LaunchPadCore.addFuel(SlimefunItems.FUEL_BUCKET, 1);
-        new LaunchPadCore().register(addon);
 
-        new SlimefunItem(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_FLOOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            null, null, null,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE,
-        }).register(addon);
+        new LaunchPadCore().register(addon);
+        new LaunchPadFloor().register(addon);
 
         Metals.setup(addon);
         Rocket.setup(addon);
