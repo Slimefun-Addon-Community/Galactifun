@@ -17,13 +17,13 @@ import java.util.Random;
 public final class Util {
 
     public static final double KM_PER_LY = 9_700_000_000D;
-
-    public static final BlockFace[] SURROUNDING_FACES = new BlockFace[]{BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
-
-    /**
-     * Random number from to inclusive
-     */
-    public static int randomFrom(int from, int to, @Nonnull Random random) {
+    
+    public static final BlockFace[] SURROUNDING_FACES = {
+            BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
+            BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
+    };
+    
+    public static int random(int from, int to, @Nonnull Random random) {
         return from + random.nextInt(1 + to - from);
     }
 
@@ -58,4 +58,5 @@ public final class Util {
     public static int fastFloor(double num) {
         return num >= 0 ? (int) num : (int) num - 1;
     }
+    
 }
