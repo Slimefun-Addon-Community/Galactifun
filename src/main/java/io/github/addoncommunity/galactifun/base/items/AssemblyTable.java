@@ -1,15 +1,14 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
-import io.github.addoncommunity.galactifun.base.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
-import io.github.mooy1.infinitylib.player.MessageUtils;
-import io.github.mooy1.infinitylib.presets.MenuPreset;
+import io.github.mooy1.infinitylib.players.MessageUtils;
 import io.github.mooy1.infinitylib.recipes.large.LargeRecipeMap;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.mooy1.infinitylib.slimefun.presets.MenuPreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -18,12 +17,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Class for the assembly table. Based off of InfinityExpansion's Infinity Workbench
@@ -31,11 +29,19 @@ import java.util.List;
  * @author Mooy1
  * @author Seggan
  */
-public class AssemblyTable extends AbstractEnergyCrafter {
+public final class AssemblyTable extends AbstractEnergyCrafter {
 
+    private static final LargeRecipeMap RECIPES = new LargeRecipeMap(36);
+    public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
+
+    public static final RecipeType TYPE = new RecipeType(PluginUtils.getKey("assembly_table"), BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
+        SlimefunItemStack item = (SlimefunItemStack) stack;
+        RECIPES.put(stacks, item);
+        ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
+    });
+    
     private static final int ENERGY = 2048;
-
-    public static final int[] INPUT_SLOTS = {
+    private static final int[] INPUT_SLOTS = {
         0, 1, 2, 3, 4, 5,
         9, 10, 11, 12, 13, 14,
         18, 19, 20, 21, 22, 23,
@@ -43,33 +49,12 @@ public class AssemblyTable extends AbstractEnergyCrafter {
         36, 37, 38, 39, 40, 41,
         45, 46, 47, 48, 49, 50
     };
-
     private static final int[] OUTPUT_SLOTS = {MenuPreset.slot3 + 27};
     private static final int STATUS_SLOT = MenuPreset.slot3;
     private static final int[] STATUS_BORDER = {6, 7, 8, 15, 17, 24, 25, 26};
 
-    public static final LargeRecipeMap RECIPES = new LargeRecipeMap(36);
-    public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
-    public static final List<String> IDS = new ArrayList<>();
-
-    public AssemblyTable() {
-        super(CoreCategories.MACHINES, GalactifunItems.ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            SlimefunItems.STEEL_PLATE, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, SlimefunItems.STEEL_PLATE,
-            SlimefunItems.CARGO_MOTOR, Components.ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.CARGO_MOTOR,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
-        }, ENERGY, STATUS_SLOT);
-
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-
-            if (inv != null) {
-                Location l = b.getLocation();
-                inv.dropItems(l, OUTPUT_SLOTS);
-                inv.dropItems(l, INPUT_SLOTS);
-            }
-
-            return true;
-        });
+    public AssemblyTable(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
+        super(category, item, type, recipe, ENERGY, STATUS_SLOT);
     }
 
     @Override
@@ -84,6 +69,12 @@ public class AssemblyTable extends AbstractEnergyCrafter {
     }
 
     @Override
+    protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu inv, @Nonnull Location l) {
+        inv.dropItems(l, OUTPUT_SLOTS);
+        inv.dropItems(l, INPUT_SLOTS);
+    }
+
+    @Override
     public void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
         menu.addMenuClickHandler(STATUS_SLOT, (p, slot, item, action) -> {
             craft(b, menu, p);
@@ -91,7 +82,7 @@ public class AssemblyTable extends AbstractEnergyCrafter {
         });
     }
 
-    public void craft(@Nonnull Block b, @Nonnull BlockMenu inv, @Nonnull Player p) {
+    private void craft(@Nonnull Block b, @Nonnull BlockMenu inv, @Nonnull Player p) {
         int charge = getCharge(b.getLocation());
 
         if (charge < ENERGY) {
@@ -132,13 +123,10 @@ public class AssemblyTable extends AbstractEnergyCrafter {
         if (output == null) {
             inv.replaceExistingItem(STATUS_SLOT, MenuPreset.invalidRecipe);
         } else { //correct recipe
-            inv.replaceExistingItem(STATUS_SLOT, getDisplayItem(output.clone()));
+            output = output.clone();
+            LoreUtils.addLore(output, "", "&a-------------------", "&a\u21E8 Click to craft", "&a-------------------");
+            inv.replaceExistingItem(STATUS_SLOT, output);
         }
     }
 
-    @Nonnull
-    private static ItemStack getDisplayItem(@Nonnull ItemStack output) {
-        LoreUtils.addLore(output, "", "&a-------------------", "&a\u21E8 Click to craft", "&a-------------------");
-        return output;
-    }
 }

@@ -2,13 +2,14 @@ package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.GalacticProfile;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.commands.CommandManager;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -36,10 +37,10 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
 
         // todo remove these
         GalacticProfile.loadAll();
-        ItemSetup.setup(this);
         
-        CoreCategories.setup(this);
+        CoreCategory.setup(this);
         BaseRegistry.setup();
+        BaseMats.setup();
         BaseItems.setup(this);
         
         // log after startup

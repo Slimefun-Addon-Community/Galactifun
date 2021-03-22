@@ -3,8 +3,7 @@ package io.github.addoncommunity.galactifun.base.items;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
-import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
-import io.github.addoncommunity.galactifun.base.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.slimefun.abstracts.TickingContainer;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
@@ -13,11 +12,12 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import lombok.Getter;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
@@ -52,18 +52,16 @@ public final class LaunchPadCore extends TickingContainer {
             27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48
     };
     private static final int FUEL_SLOT = 33;
+    
+    public static final BiMap<ItemStack, Double> FUELS = HashBiMap.create();
+    
+    static {
+        FUELS.put(SlimefunItems.OIL_BUCKET, 0.5);
+        FUELS.put(SlimefunItems.FUEL_BUCKET, 1d);
+    }
 
-    @Getter
-    private static final BiMap<ItemStack, Double> fuels = HashBiMap.create();
-
-    public LaunchPadCore() {
-        super(CoreCategories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            SlimefunItems.REINFORCED_PLATE, Components.NOZZLE.getItem(), SlimefunItems.REINFORCED_PLATE,
-            SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
-            SlimefunItems.REINFORCED_PLATE, Components.ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.REINFORCED_PLATE,
-        });
-
-
+    public LaunchPadCore(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
+        super(category, item, type, recipe);
         addItemHandler((BlockUseHandler) LaunchPadCore::onInteract);
     }
 
@@ -96,11 +94,11 @@ public final class LaunchPadCore extends TickingContainer {
         if (fuel < rocket.getFuelCapacity()) {
             // TODO improve a lot
             ItemStack slotItem = menu.getItemInSlot(FUEL_SLOT);
-            for (ItemStack stack : fuels.keySet()) {
+            for (ItemStack stack : FUELS.keySet()) {
                 if (SlimefunUtils.isItemSimilar(slotItem, stack, false, false)) {
                     menu.consumeItem(FUEL_SLOT);
                     fuel++;
-                    eff += fuels.get(stack);
+                    eff += FUELS.get(stack);
                     break;
                 }
             }
@@ -170,15 +168,12 @@ public final class LaunchPadCore extends TickingContainer {
 
     private static boolean isSurroundedByFloors(Block b) {
         for (BlockFace face : Util.SURROUNDING_FACES) {
-            if (!BlockStorage.check(b.getRelative(face), GalactifunItems.LAUNCH_PAD_FLOOR.getItemId())) {
+            if (!BlockStorage.check(b.getRelative(face), BaseItems.LAUNCH_PAD_FLOOR.getItemId())) {
                 return false;
             }
         }
 
         return true;
     }
-
-    public static void addFuel(ItemStack fuel, double efficiency) {
-        fuels.put(fuel, efficiency);
-    }
+    
 }

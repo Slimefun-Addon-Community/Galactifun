@@ -126,24 +126,21 @@ public final class Rocket extends SlimefunItem {
             double distance = celestialWorld.getDistanceTo(world);
             ItemStack item = celestialWorld.getItem().clone();
             ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                List<String> lore = meta.getLore();
-                if (lore != null) {
-                    lore.remove(lore.size() - 1);
+            List<String> lore = meta.getLore();
+            if (lore != null) {
 
-                    if (distance > 0) {
-                        lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                                ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                                : distance + " Light Years")
-                        ));
-                    } else {
-                        lore.add(ChatColors.color("&7You are here!"));
-                    }
-
-                    meta.setLore(lore);
-                    item = item.clone();
-                    item.setItemMeta(meta);
+                if (distance > 0) {
+                    lore.set(lore.size() - 1, ChatColors.color("&7Distance: " + (distance < 1
+                            ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                            : distance + " Light Years")
+                    ));
+                } else {
+                    lore.set(lore.size() - 1, ChatColors.color("&7You are here!"));
                 }
+
+                meta.setLore(lore);
+                item = item.clone();
+                item.setItemMeta(meta);
             }
 
             menu.addItem(i++, item, (p1, slot, it, action) -> {
@@ -227,8 +224,9 @@ public final class Rocket extends SlimefunItem {
                     inv.clear(); // just in case
                     inv.addItem(this.getItem().clone());
 
-                    BiMap<ItemStack, Double> fuels = LaunchPadCore.getFuels();
-                    ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
+                    // TODO improve
+                    
+                    ItemStack fuel = LaunchPadCore.FUELS.inverse().get(Util.getClosest(LaunchPadCore.FUELS.values(), eff));
                     if (fuel != null) {
                         fuel = fuel.clone();
                         fuel.setAmount(fuelLeft);

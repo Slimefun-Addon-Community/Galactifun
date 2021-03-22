@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
@@ -47,7 +48,7 @@ public final class Martian extends Alien {
         // Fixes the sword
         addTrade(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
         addTrade(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
-        this.trades.put(SlimefunItems.REINFORCED_PLATE, Metals.TUNGSTEN.getItem());
+        this.trades.put(SlimefunItems.REINFORCED_PLATE, BaseMats.TUNGSTEN);
         // TODO add more trades
     }
 

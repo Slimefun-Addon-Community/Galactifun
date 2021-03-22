@@ -1,7 +1,8 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.base.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
@@ -36,7 +37,7 @@ public final class MutantCreeper extends Alien {
     @Override
     protected void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        e.getDrops().add(new SlimefunItemStack(GalactifunItems.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
+        e.getDrops().add(new SlimefunItemStack(BaseMats.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
     }
 
     @Override

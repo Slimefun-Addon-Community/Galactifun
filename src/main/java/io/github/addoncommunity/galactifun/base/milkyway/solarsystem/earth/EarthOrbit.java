@@ -86,7 +86,7 @@ public final class EarthOrbit extends AlienWorld {
 
     @Override
     protected long createSurfaceArea() {
-        return Earth.SURFACE_AREA * 20;
+        return 10_000_000_000L;
     }
 
 }
