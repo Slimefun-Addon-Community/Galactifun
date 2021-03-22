@@ -78,7 +78,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.health);
+                bossbar.setProgress(finalHealth / this.maxHealth);
             }
         }
     }
@@ -91,7 +91,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.health);
+                bossbar.setProgress(finalHealth / this.maxHealth);
             }
         }
     }
@@ -151,7 +151,7 @@ public abstract class BossAlien extends Alien {
         BossBarStyle style = createBossBarStyle();
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
-        bossbar.setProgress(entity.getHealth() / this.health);
+        bossbar.setProgress(entity.getHealth() / this.maxHealth);
         instances.put(entity, bossbar);
         return bossbar;
     }

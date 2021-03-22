@@ -20,7 +20,7 @@ public final class BaseRocket {
 
     public static final SlimefunItemStack TIER_ONE = new SlimefunItemStack(
             "ROCKET_TIER_ONE",
-            GalactifunHead.ROCKET,
+            GalactifunHeads.ROCKET,
             "&4Rocket Tier 1",
             "",
             "&7Fuel Capacity: " + TIER_ONE_FUEL,
@@ -28,7 +28,7 @@ public final class BaseRocket {
     );
     public static final SlimefunItemStack TIER_TWO = new SlimefunItemStack(
             "ROCKET_TIER_TWO",
-            GalactifunHead.ROCKET,
+            GalactifunHeads.ROCKET,
             "&4Rocket Tier 2",
             "",
             "&7Fuel Capacity: " + TIER_TWO_FUEL,
@@ -36,7 +36,7 @@ public final class BaseRocket {
     );
     public static final SlimefunItemStack TIER_THREE = new SlimefunItemStack(
             "ROCKET_TIER_THREE",
-            GalactifunHead.ROCKET,
+            GalactifunHeads.ROCKET,
             "&4Rocket Tier 3",
             "",
             "&7Fuel Capacity: " + TIER_THREE_FUEL,

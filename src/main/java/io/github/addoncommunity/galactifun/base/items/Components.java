@@ -3,7 +3,7 @@ package io.github.addoncommunity.galactifun.base.items;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
 import io.github.addoncommunity.galactifun.base.GalactifunItems;
-import io.github.addoncommunity.galactifun.base.GalactifunHead;
+import io.github.addoncommunity.galactifun.base.GalactifunHeads;
 import io.github.addoncommunity.galactifun.base.RecipeTypes;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -23,41 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @Getter
 public enum Components {
-    ALUMINUM_COMPOSITE_SHEET("Aluminum Composite Sheet", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
-        new SlimefunItemStack(Metals.ALUMINUM_COMPOSITE.getItem(), 8), null, null,
-        null, null, null,
-        null, null, null
-    }),
-    HEAVY_DUTY_SHEET("Heavy Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem(), ALUMINUM_COMPOSITE_SHEET.getItem()
-    }),
-    SPACE_GRADE_PLATE("Space Grade Plate", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
-        ALUMINUM_COMPOSITE_SHEET.getItem(), Metals.TUNGSTEN.getItem(), null,
-        null, null, null,
-        null, null, null
-    }),
-    ULTRA_DUTY_SHEET("Ultra Duty Sheet", new ItemChoice(Material.PAPER), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        SPACE_GRADE_PLATE.getItem(), SPACE_GRADE_PLATE.getItem(), null,
-        SPACE_GRADE_PLATE.getItem(), SPACE_GRADE_PLATE.getItem(), null,
-        null, null, null
-    }),
-    GOLD_FOIL("&6Gold Foil", new ItemChoice(Material.PAPER), RecipeType.COMPRESSOR, new ItemStack[]{
-        SlimefunItems.GOLD_24K_BLOCK, null, null,
-        null, null, null,
-        null, null, null
-    }, 4),
-    REINFORCED_CHANNEL("Reinforced Channel", new ItemChoice(Material.BAMBOO), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
-        ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
-    }, 8),
-    FAN_BLADE("Fan Blade", new ItemChoice(GalactifunHead.FAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-        null, SlimefunItems.STEEL_INGOT, null,
-        SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
-        null, SlimefunItems.STEEL_INGOT, null
-    }),
+    
     NOZZLE("Nozzle", new ItemChoice(Material.IRON_TRAPDOOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
@@ -68,7 +34,7 @@ public enum Components {
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
     }),
-    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(GalactifunHead.OXYGEN_REGENERATOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(GalactifunHeads.OXYGEN_REGENERATOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem(),
         NOZZLE.getItem(), GOLD_FOIL.getItem(), FILTER.getItem(),
         SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem()
@@ -107,12 +73,12 @@ public enum Components {
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
     }),
-    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(GalactifunHead.CORE), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(GalactifunHeads.CORE), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
         Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
         Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
     }),
-    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(GalactifunHead.LIFE_SUPPORT_MODULE), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(GalactifunHeads.LIFE_SUPPORT_MODULE), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, Circuits.LAPIS.getItem(), OXYGEN_REGENERATOR.getItem(), OXYGEN_REGENERATOR.getItem(), Circuits.LAPIS.getItem(), SlimefunItems.STEEL_INGOT,
@@ -128,12 +94,12 @@ public enum Components {
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
     }),
-    FUEL_TANK("&6Fuel Tank", new ItemChoice(GalactifunHead.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK("&6Fuel Tank", new ItemChoice(GalactifunHeads.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), null, HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem()
     }),
-    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(GalactifunHead.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(GalactifunHeads.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), null, ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem()

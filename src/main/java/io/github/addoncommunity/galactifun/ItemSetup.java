@@ -4,7 +4,6 @@ import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.base.BaseRocket;
 import io.github.addoncommunity.galactifun.base.items.Circuits;
 import io.github.addoncommunity.galactifun.base.items.Components;
-import io.github.addoncommunity.galactifun.base.items.Metals;
 import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
 import io.github.addoncommunity.galactifun.base.GalactifunItems;
 import io.github.addoncommunity.galactifun.base.RecipeTypes;

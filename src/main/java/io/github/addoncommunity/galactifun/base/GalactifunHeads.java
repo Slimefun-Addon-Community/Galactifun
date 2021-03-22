@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.inventory.ItemStack;
 
 @UtilityClass
-public final class GalactifunHead {
+public final class GalactifunHeads {
     
     public static final ItemStack ROCKET = SlimefunUtils.getCustomHead("cae3522392dac7ee4d14d611a8fa9a7ecd4b63318e333b9b83e78f24f59a01b");
     public static final ItemStack CORE = SlimefunUtils.getCustomHead("dc9365642c6eddcfedf5b5e14e2bc71257d9e4a3363d123c6f33c55cafbf6d");

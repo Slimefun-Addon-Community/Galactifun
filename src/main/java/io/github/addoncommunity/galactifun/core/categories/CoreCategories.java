@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.core.categories;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.GalactifunHead;
+import io.github.addoncommunity.galactifun.base.GalactifunHeads;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -23,7 +23,7 @@ public final class CoreCategories {
             PluginUtils.getKey("equipment"), new CustomItem(Material.IRON_HELMET)
     );
     public static final Category MAIN_CATEGORY = new Category(
-            PluginUtils.getKey("main_category"), new CustomItem(GalactifunHead.ROCKET, "&fGalactifun")
+            PluginUtils.getKey("main_category"), new CustomItem(GalactifunHeads.ROCKET, "&fGalactifun")
     );
     public static final Category COMPONENTS = new Category(
             PluginUtils.getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components")
