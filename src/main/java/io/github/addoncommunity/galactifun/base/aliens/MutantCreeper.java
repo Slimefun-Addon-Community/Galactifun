@@ -1,6 +1,8 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -8,9 +10,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A class for a charged alien creeper, passive until attacked
@@ -29,7 +33,13 @@ public final class MutantCreeper extends Alien {
         Creeper spawnedCreeper = (Creeper) spawned;
         spawnedCreeper.setPowered(true);
     }
-    
+
+    @Override
+    protected void onDeath(@Nonnull EntityDeathEvent e) {
+        e.getDrops().clear();
+        e.getDrops().add(new SlimefunItemStack(GalactifunItems.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
+    }
+
     @Override
     public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);

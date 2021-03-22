@@ -20,6 +20,7 @@ import java.util.Random;
 public class LakePopulator extends BlockPopulator {
     
     private final int maxY;
+    @Nonnull
     private final Material liquid;
     
     @Override

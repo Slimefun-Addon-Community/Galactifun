@@ -28,9 +28,12 @@ public class OrePopulator extends BlockPopulator {
     private final int maxy;
     private final int minSize;
     private final int maxSize;
-    @Nonnull private final Material ore;
-    @Nullable private final String id;
-    @Nonnull private final Material[] source;
+    @Nonnull
+    private final Material ore;
+    @Nullable
+    private final String id;
+    @Nonnull
+    private final Material[] source;
 
 
     public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,

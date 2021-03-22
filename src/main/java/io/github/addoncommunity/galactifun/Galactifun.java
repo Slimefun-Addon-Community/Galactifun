@@ -1,14 +1,15 @@
 package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.GalacticProfile;
-import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
-import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
-import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
+import io.github.addoncommunity.galactifun.base.commands.AlienSpawnCommand;
+import io.github.addoncommunity.galactifun.base.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.base.commands.GenSphereCommand;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.command.CommandManager;
+import io.github.mooy1.infinitylib.commands.CommandManager;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +27,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
 
-        CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
+        CommandManager.setup("galactifun", "/gf, /galactic",
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
         );
         
@@ -50,7 +51,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 "",
                 "Galactifun is open source, you can contribute or report bugs at: ",
                 getBugTrackerURL(),
-                "Join the Slimefun Addon Community Discord: Discord.gg/SqD3gg5SAU",
+                "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
                 "",
                 "###################################################",
                 ""
@@ -61,6 +62,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
     public void onDisable() {
         GalacticProfile.unloadAll();
         GalacticProfile.saveAll();
+        BossAlien.removeBossBars();
     }
 
     @Override

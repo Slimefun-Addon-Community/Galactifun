@@ -2,12 +2,14 @@ package io.github.addoncommunity.galactifun.implementation.rockets;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import io.github.addoncommunity.galactifun.implementation.items.Components;
 import io.github.addoncommunity.galactifun.implementation.lists.Categories;
 import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
@@ -45,7 +47,12 @@ public class LaunchPadCore extends AbstractTicker {
     private static final BiMap<ItemStack, Double> fuels = HashBiMap.create();
 
     public LaunchPadCore() {
-        super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[9]);
+        super(Categories.MAIN_CATEGORY, GalactifunItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+            SlimefunItems.REINFORCED_PLATE, Components.NOZZLE.getItem(), SlimefunItems.REINFORCED_PLATE,
+            SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
+            SlimefunItems.REINFORCED_PLATE, Components.ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.REINFORCED_PLATE,
+        });
+
 
         addItemHandler((BlockUseHandler) this::onInteract);
     }
@@ -90,15 +97,13 @@ public class LaunchPadCore extends AbstractTicker {
 
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
-        World world = l.getWorld();
-        for (int i : INVENTORY_SLOTS) {
-            world.dropItemNaturally(l, menu.getItemInSlot(i));
-        }
-        world.dropItemNaturally(l, menu.getItemInSlot(33));
+        menu.dropItems(l, INVENTORY_SLOTS);
+        menu.dropItems(l, 33);
 
         Block rocketBlock = l.add(0, 1, 0).getBlock();
         Rocket rocket = Rocket.getById(BlockStorage.checkID(rocketBlock));
         if (rocket != null) {
+            World world = l.getWorld();
             rocketBlock.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocketBlock);
             world.dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());

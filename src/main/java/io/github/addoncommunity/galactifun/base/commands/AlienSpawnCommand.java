@@ -1,12 +1,11 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.command.AbstractCommand;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class AlienSpawnCommand extends AbstractCommand {
@@ -29,13 +28,11 @@ public final class AlienSpawnCommand extends AbstractCommand {
         }
     }
 
-    @Nonnull
     @Override
-    public List<String> onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        List<String> ids = new ArrayList<>();
+    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> ids) {
         if (strings.length == 2) {
             ids.addAll(Alien.ALIENS.keySet());
         }
-        return ids;
     }
+    
 }
