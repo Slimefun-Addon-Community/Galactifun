@@ -298,7 +298,7 @@ public final class BaseMats {
     }
 
     private static void createAssembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.MAIN_CATEGORY, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.getInstance());
+        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.getInstance());
     }
 
 }

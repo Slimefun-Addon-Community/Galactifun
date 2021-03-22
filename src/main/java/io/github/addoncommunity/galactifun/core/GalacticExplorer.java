@@ -78,24 +78,22 @@ public final class GalacticExplorer {
                 
                 // add distance from current
                 ItemMeta meta = item.getItemMeta();
-                if (meta != null) {
-                    List<String> lore = meta.getLore();
-                    if (lore != null) {
-                        lore.remove(lore.size() - 1);
+                List<String> lore = meta.getLore();
+                if (lore != null) {
+                    lore.remove(lore.size() - 1);
 
-                        if (distance > 0) {
-                            lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                                    ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                                    : distance + " Light Years")
-                            ));
-                        } else {
-                            lore.add(ChatColors.color("&7You are here!"));
-                        }
-                        
-                        meta.setLore(lore);
-                        item = item.clone();
-                        item.setItemMeta(meta);
+                    if (distance > 0) {
+                        lore.add(ChatColors.color("&7Distance: " + (distance < 1
+                                ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                                : distance + " Light Years")
+                        ));
+                    } else {
+                        lore.add(ChatColors.color("&7You are here!"));
                     }
+                    
+                    meta.setLore(lore);
+                    item = item.clone();
+                    item.setItemMeta(meta);
                 }
             }
             

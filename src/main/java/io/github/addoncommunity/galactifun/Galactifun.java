@@ -2,18 +2,18 @@ package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
-import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.GalacticProfile;
+import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.commands.CommandManager;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -34,12 +34,9 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
         );
         
         PluginUtils.setupMetrics(10411);
-
-        // todo remove these
-        GalacticProfile.loadAll();
         
-        CoreCategory.setup(this);
         BaseRegistry.setup();
+        CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
         
@@ -62,11 +59,14 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public void onDisable() {
-        GalacticProfile.unloadAll();
-        GalacticProfile.saveAll();
-        
-        
+        // todo make better
         BossAlien.removeBossBars();
+    }
+
+    @Override
+    public void onLoad() {
+        // default to not logging world settings
+        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
     @Override
@@ -79,5 +79,5 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
     public JavaPlugin getJavaPlugin() {
         return this;
     }
-    
+
 }

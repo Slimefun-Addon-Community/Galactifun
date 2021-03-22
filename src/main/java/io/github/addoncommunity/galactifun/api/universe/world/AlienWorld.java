@@ -125,7 +125,7 @@ public abstract class AlienWorld extends CelestialWorld {
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
-
+        
         // load effects
         this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
