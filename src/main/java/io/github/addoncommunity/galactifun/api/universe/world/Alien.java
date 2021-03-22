@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -66,7 +66,7 @@ public abstract class Alien {
     @Getter
     @Nonnull
     private final EntityType type;
-    private final int health;
+    protected final int health;
     
     public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
         

@@ -2,18 +2,16 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.ConfigUtils;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.core.ConfigUtils;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.WorldBorder;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -66,9 +64,7 @@ public abstract class AlienWorld extends CelestialWorld {
     public static Collection<AlienWorld> getEnabled() {
         return WORLDS.values();
     }
-
-    private static final double MIN_BORDER = 600D;
-    private static final double MAX_BORDER = 30_000_000D;
+    
     private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
 
     /**
@@ -129,11 +125,6 @@ public abstract class AlienWorld extends CelestialWorld {
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
-
-        // border
-        WorldBorder border = world.getWorldBorder();
-        border.setCenter(0, 0);
-        border.setSize(Math.min(MAX_BORDER, Math.max(MIN_BORDER, Math.sqrt(this.surfaceArea) * Earth.BORDER_SURFACE_RATIO)));
 
         // load effects
         this.dayCycle.applyEffects(world);

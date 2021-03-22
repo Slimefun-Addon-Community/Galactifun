@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.core;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.mooy1.infinitylib.ConfigUtils;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.core.ConfigUtils;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;

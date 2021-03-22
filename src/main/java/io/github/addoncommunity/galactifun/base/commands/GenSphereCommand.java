@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.commands;
+package io.github.addoncommunity.galactifun.base.commands;
 
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
