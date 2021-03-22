@@ -1,8 +1,8 @@
-package io.github.addoncommunity.galactifun.base.aliens;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.items.PersistentItemStackArray;
+import io.github.mooy1.infinitylib.core.PluginUtils;
+import io.github.mooy1.infinitylib.items.PersistentStackArray;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -48,15 +48,15 @@ public final class Leech extends Alien {
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
         
-        ItemStack[] eatenItems = container.get(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY);
+        ItemStack[] eatenItems = container.get(EATEN, PersistentStackArray.instance());
         if (eatenItems != null) {
             // add on to the array
             ItemStack[] arr = new ItemStack[eatenItems.length + 1];
             System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
             arr[eatenItems.length] = item;
-            container.set(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY, arr);
+            container.set(EATEN, PersistentStackArray.instance(), arr);
         } else {
-            container.set(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY, new ItemStack[] {item});
+            container.set(EATEN, PersistentStackArray.instance(), new ItemStack[] {item});
         }
         
         inv.setItem(slot, null);
@@ -72,7 +72,7 @@ public final class Leech extends Alien {
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistentItemStackArray.ITEM_STACK_ARRAY);
+        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistentStackArray.instance());
         if (eatenItems != null) {
             for (ItemStack itemStack : eatenItems) {
                 e.getDrops().add(itemStack);

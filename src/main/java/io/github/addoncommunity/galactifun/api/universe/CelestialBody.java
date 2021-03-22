@@ -31,9 +31,6 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
     @Nonnull 
     protected final Gravity gravity;
     
-    /**
-     * Surface area in square kilometers
-     */
     @Getter
     protected final double surfaceArea;
     

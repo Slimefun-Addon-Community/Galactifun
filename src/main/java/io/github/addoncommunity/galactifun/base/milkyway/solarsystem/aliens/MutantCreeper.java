@@ -1,7 +1,7 @@
-package io.github.addoncommunity.galactifun.base.aliens;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
@@ -30,8 +30,7 @@ public final class MutantCreeper extends Alien {
 
     @Override
     public void onSpawn(@Nonnull LivingEntity spawned) {
-        Creeper spawnedCreeper = (Creeper) spawned;
-        spawnedCreeper.setPowered(true);
+        ((Creeper) spawned).setPowered(true);
     }
 
     @Override

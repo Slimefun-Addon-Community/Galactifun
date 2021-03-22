@@ -4,10 +4,10 @@ import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.GalacticProfile;
-import io.github.addoncommunity.galactifun.base.commands.AlienSpawnCommand;
-import io.github.addoncommunity.galactifun.base.commands.GalactiportCommand;
-import io.github.addoncommunity.galactifun.base.commands.GenSphereCommand;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
+import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
+import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
 import io.github.mooy1.infinitylib.commands.CommandManager;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class Galactifun extends JavaPlugin implements SlimefunAddon {
+public final class Galactifun extends JavaPlugin implements SlimefunAddon {
 
     @Getter
     private static Galactifun instance;
@@ -35,7 +35,7 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
         GalacticProfile.loadAll();
         
-        Categories.setup(this);
+        CoreCategories.setup(this);
 
         ItemSetup.setup(this);
         
@@ -62,6 +62,8 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
     public void onDisable() {
         GalacticProfile.unloadAll();
         GalacticProfile.saveAll();
+        
+        
         BossAlien.removeBossBars();
     }
 

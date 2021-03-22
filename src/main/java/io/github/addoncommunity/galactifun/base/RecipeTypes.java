@@ -1,7 +1,7 @@
-package io.github.addoncommunity.galactifun.implementation.lists;
+package io.github.addoncommunity.galactifun.base;
 
-import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -20,7 +20,7 @@ public class RecipeTypes {
     });
 
     // this is needed as using RecipeType.MOB_DROP looks up vanilla mobs
-    public static final RecipeType CUSTOM_MOB_DROP = new RecipeType(PluginUtils.getKey("gf_mob_drop"), RecipeType.MOB_DROP.toItem());
+    public static final RecipeType ALIEN_DROP = new RecipeType(PluginUtils.getKey("gf_mob_drop"), RecipeType.MOB_DROP.toItem());
 
     public static final RecipeType CIRCUIT_PRESS = new RecipeType(PluginUtils.getKey("circuit_press"), GalactifunItems.CIRCUIT_PRESS);
 
@@ -30,4 +30,5 @@ public class RecipeTypes {
         "",
         "&7Find this block on a planet"
     ));
+    
 }

@@ -1,8 +1,8 @@
-package io.github.addoncommunity.galactifun.base.aliens;
+package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.implementation.items.Metals;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.addoncommunity.galactifun.base.items.Metals;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;

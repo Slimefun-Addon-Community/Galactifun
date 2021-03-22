@@ -54,11 +54,9 @@ public abstract class SimpleAlienWorld extends AlienWorld {
             for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 double noise = generator.noise(realX, realZ, getFrequency(), getAmplitude(), true);
-                if (squareNoise()) {
+                
+                if (smootherTerrain()) {
                     noise *= noise;
-                }
-                if (addOne()) {
-                    noise += 1;
                 }
 
                 // find max height
@@ -141,20 +139,11 @@ public abstract class SimpleAlienWorld extends AlienWorld {
         return 0.5;
     }
 
-
     /**
-     * Adds one (1) to the noise before calculating height. This makes {@link #getAverageHeight()}
-     * be the lowest height
+     * Square the noise before calculating height. This makes for smoother terrain.
      */
-    protected boolean addOne() {
+    protected boolean smootherTerrain() {
         return false;
     }
-
-    /**
-     * Square the noise before calculating height. This makes for smoother terrain. This is <b>always</b>
-     * applied before applying {@link #addOne()}
-     */
-    protected boolean squareNoise() {
-        return false;
-    }
+    
 }

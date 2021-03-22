@@ -1,8 +1,8 @@
-package io.github.addoncommunity.galactifun.implementation.items;
+package io.github.addoncommunity.galactifun.base.items;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -58,7 +58,7 @@ public enum Metals {
 
     public static void setup(@Nonnull Galactifun addon) {
         for (Metals metal : Metals.values()) {
-            new SlimefunItem(Categories.MAIN_CATEGORY, metal.item, RecipeType.SMELTERY, metal.recipe).register(addon);
+            new SlimefunItem(CoreCategories.MAIN_CATEGORY, metal.item, RecipeType.SMELTERY, metal.recipe).register(addon);
         }
     }
 }

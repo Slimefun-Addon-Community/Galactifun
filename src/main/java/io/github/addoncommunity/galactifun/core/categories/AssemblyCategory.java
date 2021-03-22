@@ -1,8 +1,7 @@
-package io.github.addoncommunity.galactifun.implementation.categories;
+package io.github.addoncommunity.galactifun.core.categories;
 
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.implementation.machines.AssemblyTable;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
@@ -15,12 +14,13 @@ import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class RecipeCategory extends FlexCategory {
+public class AssemblyCategory extends FlexCategory {
 
     private static final int[] SLOTS = new int[]{
         1, 2, 3, 4, 5, 6,
@@ -31,8 +31,8 @@ public class RecipeCategory extends FlexCategory {
         46, 47, 48, 49, 50, 51
     };
 
-    public RecipeCategory() {
-        super(PluginUtils.getKey("recipe_category"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
+    public AssemblyCategory(NamespacedKey key, ItemStack item) {
+        super(key, item);
     }
 
     @Override

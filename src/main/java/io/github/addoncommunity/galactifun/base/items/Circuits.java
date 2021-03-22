@@ -1,8 +1,8 @@
-package io.github.addoncommunity.galactifun.implementation.items;
+package io.github.addoncommunity.galactifun.base.items;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.base.RecipeTypes;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -36,7 +36,7 @@ public enum Circuits {
 
     public static void setup(Galactifun addon) {
         for (Circuits circuit : Circuits.values()) {
-            new SlimefunItem(Categories.COMPONENTS, circuit.item, RecipeTypes.CIRCUIT_PRESS, new ItemStack[] {
+            new SlimefunItem(CoreCategories.COMPONENTS, circuit.item, RecipeTypes.CIRCUIT_PRESS, new ItemStack[] {
                 SlimefunItems.SILICON, circuit.otherItem, null,
                 null, null, null,
                 null, null, null

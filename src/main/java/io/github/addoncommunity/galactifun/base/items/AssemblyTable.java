@@ -1,9 +1,7 @@
-package io.github.addoncommunity.galactifun.implementation.machines;
+package io.github.addoncommunity.galactifun.base.items;
 
-import io.github.addoncommunity.galactifun.implementation.items.Components;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.implementation.objects.AbstractEnergyCrafter;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
 import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.mooy1.infinitylib.player.MessageUtils;
 import io.github.mooy1.infinitylib.presets.MenuPreset;
@@ -55,7 +53,7 @@ public class AssemblyTable extends AbstractEnergyCrafter {
     public static final List<String> IDS = new ArrayList<>();
 
     public AssemblyTable() {
-        super(Categories.MACHINES, GalactifunItems.ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        super(CoreCategories.MACHINES, GalactifunItems.ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
             SlimefunItems.STEEL_PLATE, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, SlimefunItems.STEEL_PLATE,
             SlimefunItems.CARGO_MOTOR, Components.ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.CARGO_MOTOR,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE

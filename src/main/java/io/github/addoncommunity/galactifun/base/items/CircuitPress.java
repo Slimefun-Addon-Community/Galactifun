@@ -1,8 +1,7 @@
-package io.github.addoncommunity.galactifun.implementation.machines;
+package io.github.addoncommunity.galactifun.base.items;
 
-import io.github.addoncommunity.galactifun.implementation.items.Circuits;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
@@ -14,7 +13,7 @@ import javax.annotation.Nonnull;
 public class CircuitPress extends AContainer {
 
     public CircuitPress() {
-        super(Categories.MACHINES, GalactifunItems.CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        super(CoreCategories.MACHINES, GalactifunItems.CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
             SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL,
             SlimefunItems.STEEL_PLATE, null, SlimefunItems.STEEL_PLATE,
             SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL

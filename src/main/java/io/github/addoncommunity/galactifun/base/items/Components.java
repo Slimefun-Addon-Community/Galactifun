@@ -1,10 +1,10 @@
-package io.github.addoncommunity.galactifun.implementation.items;
+package io.github.addoncommunity.galactifun.base.items;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.addoncommunity.galactifun.implementation.lists.GalactifunItems;
-import io.github.addoncommunity.galactifun.implementation.lists.Heads;
-import io.github.addoncommunity.galactifun.implementation.lists.RecipeTypes;
+import io.github.addoncommunity.galactifun.core.categories.CoreCategories;
+import io.github.addoncommunity.galactifun.base.GalactifunItems;
+import io.github.addoncommunity.galactifun.base.GalactifunHead;
+import io.github.addoncommunity.galactifun.base.RecipeTypes;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
@@ -53,7 +53,7 @@ public enum Components {
         ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
         ALUMINUM_COMPOSITE_SHEET.getItem(), null, ALUMINUM_COMPOSITE_SHEET.getItem(),
     }, 8),
-    FAN_BLADE("Fan Blade", new ItemChoice(Heads.FAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FAN_BLADE("Fan Blade", new ItemChoice(GalactifunHead.FAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         null, SlimefunItems.STEEL_INGOT, null,
         SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
         null, SlimefunItems.STEEL_INGOT, null
@@ -68,7 +68,7 @@ public enum Components {
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
         SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
     }),
-    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(Heads.OXYGEN_REGENERATOR.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    OXYGEN_REGENERATOR("&bOxygen Regenerator", new ItemChoice(GalactifunHead.OXYGEN_REGENERATOR), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem(),
         NOZZLE.getItem(), GOLD_FOIL.getItem(), FILTER.getItem(),
         SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL.getItem(), FILTER.getItem()
@@ -107,12 +107,12 @@ public enum Components {
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
         SPACE_GRADE_PLATE.getItem(), null, null, null, null, SPACE_GRADE_PLATE.getItem(),
     }),
-    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(Heads.CORE.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    ADVANCED_PROCESSING_UNIT("&4Advanced Processing Unit", new ItemChoice(GalactifunHead.CORE), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         Circuits.REDSTONE.getItem(), Circuits.GLOWSTONE.getItem(), Circuits.REDSTONE.getItem(),
         Circuits.DIAMOND.getItem(), SlimefunItems.ADVANCED_CIRCUIT_BOARD, Circuits.DIAMOND.getItem(),
         Circuits.REDSTONE.getItem(), Circuits.LAPIS.getItem(), Circuits.REDSTONE.getItem()
     }),
-    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(Heads.LIFE_SUPPORT_MODULE.getTexture()), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
+    LIFE_SUPPORT_MODULE("&4Life Support Module", new ItemChoice(GalactifunHead.LIFE_SUPPORT_MODULE), RecipeTypes.ASSEMBLY_TABLE, new ItemStack[]{
         SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT.getItem(), REINFORCED_CHANNEL.getItem(), REINFORCED_CHANNEL.getItem(), ADVANCED_PROCESSING_UNIT.getItem(), SlimefunItems.STEEL_INGOT,
         SlimefunItems.STEEL_INGOT, Circuits.LAPIS.getItem(), OXYGEN_REGENERATOR.getItem(), OXYGEN_REGENERATOR.getItem(), Circuits.LAPIS.getItem(), SlimefunItems.STEEL_INGOT,
@@ -128,12 +128,12 @@ public enum Components {
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
         Metals.ALUMINUM_COMPOSITE.getItem(), null, null, null, null, Metals.ALUMINUM_COMPOSITE.getItem(),
     }),
-    FUEL_TANK("&6Fuel Tank", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK("&6Fuel Tank", new ItemChoice(GalactifunHead.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), null, HEAVY_DUTY_SHEET.getItem(),
         HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem(), HEAVY_DUTY_SHEET.getItem()
     }),
-    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(Heads.CAN.getTexture()), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+    FUEL_TANK_2("&6Fuel Tank Mk 2", new ItemChoice(GalactifunHead.CAN), RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), null, ULTRA_DUTY_SHEET.getItem(),
         ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem(), ULTRA_DUTY_SHEET.getItem()
@@ -179,11 +179,12 @@ public enum Components {
 
     public static void setup(@Nonnull Galactifun addon) {
         for (Components component : Components.values()) {
-            SlimefunItem item = new UnplaceableBlock(Categories.COMPONENTS, component.item, component.recipeType, component.recipe, new SlimefunItemStack(component.item, component.amount));
+            SlimefunItem item = new UnplaceableBlock(CoreCategories.COMPONENTS, component.item, component.recipeType, component.recipe, new SlimefunItemStack(component.item, component.amount));
             item.register(addon);
             if (component.recipeType.equals(RecipeTypes.ASSEMBLY_TABLE)) {
                 item.setHidden(true);
             }
         }
     }
+    
 }

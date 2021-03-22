@@ -1,6 +1,6 @@
-package io.github.addoncommunity.galactifun.implementation.objects;
+package io.github.addoncommunity.galactifun.base.items;
 
-import io.github.mooy1.infinitylib.abstracts.AbstractTicker;
+import io.github.mooy1.infinitylib.slimefun.abstracts.TickingContainer;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  *
  * @author Mooy1
  */
-public abstract class AbstractEnergyCrafter extends AbstractTicker implements EnergyNetComponent {
+public abstract class AbstractEnergyCrafter extends TickingContainer implements EnergyNetComponent {
 
     protected final int energy;
     protected final int statusSlot;

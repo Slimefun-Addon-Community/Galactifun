@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.implementation.lists;
+package io.github.addoncommunity.galactifun.base;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
@@ -69,4 +69,5 @@ public final class GalactifunItems {
         "",
         "&7These meteors contain Tungsten"
     );
+    
 }
