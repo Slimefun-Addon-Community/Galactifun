@@ -6,6 +6,7 @@ import io.github.addoncommunity.galactifun.core.categories.AssemblyCategory;
 import io.github.addoncommunity.galactifun.core.categories.GalacticCategory;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.slimefun.utils.MultiCategory;
+import io.github.mooy1.infinitylib.slimefun.utils.SubCategory;
 import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -20,21 +21,21 @@ import org.bukkit.Material;
 public final class CoreCategory {
 
     /* cheat categories */
-    public static final Category ASSEMBLY = new Category(
+    public static final Category ASSEMBLY = new SubCategory(
             PluginUtils.getKey("assembly"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
     );
     
     /* normal categories */
-    public static final Category EQUIPMENT = new Category(
+    public static final Category EQUIPMENT = new SubCategory(
             PluginUtils.getKey("equipment"), new CustomItem(Material.IRON_HELMET, "&fEquipment")
     );
-    public static final Category ITEMS = new Category(
+    public static final Category ITEMS = new SubCategory(
             PluginUtils.getKey("items"), new CustomItem(GalactifunHead.ROCKET, "&fGalactifun")
     );
-    public static final Category COMPONENTS = new Category(
+    public static final Category COMPONENTS = new SubCategory(
             PluginUtils.getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components")
     );
-    public static final Category MACHINES = new Category(
+    public static final Category MACHINES = new SubCategory(
             PluginUtils.getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
     );
     
