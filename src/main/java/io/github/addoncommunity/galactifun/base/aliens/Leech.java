@@ -1,10 +1,9 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
+package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.items.PersistentStackArray;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,13 +14,15 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Class for the leech, an alien of Titan. They can steal you items when attacking
+ * Class for the leech, an alien of Titan. They can steal your items when attacking
  *
  * @author Seggan
+ * @author Mooy1
  */
 public final class Leech extends Alien {
 
@@ -36,14 +37,21 @@ public final class Leech extends Alien {
         
         // get random item
         PlayerInventory inv = ((Player) e.getEntity()).getInventory();
+        List<Integer> slots = new ArrayList<>();
         
-        int slot = ThreadLocalRandom.current().nextInt(inv.getSize());
+        for (int i = 0 ; i < 36 ; i++) {
+            if (inv.getItem(i) != null) {
+                slots.add(i);
+            }
+        }
         
-        ItemStack item = inv.getItem(slot);
-        
-        if (item == null) {
+        if (slots.isEmpty()) {
             return;
         }
+        
+        int slot = slots.get(ThreadLocalRandom.current().nextInt(slots.size()));
+        
+        ItemStack item = inv.getItem(slot);
         
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
@@ -64,7 +72,7 @@ public final class Leech extends Alien {
         // heal
         LivingEntity attacker = (LivingEntity) e.getDamager();
         attacker.setHealth(Math.min(
-                Objects.requireNonNull(attacker.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue(),
+                this.maxHealth,
                 attacker.getHealth() + 2)
         );
     }

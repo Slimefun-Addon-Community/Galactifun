@@ -18,19 +18,31 @@ import java.util.List;
  * @author Mooy1
  */
 public abstract class CelestialBody extends UniversalObject<CelestialBody> {
-    
+
+    /**
+     * The day/night cycle of this body
+     */
     @Getter
     @Nonnull 
     protected final DayCycle dayCycle;
 
+    /**
+     * Atmosphere of this body
+     */
     @Getter
     @Nonnull 
     protected final Atmosphere atmosphere;
 
+    /**
+     * Gravity of this body
+     */
     @Getter
     @Nonnull 
     protected final Gravity gravity;
-    
+
+    /**
+     * Surface area in km
+     */
     @Getter
     protected final double surfaceArea;
     

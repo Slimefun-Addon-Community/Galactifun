@@ -19,7 +19,12 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
-// TODO test cheat sheet impl
+/**
+ * Category for displaying Assembly recipes
+ * 
+ * @author Seggan
+ * @author Mooy1
+ */
 public final class AssemblyCategory extends FlexCategory {
 
     private static final int[] SLOTS = new int[] {

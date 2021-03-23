@@ -47,7 +47,7 @@ public final class BaseItems {
             "&fCircuit Press",
             "&7Creates circuits",
             "",
-            LorePreset.energyPerSecond(512),
+            LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE),
             LorePreset.energyBuffer(1024)
     );
     public static final SlimefunItemStack ASSEMBLY_TABLE = new SlimefunItemStack(
@@ -58,7 +58,7 @@ public final class BaseItems {
             "&7Used to construct many things",
             "",
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
-            LoreBuilder.powerPerSecond(2048)
+            LorePreset.energyPerSecond(2048)
     );
 
     private static final int TIER_ONE_FUEL = 10;

@@ -1,7 +1,6 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
+package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.GameMode;

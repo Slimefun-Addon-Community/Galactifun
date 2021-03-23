@@ -29,6 +29,7 @@ public final class BaseMats {
             "ALUMINUM_COMPOSITE",
             Material.IRON_INGOT,
             "&fAluminum Composite",
+            "",
             "&7You'll never guess how long it took us",
             "&7to name this material"
     );
@@ -36,6 +37,7 @@ public final class BaseMats {
             "TUNGSTEN_INGOT",
             Material.NETHERITE_INGOT,
             "&bTungsten Ingot",
+            "",
             "&7A strong metal obtained either from",
             "&7giving Martians reinforced plates or",
             "&7from smelting fallen meteors"

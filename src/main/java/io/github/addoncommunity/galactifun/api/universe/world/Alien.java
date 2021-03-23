@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens.Martian;
+import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens;
+package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import org.bukkit.entity.EntityType;

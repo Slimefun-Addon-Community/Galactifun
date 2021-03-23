@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.aliens.TitanKing;
+import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
