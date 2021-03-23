@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.items;
 
-import com.google.common.collect.BiMap;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
@@ -198,7 +197,7 @@ public final class Rocket extends SlimefunItem {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(Galactifun.getInstance(), 0, 10);
+            }.runTaskTimer(Galactifun.inst(), 0, 10);
 
             World to = worldTo.getWorld();
 

@@ -51,7 +51,7 @@ public final class GalacticExplorer {
         }
 
         // setup menu
-        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), object.getName());
+        ChestMenu menu = new ChestMenu(Galactifun.inst(), object.getName());
         menu.setEmptySlotsClickable(false);
 
         // back button

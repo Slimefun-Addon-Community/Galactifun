@@ -290,15 +290,15 @@ public final class BaseMats {
     }
 
     private static void createComponent(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9)).register(Galactifun.getInstance());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9)).register(Galactifun.inst());
     }
 
     private static void createComponent(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9), new SlimefunItemStack(item, output)).register(Galactifun.getInstance());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9), new SlimefunItemStack(item, output)).register(Galactifun.inst());
     }
 
     private static void createAssembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.getInstance());
+        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.inst());
     }
 
 }

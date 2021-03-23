@@ -35,7 +35,7 @@ import java.util.Map;
 
 public abstract class BossAlien extends Alien {
 
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "galactifun_boss");
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;

@@ -12,7 +12,6 @@ import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
 import io.github.mooy1.infinitylib.commands.CommandManager;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +19,6 @@ import javax.annotation.Nonnull;
 
 public final class Galactifun extends JavaPlugin implements SlimefunAddon {
 
-    @Getter
     private static Galactifun instance;
     
     @Override
@@ -78,6 +76,10 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
     @Override
     public JavaPlugin getJavaPlugin() {
         return this;
+    }
+
+    public static Galactifun inst() {
+        return instance;
     }
 
 }

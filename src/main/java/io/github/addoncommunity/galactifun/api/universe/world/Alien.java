@@ -57,7 +57,7 @@ public abstract class Alien {
         return id == null ? null : getByID(id);
     }
 
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "alien");
 
     @Nonnull
     private final String id;
