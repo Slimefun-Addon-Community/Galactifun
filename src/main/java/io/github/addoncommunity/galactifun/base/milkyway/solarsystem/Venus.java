@@ -58,11 +58,6 @@ public final class Venus extends SimpleAlienWorld {
         return Gravity.metersPerSec(8.87);
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 460_234_317L;
-    }
-
     @Nonnull
     @Override
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {

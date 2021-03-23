@@ -61,9 +61,4 @@ public final class Earth extends CelestialWorld {
         return Gravity.EARTH_LIKE;
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 509_600_000;
-    }
-
 }

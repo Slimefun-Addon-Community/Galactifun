@@ -101,9 +101,5 @@ public final class Mars extends SimpleAlienWorld {
     protected Gravity createGravity() {
         return Gravity.metersPerSec(3.711);
     }
-
-    @Override
-    protected long createSurfaceArea() {
-        return 144_371_391L;
-    }
+    
 }

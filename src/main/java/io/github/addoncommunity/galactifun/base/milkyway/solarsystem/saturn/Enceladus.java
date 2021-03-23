@@ -81,11 +81,6 @@ public final class Enceladus extends AlienWorld {
     }
 
     @Override
-    protected long createSurfaceArea() {
-        return 798_648L;
-    }
-
-    @Override
     public boolean canSpawnVanillaMobs() {
         return true;
     }

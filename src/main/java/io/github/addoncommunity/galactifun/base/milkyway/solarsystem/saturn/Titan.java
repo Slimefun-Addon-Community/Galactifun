@@ -262,9 +262,4 @@ public final class Titan extends AlienWorld {
         return Gravity.metersPerSec(1.352);
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 83_305_418L;
-    }
-
 }

@@ -39,8 +39,9 @@ public final class Leech extends Alien {
         PlayerInventory inv = ((Player) e.getEntity()).getInventory();
         List<Integer> slots = new ArrayList<>();
         
-        for (int i = 0 ; i < 36 ; i++) {
-            if (inv.getItem(i) != null) {
+        ItemStack[] contents = inv.getContents();
+        for (int i = 0 ; i < contents.length ; i++) {
+            if (contents[i] != null) {
                 slots.add(i);
             }
         }
@@ -51,7 +52,7 @@ public final class Leech extends Alien {
         
         int slot = slots.get(ThreadLocalRandom.current().nextInt(slots.size()));
         
-        ItemStack item = inv.getItem(slot);
+        ItemStack item = contents[slot];
         
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
