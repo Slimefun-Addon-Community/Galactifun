@@ -6,12 +6,14 @@ import io.github.addoncommunity.galactifun.core.schematics.BlockVector3;
 import io.github.addoncommunity.galactifun.core.schematics.GalactifunStructureFormat;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.command.AbstractCommand;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +62,17 @@ public class StructureCommand extends AbstractCommand {
 
                     format.save(new File(FOLDER, args[2] + ".gsf"));
                     p.sendMessage("Saved " + args[2]);
+                    break;
+                case "load":
+                    GalactifunStructureFormat loaded;
+                    try {
+                        loaded = GalactifunStructureFormat.load(new File(FOLDER, args[2] + ".gsf"));
+                    } catch (FileNotFoundException e) {
+                        p.sendMessage(ChatColor.RED + "Unknown structure!");
+                        break;
+                    }
+
+                    loaded.paste(l);
                     break;
             }
         }

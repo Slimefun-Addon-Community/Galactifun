@@ -6,11 +6,14 @@ import com.google.common.primitives.Ints;
 import io.github.addoncommunity.galactifun.Galactifun;
 import lombok.Data;
 import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +24,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * The class for managing the Galactifun Structure Format (GSF)
+ *
+ * @author Seggan
+ */
+// TODO clean up a lot
 public class GalactifunStructureFormat {
 
     private static final BiMap<Integer, Material> ids = HashBiMap.create();
@@ -80,6 +89,7 @@ public class GalactifunStructureFormat {
         return blockSet;
     }
 
+    @Nonnull
     public int[] serialize() {
         List<Integer> result = new ArrayList<>();
         for (SimpleBlock block : this.blocks) {
@@ -94,7 +104,7 @@ public class GalactifunStructureFormat {
         return Ints.toArray(result);
     }
 
-    public void save(File file) {
+    public void save(@Nonnull File file) {
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
@@ -109,6 +119,55 @@ public class GalactifunStructureFormat {
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    @Nonnull
+    public static GalactifunStructureFormat load(@Nonnull File file) throws FileNotFoundException {
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getName());
+        }
+
+        try (FileReader reader = new FileReader(file)) {
+            List<Integer> ints = new ArrayList<>();
+            int i = reader.read();
+            while (i != -1) {
+                ints.add(i);
+                i = reader.read();
+            }
+
+            return deserialize(Ints.toArray(ints));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    @Nonnull
+    public static GalactifunStructureFormat deserialize(@Nonnull int[] serialized) {
+        Set<SimpleBlock> blocks = new HashSet<>();
+
+        int[] read = new int[4];
+        int stage = 0;
+        for (int i : serialized) {
+            read[stage] = i;
+
+            if (stage == 3) {
+                stage = 0;
+
+                blocks.add(new SimpleBlock(ids.get(read[0]), BlockVector3.at(read[1], read[2], read[3])));
+            } else {
+                stage++;
+            }
+        }
+
+        return new GalactifunStructureFormat(blocks);
+    }
+
+    public void paste(Location location) {
+        for (SimpleBlock b : blocks) {
+            BlockVector3 pos = b.getLocation();
+
+            location.clone().add(pos.getX(), pos.getY(), pos.getZ()).getBlock().setType(b.getMaterial());
         }
     }
 }
