@@ -4,8 +4,6 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.core.ConfigUtils;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.slimefun.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -30,7 +28,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -46,7 +43,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 public final class Rocket extends SlimefunItem {
@@ -166,16 +162,12 @@ public final class Rocket extends SlimefunItem {
                 p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
                 return;
             }
+            
             String[] split = SPACE_PATTERN.split(response);
             int x = Integer.parseInt(split[0]);
             int z = Integer.parseInt(split[1]);
-
-            ConfigurationSection section = ConfigUtils.load("config.yml").getConfiguration().getConfigurationSection("rockets");
-            if (section == null) {
-                PluginUtils.log(Level.SEVERE, "Could not load launch messages!");
-                return;
-            }
-            List<String> messages = section.getStringList("launch-msgs");
+            
+            List<String> messages = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
 
             // yes ik boolean#tostring isn't needed but just for safety
             BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
@@ -208,7 +200,7 @@ public final class Rocket extends SlimefunItem {
                 destChunk.load(true);
             }
 
-            PluginUtils.runSync(() -> {
+            Galactifun.inst().runSync(() -> {
                 destBlock.setType(Material.CHEST);
                 BlockData data = destBlock.getBlockData();
                 if (data instanceof Rotatable) {
@@ -220,7 +212,6 @@ public final class Rocket extends SlimefunItem {
                 if (state instanceof Chest) {
                     Chest chest = (Chest) state;
                     Inventory inv = chest.getInventory();
-                    inv.clear(); // just in case
                     inv.addItem(this.getItem().clone());
 
                     // TODO improve
@@ -237,10 +228,10 @@ public final class Rocket extends SlimefunItem {
                 p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
             }, 40);
 
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
-            PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
-            PluginUtils.runSync(() -> {
+            Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
+            Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
+            Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
+            Galactifun.inst().runSync(() -> {
                 p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
                 for (Entity entity : world.getEntities()) {

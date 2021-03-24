@@ -32,7 +32,7 @@ public final class GalacticExplorer {
     
     public static void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
         open(p, HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance()), exitHandler, false);
-        LeaveListener.add(HISTORY);
+        LeaveListener.create(Galactifun.inst(), HISTORY);
     }
     
     private static void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {

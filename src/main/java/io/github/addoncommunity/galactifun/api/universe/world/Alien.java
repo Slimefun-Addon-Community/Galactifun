@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -152,7 +151,7 @@ public abstract class Alien {
     }
 
     static {
-        PluginUtils.registerListener(new Listener() {
+        Galactifun.inst().registerListener(new Listener() {
 
             @EventHandler
             public void onAlienTarget(@Nonnull EntityTargetEvent e) {

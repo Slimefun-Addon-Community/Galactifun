@@ -42,7 +42,7 @@ public final class GalactiportCommand extends AbstractCommand {
     }
 
     @Override
-    protected void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> worlds) {
+    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> worlds) {
         if (strings.length == 2) {
             for (World world : Bukkit.getWorlds()) {
                 worlds.add(world.getName());

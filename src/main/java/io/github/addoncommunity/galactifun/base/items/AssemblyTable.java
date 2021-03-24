@@ -1,9 +1,8 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.items.LoreUtils;
-import io.github.mooy1.infinitylib.players.MessageUtils;
 import io.github.mooy1.infinitylib.recipes.large.LargeRecipeMap;
 import io.github.mooy1.infinitylib.slimefun.presets.MenuPreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -34,7 +33,7 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
     private static final LargeRecipeMap RECIPES = new LargeRecipeMap(36);
     public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
 
-    public static final RecipeType TYPE = new RecipeType(PluginUtils.getKey("assembly_table"), BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
+    public static final RecipeType TYPE = new RecipeType(Galactifun.inst().getKey("assembly_table"), BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
         SlimefunItemStack item = (SlimefunItemStack) stack;
         RECIPES.put(stacks, item);
         ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
@@ -86,22 +85,22 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
         int charge = getCharge(b.getLocation());
 
         if (charge < ENERGY) {
-            MessageUtils.messageWithCD(p, 1000,
-                ChatColor.RED + "Not enough energy!",
-                ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + ENERGY + " J"
-            );
+            p.sendMessage(new String[] {
+                    ChatColor.RED + "Not enough energy!",
+                    ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + ENERGY + " J"
+            });
             return;
         }
 
         ItemStack output = RECIPES.get(inv, INPUT_SLOTS);
 
         if (output == null) {
-            MessageUtils.messageWithCD(p, 1000, ChatColor.RED + "Invalid Recipe!");
+            p.sendMessage( ChatColor.RED + "Invalid Recipe!");
             return;
         }
 
         if (!inv.fits(output, OUTPUT_SLOTS)) {
-            MessageUtils.messageWithCD(p, 1000, ChatColor.GOLD + "Not enough room!");
+            p.sendMessage( ChatColor.GOLD + "Not enough room!");
             return;
         }
 
@@ -111,7 +110,7 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
             }
         }
 
-        MessageUtils.message(p, ChatColor.GREEN + "Successfully crafted: " + ChatColor.WHITE + output.getItemMeta().getDisplayName());
+        p.sendMessage( ChatColor.GREEN + "Successfully crafted: " + ChatColor.WHITE + output.getItemMeta().getDisplayName());
 
         inv.pushItem(output.clone(), OUTPUT_SLOTS);
         setCharge(b.getLocation(), 0);

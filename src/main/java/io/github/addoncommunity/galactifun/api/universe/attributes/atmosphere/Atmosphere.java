@@ -20,11 +20,11 @@ public final class Atmosphere {
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
-        .addNitrogen(77.084) // subtracted 1 to allow water to fit in
-        .addOxygen(20.946)
-        .addComponent(AtmosphericGas.WATER, 0.95)
-        .addComponent(AtmosphericGas.ARGON, 0.934)
-        .addCarbonDioxide(EARTH_CARBON_DIOXIDE)
+        .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
+        .add(Gas.OXYGEN, 20.946)
+        .add(Gas.WATER, 0.95)
+        .add(Gas.ARGON, 0.934)
+        .add(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
         .build();
     public static final Atmosphere NONE = new AtmosphereBuilder().build();
     
@@ -41,13 +41,13 @@ public final class Atmosphere {
     private final AtmosphericEffect[] effects;
     @Nonnull
     @Getter
-    private final Map<AtmosphericGas, Double> composition = new EnumMap<>(AtmosphericGas.class);
+    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
     @Getter
     private final int growthAttempts;
 
     // builder's constructor
     Atmosphere(boolean weatherCycle, boolean storming, boolean thundering, boolean flammable,
-               @Nonnull World.Environment environment, Map<AtmosphericGas, Double> composition,
+               @Nonnull World.Environment environment, Map<Gas, Double> composition,
                @Nonnull AtmosphericEffect[] effects) {
 
         this.weatherCycle = weatherCycle;
@@ -57,7 +57,7 @@ public final class Atmosphere {
         this.flammable = flammable;
         this.composition.putAll(composition);
         this.effects = effects;
-        this.growthAttempts = (int) (composition.getOrDefault(AtmosphericGas.CARBON_DIOXIDE, 0.0) / EARTH_CARBON_DIOXIDE);
+        this.growthAttempts = (int) (composition.getOrDefault(Gas.CARBON_DIOXIDE, 0.0) / EARTH_CARBON_DIOXIDE);
     }
     
     public void applyEffects(@Nonnull World world) {
@@ -81,11 +81,11 @@ public final class Atmosphere {
     }
 
     public double getOxygenPercentage() {
-        return this.composition.getOrDefault(AtmosphericGas.OXYGEN, 0.0);
+        return this.composition.getOrDefault(Gas.OXYGEN, 0.0);
     }
 
     public double getCarbonDioxidePercentage() {
-        return this.composition.getOrDefault(AtmosphericGas.CARBON_DIOXIDE, 0.0);
+        return this.composition.getOrDefault(Gas.CARBON_DIOXIDE, 0.0);
     }
     
 }

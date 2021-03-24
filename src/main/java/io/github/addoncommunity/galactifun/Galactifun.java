@@ -9,29 +9,21 @@ import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
-import io.github.mooy1.infinitylib.commands.CommandManager;
-import io.github.mooy1.infinitylib.core.PluginUtils;
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.mooy1.infinitylib.AbstractAddon;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
-public final class Galactifun extends JavaPlugin implements SlimefunAddon {
+public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
     
     @Override
     public void onEnable() {
+        super.onEnable();
         instance = this;
-
-        PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
-
-        CommandManager.setup("galactifun", "/gf, /galactic",
-                new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
-        );
-        
-        PluginUtils.setupMetrics(10411);
         
         BaseRegistry.setup();
         CoreCategory.setup(this);
@@ -39,7 +31,7 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
         BaseItems.setup(this);
         
         // log after startup
-        PluginUtils.runSync(() -> PluginUtils.log(
+        runSync(() -> log(
                 "",
                 "################# Galactifun " + getPluginVersion() + " #################",
                 "",
@@ -56,6 +48,21 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
+    protected int getMetricsID() {
+        return 10411;
+    }
+
+    @Override
+    protected String getGithubPath() {
+        return "Slimefun-Addon-Community/Galactifun/master";
+    }
+
+    @Override
+    protected List<AbstractCommand> getSubCommands() {
+        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand());
+    }
+
+    @Override
     public void onDisable() {
         // todo make better
         BossAlien.removeBossBars();
@@ -65,17 +72,6 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
     public void onLoad() {
         // default to not logging world settings
         Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
-    }
-
-    @Override
-    public String getBugTrackerURL() {
-        return "Slimefun-Addon-Community/Galactifun/master/issues";
-    }
-
-    @Nonnull
-    @Override
-    public JavaPlugin getJavaPlugin() {
-        return this;
     }
 
     public static Galactifun inst() {

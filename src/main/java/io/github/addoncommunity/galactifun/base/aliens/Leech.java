@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.items.PersistentStackArray;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public final class Leech extends Alien {
 
-    private static final NamespacedKey EATEN = PluginUtils.getKey("eaten");
+    private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
     
     public Leech() {
         super("LEECH", "&eLeech", EntityType.SILVERFISH, 10);

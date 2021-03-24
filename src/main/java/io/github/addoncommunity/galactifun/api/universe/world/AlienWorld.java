@@ -1,11 +1,10 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.core.ConfigUtils;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import lombok.Getter;
@@ -65,7 +64,7 @@ public abstract class AlienWorld extends CelestialWorld {
         return WORLDS.values();
     }
     
-    private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
+    private static final int MAX_ALIENS = Galactifun.inst().getConfigInt("aliens.max-per-player", 4, 64);
 
     /**
      * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
@@ -238,14 +237,14 @@ public abstract class AlienWorld extends CelestialWorld {
     static {
 
         // world ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
+        Galactifun.inst().scheduleRepeatingSync(() -> {
             for (AlienWorld world : WORLDS.values()) {
                 world.tickWorld();
             }
         }, 100);
 
         // alien ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
+        Galactifun.inst().scheduleRepeatingSync(() -> {
             for (Alien alien : Alien.ALIENS.values()) {
                 alien.onUniqueTick();
             }
@@ -258,10 +257,10 @@ public abstract class AlienWorld extends CelestialWorld {
                     }
                 }
             }
-        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
+        }, Galactifun.inst().getConfigInt("aliens.tick-interval", 1, 20));
 
         // world listener
-        PluginUtils.registerListener(new Listener() {
+        Galactifun.inst().registerListener(new Listener() {
 
             // remove old effects and apply new effects
             @EventHandler

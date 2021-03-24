@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.mooy1.infinitylib.slimefun.utils.DelayedRecipeType;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 
 public class CircuitPress extends AContainer {
     
-    public static final DelayedRecipeType TYPE = new DelayedRecipeType(BaseItems.CIRCUIT_PRESS);
+    public static final DelayedRecipeType TYPE = new DelayedRecipeType(Galactifun.inst(), BaseItems.CIRCUIT_PRESS);
 
     public CircuitPress(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);

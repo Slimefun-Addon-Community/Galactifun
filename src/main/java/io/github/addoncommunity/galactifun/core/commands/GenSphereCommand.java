@@ -53,7 +53,7 @@ public final class GenSphereCommand extends AbstractCommand {
     }
 
     @Override
-    protected void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> tabs) {
+    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> tabs) {
         if (strings.length == 2) {
             tabs.add("16");
             tabs.add("64");

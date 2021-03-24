@@ -7,6 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
@@ -49,7 +50,7 @@ public final class Venus extends SimpleAlienWorld {
         return new AtmosphereBuilder()
                 .setNether().addStorm().addThunder()
                 .addEffects(new AtmosphericEffect(EffectType.WITHER, 3))
-                .addCarbonDioxide(96.5).addNitrogen(3.5).build();
+                .add(Gas.CARBON_DIOXIDE, 96.5).add(Gas.NITROGEN, 3.5).build();
     }
 
     @Nonnull
