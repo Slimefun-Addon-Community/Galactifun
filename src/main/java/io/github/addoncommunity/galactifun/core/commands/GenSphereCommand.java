@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.util.Sphere;
-import io.github.mooy1.infinitylib.command.AbstractCommand;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -53,15 +52,12 @@ public final class GenSphereCommand extends AbstractCommand {
         p.sendMessage(ChatColor.GREEN + "Time: " + (time > 1_000_000_000D ? time / 1_000_000_000D + " s" : time / 1_000_000D + " ms"));
     }
 
-    @Nonnull
     @Override
-    public List<String> onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        List<String> tabs = new ArrayList<>();
+    protected void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> tabs) {
         if (strings.length == 2) {
             tabs.add("16");
             tabs.add("64");
         }
-        return tabs;
     }
 
 }

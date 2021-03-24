@@ -13,7 +13,7 @@ import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
 import io.github.addoncommunity.galactifun.base.aliens.Skywhale;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
-import io.github.addoncommunity.galactifun.base.aliens.bosses.TitanKing;
+import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Venus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;

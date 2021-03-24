@@ -46,9 +46,4 @@ public final class Saturn extends CelestialBody {
         return Gravity.relativeToEarth(1.06);
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 16_490_000_000L;
-    }
-
 }

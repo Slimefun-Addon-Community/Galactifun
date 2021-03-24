@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import org.apache.commons.lang.Validate;
 
 import javax.annotation.Nonnull;

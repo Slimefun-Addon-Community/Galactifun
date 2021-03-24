@@ -42,11 +42,6 @@ public final class Europa extends AlienWorld {
     }
 
     @Override
-    protected long createSurfaceArea() {
-        return 30_612_893;
-    }
-
-    @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
         int x;
         int y;

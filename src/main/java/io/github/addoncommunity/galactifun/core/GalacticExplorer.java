@@ -5,8 +5,8 @@ import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.player.LeaveListener;
-import io.github.mooy1.infinitylib.presets.LorePreset;
+import io.github.mooy1.infinitylib.players.LeaveListener;
+import io.github.mooy1.infinitylib.slimefun.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
@@ -51,7 +51,7 @@ public final class GalacticExplorer {
         }
 
         // setup menu
-        ChestMenu menu = new ChestMenu(Galactifun.getInstance(), object.getName());
+        ChestMenu menu = new ChestMenu(Galactifun.inst(), object.getName());
         menu.setEmptySlotsClickable(false);
 
         // back button
@@ -78,24 +78,22 @@ public final class GalacticExplorer {
                 
                 // add distance from current
                 ItemMeta meta = item.getItemMeta();
-                if (meta != null) {
-                    List<String> lore = meta.getLore();
-                    if (lore != null) {
-                        lore.remove(lore.size() - 1);
+                List<String> lore = meta.getLore();
+                if (lore != null) {
+                    lore.remove(lore.size() - 1);
 
-                        if (distance > 0) {
-                            lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                                    ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                                    : distance + " Light Years")
-                            ));
-                        } else {
-                            lore.add(ChatColors.color("&7You are here!"));
-                        }
-                        
-                        meta.setLore(lore);
-                        item = item.clone();
-                        item.setItemMeta(meta);
+                    if (distance > 0) {
+                        lore.add(ChatColors.color("&7Distance: " + (distance < 1
+                                ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                                : distance + " Light Years")
+                        ));
+                    } else {
+                        lore.add(ChatColors.color("&7You are here!"));
                     }
+                    
+                    meta.setLore(lore);
+                    item = item.clone();
+                    item.setItemMeta(meta);
                 }
             }
             
