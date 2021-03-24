@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.util;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 
 import javax.annotation.Nonnull;
@@ -57,5 +58,9 @@ public final class Util {
      */
     public static int fastFloor(double num) {
         return num >= 0 ? (int) num : (int) num - 1;
+    }
+
+    public static String locToString(Location l) {
+        return l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ();
     }
 }

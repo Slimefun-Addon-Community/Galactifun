@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
+import com.github.shynixn.structureblocklib.api.bukkit.StructureBlockLibApi;
+import com.github.shynixn.structureblocklib.api.enumeration.StructureRotation;
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -8,15 +11,10 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
-import io.github.mooy1.infinitylib.PluginUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -33,17 +31,6 @@ public final class Enceladus extends AlienWorld {
 
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
-
-        PluginUtils.registerListener(new Listener() {
-            @EventHandler
-            public void onSquidSpawn(CreatureSpawnEvent e) {
-                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
-                    if (e.getEntityType() == EntityType.SQUID && e.getLocation().getY() >= 60) {
-                        e.setCancelled(true);
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -58,17 +45,17 @@ public final class Enceladus extends AlienWorld {
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
 
-                for (y = 1 ; y <= 30 ; y++) {
+                for (y = 1; y <= 30; y++) {
                     chunk.setBlock(x, y, z, Material.PACKED_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
-                for (; y <= 60 ; y++) {
+                for (; y <= 60; y++) {
                     chunk.setBlock(x, y, z, Material.BLUE_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
-                for (; y < 256 ; y++) {
+                for (; y < 256; y++) {
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
             }
@@ -121,19 +108,16 @@ public final class Enceladus extends AlienWorld {
 
                     // water layer 2
                     source.getBlock(x, y, z).setType(Material.WATER, false);
-
-                    if (random.nextDouble() < 0.3) {
-                        // water layer 3
-                        source.getBlock(x, y + 1, z).setType(Material.WATER, false);
-
-                        // water layer 4
-                        source.getBlock(x, y + 2, z).setType(Material.WATER, true);
-                    }
                 } else if (random.nextDouble() < 0.01) {
                     int y = random.nextInt(40) + 5;
 
                     SPHERE.generate(source.getBlock(8, y, 8), random, 3, 3);
                 }
+                StructureBlockLibApi.INSTANCE
+                    .loadStructure(Galactifun.getInstance())
+                    .at(source.getBlock(8, 61, 8).getLocation())
+                    .rotation(StructureRotation.values()[random.nextInt(StructureRotation.values().length)])
+                    .loadFromInputStream(Galactifun.class.getClassLoader().getResourceAsStream("medium_cryovolcano.nbt"));
             }
         });
     }

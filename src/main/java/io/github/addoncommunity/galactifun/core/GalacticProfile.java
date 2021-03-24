@@ -3,11 +3,14 @@ package io.github.addoncommunity.galactifun.core;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.mooy1.infinitylib.ConfigUtils;
 import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import lombok.Getter;
+import lombok.Setter;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -19,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * A galactic profile, similar to {@link io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile}
+ * A galactic profile, similar to {@link PlayerProfile}
  * 
  * @author Mooy1
  */
@@ -107,6 +110,13 @@ public final class GalacticProfile {
      */
     @Nonnull
     private final ChestMenu menu;
+
+    @Getter
+    @Setter
+    private Location pos1;
+    @Getter
+    @Setter
+    private Location pos2;
 
     @Getter
     private int oxygen; // todo load this on start and on menu close

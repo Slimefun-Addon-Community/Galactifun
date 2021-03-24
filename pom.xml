@@ -60,6 +60,10 @@
                             <pattern>io.github.mooy1.infinitylib</pattern>
                             <shadedPattern>io.github.addoncommunity.galactifun.infinitylib</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.github.shynixn.structureblocklib</pattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.structureblocklib</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -111,6 +115,18 @@
             <groupId>io.github.mooy1</groupId>
             <artifactId>InfinityLib</artifactId>
             <version>80a90fcf51</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shynixn.structureblocklib</groupId>
+            <artifactId>structureblocklib-bukkit-api</artifactId>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shynixn.structureblocklib</groupId>
+            <artifactId>structureblocklib-bukkit-core</artifactId>
+            <version>2.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
