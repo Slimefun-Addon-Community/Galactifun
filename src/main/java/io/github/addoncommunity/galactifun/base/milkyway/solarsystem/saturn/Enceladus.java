@@ -7,9 +7,16 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.Sphere;
+import io.github.mooy1.infinitylib.PluginUtils;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -26,6 +33,17 @@ public final class Enceladus extends AlienWorld {
 
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+
+        PluginUtils.registerListener(new Listener() {
+            @EventHandler
+            public void onSquidSpawn(CreatureSpawnEvent e) {
+                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+                    if (e.getEntityType() == EntityType.SQUID && e.getLocation().getY() >= 60) {
+                        e.setCancelled(true);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -59,7 +77,65 @@ public final class Enceladus extends AlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        populators.add(new BlockPopulator() {
 
+            private final Sphere SPHERE = new Sphere(Material.WATER);
+
+            @Override
+            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
+                if (random.nextDouble() < 0.01) {
+                    int x = random.nextInt(12) + 2;
+                    int y = 61;
+                    int z = random.nextInt(12) + 2;
+
+                    // ice layer 1 x axis
+                    source.getBlock(x - 2, y, z).setType(Material.BLUE_ICE);
+                    source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
+                    source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
+                    source.getBlock(x + 2, y, z).setType(Material.BLUE_ICE);
+
+                    // ice layer 1 z axis
+                    source.getBlock(x, y, z - 2).setType(Material.BLUE_ICE);
+                    source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x, y, z + 2).setType(Material.BLUE_ICE);
+
+                    // corner ice layer 1
+                    source.getBlock(x - 1, y, z - 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x + 1, y, z - 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x - 1, y, z + 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x + 1, y, z + 1).setType(Material.BLUE_ICE);
+
+                    // water layer 1
+                    source.getBlock(x, y, z).setType(Material.WATER, false);
+
+                    y++;
+
+                    // ice layer 2 x axis
+                    source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
+                    source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
+
+                    // ice layer 2 z axis
+                    source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
+                    source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
+
+                    // water layer 2
+                    source.getBlock(x, y, z).setType(Material.WATER, false);
+
+                    if (random.nextDouble() < 0.3) {
+                        // water layer 3
+                        source.getBlock(x, y + 1, z).setType(Material.WATER, false);
+
+                        // water layer 4
+                        source.getBlock(x, y + 2, z).setType(Material.WATER, true);
+                    }
+                } else if (random.nextDouble() < 0.01) {
+                    int y = random.nextInt(40) + 5;
+
+                    SPHERE.generate(source.getBlock(8, y, 8), random, 3, 3);
+                }
+            }
+        });
     }
 
     @Nonnull
