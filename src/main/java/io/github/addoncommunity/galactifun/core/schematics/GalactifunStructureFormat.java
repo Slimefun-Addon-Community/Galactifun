@@ -3,6 +3,9 @@ package io.github.addoncommunity.galactifun.core.schematics;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.primitives.Ints;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import io.github.addoncommunity.galactifun.Galactifun;
 import lombok.Data;
 import lombok.Getter;
@@ -13,11 +16,12 @@ import org.bukkit.World;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -83,25 +87,32 @@ public class GalactifunStructureFormat {
         for (BlockVector3 loc : region) {
             Material mat = loc.getLocation(world).getBlock().getType();
 
-            blockSet.add(new SimpleBlock(mat, loc.subtract(origin)));
+            if (!mat.isAir()) {
+                blockSet.add(new SimpleBlock(mat, loc.subtract(origin)));
+            }
         }
 
         return blockSet;
     }
 
     @Nonnull
-    public int[] serialize() {
-        List<Integer> result = new ArrayList<>();
+    public String serialize() {
+        System.out.println(blocks);
+        JsonArray array = new JsonArray();
         for (SimpleBlock block : this.blocks) {
-            result.add(ids.inverse().get(block.getMaterial()));
+            JsonObject jsonObject = new JsonObject();
+
+            jsonObject.add("m", new JsonPrimitive(block.getMaterial().name()));
 
             BlockVector3 loc = block.getLocation();
-            result.add(loc.getBlockX());
-            result.add(loc.getBlockY());
-            result.add(loc.getBlockZ());
+            jsonObject.add("x", new JsonPrimitive(loc.getX()));
+            jsonObject.add("y", new JsonPrimitive(loc.getY()));
+            jsonObject.add("z", new JsonPrimitive(loc.getZ()));
+
+            array.add(jsonObject);
         }
 
-        return Ints.toArray(result);
+        return array.toString();
     }
 
     public void save(@Nonnull File file) {
@@ -113,10 +124,8 @@ public class GalactifunStructureFormat {
                 throw new UncheckedIOException(e);
             }
         }
-        try (FileWriter writer = new FileWriter(file)) {
-            for (int i : this.serialize()) {
-                writer.write(i);
-            }
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(serialize().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
