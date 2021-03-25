@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -57,7 +57,7 @@ public abstract class Alien {
         return id == null ? null : getByID(id);
     }
 
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "alien");
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "alien");
 
     @Nonnull
     private final String id;
@@ -66,15 +66,15 @@ public abstract class Alien {
     @Getter
     @Nonnull
     private final EntityType type;
-    private final int health;
+    protected final int maxHealth;
     
-    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
+    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int maxHealth) {
         
         Validate.notNull(this.id = id);
         Validate.notNull(this.name = ChatColors.color(name));
         Validate.notNull(this.type = type);
         Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
-        Validate.isTrue((this.health = health) > 0);
+        Validate.isTrue((this.maxHealth = maxHealth) > 0);
         Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
         Validate.notNull(getSpawnOffset());
 
@@ -87,8 +87,8 @@ public abstract class Alien {
         LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
         PersistentDataAPI.setString(entity, KEY, this.id);
 
-        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.health);
-        entity.setHealth(this.health);
+        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
+        entity.setHealth(this.maxHealth);
         entity.setCustomName(this.name);
         entity.setCustomNameVisible(true);
 

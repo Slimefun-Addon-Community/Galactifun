@@ -1,11 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.aliens.bosses.TitanKing;
+import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -35,33 +35,17 @@ import java.util.Map;
 
 public abstract class BossAlien extends Alien {
 
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.getInstance(), "galactifun_boss");
-
+    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
-
+    
+    private final BossBarStyle style;
     private int tick = 0;
-
-    protected static final class BossBarStyle {
-        private final String name;
-        private final BarColor color;
-        private final BarStyle style;
-        private final BarFlag[] flags;
-
-        public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-            this.name = name;
-            this.color = color;
-            this.style = style;
-            this.flags = flags;
-        }
-    }
 
     public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
         super(id, name, type, health);
+        Validate.notNull(this.style = createBossBarStyle());
     }
-
-    @Nonnull
-    protected abstract BossBarStyle getBossBarStyle();
-
+    
     /**
      * Returns the max distance from the boss that you can see its {@link BossBar}
      *
@@ -74,7 +58,7 @@ public abstract class BossAlien extends Alien {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull LivingEntity spawned) {
-        BossBarStyle style = getBossBarStyle();
+        BossBarStyle style = this.style;
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
@@ -94,7 +78,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                bossbar.setProgress(finalHealth / this.maxHealth);
             }
         }
     }
@@ -107,7 +91,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                bossbar.setProgress(finalHealth / this.maxHealth);
             }
         }
     }
@@ -164,10 +148,10 @@ public abstract class BossAlien extends Alien {
             return instances.get(entity);
         }
 
-        BossBarStyle style = getBossBarStyle();
+        BossBarStyle style = createBossBarStyle();
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
-        bossbar.setProgress(entity.getHealth() / entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        bossbar.setProgress(entity.getHealth() / this.maxHealth);
         instances.put(entity, bossbar);
         return bossbar;
     }
@@ -178,4 +162,23 @@ public abstract class BossAlien extends Alien {
             bossbar.removeAll();
         }
     }
+
+    // TODO maybe add a default style?
+    @Nonnull
+    protected abstract BossBarStyle createBossBarStyle();
+    
+    protected static final class BossBarStyle {
+        private final String name;
+        private final BarColor color;
+        private final BarStyle style;
+        private final BarFlag[] flags;
+
+        public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
+            this.name = name;
+            this.color = color;
+            this.style = style;
+            this.flags = flags;
+        }
+    }
+    
 }

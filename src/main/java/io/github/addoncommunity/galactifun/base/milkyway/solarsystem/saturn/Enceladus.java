@@ -1,8 +1,5 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import com.github.shynixn.structureblocklib.api.bukkit.StructureBlockLibApi;
-import com.github.shynixn.structureblocklib.api.enumeration.StructureRotation;
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -113,11 +110,6 @@ public final class Enceladus extends AlienWorld {
 
                     SPHERE.generate(source.getBlock(8, y, 8), random, 3, 3);
                 }
-                StructureBlockLibApi.INSTANCE
-                    .loadStructure(Galactifun.getInstance())
-                    .at(source.getBlock(8, 61, 8).getLocation())
-                    .rotation(StructureRotation.values()[random.nextInt(StructureRotation.values().length)])
-                    .loadFromInputStream(Galactifun.class.getClassLoader().getResourceAsStream("medium_cryovolcano.nbt"));
             }
         });
     }
@@ -138,11 +130,6 @@ public final class Enceladus extends AlienWorld {
     @Override
     protected Gravity createGravity() {
         return Gravity.relativeToEarth(0.0113);
-    }
-
-    @Override
-    protected long createSurfaceArea() {
-        return 798_648L;
     }
 
     @Override

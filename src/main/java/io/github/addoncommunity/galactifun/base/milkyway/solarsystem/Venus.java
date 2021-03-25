@@ -30,11 +30,11 @@ public final class Venus extends SimpleAlienWorld {
     public Venus() {
         super("Venus", Orbit.kilometers(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
     }
-    
+
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
-        populators.add(new LakePopulator(75, Material.LAVA));
+        populators.add(new VolcanoPopulator(117, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new LakePopulator(80, Material.LAVA));
     }
 
     @Nonnull
@@ -46,21 +46,16 @@ public final class Venus extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().setNether().addStorm().addThunder().addEffects(new AtmosphericEffect(EffectType.WITHER, 3))
-            .addCarbonDioxide(96.5)
-            .addNitrogen(3.5)
-            .build();
+        return new AtmosphereBuilder()
+                .setNether().addStorm().addThunder()
+                .addEffects(new AtmosphericEffect(EffectType.WITHER, 3))
+                .addCarbonDioxide(96.5).addNitrogen(3.5).build();
     }
 
     @Nonnull
     @Override
     protected Gravity createGravity() {
         return Gravity.metersPerSec(8.87);
-    }
-
-    @Override
-    protected long createSurfaceArea() {
-        return 460_234_317L;
     }
 
     @Nonnull
@@ -85,7 +80,7 @@ public final class Venus extends SimpleAlienWorld {
 
     @Override
     protected int getAverageHeight() {
-        return 50;
+        return 100;
     }
 
     @Override
@@ -102,9 +97,5 @@ public final class Venus extends SimpleAlienWorld {
     protected double getFrequency() {
         return .3;
     }
-
-    @Override
-    protected boolean addOne() {
-        return true;
-    }
+    
 }

@@ -50,11 +50,6 @@ public final class TheMoon extends SimpleAlienWorld {
         return Gravity.MOON_LIKE;
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 37_900_000L;
-    }
-
     @Nonnull
     @Override
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {

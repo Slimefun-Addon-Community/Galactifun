@@ -40,9 +40,4 @@ public final class Jupiter extends CelestialBody {
         return Gravity.metersPerSec(24.79);
     }
 
-    @Override
-    protected long createSurfaceArea() {
-        return 61_420_000_000L;
-    }
-
 }

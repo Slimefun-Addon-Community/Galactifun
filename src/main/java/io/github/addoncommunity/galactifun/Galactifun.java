@@ -2,26 +2,24 @@ package io.github.addoncommunity.galactifun;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
-import io.github.addoncommunity.galactifun.api.universe.world.PersistentAlien;
+import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.core.GalacticProfile;
+import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
-import io.github.addoncommunity.galactifun.implementation.lists.Categories;
-import io.github.mooy1.infinitylib.PluginUtils;
-import io.github.mooy1.infinitylib.command.CommandManager;
+import io.github.mooy1.infinitylib.commands.CommandManager;
+import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import lombok.Getter;
-import org.bukkit.World;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class Galactifun extends JavaPlugin implements SlimefunAddon {
+public final class Galactifun extends JavaPlugin implements SlimefunAddon {
 
-    @Getter
     private static Galactifun instance;
     
     @Override
@@ -30,19 +28,16 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
 
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
 
-        CommandManager.setup("galactifun", "galactifun.admin", "/gf, /galactic",
+        CommandManager.setup("galactifun", "/gf, /galactic",
                 new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand(), new StructureCommand()
         );
         
         PluginUtils.setupMetrics(10411);
 
-        GalacticProfile.loadAll();
-        
-        Categories.setup(this);
-
-        Setup.setup(this);
-        
         BaseRegistry.setup();
+        CoreCategory.setup(this);
+        BaseMats.setup();
+        BaseItems.setup(this);
 
         // log after startup
         PluginUtils.runSync(() -> PluginUtils.log(
@@ -59,28 +54,18 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
                 "###################################################",
                 ""
         ));
-        
-        // load entities after aliens are created
-        PluginUtils.runSync(PersistentAlien::loadAll);
-
-        // Schedule time tickers for the enabled worlds after world classes are set up
-        PluginUtils.runSync(() -> {
-            for (AlienWorld world : AlienWorld.getEnabled()) {
-                if (!world.getDayCycle().isEternal() && world.getWorld().getEnvironment() == World.Environment.NORMAL) {
-                    PluginUtils.scheduleRepeatingSync(() -> {
-                        world.getDayCycle().tick(world.getWorld());
-                    }, 1, 1);
-                }
-            }
-        });
     }
 
     @Override
     public void onDisable() {
-        GalacticProfile.unloadAll();
-        GalacticProfile.saveAll();
-        PersistentAlien.saveAll();
+        // todo make better
         BossAlien.removeBossBars();
+    }
+
+    @Override
+    public void onLoad() {
+        // default to not logging world settings
+        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
     @Override
@@ -93,5 +78,9 @@ public class Galactifun extends JavaPlugin implements SlimefunAddon {
     public JavaPlugin getJavaPlugin() {
         return this;
     }
-    
+
+    public static Galactifun inst() {
+        return instance;
+    }
+
 }

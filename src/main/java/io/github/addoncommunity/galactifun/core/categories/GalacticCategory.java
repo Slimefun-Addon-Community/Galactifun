@@ -1,13 +1,13 @@
-package io.github.addoncommunity.galactifun.core;
+package io.github.addoncommunity.galactifun.core.categories;
 
-import io.github.mooy1.infinitylib.PluginUtils;
+import io.github.addoncommunity.galactifun.core.GalacticExplorer;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -18,8 +18,8 @@ import javax.annotation.Nonnull;
  */
 public final class GalacticCategory extends FlexCategory {
     
-    public GalacticCategory() {
-        super(PluginUtils.getKey("galactic_category"), new CustomItem(Material.END_STONE, "&bThe Universe"));
+    public GalacticCategory(NamespacedKey key, ItemStack item) {
+        super(key, item);
     }
 
     @Override

@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.ConfigUtils;
+import io.github.mooy1.infinitylib.core.ConfigUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -22,8 +22,6 @@ import javax.annotation.Nonnull;
 public final class Earth extends CelestialWorld {
     
     private static final World WORLD = getMainWorld();
-    public static final long SURFACE_AREA = 509_600_000;
-    public static final double BORDER_SURFACE_RATIO =  WORLD.getWorldBorder().getSize() / Math.sqrt(SURFACE_AREA);
     
     @Nonnull
     private static World getMainWorld() {
@@ -63,10 +61,4 @@ public final class Earth extends CelestialWorld {
     protected Gravity createGravity() {
         return Gravity.EARTH_LIKE;
     }
-
-    @Override
-    protected long createSurfaceArea() {
-        return SURFACE_AREA;
-    }
-
 }
