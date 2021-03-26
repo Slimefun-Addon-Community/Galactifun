@@ -1,13 +1,10 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
-import io.github.addoncommunity.galactifun.Galactifun;
 import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -18,12 +15,10 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -33,23 +28,6 @@ import java.util.Set;
  */
 // TODO clean up a lot
 public class GalactifunStructureFormat {
-
-    private static final BiMap<Integer, Material> ids = HashBiMap.create();
-
-    static {
-        String file;
-        try (InputStream stream = Galactifun.class.getClassLoader().getResourceAsStream("ids.txt")) {
-            Scanner s = new Scanner(stream).useDelimiter("\\A");
-            file = s.hasNext() ? s.next() : "";
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        for (String s : file.split("\n")) {
-            String[] split = s.split(" ");
-            ids.put(Integer.parseInt(split[0]), Material.getMaterial(split[1]));
-        }
-    }
 
     @Getter
     private final Set<SimpleBlock> blocks;
