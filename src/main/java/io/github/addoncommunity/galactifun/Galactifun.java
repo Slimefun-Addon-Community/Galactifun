@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
+import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.mooy1.infinitylib.commands.CommandManager;
 import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -28,16 +29,16 @@ public final class Galactifun extends JavaPlugin implements SlimefunAddon {
         PluginUtils.setup("galactifun", this, "Slimefun-Addon-Community/Galactifun/master", getFile());
 
         CommandManager.setup("galactifun", "/gf, /galactic",
-                new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand()
+                new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand(), new StructureCommand()
         );
         
         PluginUtils.setupMetrics(10411);
-        
+
         BaseRegistry.setup();
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        
+
         // log after startup
         PluginUtils.runSync(() -> PluginUtils.log(
                 "",

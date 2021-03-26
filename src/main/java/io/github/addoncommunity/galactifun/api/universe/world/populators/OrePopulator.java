@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.world.populators;
 
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.apache.commons.lang.ArrayUtils;
@@ -75,12 +74,7 @@ public class OrePopulator extends BlockPopulator {
                     chunk.getBlock(x, y, z).setType(this.ore);
                     
                     if (this.id != null) {
-                        final int fx = x;
-                        final int fy = y;
-                        final int fz = z;
-
-                        // Can produce concurrentModificationException error, currently non-avoidable ??
-                        PluginUtils.runSync(() -> BlockStorage.store(chunk.getBlock(fx, fy, fz), this.id));
+                        BlockStorage.store(chunk.getBlock(x, y, z), this.id);
                     }
 
                     if ((length < this.minSize) || (random.nextInt(100) < 50)) {
