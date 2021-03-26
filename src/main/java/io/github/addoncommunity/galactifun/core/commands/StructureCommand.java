@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.core.schematics.BlockVector3;
-import io.github.addoncommunity.galactifun.core.schematics.GalactifunStructureFormat;
+import io.github.addoncommunity.galactifun.core.structures.BlockVector3;
+import io.github.addoncommunity.galactifun.core.structures.GalactifunStructureFormat;
 import io.github.addoncommunity.galactifun.util.PersistentLocation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;

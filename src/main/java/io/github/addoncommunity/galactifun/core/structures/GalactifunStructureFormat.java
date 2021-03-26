@@ -1,10 +1,11 @@
-package io.github.addoncommunity.galactifun.core.schematics;
+package io.github.addoncommunity.galactifun.core.structures;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.primitives.Ints;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import io.github.addoncommunity.galactifun.Galactifun;
 import lombok.Data;
@@ -16,15 +17,12 @@ import org.bukkit.World;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.nio.file.Files;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -124,8 +122,9 @@ public class GalactifunStructureFormat {
                 throw new UncheckedIOException(e);
             }
         }
-        try (FileOutputStream stream = new FileOutputStream(file)) {
-            stream.write(serialize().getBytes(StandardCharsets.UTF_8));
+
+        try {
+            Files.writeString(file.toPath(), serialize(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -137,36 +136,27 @@ public class GalactifunStructureFormat {
             throw new FileNotFoundException(file.getName());
         }
 
-        try (FileReader reader = new FileReader(file)) {
-            List<Integer> ints = new ArrayList<>();
-            int i = reader.read();
-            while (i != -1) {
-                ints.add(i);
-                i = reader.read();
-            }
-
-            return deserialize(Ints.toArray(ints));
+        try {
+            return deserialize(Files.readString(file.toPath()));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     @Nonnull
-    public static GalactifunStructureFormat deserialize(@Nonnull int[] serialized) {
+    public static GalactifunStructureFormat deserialize(@Nonnull String serialized) {
         Set<SimpleBlock> blocks = new HashSet<>();
 
-        int[] read = new int[4];
-        int stage = 0;
-        for (int i : serialized) {
-            read[stage] = i;
+        JsonArray array = new JsonParser().parse(serialized).getAsJsonArray();
+        for (JsonElement element : array) {
+            JsonObject object = element.getAsJsonObject();
 
-            if (stage == 3) {
-                stage = 0;
+            Material material = Material.valueOf(object.get("m").getAsString());
+            int x = object.get("x").getAsInt();
+            int y = object.get("y").getAsInt();
+            int z = object.get("z").getAsInt();
 
-                blocks.add(new SimpleBlock(ids.get(read[0]), BlockVector3.at(read[1], read[2], read[3])));
-            } else {
-                stage++;
-            }
+            blocks.add(new SimpleBlock(material, BlockVector3.at(x, y, z)));
         }
 
         return new GalactifunStructureFormat(blocks);

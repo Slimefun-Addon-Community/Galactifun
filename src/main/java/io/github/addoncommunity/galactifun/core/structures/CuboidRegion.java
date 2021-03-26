@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.schematics;
+package io.github.addoncommunity.galactifun.core.structures;
 
 /*
  * WorldEdit, a Minecraft world manipulation toolkit
