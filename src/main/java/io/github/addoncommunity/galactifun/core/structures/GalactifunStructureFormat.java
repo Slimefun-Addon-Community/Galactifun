@@ -93,6 +93,11 @@ public class GalactifunStructureFormat {
         return blockSet;
     }
 
+    /**
+     * Serializes the current GSF to a string that can be deserialized with {@link #deserialize(String)}
+     *
+     * @return a string that is the serialized GSF
+     */
     @Nonnull
     public String serialize() {
         System.out.println(blocks);
@@ -113,6 +118,11 @@ public class GalactifunStructureFormat {
         return array.toString();
     }
 
+    /**
+     * Saves the current GSF to the specified file
+     *
+     * @param file the file too save the GSF to
+     */
     public void save(@Nonnull File file) {
         if (!file.exists()) {
             try {
@@ -130,6 +140,13 @@ public class GalactifunStructureFormat {
         }
     }
 
+    /**
+     * Loads a GSF file and deserializes it
+     *
+     * @param file the file to load
+     * @return a new {@link GalactifunStructureFormat}
+     * @throws FileNotFoundException if the file was not found
+     */
     @Nonnull
     public static GalactifunStructureFormat load(@Nonnull File file) throws FileNotFoundException {
         if (!file.exists()) {
@@ -143,6 +160,12 @@ public class GalactifunStructureFormat {
         }
     }
 
+    /**
+     * Deserializes a GSF string
+     *
+     * @param serialized the serialized string
+     * @return a new {@link GalactifunStructureFormat}
+     */
     @Nonnull
     public static GalactifunStructureFormat deserialize(@Nonnull String serialized) {
         Set<SimpleBlock> blocks = new HashSet<>();
