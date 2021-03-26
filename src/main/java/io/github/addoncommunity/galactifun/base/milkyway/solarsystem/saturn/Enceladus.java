@@ -1,11 +1,13 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.core.structures.GalactifunStructureFormat;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import org.bukkit.Chunk;
@@ -16,6 +18,11 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 
@@ -26,8 +33,22 @@ import java.util.Random;
  */
 public final class Enceladus extends AlienWorld {
 
+    private final GalactifunStructureFormat MEDIUM_CRYOVOLCANO;
+
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+
+        try (InputStream stream = Galactifun.class.getClassLoader().getResourceAsStream("medium_cryovolcano.gsf")) {
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            for (int length; (length = stream.read(buffer)) != -1; ) {
+                result.write(buffer, 0, length);
+            }
+
+            MEDIUM_CRYOVOLCANO = GalactifunStructureFormat.deserialize(result.toString(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
@@ -68,43 +89,47 @@ public final class Enceladus extends AlienWorld {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
                 if (random.nextDouble() < 0.01) {
-                    int x = random.nextInt(12) + 2;
-                    int y = 61;
-                    int z = random.nextInt(12) + 2;
+                    if (random.nextBoolean()) {
+                        int x = random.nextInt(12) + 2;
+                        int y = 61;
+                        int z = random.nextInt(12) + 2;
 
-                    // ice layer 1 x axis
-                    source.getBlock(x - 2, y, z).setType(Material.BLUE_ICE);
-                    source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
-                    source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
-                    source.getBlock(x + 2, y, z).setType(Material.BLUE_ICE);
+                        // ice layer 1 x axis
+                        source.getBlock(x - 2, y, z).setType(Material.BLUE_ICE);
+                        source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
+                        source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
+                        source.getBlock(x + 2, y, z).setType(Material.BLUE_ICE);
 
-                    // ice layer 1 z axis
-                    source.getBlock(x, y, z - 2).setType(Material.BLUE_ICE);
-                    source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x, y, z + 2).setType(Material.BLUE_ICE);
+                        // ice layer 1 z axis
+                        source.getBlock(x, y, z - 2).setType(Material.BLUE_ICE);
+                        source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x, y, z + 2).setType(Material.BLUE_ICE);
 
-                    // corner ice layer 1
-                    source.getBlock(x - 1, y, z - 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x + 1, y, z - 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x - 1, y, z + 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x + 1, y, z + 1).setType(Material.BLUE_ICE);
+                        // corner ice layer 1
+                        source.getBlock(x - 1, y, z - 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x + 1, y, z - 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x - 1, y, z + 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x + 1, y, z + 1).setType(Material.BLUE_ICE);
 
-                    // water layer 1
-                    source.getBlock(x, y, z).setType(Material.WATER, false);
+                        // water layer 1
+                        source.getBlock(x, y, z).setType(Material.WATER, false);
 
-                    y++;
+                        y++;
 
-                    // ice layer 2 x axis
-                    source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
-                    source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
+                        // ice layer 2 x axis
+                        source.getBlock(x - 1, y, z).setType(Material.BLUE_ICE);
+                        source.getBlock(x + 1, y, z).setType(Material.BLUE_ICE);
 
-                    // ice layer 2 z axis
-                    source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
-                    source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
+                        // ice layer 2 z axis
+                        source.getBlock(x, y, z - 1).setType(Material.BLUE_ICE);
+                        source.getBlock(x, y, z + 1).setType(Material.BLUE_ICE);
 
-                    // water layer 2
-                    source.getBlock(x, y, z).setType(Material.WATER, false);
+                        // water layer 2
+                        source.getBlock(x, y, z).setType(Material.WATER, false);
+                    } else {
+                        MEDIUM_CRYOVOLCANO.paste(source.getBlock(4, 61, 4).getLocation());
+                    }
                 } else if (random.nextDouble() < 0.01) {
                     int y = random.nextInt(40) + 5;
 
