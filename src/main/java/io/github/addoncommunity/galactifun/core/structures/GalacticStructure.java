@@ -26,21 +26,20 @@ import java.util.Set;
  *
  * @author Seggan
  */
-// TODO clean up a lot
-public class GalactifunStructureFormat {
+public class GalacticStructure {
 
     @Getter
     private final Set<SimpleBlock> blocks;
 
-    public GalactifunStructureFormat(@Nonnull World world, @Nonnull BlockVector3 pos1, @Nonnull BlockVector3 pos2) {
+    public GalacticStructure(@Nonnull World world, @Nonnull BlockVector3 pos1, @Nonnull BlockVector3 pos2) {
         this(world, new CuboidRegion(pos1, pos2));
     }
 
-    public GalactifunStructureFormat(@Nonnull World world, @Nonnull CuboidRegion region) {
+    public GalacticStructure(@Nonnull World world, @Nonnull CuboidRegion region) {
         this(getFromRegion(region, world));
     }
 
-    private GalactifunStructureFormat(Set<SimpleBlock> blocks) {
+    private GalacticStructure(Set<SimpleBlock> blocks) {
         this.blocks = blocks;
     }
 
@@ -78,7 +77,6 @@ public class GalactifunStructureFormat {
      */
     @Nonnull
     public String serialize() {
-        System.out.println(blocks);
         JsonArray array = new JsonArray();
         for (SimpleBlock block : this.blocks) {
             JsonObject jsonObject = new JsonObject();
@@ -122,11 +120,11 @@ public class GalactifunStructureFormat {
      * Loads a GSF file and deserializes it
      *
      * @param file the file to load
-     * @return a new {@link GalactifunStructureFormat}
+     * @return a new {@link GalacticStructure}
      * @throws FileNotFoundException if the file was not found
      */
     @Nonnull
-    public static GalactifunStructureFormat load(@Nonnull File file) throws FileNotFoundException {
+    public static GalacticStructure load(@Nonnull File file) throws FileNotFoundException {
         if (!file.exists()) {
             throw new FileNotFoundException(file.getName());
         }
@@ -142,10 +140,10 @@ public class GalactifunStructureFormat {
      * Deserializes a GSF string
      *
      * @param serialized the serialized string
-     * @return a new {@link GalactifunStructureFormat}
+     * @return a new {@link GalacticStructure}
      */
     @Nonnull
-    public static GalactifunStructureFormat deserialize(@Nonnull String serialized) {
+    public static GalacticStructure deserialize(@Nonnull String serialized) {
         Set<SimpleBlock> blocks = new HashSet<>();
 
         JsonArray array = new JsonParser().parse(serialized).getAsJsonArray();
@@ -160,14 +158,15 @@ public class GalactifunStructureFormat {
             blocks.add(new SimpleBlock(material, BlockVector3.at(x, y, z)));
         }
 
-        return new GalactifunStructureFormat(blocks);
+        return new GalacticStructure(blocks);
     }
 
     public void paste(Location location) {
-        for (SimpleBlock b : blocks) {
+        for (SimpleBlock b : this.blocks) {
             BlockVector3 pos = b.getLocation();
 
             location.clone().add(pos.getX(), pos.getY(), pos.getZ()).getBlock().setType(b.getMaterial());
         }
     }
+    
 }

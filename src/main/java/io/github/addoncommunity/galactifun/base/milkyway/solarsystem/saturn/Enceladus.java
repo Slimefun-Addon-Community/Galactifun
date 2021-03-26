@@ -7,7 +7,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.structures.GalactifunStructureFormat;
+import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import org.bukkit.Chunk;
@@ -33,7 +33,7 @@ import java.util.Random;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalactifunStructureFormat MEDIUM_CRYOVOLCANO;
+    private final GalacticStructure MEDIUM_CRYOVOLCANO;
 
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
@@ -45,7 +45,7 @@ public final class Enceladus extends AlienWorld {
                 result.write(buffer, 0, length);
             }
 
-            MEDIUM_CRYOVOLCANO = GalactifunStructureFormat.deserialize(result.toString(StandardCharsets.UTF_8));
+            MEDIUM_CRYOVOLCANO = GalacticStructure.deserialize(result.toString(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

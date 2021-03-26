@@ -1,13 +1,11 @@
 package io.github.addoncommunity.galactifun.util;
 
 import lombok.experimental.UtilityClass;
-import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * Utilities
@@ -24,8 +22,6 @@ public final class Util {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
-
-    public static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
     public static int random(int from, int to, @Nonnull Random random) {
         return from + random.nextInt(1 + to - from);
@@ -62,8 +58,5 @@ public final class Util {
     public static int fastFloor(double num) {
         return num >= 0 ? (int) num : (int) num - 1;
     }
-
-    public static String locToString(Location l) {
-        return l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ();
-    }
+    
 }

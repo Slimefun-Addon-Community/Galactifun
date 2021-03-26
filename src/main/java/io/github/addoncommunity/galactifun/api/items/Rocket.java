@@ -51,7 +51,8 @@ import java.util.regex.Pattern;
 public final class Rocket extends SlimefunItem {
 
     private static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
-
+    private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
+    
     @Getter
     private final int fuelCapacity;
     @Getter
@@ -160,7 +161,7 @@ public final class Rocket extends SlimefunItem {
                         ChatUtils.awaitInput(p, (response) -> {
                             String trimmed = response.trim();
                             if (COORD_PATTERN.matcher(trimmed).matches()) {
-                                String[] split = Util.SPACE_PATTERN.split(trimmed);
+                                String[] split = SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
                                 launch(p1, b, celestialWorld, fuel - usedFuel, trueEff, x, z);

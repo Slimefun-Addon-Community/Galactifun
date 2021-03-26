@@ -2,9 +2,8 @@ package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.BlockVector3;
-import io.github.addoncommunity.galactifun.core.structures.GalactifunStructureFormat;
-import io.github.addoncommunity.galactifun.util.PeristentBlock;
-import io.github.addoncommunity.galactifun.util.Util;
+import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.util.PersistentBlock;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,12 +19,12 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-public class StructureCommand extends AbstractCommand {
+public final class StructureCommand extends AbstractCommand {
 
     private static final File FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
 
-    private static final NamespacedKey POS1 = new NamespacedKey(Galactifun.inst(), "pos1");
-    private static final NamespacedKey POS2 = new NamespacedKey(Galactifun.inst(), "pos2");
+    private static final NamespacedKey POS1 = Galactifun.inst().getKey("pos1");
+    private static final NamespacedKey POS2 = Galactifun.inst().getKey("pos2");
 
     public StructureCommand() {
         super("structure", "The command for structures", true);
@@ -40,26 +39,26 @@ public class StructureCommand extends AbstractCommand {
 
             switch (args[1]) {
                 case "pos1":
-                    container.set(POS1, PeristentBlock.TYPE, p.getLocation().getBlock());
-                    p.sendMessage("Set pos1 to " + Util.locToString(l));
+                    container.set(POS1, PersistentBlock.BLOCK, p.getLocation().getBlock());
+                    p.sendMessage("Set pos1 to " + toString(l));
                     break;
                 case "pos2":
-                    container.set(POS2, PeristentBlock.TYPE, p.getLocation().getBlock());
-                    p.sendMessage("Set pos2 to " + Util.locToString(l));
+                    container.set(POS2, PersistentBlock.BLOCK, p.getLocation().getBlock());
+                    p.sendMessage("Set pos2 to " + toString(l));
                     break;
                 case "save":
-                    Block pos1 = container.get(POS1, PeristentBlock.TYPE);
+                    Block pos1 = container.get(POS1, PersistentBlock.BLOCK);
                     if (pos1 == null) {
                         p.sendMessage("pos1 not set!");
                         break;
                     }
-                    Block pos2 = container.get(POS2, PeristentBlock.TYPE);
+                    Block pos2 = container.get(POS2, PersistentBlock.BLOCK);
                     if (pos2 == null) {
                         p.sendMessage("pos2 not set!");
                         break;
                     }
 
-                    GalactifunStructureFormat format = new GalactifunStructureFormat(
+                    GalacticStructure format = new GalacticStructure(
                         p.getWorld(),
                         BlockVector3.fromLocation(pos1.getLocation()),
                         BlockVector3.fromLocation(pos2.getLocation())
@@ -69,9 +68,9 @@ public class StructureCommand extends AbstractCommand {
                     p.sendMessage("Saved " + args[2]);
                     break;
                 case "load":
-                    GalactifunStructureFormat loaded;
+                    GalacticStructure loaded;
                     try {
-                        loaded = GalactifunStructureFormat.load(new File(FOLDER, args[2] + ".gsf"));
+                        loaded = GalacticStructure.load(new File(FOLDER, args[2] + ".gsf"));
                     } catch (FileNotFoundException e) {
                         p.sendMessage(ChatColor.RED + "Unknown structure!");
                         break;
@@ -82,11 +81,17 @@ public class StructureCommand extends AbstractCommand {
             }
         }
     }
+    
+    private static String toString(Location l) {
+        return l.getBlockX() + 'x' + l.getBlockY() + 'y' + l.getBlockZ() + "z in " + l.getWorld();
+    }
 
     @Override
-    protected void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] args, @Nonnull List<String> options) {
+    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] args, @Nonnull List<String> options) {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "load"));
         }
     }
+    
+    
 }

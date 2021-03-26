@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.util;
 
+import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -8,9 +9,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 
-public class PeristentBlock implements PersistentDataType<String, Block> {
+public final class PersistentBlock implements PersistentDataType<String, Block> {
 
-    public static final PeristentBlock TYPE = new PeristentBlock();
+    public static final PersistentBlock BLOCK = new PersistentBlock();
 
     @Nonnull
     @Override
@@ -27,24 +28,18 @@ public class PeristentBlock implements PersistentDataType<String, Block> {
     @Nonnull
     @Override
     public String toPrimitive(@Nonnull Block complex, @Nonnull PersistentDataAdapterContext context) {
-        Location l = complex.getLocation();
-        return String.format("%s %d %d %d",
-            l.getWorld().getName(),
-            l.getBlockX(),
-            l.getBlockY(),
-            l.getBlockZ()
-        );
+        return complex.getWorld().getName() + ';' + complex.getX() + ';' + complex.getY() + ';' + complex.getZ();
     }
 
     @Nonnull
     @Override
     public Block fromPrimitive(@Nonnull String primitive, @Nonnull PersistentDataAdapterContext context) {
-        String[] strings = Util.SPACE_PATTERN.split(primitive);
-
-        int x = Integer.parseInt(strings[1]);
-        int y = Integer.parseInt(strings[2]);
-        int z = Integer.parseInt(strings[3]);
-
-        return new Location(Bukkit.getWorld(strings[0]), x, y, z).getBlock();
+        String[] strings = PatternUtils.SEMICOLON.split(primitive);
+        return new Location(
+                Bukkit.getWorld(strings[0]),
+                Integer.parseInt(strings[1]),
+                Integer.parseInt(strings[2]),
+                Integer.parseInt(strings[3])
+        ).getBlock();
     }
 }
