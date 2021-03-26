@@ -91,7 +91,7 @@ public final class Rocket extends SlimefunItem {
 
         CelestialWorld world = CelestialWorld.getByWorld(p.getWorld());
         if (world == null) {
-            p.sendMessage(ChatColor.RED + "You are not in a celestial world!");
+            p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
             return;
         }
 
@@ -160,7 +160,7 @@ public final class Rocket extends SlimefunItem {
                     usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {
                     if (input.equalsIgnoreCase("yes")) {
-                        p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z>:");
+                        p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
                         ChatUtils.awaitInput(p, (response) -> {
                             String trimmed = response.trim();
                             if (COORD_PATTERN.matcher(trimmed).matches()) {

@@ -38,7 +38,7 @@ public final class Enceladus extends AlienWorld {
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
 
-        try (InputStream stream = Galactifun.class.getClassLoader().getResourceAsStream("medium_cryovolcano.gsf")) {
+        try (InputStream stream = Galactifun.inst().getResource("structures/medium_cryovolcano.gsf")) {
             ByteArrayOutputStream result = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             for (int length; (length = stream.read(buffer)) != -1; ) {
@@ -131,9 +131,7 @@ public final class Enceladus extends AlienWorld {
                         MEDIUM_CRYOVOLCANO.paste(source.getBlock(4, 61, 4).getLocation());
                     }
                 } else if (random.nextDouble() < 0.01) {
-                    int y = random.nextInt(40) + 5;
-
-                    SPHERE.generate(source.getBlock(8, y, 8), random, 3, 3);
+                    SPHERE.generate(source.getBlock(8, random.nextInt(40) + 5, 8), random, 3, 3);
                 }
             }
         });

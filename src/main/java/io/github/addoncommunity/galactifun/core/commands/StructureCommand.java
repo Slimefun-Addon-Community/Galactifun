@@ -3,12 +3,13 @@ package io.github.addoncommunity.galactifun.core.commands;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.BlockVector3;
 import io.github.addoncommunity.galactifun.core.structures.GalactifunStructureFormat;
-import io.github.addoncommunity.galactifun.util.PersistentLocation;
+import io.github.addoncommunity.galactifun.util.PeristentBlock;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -39,20 +40,20 @@ public class StructureCommand extends AbstractCommand {
 
             switch (args[1]) {
                 case "pos1":
-                    container.set(POS1, PersistentLocation.TYPE, p.getLocation());
+                    container.set(POS1, PeristentBlock.TYPE, p.getLocation().getBlock());
                     p.sendMessage("Set pos1 to " + Util.locToString(l));
                     break;
                 case "pos2":
-                    container.set(POS2, PersistentLocation.TYPE, p.getLocation());
+                    container.set(POS2, PeristentBlock.TYPE, p.getLocation().getBlock());
                     p.sendMessage("Set pos2 to " + Util.locToString(l));
                     break;
                 case "save":
-                    Location pos1 = container.get(POS1, PersistentLocation.TYPE);
+                    Block pos1 = container.get(POS1, PeristentBlock.TYPE);
                     if (pos1 == null) {
                         p.sendMessage("pos1 not set!");
                         break;
                     }
-                    Location pos2 = container.get(POS2, PersistentLocation.TYPE);
+                    Block pos2 = container.get(POS2, PeristentBlock.TYPE);
                     if (pos2 == null) {
                         p.sendMessage("pos2 not set!");
                         break;
@@ -60,8 +61,8 @@ public class StructureCommand extends AbstractCommand {
 
                     GalactifunStructureFormat format = new GalactifunStructureFormat(
                         p.getWorld(),
-                        BlockVector3.fromLocation(pos1),
-                        BlockVector3.fromLocation(pos2)
+                        BlockVector3.fromLocation(pos1.getLocation()),
+                        BlockVector3.fromLocation(pos2.getLocation())
                     );
 
                     format.save(new File(FOLDER, args[2] + ".gsf"));
