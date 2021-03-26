@@ -29,7 +29,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -45,14 +44,11 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 public final class Rocket extends SlimefunItem {
-
-    private static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
-    private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
     
+    private static final List<String> LAUNCH_MESSAGES = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
+
     @Getter
     private final int fuelCapacity;
     @Getter
@@ -160,8 +156,8 @@ public final class Rocket extends SlimefunItem {
                         p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
                         ChatUtils.awaitInput(p, (response) -> {
                             String trimmed = response.trim();
-                            if (COORD_PATTERN.matcher(trimmed).matches()) {
-                                String[] split = SPACE_PATTERN.split(trimmed);
+                            if (Util.COORD_PATTERN.matcher(trimmed).matches()) {
+                                String[] split = Util.SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
                                 launch(p1, b, celestialWorld, fuel - usedFuel, trueEff, x, z);
@@ -179,13 +175,7 @@ public final class Rocket extends SlimefunItem {
     }
     
     private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuelLeft, double eff, int x, int z) {
-        ConfigurationSection section = Galactifun.inst().getConfig().getConfigurationSection("rockets");
-        if (section == null) {
-            Galactifun.inst().log(Level.SEVERE, "Could not load launch messages!");
-            return;
-        }
-        List<String> messages = section.getStringList("launch-msgs");
-
+        
         // yes ik boolean#tostring isn't needed but just for safety
         BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
 
@@ -242,12 +232,12 @@ public final class Rocket extends SlimefunItem {
             }
             state.update();
 
-            p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
+            p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
         }, 40);
 
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
         Galactifun.inst().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
