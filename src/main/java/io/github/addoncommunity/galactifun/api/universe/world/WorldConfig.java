@@ -17,7 +17,7 @@ public final class WorldConfig {
     /**
      * The config object
      */
-    private static final Config config = Galactifun.inst().attachDefaults(new Config(Galactifun.inst(), "worlds.yml"), "worlds.yml");
+    private static final Config config = Galactifun.inst().loadConfig("worlds.yml");
 
     /**
      * The file configuration
