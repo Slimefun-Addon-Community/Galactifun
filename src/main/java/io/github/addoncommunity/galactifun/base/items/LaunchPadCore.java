@@ -26,6 +26,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -108,17 +109,32 @@ public final class LaunchPadCore extends TickingContainer {
         }
     }
 
+    public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
+        if (Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getRelative(BlockFace.UP).getLocation(), "isLaunching"))) {
+            p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
-        menu.dropItems(l, INVENTORY_SLOTS);
-        menu.dropItems(l, FUEL_SLOT);
+        if (canBreak(e.getPlayer(), e.getBlock())) {
+            menu.dropItems(l, INVENTORY_SLOTS);
+            menu.dropItems(l, 33);
 
-        Block rocketBlock = e.getBlock().getRelative(BlockFace.UP);
-        SlimefunItem rocket = BlockStorage.check(rocketBlock);
-        if (rocket instanceof Rocket) {
-            rocketBlock.setType(Material.AIR);
-            BlockStorage.clearBlockInfo(rocketBlock);
-            e.getBlock().getWorld().dropItemNaturally(rocketBlock.getLocation(), rocket.getItem().clone());
+            Block rocketBlock = e.getBlock().getRelative(BlockFace.UP);
+            SlimefunItem item = BlockStorage.check(rocketBlock);
+
+            if (item instanceof Rocket) {
+                World world = l.getWorld();
+                rocketBlock.setType(Material.AIR);
+                BlockStorage.clearBlockInfo(rocketBlock);
+                world.dropItemNaturally(rocketBlock.getLocation(), item.getItem().clone());
+            }
+        } else {
+            e.setCancelled(true);
         }
     }
 

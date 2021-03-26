@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
+import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.Bukkit;
@@ -24,12 +25,12 @@ public final class Galactifun extends AbstractAddon {
     public void onEnable() {
         super.onEnable();
         instance = this;
-        
+
         BaseRegistry.setup();
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        
+
         // log after startup
         runSync(() -> log(
                 "",
@@ -59,7 +60,7 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected List<AbstractCommand> getSubCommands() {
-        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand());
+        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand(), new StructureCommand());
     }
 
     @Override
