@@ -10,6 +10,7 @@ import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
+import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public final class Galactifun extends AbstractAddon {
         super.onEnable();
         instance = this;
 
+        GalacticStructure.loadStructures(this);
         BaseRegistry.setup();
         CoreCategory.setup(this);
         BaseMats.setup();

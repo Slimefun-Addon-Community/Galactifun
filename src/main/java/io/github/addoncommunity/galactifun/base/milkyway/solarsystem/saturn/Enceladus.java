@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -18,11 +17,6 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
 import javax.annotation.Nonnull;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 
@@ -33,22 +27,11 @@ import java.util.Random;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure MEDIUM_CRYOVOLCANO;
+    private final GalacticStructure mediumCryovolcano = GalacticStructure.getResourceStructure("medium_cryovolcano");
+    private final Sphere sphere = new Sphere(Material.WATER);
 
     public Enceladus() {
         super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
-
-        try (InputStream stream = Galactifun.inst().getResource("structures/medium_cryovolcano.gsf")) {
-            ByteArrayOutputStream result = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            for (int length; (length = stream.read(buffer)) != -1; ) {
-                result.write(buffer, 0, length);
-            }
-
-            MEDIUM_CRYOVOLCANO = GalacticStructure.deserialize(result.toString(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
     }
 
     @Override
@@ -83,8 +66,6 @@ public final class Enceladus extends AlienWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BlockPopulator() {
-
-            private final Sphere SPHERE = new Sphere(Material.WATER);
 
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
@@ -128,10 +109,10 @@ public final class Enceladus extends AlienWorld {
                         // water layer 2
                         source.getBlock(x, y, z).setType(Material.WATER, false);
                     } else {
-                        MEDIUM_CRYOVOLCANO.paste(source.getBlock(4, 61, 4).getLocation());
+                        Enceladus.this.mediumCryovolcano.paste(source.getBlock(4, 61, 4));
                     }
                 } else if (random.nextDouble() < 0.01) {
-                    SPHERE.generate(source.getBlock(8, random.nextInt(40) + 5, 8), random, 3, 3);
+                    Enceladus.this.sphere.generate(source.getBlock(8, random.nextInt(40) + 5, 8), random, 3, 3);
                 }
             }
         });

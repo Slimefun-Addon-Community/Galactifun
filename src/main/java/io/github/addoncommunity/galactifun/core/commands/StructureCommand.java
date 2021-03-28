@@ -1,11 +1,9 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.core.structures.BlockVector3;
 import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.util.PersistentBlock;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -14,14 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import javax.annotation.Nonnull;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
 public final class StructureCommand extends AbstractCommand {
-
-    private static final File FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
 
     private static final NamespacedKey POS1 = Galactifun.inst().getKey("pos1");
     private static final NamespacedKey POS2 = Galactifun.inst().getKey("pos2");
@@ -57,26 +51,24 @@ public final class StructureCommand extends AbstractCommand {
                         p.sendMessage("pos2 not set!");
                         break;
                     }
-
-                    GalacticStructure format = new GalacticStructure(
-                        p.getWorld(),
-                        BlockVector3.fromLocation(pos1.getLocation()),
-                        BlockVector3.fromLocation(pos2.getLocation())
-                    );
-
-                    format.save(new File(FOLDER, args[2] + ".gsf"));
+                    
+                    GalacticStructure.createUserStructure(args[2], pos1, pos2);
                     p.sendMessage("Saved " + args[2]);
                     break;
                 case "load":
-                    GalacticStructure loaded;
-                    try {
-                        loaded = GalacticStructure.load(new File(FOLDER, args[2] + ".gsf"));
-                    } catch (FileNotFoundException e) {
-                        p.sendMessage(ChatColor.RED + "Unknown structure!");
-                        break;
+                    GalacticStructure loaded = GalacticStructure.getUserStructure(args[2]);
+                    
+                    if (loaded == null) {
+                        loaded = GalacticStructure.getResourceStructure(args[2]);
+                        
+                        if (loaded == null) {
+                            p.sendMessage("Unknown structure " + args[2]);
+                            break;
+                        }
                     }
 
-                    loaded.paste(l);
+                    loaded.paste(l.getBlock());
+                    p.sendMessage("Pasted " + loaded);
                     break;
             }
         }
