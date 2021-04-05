@@ -15,6 +15,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -78,11 +79,6 @@ public abstract class AlienWorld extends CelestialWorld {
     @Getter
     private World world;
 
-    /**
-     * Configuration
-     */
-    private WorldConfig config;
-
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
@@ -90,9 +86,10 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nullable
     @Override
     protected World loadWorld() {
-        String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+        String worldName = "world_galactifun_" + this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
 
-        if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
+        // TODO implement disabling
+        if (!enabledByDefault()) {
             return null;
         }
 
@@ -100,7 +97,7 @@ public abstract class AlienWorld extends CelestialWorld {
         beforeWorldLoad();
 
         // fetch or create world
-        World world = new WorldCreator("galactifun_" + worldName)
+        World world = new WorldCreator(worldName)
                 .generator(new ChunkGenerator() {
 
                     @Nonnull
@@ -315,6 +312,16 @@ public abstract class AlienWorld extends CelestialWorld {
                     e.setCancelled(true);
                 }
             }
+            
+            // cancel ender dragon spawn TODO test
+            @EventHandler
+            public void onEnderDragonSpawn(@Nonnull CreatureSpawnEvent e) {
+                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL
+                        && e.getEntity().getType() == EntityType.ENDER_DRAGON
+                        && WORLDS.containsKey(e.getEntity().getWorld())) {
+                    e.setCancelled(true);
+                }
+            } 
 
             // crops
             @EventHandler

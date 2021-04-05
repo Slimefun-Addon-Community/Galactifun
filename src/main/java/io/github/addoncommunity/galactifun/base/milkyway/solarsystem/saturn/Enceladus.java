@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.core.GalacticStructure;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import org.bukkit.Chunk;

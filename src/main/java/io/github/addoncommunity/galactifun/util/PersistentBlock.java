@@ -9,6 +9,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Persistent data type for block, when accessing it will load the block so be careful.
+ * 
+ * @author Seggan
+ */
 public final class PersistentBlock implements PersistentDataType<String, Block> {
 
     public static final PersistentBlock BLOCK = new PersistentBlock();

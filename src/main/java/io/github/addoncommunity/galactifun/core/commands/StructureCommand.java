@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.core.GalacticStructure;
 import io.github.addoncommunity.galactifun.util.PersistentBlock;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.Location;
