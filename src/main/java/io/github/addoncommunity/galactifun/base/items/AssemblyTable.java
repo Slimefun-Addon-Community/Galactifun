@@ -3,8 +3,10 @@ package io.github.addoncommunity.galactifun.base.items;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.mooy1.infinitylib.items.LoreUtils;
-import io.github.mooy1.infinitylib.recipes.large.LargeRecipeMap;
 import io.github.mooy1.infinitylib.slimefun.presets.MenuPreset;
+import io.github.mooy1.infinitylib.slimefun.recipes.RecipeMap;
+import io.github.mooy1.infinitylib.slimefun.recipes.SimpleRecipeMap;
+import io.github.mooy1.infinitylib.slimefun.recipes.inputs.MultiInput;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -30,12 +32,12 @@ import java.util.LinkedHashMap;
  */
 public final class AssemblyTable extends AbstractEnergyCrafter {
 
-    private static final LargeRecipeMap RECIPES = new LargeRecipeMap(36);
+    private static final RecipeMap<MultiInput, ItemStack> RECIPES = new SimpleRecipeMap<>();
     public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
 
     public static final RecipeType TYPE = new RecipeType(Galactifun.inst().getKey("assembly_table"), BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
         SlimefunItemStack item = (SlimefunItemStack) stack;
-        RECIPES.put(stacks, item);
+        RECIPES.put(new MultiInput(stacks), item);
         ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
     });
     
@@ -92,7 +94,7 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
             return;
         }
 
-        ItemStack output = RECIPES.get(inv, INPUT_SLOTS);
+        ItemStack output = RECIPES.get(new MultiInput(inv, INPUT_SLOTS));
 
         if (output == null) {
             p.sendMessage( ChatColor.RED + "Invalid Recipe!");
@@ -118,7 +120,7 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
 
     @Override
     public void update(@Nonnull BlockMenu inv) {
-        ItemStack output = RECIPES.get(inv, INPUT_SLOTS);
+        ItemStack output = RECIPES.get(new MultiInput(inv, INPUT_SLOTS));
         if (output == null) {
             inv.replaceExistingItem(STATUS_SLOT, MenuPreset.invalidRecipe);
         } else { //correct recipe

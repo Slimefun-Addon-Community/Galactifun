@@ -64,4 +64,13 @@ public final class Util {
         return from + random.nextInt(1 + to - from);
     }
     
+    public static String timeSince(double nanoTime) {
+        nanoTime = System.nanoTime() - nanoTime;
+        if (nanoTime >= 1_000_000_000D) {
+            return ((int) (nanoTime / 1_000_000D)) / 1000 + " s";
+        } else {
+            return ((int) (nanoTime / 1_000D)) / 1000D + " ms";
+        }
+    }
+    
 }

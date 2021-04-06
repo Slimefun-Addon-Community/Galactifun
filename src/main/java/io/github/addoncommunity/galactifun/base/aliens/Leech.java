@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.items.PersistentStackArray;
+import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -57,15 +57,15 @@ public final class Leech extends Alien {
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
         
-        ItemStack[] eatenItems = container.get(EATEN, PersistentStackArray.instance());
+        ItemStack[] eatenItems = container.get(EATEN, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
             // add on to the array
             ItemStack[] arr = new ItemStack[eatenItems.length + 1];
             System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
             arr[eatenItems.length] = item;
-            container.set(EATEN, PersistentStackArray.instance(), arr);
+            container.set(EATEN, PersistenceUtils.STACK_ARRAY, arr);
         } else {
-            container.set(EATEN, PersistentStackArray.instance(), new ItemStack[] {item});
+            container.set(EATEN, PersistenceUtils.STACK_ARRAY, new ItemStack[] {item});
         }
         
         inv.setItem(slot, null);
@@ -81,7 +81,7 @@ public final class Leech extends Alien {
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistentStackArray.instance());
+        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
             for (ItemStack itemStack : eatenItems) {
                 e.getDrops().add(itemStack);

@@ -6,7 +6,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.core.GalacticStructure;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import org.bukkit.Chunk;
@@ -27,7 +26,7 @@ import java.util.Random;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure mediumCryovolcano = GalacticStructure.getResourceStructure("medium_cryovolcano");
+    //private final GalacticStructure mediumCryovolcano = GalacticStructure.getDefaultStructure("medium_cryovolcano");
     private final Sphere sphere = new Sphere(Material.WATER);
 
     public Enceladus() {
@@ -109,10 +108,10 @@ public final class Enceladus extends AlienWorld {
                         // water layer 2
                         source.getBlock(x, y, z).setType(Material.WATER, false);
                     } else {
-                        Enceladus.this.mediumCryovolcano.paste(source.getBlock(4, 61, 4));
+                        //Enceladus.this.mediumCryovolcano.paste(source.getBlock(4, 61, 4));
                     }
                 } else if (random.nextDouble() < 0.01) {
-                    Enceladus.this.sphere.generate(source.getBlock(8, random.nextInt(40) + 5, 8), random, 3, 3);
+                    Enceladus.this.sphere.generate(source.getBlock(8, random.nextInt(40) + 5, 8), 3, 3);
                 }
             }
         });

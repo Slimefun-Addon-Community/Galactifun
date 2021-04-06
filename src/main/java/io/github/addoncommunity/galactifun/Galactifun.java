@@ -6,12 +6,13 @@ import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
-import io.github.addoncommunity.galactifun.core.commands.GenSphereCommand;
+import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
-import io.github.addoncommunity.galactifun.core.GalacticStructure;
 import io.github.mooy1.infinitylib.AbstractAddon;
+import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import org.bukkit.Bukkit;
 
@@ -51,8 +52,8 @@ public final class Galactifun extends AbstractAddon {
     }
 
     @Override
-    protected int getMetricsID() {
-        return 10411;
+    protected Metrics setupMetrics() {
+        return new Metrics(this, 10411);
     }
 
     @Override
@@ -62,7 +63,7 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected List<AbstractCommand> getSubCommands() {
-        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new GenSphereCommand(), new StructureCommand());
+        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new SphereCommand(), new StructureCommand(this));
     }
 
     @Override
