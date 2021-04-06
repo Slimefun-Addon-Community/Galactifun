@@ -8,6 +8,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 
 import java.io.File;
@@ -168,28 +169,41 @@ public final class GalacticStructure {
     }
 
     private static StructureBlock loadBlock(JsonObject object) {
-        if (object.size() > 0) {
-            Material material = Material.valueOf(object.get("m").getAsString());
-            if (object.size() == 1) {
-                return SimpleStructureBlock.get(material);
-            } else {
-                BlockFace direction = BlockFace.valueOf(object.get("d").getAsString());
-                if (object.size() == 2) {
-                    return new ComplexStructureBlock(material, new StructureBlockProperty<>(direction, Directional::setFacing));
-                }
-            }
+        if (object.size() == 0) {
+            return BasicStructureBlock.AIR;
         }
-        return SimpleStructureBlock.AIR;
+        
+        Material material = Material.valueOf(object.get("m").getAsString());
+        
+        if (object.size() == 1) {
+            BasicStructureBlock.get(material);
+        }
+        
+        StructureBlockBuilder blockBuilder = new StructureBlockBuilder(material, object.size() - 1);
+
+        blockBuilder.addProperty(new DirectionalProperty(BlockFace.valueOf(object.get("d").getAsString())));
+        
+        return blockBuilder.build();
     }
 
     private static StructureBlock createBlock(Block block, JsonObject save) {
         if (block.getType() == Material.AIR) {
-            return SimpleStructureBlock.AIR;
+            return BasicStructureBlock.AIR;
+        }
+
+        Material type = block.getType();
+        save.add("m", new JsonPrimitive(type.name()));
+        StructureBlockBuilder blockBuilder = new StructureBlockBuilder(type);
+        
+        BlockData data = block.getBlockData();
+        
+        if (data instanceof Directional) {
+            BlockFace dir = ((Directional) data).getFacing();
+            save.add("d", new JsonPrimitive(dir.name()));
+            blockBuilder.addProperty(new DirectionalProperty(dir));
         }
         
-        
-        
-        return SimpleStructureBlock.AIR;
+        return blockBuilder.build();
     }
 
 }

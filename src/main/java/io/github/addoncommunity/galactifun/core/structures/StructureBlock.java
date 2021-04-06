@@ -1,15 +1,12 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.block.Block;
 
-/**
- * A block within a structure
- *
- * @author Seggan
- * @author Mooy1
- */
-interface StructureBlock {
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+abstract class StructureBlock {
     
-    void paste(Block block);
+    abstract void paste(Block block);
     
 }
