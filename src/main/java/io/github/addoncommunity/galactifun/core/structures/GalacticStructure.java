@@ -24,9 +24,10 @@ import java.util.Scanner;
 import java.util.logging.Level;
 
 /**
- * The class for managing the Galactifun Structure Format (GSF)
+ * The class for managing Galactifun Structures
  *
  * @author Seggan
+ * @author Mooy1
  */
 public final class GalacticStructure {
 
@@ -75,7 +76,8 @@ public final class GalacticStructure {
             e.printStackTrace();
         }
     }
-    
+
+    private final StructureBlockBuilder blockBuilder = new StructureBlockBuilder();
     private final StructureBlock[][][] blockCube;
     private final String name;
     
@@ -159,6 +161,7 @@ public final class GalacticStructure {
     }
     
     public void paste(Block pos) {
+        // TODO find a way to rotate the whole structure and paste accordingly
         for (int x = 0 ; x < this.blockCube.length ; x++) {
             for (int y = 0 ; y < this.blockCube[x].length ; y++) {
                 for (int z = 0 ; z < this.blockCube[x][y].length ; z++) {
@@ -168,7 +171,7 @@ public final class GalacticStructure {
         }
     }
 
-    private static StructureBlock loadBlock(JsonObject object) {
+    private StructureBlock loadBlock(JsonObject object) {
         if (object.size() == 0) {
             return BasicStructureBlock.AIR;
         }
@@ -178,32 +181,32 @@ public final class GalacticStructure {
         if (object.size() == 1) {
             BasicStructureBlock.get(material);
         }
-        
-        StructureBlockBuilder blockBuilder = new StructureBlockBuilder(material, object.size() - 1);
 
-        blockBuilder.addProperty(new DirectionalProperty(BlockFace.valueOf(object.get("d").getAsString())));
+        this.blockBuilder.setMaterial(material);
         
-        return blockBuilder.build();
+        this.blockBuilder.addProperty(new DirectionalProperty(BlockFace.valueOf(object.get("d").getAsString())));
+        
+        return this.blockBuilder.build();
     }
 
-    private static StructureBlock createBlock(Block block, JsonObject save) {
+    private StructureBlock createBlock(Block block, JsonObject save) {
         if (block.getType() == Material.AIR) {
             return BasicStructureBlock.AIR;
         }
 
         Material type = block.getType();
         save.add("m", new JsonPrimitive(type.name()));
-        StructureBlockBuilder blockBuilder = new StructureBlockBuilder(type);
+        this.blockBuilder.setMaterial(type);
         
         BlockData data = block.getBlockData();
         
         if (data instanceof Directional) {
             BlockFace dir = ((Directional) data).getFacing();
             save.add("d", new JsonPrimitive(dir.name()));
-            blockBuilder.addProperty(new DirectionalProperty(dir));
+            this.blockBuilder.addProperty(new DirectionalProperty(dir));
         }
         
-        return blockBuilder.build();
+        return this.blockBuilder.build();
     }
 
 }

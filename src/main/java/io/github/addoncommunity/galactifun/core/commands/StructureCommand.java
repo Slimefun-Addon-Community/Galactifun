@@ -52,8 +52,9 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
 
+            double time = System.nanoTime();
             GalacticStructure.createStructure(args[2], pos1, pos2);
-            p.sendMessage(ChatColor.GREEN + "Saved '" + args[2] + "'");
+            p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
             return;
         }
         
@@ -75,9 +76,9 @@ public final class StructureCommand extends AbstractCommand {
             return;
         }
         
-        if (args[1].equals("load")) {
+        if (args[1].equals("paste")) {
             if (args.length != 3) {
-                p.sendMessage(ChatColor.RED + "Usage: /galactifun load <name>");
+                p.sendMessage(ChatColor.RED + "Usage: /galactifun paste <name>");
                 return;
             }
             
@@ -107,7 +108,7 @@ public final class StructureCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] args, @Nonnull List<String> options) {
         if (args.length == 2) {
-            options.addAll(Arrays.asList("pos1", "pos2", "save", "load"));
+            options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("load")) {
             options.addAll(GalacticStructure.STRUCTURES.keySet());
             options.addAll(GalacticStructure.DEFAULT_STRUCTURES.keySet());

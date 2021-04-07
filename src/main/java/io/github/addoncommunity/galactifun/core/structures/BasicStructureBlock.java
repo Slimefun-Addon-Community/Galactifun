@@ -7,6 +7,11 @@ import org.bukkit.block.Block;
 
 import java.util.EnumMap;
 
+/**
+ * A structure block with just a material, cached for each material
+ * 
+ * @author Mooy1
+ */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 final class BasicStructureBlock extends StructureBlock {
 
