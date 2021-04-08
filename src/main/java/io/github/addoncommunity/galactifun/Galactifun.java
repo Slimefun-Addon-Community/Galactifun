@@ -6,11 +6,10 @@ import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
-import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
+import io.github.addoncommunity.galactifun.core.structures.StructureCommand;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -25,10 +24,10 @@ public final class Galactifun extends AbstractAddon {
     
     @Override
     public void onEnable() {
-        super.onEnable();
         instance = this;
+        
+        super.onEnable();
 
-        GalacticStructure.loadStructures(this);
         BaseRegistry.setup();
         CoreCategory.setup(this);
         BaseMats.setup();
@@ -63,7 +62,7 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected List<AbstractCommand> getSubCommands() {
-        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new SphereCommand(), new StructureCommand(this));
+        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new SphereCommand(), new StructureCommand());
     }
 
     @Override

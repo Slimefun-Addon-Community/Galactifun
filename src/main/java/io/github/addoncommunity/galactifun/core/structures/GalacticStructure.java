@@ -2,211 +2,323 @@ package io.github.addoncommunity.galactifun.core.structures;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.internal.Streams;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.core.structures.blocks.PropertyStructureBlock;
+import io.github.addoncommunity.galactifun.core.structures.blocks.StructureBlock;
+import io.github.addoncommunity.galactifun.core.structures.properties.DirectionalProperty;
+import io.github.addoncommunity.galactifun.core.structures.properties.StructureBlockProperty;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Collections;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
 import java.util.logging.Level;
 
 /**
- * The class for managing Galactifun Structures
+ * A structure that can be pasted
  *
  * @author Seggan
  * @author Mooy1
  */
 public final class GalacticStructure {
 
-    private static final File USER_STRUCTURE_FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
-    public static final Map<String, GalacticStructure> DEFAULT_STRUCTURES = loadDefaultStructures();
-    public static final Map<String, GalacticStructure> STRUCTURES = new HashMap<>();
-    
-    public static void loadStructures(Galactifun galactifun) {
-        galactifun.log("Loading structures...");
-        
-        // user structures
-        USER_STRUCTURE_FOLDER.mkdir();
-        for (File file : Objects.requireNonNull(USER_STRUCTURE_FOLDER.listFiles())) {
-            if (file.getName().endsWith(".gs")) {
-                loadStructure(file);
-            }
-        }
-    }
+    /**
+     * An empty structure fallback for errors
+     */
+    private static final GalacticStructure ERROR = new GalacticStructure("ERROR", 0, 0, 0);
 
-    private static Map<String, GalacticStructure> loadDefaultStructures(String... names) {
-        Map<String, GalacticStructure> defaultStructures = new HashMap<>();
-        for (String name : names) {
-            try (InputStream resource = Objects.requireNonNull(Galactifun.inst().getResource("structures/" + name + ".gs"))) {
-                GalacticStructure structure = new GalacticStructure(name, new Scanner(resource).next());
-                defaultStructures.put(name, structure);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return Collections.unmodifiableMap(defaultStructures);
-    }
-    
-    public static void createStructure(String name, Block pos1, Block pos2) {
-        GalacticStructure structure = new GalacticStructure(name, pos1, pos2);
-        STRUCTURES.put(structure.name, structure);
-    }
-    
-    private static void loadStructure(File file) {
-        try {
-            GalacticStructure structure = new GalacticStructure(
-                    file.getName().replace(".gs", ""),
-                    Files.readString(file.toPath(), StandardCharsets.UTF_8)
-            );
-            STRUCTURES.put(structure.name, structure);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private final StructureBlockBuilder blockBuilder = new StructureBlockBuilder();
-    private final StructureBlock[][][] blockCube;
-    private final String name;
+    /**
+     * All loaded structures
+     */
+    static final Map<String, GalacticStructure> STRUCTURES = new HashMap<>();
     
     /**
-     * Create structure
+     * Loads a structure from galactifun resources
      */
-    private GalacticStructure(String name, Block pos1, Block pos2) {
+    public static GalacticStructure getOrLoadFromGalactifun(String path) {
+        return getOrLoadFromPlugin(Galactifun.inst(), path);
+    }
+
+    /**
+     * Gets a structure or loads from a plugins resources
+     */
+    public static GalacticStructure getOrLoadFromPlugin(JavaPlugin plugin, String path) {
+        return STRUCTURES.computeIfAbsent(plugin.getName() + ":" + path, s -> loadFromPlugin(plugin, path));
+    }
+    
+    /**
+     * Gets a structure or loads from a file path
+     */
+    public static GalacticStructure getOrLoadFromFile(String filePath) {
+        return STRUCTURES.computeIfAbsent(filePath, GalacticStructure::loadFromFile);
+    }
+
+    /**
+     * Gets a structure or loads from a file
+     */
+    public static GalacticStructure getOrLoadFromFile(File file) {
+        return STRUCTURES.computeIfAbsent(file.getPath(), GalacticStructure::loadFromFile);
+    }
+
+    /**
+     * Creates a new structure from the world
+     */
+    public static GalacticStructure create(String name, Block pos1, Block pos2) {
+        GalacticStructure structure = new GalacticStructure(name,
+                pos2.getX() - pos1.getX(),
+                pos2.getY() - pos1.getY(),
+                pos2.getZ() - pos1.getZ()
+        );
+        do {
+            structure.setCurrentBlock(createBlock(pos1.getRelative(structure.x, structure.y, structure.z)));
+        } while (structure.loopDimensions());
+        return structure;
+    }
+    
+    /**
+     * The name of this structure
+     */
+    private final String name;
+
+    /**
+     * The 3d array of structure blocks
+     */
+    private final StructureBlock[][][] structure;
+
+    /**
+     * The dimensions of this structure
+     */
+    private final int dx;
+    private final int dy;
+    private final int dz;
+
+    /**
+     * The current index of structure array
+     */
+    private int ax;
+    private int ay;
+    private int az;
+
+    /**
+     * The current block for looping purposes
+     */
+    private int x;
+    private int y;
+    private int z;
+    
+    private GalacticStructure(String name, int dx, int dy, int dz) {
         this.name = name;
-        
-        // dimensions
-        int dx = pos2.getX() - pos1.getX() + 1;
-        int dy = pos2.getY() - pos1.getY() + 1;
-        int dz = pos2.getZ() - pos1.getZ() + 1;
-        
-        // create arrays
-        this.blockCube = new StructureBlock[Math.abs(dx)][Math.abs(dy)][Math.abs(dz)];
+        this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
+    }
+    
+    public void paste(Block pos, StructureRotation rotation) {
+        // TODO implement rotation
+        do {
+            getCurrentBlock().paste(pos.getRelative(this.x, this.y, this.z), rotation);
+        } while (loopDimensions());
+    }
+    
+    public void save(File folder) {
         JsonArray array = new JsonArray();
-        
+
         // add dimensions
         JsonObject dimensions = new JsonObject();
-        dimensions.add("x", new JsonPrimitive(this.blockCube.length));
-        dimensions.add("y", new JsonPrimitive(this.blockCube[0].length));
-        dimensions.add("z", new JsonPrimitive(this.blockCube[0][0].length));
+        dimensions.add("dx", new JsonPrimitive(this.dx));
+        dimensions.add("dy", new JsonPrimitive(this.dy));
+        dimensions.add("dz", new JsonPrimitive(this.dz));
         array.add(dimensions);
-        
+
         // add blocks
-        for (int x = 0 ; x < dx ; x++) {
-            for (int y = 0 ; y < dy ; y++) {
-                for (int z = 0 ; z < dz ; z++) {
-                    // load, add, save object
-                    JsonObject save = new JsonObject();
-                    this.blockCube[x][y][z] = createBlock(pos1.getRelative(x, y, z), save);
-                    array.add(save);
-                }
-            }
-        }
-        
+        do {
+            JsonObject object = new JsonObject();
+            getCurrentBlock().save(object);
+            array.add(object);
+        } while (loopDimensions());
+
+        File file = new File(folder, this.name + ".gs");
+        STRUCTURES.put(file.getPath(), this);
+
         // save
         Galactifun.inst().runAsync(() -> {
-            File file = new File(USER_STRUCTURE_FOLDER, this.name + ".gs");
+            file.getParentFile().mkdirs();
             try {
-                Files.writeString(file.toPath(), array.toString(), StandardCharsets.UTF_8);
+                Streams.write(array, new JsonWriter(new FileWriter(file)));
             } catch (IOException e) {
-                Galactifun.inst().log(Level.SEVERE, "Failed to save Galactic Structure " + this.name + "!");
                 e.printStackTrace();
             }
         });
     }
 
-    /**
-     * Load structure
-     */
-    private GalacticStructure(String name, String json) {
-        this.name = name;
-        
-        try {
-            JsonArray array = new JsonParser().parse(json).getAsJsonArray();
+    private StructureBlock getCurrentBlock() {
+        return this.structure[this.ax][this.ay][this.az];
+    }
 
-            // load dimensions
-            JsonObject dimensions = array.get(0).getAsJsonObject();
-            int dimX = dimensions.get("x").getAsInt();
-            int dimY = dimensions.get("y").getAsInt();
-            int dimZ = dimensions.get("z").getAsInt();
+    private void setCurrentBlock(StructureBlock block) {
+        this.structure[this.ax][this.ay][this.az] = block;
+    }
 
-            // create array
-            this.blockCube = new StructureBlock[dimX][dimY][dimZ];
-
-            // load blocks
-            int i = 1;
-            for (int x = 0 ; x < dimX ; x++) {
-                for (int y = 0 ; y < dimY ; y++) {
-                    for (int z = 0 ; z < dimZ ; z++, i++) {
-                        this.blockCube[x][y][z] = loadBlock(array.get(i).getAsJsonObject());
+    private boolean loopDimensions() {
+        if (this.x == this.dx) {
+            this.x = 0;
+            this.ax = 0;
+            if (this.y == this.dy) {
+                this.y = 0;
+                this.ay = 0;
+                if (this.z == this.dz) {
+                    this.z = 0;
+                    this.az = 0;
+                    return false;
+                } else {
+                    this.az++;
+                    if (this.dz > 0) {
+                        this.z++;
+                    } else {
+                        this.z--;
                     }
                 }
+            } else {
+                this.ay++;
+                if (this.dy > 0) {
+                    this.y++;
+                } else {
+                    this.y--;
+                }
             }
+        } else {
+            this.ax++;
+            if (this.dx > 0) {
+                this.x++;
+            } else {
+                this.x--;
+            }
+        }
+        return true;
+    }
+    
+    private static GalacticStructure loadFromFile(String filePath) {
+        // check file name
+        if (!filePath.endsWith(".gs")) {
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from file '" + filePath + "' that doesn't end with '.gs'!"
+            );
+            return ERROR;
+        }
+
+        // load
+        try {
+            return load(filePath.replace(".gs", ""), new FileInputStream(filePath));
         } catch (Exception e) {
-            Galactifun.inst().log(Level.SEVERE, "Failed to load Galactic Structure " + this.name + "!");
-            throw e;
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from file '" + filePath+ "' due to " +
+                            e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
+            );
+            return ERROR;
         }
     }
     
-    public void paste(Block pos) {
-        // TODO find a way to rotate the whole structure and paste accordingly
-        for (int x = 0 ; x < this.blockCube.length ; x++) {
-            for (int y = 0 ; y < this.blockCube[x].length ; y++) {
-                for (int z = 0 ; z < this.blockCube[x][y].length ; z++) {
-                    this.blockCube[x][y][z].paste(pos.getRelative(x, y, z));
-                }
-            }
+    private static GalacticStructure loadFromPlugin(JavaPlugin plugin, String path) {
+        
+        // check name
+        if (!path.endsWith(".gs")) {
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from resources of plugin '"
+                            + plugin.getName() + "' in '" + path + "' that doesn't end with '.gs'!"
+            );
+            return ERROR;
         }
+
+        // check already loaded
+        String key = plugin.getName() + ":" + path;
+        GalacticStructure loaded = STRUCTURES.get(key);
+        if (loaded != null) {
+            Galactifun.inst().log(Level.WARNING, plugin.getName() + " attempted to load the galactic structure at '" + path + "' which is already loaded!");
+            return loaded;
+        }
+
+        // load
+        try {
+            loaded = load(path.substring(path.lastIndexOf('/') + 1, path.length() - 3), plugin.getResource(path));
+        } catch (Exception e) {
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from resources of plugin '"
+                            + plugin.getName() + "' in '" + path + "' due to " +
+                            e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
+            );
+            return ERROR;
+        }
+
+        // save
+        STRUCTURES.put(plugin.getName() + ":" + path, loaded);
+        return loaded;
     }
 
-    private StructureBlock loadBlock(JsonObject object) {
+    private static GalacticStructure load(String name, InputStream stream) {
+        JsonArray array = Streams.parse(new JsonReader(new InputStreamReader(stream))).getAsJsonArray();
+        JsonObject dimensions = array.get(0).getAsJsonObject();
+        GalacticStructure structure = new GalacticStructure(name,
+                dimensions.get("dx").getAsInt(),
+                dimensions.get("dy").getAsInt(),
+                dimensions.get("dz").getAsInt()
+        );
+        int i = 1;
+        do {
+            structure.setCurrentBlock(loadBlock(array.get(i++).getAsJsonObject()));
+        } while (structure.loopDimensions());
+        return structure;
+    }
+
+    private static StructureBlock loadBlock(JsonObject object) {
         if (object.size() == 0) {
-            return BasicStructureBlock.AIR;
+            return StructureBlock.AIR;
         }
-        
+
         Material material = Material.valueOf(object.get("m").getAsString());
-        
+
         if (object.size() == 1) {
-            BasicStructureBlock.get(material);
+            return StructureBlock.get(material);
         }
 
-        this.blockBuilder.setMaterial(material);
-        
-        this.blockBuilder.addProperty(new DirectionalProperty(BlockFace.valueOf(object.get("d").getAsString())));
-        
-        return this.blockBuilder.build();
+        if (object.size() == 2) {
+            return new PropertyStructureBlock(material, new DirectionalProperty(BlockFace.valueOf(object.get("d").getAsString())));
+        }
+
+        throw new IllegalArgumentException("Failed to load structure block from JsonObject " + object);
     }
 
-    private StructureBlock createBlock(Block block, JsonObject save) {
+    private static StructureBlock createBlock(Block block) {
         if (block.getType() == Material.AIR) {
-            return BasicStructureBlock.AIR;
+            return StructureBlock.AIR;
         }
 
-        Material type = block.getType();
-        save.add("m", new JsonPrimitive(type.name()));
-        this.blockBuilder.setMaterial(type);
-        
+        Material material = block.getType();
+
+        StructureBlockProperty property = null;
+
         BlockData data = block.getBlockData();
-        
-        if (data instanceof Directional) {
-            BlockFace dir = ((Directional) data).getFacing();
-            save.add("d", new JsonPrimitive(dir.name()));
-            this.blockBuilder.addProperty(new DirectionalProperty(dir));
-        }
-        
-        return this.blockBuilder.build();
-    }
 
+        if (data instanceof Directional) {
+            property = new DirectionalProperty(((Directional) data).getFacing());
+        }
+
+        if (property == null) {
+            return StructureBlock.get(material);
+        } else {
+            return new PropertyStructureBlock(material, property);
+        }
+    }
+    
 }

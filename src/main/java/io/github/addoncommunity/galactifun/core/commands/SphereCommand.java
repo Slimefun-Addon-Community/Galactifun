@@ -27,7 +27,7 @@ public final class SphereCommand extends AbstractCommand {
         Player p = (Player) commandSender;
         
         if (strings.length < 3) {
-            p.sendMessage(ChatColor.RED + "Usage: /galactifun sphere <radius> <materials...>");
+            p.sendMessage(ChatColor.RED + "Usage: /galactifun sphere <radius> <material>...");
             return;
         }
         
