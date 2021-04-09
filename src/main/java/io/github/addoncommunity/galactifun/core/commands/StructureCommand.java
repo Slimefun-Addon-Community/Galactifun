@@ -1,6 +1,9 @@
-package io.github.addoncommunity.galactifun.core.structures;
+package io.github.addoncommunity.galactifun.core.commands;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.core.structures.StructureLoader;
+import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
@@ -28,7 +31,7 @@ public final class StructureCommand extends AbstractCommand {
         // load user structures
         if (!USER_STRUCTURE_FOLDER.mkdir()) {
             for (File file : Objects.requireNonNull(USER_STRUCTURE_FOLDER.listFiles())) {
-                GalacticStructure.getOrLoadFromFile(file);
+                StructureLoader.loadFromFilePath(file.getPath());
             }
         }
     }
@@ -60,7 +63,7 @@ public final class StructureCommand extends AbstractCommand {
             }
 
             double time = System.nanoTime();
-            GalacticStructure.create(args[2], pos1, pos2).save(USER_STRUCTURE_FOLDER);
+            StructureLoader.save(StructureLoader.create(args[2], StructureRotation.fromFace(p.getFacing()), pos1, pos2), USER_STRUCTURE_FOLDER);
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
             return;
         }
@@ -89,7 +92,7 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            GalacticStructure loaded = GalacticStructure.getOrLoadFromFile(args[2]);
+            GalacticStructure loaded = StructureLoader.getFromPath(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
@@ -113,7 +116,7 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(GalacticStructure.STRUCTURES.keySet());
+            options.addAll(StructureLoader.structurePaths());
         }
     }
     
