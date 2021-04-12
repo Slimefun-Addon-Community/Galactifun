@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,9 +24,8 @@ final class DirectionalStructureBlock extends StructureBlock {
     }
 
     @Override
-    public void save(JsonObject object) {
-        super.save(object);
-        object.add("d", new JsonPrimitive(this.direction.name()));
+    String save() {
+        return super.save() + ',' + this.direction.name();
     }
 
 }

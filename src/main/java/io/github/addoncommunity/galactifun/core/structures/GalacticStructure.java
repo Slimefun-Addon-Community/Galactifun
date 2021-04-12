@@ -73,7 +73,7 @@ public final class GalacticStructure {
             return this.loop;
         }
     
-        void next() {
+        private void next() {
             if (this.x == GalacticStructure.this.dx) {
                 this.x = 0;
                 this.ax = 0;

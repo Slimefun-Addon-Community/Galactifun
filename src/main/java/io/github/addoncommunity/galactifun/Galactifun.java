@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
@@ -13,10 +16,6 @@ import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
-import org.bukkit.Bukkit;
-
-import java.util.Arrays;
-import java.util.List;
 
 public final class Galactifun extends AbstractAddon {
 
@@ -69,12 +68,6 @@ public final class Galactifun extends AbstractAddon {
     public void onDisable() {
         // todo make better
         BossAlien.removeBossBars();
-    }
-
-    @Override
-    public void onLoad() {
-        // default to not logging world settings
-        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
     public static Galactifun inst() {

@@ -1,11 +1,18 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import io.github.addoncommunity.galactifun.Galactifun;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.logging.Level;
+
 import lombok.experimental.UtilityClass;
+
 import org.apache.commons.codec.Charsets;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,25 +21,17 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
  * A class for loading Galactic Structures
- * 
+ *
  * @author Mooy1
  */
 @UtilityClass
 public final class StructureLoader {
-    
+
     /**
      * An empty structure fallback for errors
      */
@@ -41,7 +40,7 @@ public final class StructureLoader {
     /**
      * All loaded structures
      */
-    static final Map<String, GalacticStructure> STRUCTURES = new HashMap<>();
+    private static final Map<String, GalacticStructure> STRUCTURES = new HashMap<>();
 
     /**
      * Get the paths of all loaded structures
@@ -83,7 +82,7 @@ public final class StructureLoader {
             return load;
         } catch (Exception e) {
             Galactifun.inst().log(Level.SEVERE,
-                    "Failed to load galactic structure from file '" + filePath+ "' due to " +
+                    "Failed to load galactic structure from file '" + filePath + "' due to " +
                             e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
             );
             return ERROR;
@@ -112,7 +111,7 @@ public final class StructureLoader {
 
         // load
         try {
-            GalacticStructure load = load(path.substring(path.lastIndexOf('/') + 1, path.length() - 3), plugin.getResource(path));
+            GalacticStructure load = load(path.substring(path.lastIndexOf('/') + 1, path.length() - 3), Objects.requireNonNull(plugin.getResource(path)));
             STRUCTURES.put(plugin.getName() + ":" + path, load);
             return load;
         } catch (Exception e) {
@@ -124,7 +123,7 @@ public final class StructureLoader {
             return ERROR;
         }
     }
-    
+
     /**
      * Creates a new structure from the world
      */
@@ -145,54 +144,53 @@ public final class StructureLoader {
      * Saves a structure to a file
      */
     public static void save(GalacticStructure structure, File folder) {
-        JsonArray array = new JsonArray();
+        StringBuilder save = new StringBuilder();
 
         // add dimensions
-        JsonObject dimensions = new JsonObject();
-        dimensions.add("r", new JsonPrimitive(structure.rotation.name()));
-        dimensions.add("x", new JsonPrimitive(structure.dx));
-        dimensions.add("y", new JsonPrimitive(structure.dy));
-        dimensions.add("z", new JsonPrimitive(structure.dz));
-        array.add(dimensions);
+        save.append(structure.rotation)
+                .append(',')
+                .append(structure.dx)
+                .append(',')
+                .append(structure.dy)
+                .append(',')
+                .append(structure.dz);
 
         // add blocks
         GalacticStructure.StructureIterator iterator = structure.new StructureIterator();
         while (iterator.hasNext()) {
-            JsonObject object = new JsonObject();
-            iterator.getNextBlock().save(object);
-            array.add(object);
+            save.append(';').append(iterator.getNextBlock().save());
         }
 
         // save
         File file = new File(folder, structure.path + ".gs");
-        StructureLoader.STRUCTURES.put(file.getPath(), structure);
+        STRUCTURES.put(file.getPath(), structure);
         Galactifun.inst().runAsync(() -> {
             file.getParentFile().mkdirs();
             try {
-                Files.writeString(file.toPath(), array.toString(), Charsets.UTF_8);
+                Files.writeString(file.toPath(), save.toString(), Charsets.UTF_8);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    private static GalacticStructure load(String name, InputStream stream) {
-        JsonArray array = new JsonParser().parse(new InputStreamReader(stream)).getAsJsonArray();
-        JsonObject dimensions = array.get(0).getAsJsonObject();
+    private static GalacticStructure load(String name, InputStream stream) throws IOException {
+        String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()));
+        String[] dims = PatternUtils.COMMA.split(split[0]);
         GalacticStructure structure = new GalacticStructure(name,
-                StructureRotation.valueOf(dimensions.get("r").getAsString()),
-                dimensions.get("x").getAsInt(),
-                dimensions.get("y").getAsInt(),
-                dimensions.get("z").getAsInt()
+                StructureRotation.valueOf(dims[0]),
+                Integer.parseInt(dims[1]),
+                Integer.parseInt(dims[2]),
+                Integer.parseInt(dims[3])
         );
         int i = 1;
         GalacticStructure.StructureIterator iterator = structure.new StructureIterator();
         while (iterator.hasNext()) {
-            iterator.setNextBlock(loadBlock(array.get(i++).getAsJsonObject()));
+            iterator.setNextBlock(loadBlock(split[i]));
         }
         return structure;
     }
-    
+
     private static StructureBlock createBlock(Block block) {
         if (block.getType() == Material.AIR) {
             return StructureBlock.AIR;
@@ -209,18 +207,16 @@ public final class StructureLoader {
         return StructureBlock.get(material);
     }
 
-    private static StructureBlock loadBlock(JsonObject object) {
-        if (object.size() == 0) {
+    private static StructureBlock loadBlock(String block) {
+        if (block.length() == 0) {
             return StructureBlock.AIR;
         }
-        Material material = Material.valueOf(object.get("m").getAsString());
-        if (object.size() == 1) {
-            return StructureBlock.get(material);
+        String[] split = PatternUtils.COMMA.split(block);
+        switch (split.length) {
+            case 1: return new StructureBlock(Material.valueOf(split[0]));
+            case 2: return new DirectionalStructureBlock(Material.valueOf(split[0]), BlockFace.valueOf(split[1]));
         }
-        if (object.size() == 2) {
-            return new DirectionalStructureBlock(material, BlockFace.valueOf(object.get("d").getAsString()));
-        }
-        throw new IllegalArgumentException("Failed to load structure block from JsonObject " + object);
+        throw new IllegalArgumentException("Failed to load structure block from String '" + block + "'");
     }
-    
+
 }

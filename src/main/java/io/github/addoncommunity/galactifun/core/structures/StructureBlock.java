@@ -1,13 +1,12 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import java.util.EnumMap;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import java.util.EnumMap;
 
 /**
  * A structure block with just a material, cached for each material
@@ -18,7 +17,9 @@ import java.util.EnumMap;
 class StructureBlock {
 
     static final StructureBlock AIR = new StructureBlock(Material.AIR) {
-        @Override public void save(JsonObject object) {}
+        @Override public String save() {
+            return "";
+        }
     };
     
     private static final EnumMap<Material, StructureBlock> CACHE = new EnumMap<>(Material.class);
@@ -33,8 +34,8 @@ class StructureBlock {
         block.setType(this.material);
     }
     
-    void save(JsonObject object) {
-        object.add("m", new JsonPrimitive(this.material.name()));
+    String save() {
+        return this.material.name();
     }
     
 }
