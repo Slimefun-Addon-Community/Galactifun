@@ -18,7 +18,7 @@ public final class GalacticStructure {
     /**
      * The name of this structure
      */
-    final String path;
+    final String name;
 
     /**
      * The default rotation of this structure
@@ -32,82 +32,83 @@ public final class GalacticStructure {
     final int dy;
     final int dz;
     
-    GalacticStructure(String path, StructureRotation rotation, int dx, int dy, int dz) {
-        this.path = path;
+    GalacticStructure(String name, StructureRotation rotation, int dx, int dy, int dz) {
+        this.name = name;
         this.rotation = rotation;
         this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
     }
     
     public void paste(Block pos, StructureRotation rotation) {
-        rotation = rotation.relativeTo(this.rotation);
-        StructureIterator iterator = new StructureIterator();
-        while (iterator.hasNext()) {
-            iterator.getNextBlock().paste(pos.getRelative(iterator.x, iterator.y, iterator.z), rotation);
-        }
+        StructureRotation dif = this.rotation.rotationTo(rotation);
+        getAll((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
     }
     
-    final class StructureIterator {
-        
-        private boolean loop = GalacticStructure.this.structure.length != 0;
-        
-        private int ax;
-        private int ay;
-        private int az;
-        
-        int x;
-        int y;
-        int z;
-    
-        StructureBlock getNextBlock() {
-            StructureBlock block = GalacticStructure.this.structure[this.ax][this.ay][this.az];
-            next();
-            return block;
-        }
-    
-        void setNextBlock(StructureBlock block) {
-            GalacticStructure.this.structure[this.ax][this.ay][this.az] = block;
-            next();
-        }
+    void setAll(Setter setter) {
+        iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
+    }
 
-        boolean hasNext() {
-            return this.loop;
-        }
+    void getAll(Getter getter) {
+        iterate((x, y, z, ax, ay, az) -> getter.get(this.structure[ax][ay][az], x, y, z));
+    }
     
-        private void next() {
-            if (this.x == GalacticStructure.this.dx) {
-                this.x = 0;
-                this.ax = 0;
-                if (this.y == GalacticStructure.this.dy) {
-                    this.y = 0;
-                    this.ay = 0;
-                    if (this.z == GalacticStructure.this.dz) {
-                        this.loop = false;
+    private void iterate(Iterator iterator) {
+        boolean loop = this.structure.length != 0;
+        int ax = 0;
+        int ay = 0;
+        int az = 0;
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        while (loop) {
+            iterator.iterate(x, y,z, ax, ay, az);
+            if (x == this.dx) {
+                x = 0;
+                ax = 0;
+                if (y == this.dy) {
+                    y = 0;
+                    ay = 0;
+                    if (z == this.dz) {
+                        loop = false;
                     } else {
-                        this.az++;
-                        if (GalacticStructure.this.dz > 0) {
-                            this.z++;
+                        az++;
+                        if (this.dz > 0) {
+                            z++;
                         } else {
-                            this.z--;
+                            z--;
                         }
                     }
                 } else {
-                    this.ay++;
-                    if (GalacticStructure.this.dy > 0) {
-                        this.y++;
+                    ay++;
+                    if (this.dy > 0) {
+                        y++;
                     } else {
-                        this.y--;
+                        y--;
                     }
                 }
             } else {
-                this.ax++;
-                if (GalacticStructure.this.dx > 0) {
-                    this.x++;
+                ax++;
+                if (this.dx > 0) {
+                    x++;
                 } else {
-                    this.x--;
+                    x--;
                 }
             }
         }
-
     }
 
+    @FunctionalInterface
+    private interface Iterator {
+        void iterate(int x, int y, int z, int ax, int ay, int az);
+    }
+    
+    @FunctionalInterface
+    interface Getter {
+        void get(StructureBlock block, int x, int y, int z);
+    }
+
+    @FunctionalInterface
+    interface Setter {
+        StructureBlock set(int x, int y, int z);
+    }
+    
 }

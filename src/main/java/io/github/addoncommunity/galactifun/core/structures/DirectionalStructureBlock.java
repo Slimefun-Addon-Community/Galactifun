@@ -19,7 +19,7 @@ final class DirectionalStructureBlock extends StructureBlock {
     void paste(Block block, StructureRotation rotation) {
         super.paste(block, rotation);
         BlockData data = block.getBlockData();
-        ((Directional) data).setFacing(rotation.relativeTo(this.direction));
+        ((Directional) data).setFacing(rotation.rotateFace(this.direction));
         block.setBlockData(data);
     }
 

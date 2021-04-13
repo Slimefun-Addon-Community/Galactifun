@@ -1,13 +1,17 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
+import java.util.EnumMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import lombok.Getter;
+
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-import java.util.EnumMap;
-import java.util.Map;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -18,7 +22,7 @@ import java.util.Map;
 public final class Atmosphere {
     
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
-
+    
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
         .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
         .add(Gas.OXYGEN, 20.946)
@@ -26,7 +30,7 @@ public final class Atmosphere {
         .add(Gas.ARGON, 0.934)
         .add(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
         .build();
-    public static final Atmosphere NONE = new AtmosphereBuilder().build();
+    public static final Atmosphere NONE = new AtmosphereBuilder().setEnd().build();
     
     private final boolean weatherCycle;
     private final boolean storming;
@@ -49,7 +53,12 @@ public final class Atmosphere {
     Atmosphere(boolean weatherCycle, boolean storming, boolean thundering, boolean flammable,
                @Nonnull World.Environment environment, Map<Gas, Double> composition,
                @Nonnull AtmosphericEffect[] effects) {
-
+        
+        // we can only cancel ender dragon spawn on paper
+        if (!PaperLib.isPaper() && environment == World.Environment.THE_END) {
+            environment = World.Environment.NORMAL;
+        }
+        
         this.weatherCycle = weatherCycle;
         this.environment = environment;
         this.thundering = thundering;
@@ -71,7 +80,6 @@ public final class Atmosphere {
             world.setThunderDuration(Integer.MAX_VALUE);
         }
         world.setGameRule(GameRule.DO_FIRE_TICK, this.flammable);
-        // find a way to implement crop growth stuff, maybe check out spigots method?
     }
     
     public void applyEffects(@Nonnull Player player) {

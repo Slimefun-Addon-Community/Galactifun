@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import lombok.experimental.UtilityClass;
@@ -33,9 +34,23 @@ import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 public final class StructureLoader {
 
     /**
+     * Folder for saved structures
+     */
+    private static final File STRUCTURE_FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
+    
+    public static void loadStructureFolder(Galactifun galactifun) {
+        galactifun.log("Loading structures...");
+        if (!STRUCTURE_FOLDER.mkdir()) {
+            for (File file : Objects.requireNonNull(STRUCTURE_FOLDER.listFiles())) { 
+                load(file.getPath());
+            }
+        }
+    }
+    
+    /**
      * An empty structure fallback for errors
      */
-    private static final GalacticStructure ERROR = new GalacticStructure("ERROR", StructureRotation.NORTH, 0, 0, 0);
+    private static final GalacticStructure ERROR = new GalacticStructure("ERROR", StructureRotation.DEFAULT, 0, 0, 0);
 
     /**
      * All loaded structures
@@ -59,34 +74,8 @@ public final class StructureLoader {
     /**
      * Gets a structure or loads from a file path
      */
-    public static GalacticStructure getFromPath(String path) {
-        return STRUCTURES.get(path);
-    }
-
-    /**
-     * Loads a structure from the file's path
-     */
-    public static GalacticStructure loadFromFilePath(String filePath) {
-        // check file name
-        if (!filePath.endsWith(".gs")) {
-            Galactifun.inst().log(Level.SEVERE,
-                    "Failed to load galactic structure from file '" + filePath + "' that doesn't end with '.gs'!"
-            );
-            return ERROR;
-        }
-
-        // load
-        try {
-            GalacticStructure load = load(filePath.replace(".gs", ""), new FileInputStream(filePath));
-            STRUCTURES.put(filePath, load);
-            return load;
-        } catch (Exception e) {
-            Galactifun.inst().log(Level.SEVERE,
-                    "Failed to load galactic structure from file '" + filePath + "' due to " +
-                            e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
-            );
-            return ERROR;
-        }
+    public static GalacticStructure getFromPath(String name) {
+        return STRUCTURES.get(name);
     }
 
     /**
@@ -125,25 +114,9 @@ public final class StructureLoader {
     }
 
     /**
-     * Creates a new structure from the world
-     */
-    public static GalacticStructure create(String name, StructureRotation rotation, Block pos1, Block pos2) {
-        GalacticStructure structure = new GalacticStructure(name, rotation,
-                pos2.getX() - pos1.getX(),
-                pos2.getY() - pos1.getY(),
-                pos2.getZ() - pos1.getZ()
-        );
-        GalacticStructure.StructureIterator iterator = structure.new StructureIterator();
-        while (iterator.hasNext()) {
-            iterator.setNextBlock(createBlock(pos1.getRelative(iterator.x, iterator.y, iterator.z)));
-        }
-        return structure;
-    }
-
-    /**
      * Saves a structure to a file
      */
-    public static void save(GalacticStructure structure, File folder) {
+    public static void save(GalacticStructure structure) {
         StringBuilder save = new StringBuilder();
 
         // add dimensions
@@ -156,13 +129,10 @@ public final class StructureLoader {
                 .append(structure.dz);
 
         // add blocks
-        GalacticStructure.StructureIterator iterator = structure.new StructureIterator();
-        while (iterator.hasNext()) {
-            save.append(';').append(iterator.getNextBlock().save());
-        }
+        structure.getAll((block, x, y, z) -> save.append(';').append(block.save()));
 
         // save
-        File file = new File(folder, structure.path + ".gs");
+        File file = new File(STRUCTURE_FOLDER, structure.name + ".gs");
         STRUCTURES.put(file.getPath(), structure);
         Galactifun.inst().runAsync(() -> {
             file.getParentFile().mkdirs();
@@ -174,20 +144,16 @@ public final class StructureLoader {
         });
     }
 
-    private static GalacticStructure load(String name, InputStream stream) throws IOException {
-        String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()));
-        String[] dims = PatternUtils.COMMA.split(split[0]);
-        GalacticStructure structure = new GalacticStructure(name,
-                StructureRotation.valueOf(dims[0]),
-                Integer.parseInt(dims[1]),
-                Integer.parseInt(dims[2]),
-                Integer.parseInt(dims[3])
+    /**
+     * Creates a new structure from the world
+     */
+    public static GalacticStructure create(String name, StructureRotation rotation, Block pos1, Block pos2) {
+        GalacticStructure structure = new GalacticStructure(name, rotation,
+                pos2.getX() - pos1.getX(),
+                pos2.getY() - pos1.getY(),
+                pos2.getZ() - pos1.getZ()
         );
-        int i = 1;
-        GalacticStructure.StructureIterator iterator = structure.new StructureIterator();
-        while (iterator.hasNext()) {
-            iterator.setNextBlock(loadBlock(split[i]));
-        }
+        structure.setAll((x, y, z) -> createBlock(pos1.getRelative(x, y, z)));
         return structure;
     }
 
@@ -205,6 +171,43 @@ public final class StructureLoader {
         }
 
         return StructureBlock.get(material);
+    }
+
+    private static GalacticStructure load(String name, InputStream stream) throws IOException {
+        String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()));
+        String[] dims = PatternUtils.COMMA.split(split[0]);
+        GalacticStructure structure = new GalacticStructure(name,
+                StructureRotation.valueOf(dims[0]),
+                Integer.parseInt(dims[1]),
+                Integer.parseInt(dims[2]),
+                Integer.parseInt(dims[3])
+        );
+        AtomicInteger i = new AtomicInteger(1);
+        structure.setAll((x, y, z) -> loadBlock(split[i.getAndIncrement()]));
+        return structure;
+    }
+    
+    private static GalacticStructure load(String name) {
+        // check file name
+        if (!name.endsWith(".gs")) {
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from file '" + name + "' that doesn't end with '.gs'!"
+            );
+            return ERROR;
+        }
+
+        // load
+        try {
+            GalacticStructure load = load(name.replace(".gs", ""), new FileInputStream(name));
+            STRUCTURES.put(name, load);
+            return load;
+        } catch (Exception e) {
+            Galactifun.inst().log(Level.SEVERE,
+                    "Failed to load galactic structure from file '" + name + "' due to " +
+                            e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
+            );
+            return ERROR;
+        }
     }
 
     private static StructureBlock loadBlock(String block) {

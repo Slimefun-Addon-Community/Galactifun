@@ -1,13 +1,21 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
-import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import lombok.Getter;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -15,7 +23,6 @@ import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,18 +35,13 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
 /**
  * Any alien world
@@ -312,16 +314,6 @@ public abstract class AlienWorld extends CelestialWorld {
                     e.setCancelled(true);
                 }
             }
-            
-            // cancel ender dragon spawn TODO test
-            @EventHandler
-            public void onEnderDragonSpawn(@Nonnull CreatureSpawnEvent e) {
-                if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL
-                        && e.getEntity().getType() == EntityType.ENDER_DRAGON
-                        && WORLDS.containsKey(e.getEntity().getWorld())) {
-                    e.setCancelled(true);
-                }
-            } 
 
             // crops
             @EventHandler

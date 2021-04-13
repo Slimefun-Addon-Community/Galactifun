@@ -1,5 +1,16 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.core.structures.StructureLoader;
@@ -7,33 +18,14 @@ import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public final class StructureCommand extends AbstractCommand {
 
-    private static final File USER_STRUCTURE_FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
     private static final NamespacedKey POS1 = Galactifun.inst().getKey("pos1");
     private static final NamespacedKey POS2 = Galactifun.inst().getKey("pos2");
 
     public StructureCommand() {
         super("structure", "The command for structures", true);
-        
-        // load user structures
-        if (!USER_STRUCTURE_FOLDER.mkdir()) {
-            for (File file : Objects.requireNonNull(USER_STRUCTURE_FOLDER.listFiles())) {
-                StructureLoader.loadFromFilePath(file.getPath());
-            }
-        }
     }
 
     @Override
@@ -63,7 +55,7 @@ public final class StructureCommand extends AbstractCommand {
             }
 
             double time = System.nanoTime();
-            StructureLoader.save(StructureLoader.create(args[2], StructureRotation.fromFace(p.getFacing()), pos1, pos2), USER_STRUCTURE_FOLDER);
+            StructureLoader.save(StructureLoader.create(args[2], StructureRotation.fromFace(p.getFacing()), pos1, pos2));
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
             return;
         }
