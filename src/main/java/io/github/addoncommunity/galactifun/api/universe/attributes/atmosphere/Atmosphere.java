@@ -11,8 +11,6 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
-
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
  *
@@ -53,11 +51,6 @@ public final class Atmosphere {
     Atmosphere(boolean weatherCycle, boolean storming, boolean thundering, boolean flammable,
                @Nonnull World.Environment environment, Map<Gas, Double> composition,
                @Nonnull AtmosphericEffect[] effects) {
-        
-        // we can only cancel ender dragon spawn on paper
-        if (!PaperLib.isPaper() && environment == World.Environment.THE_END) {
-            environment = World.Environment.NORMAL;
-        }
         
         this.weatherCycle = weatherCycle;
         this.environment = environment;

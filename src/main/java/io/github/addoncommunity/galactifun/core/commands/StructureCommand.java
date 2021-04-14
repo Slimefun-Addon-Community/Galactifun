@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.core.structures.StructureLoader;
+import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
 import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -55,7 +55,7 @@ public final class StructureCommand extends AbstractCommand {
             }
 
             double time = System.nanoTime();
-            StructureLoader.save(StructureLoader.create(args[2], StructureRotation.fromFace(p.getFacing()), pos1, pos2));
+            StructureRegistry.saveStructure(args[2], StructureRegistry.createStructure(StructureRotation.fromFace(p.getFacing()), pos1, pos2));
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
             return;
         }
@@ -84,7 +84,7 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            GalacticStructure loaded = StructureLoader.getFromPath(args[2]);
+            GalacticStructure loaded = StructureRegistry.getStructure(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
@@ -108,7 +108,7 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(StructureLoader.structurePaths());
+            options.addAll(StructureRegistry.structurePaths());
         }
     }
     

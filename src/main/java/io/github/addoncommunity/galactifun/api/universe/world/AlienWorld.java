@@ -18,6 +18,7 @@ import lombok.Getter;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
@@ -113,7 +114,7 @@ public abstract class AlienWorld extends CelestialWorld {
                     @Nonnull
                     @Override
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                        List<BlockPopulator> list = new ArrayList<>(4);
+                        List<BlockPopulator> list = new ArrayList<>(0);
                         getPopulators(list);
                         return list;
                     }
@@ -121,8 +122,18 @@ public abstract class AlienWorld extends CelestialWorld {
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
-
+        
         Validate.notNull(world, "There was an error loading the world for " + worldName);
+        
+        if (world.getEnvironment() == World.Environment.THE_END) {
+            // Prevents ender dragon spawn using portal, surrounds portal with bedrock
+            world.getBlockAt(0, 0, 0).setType(Material.END_PORTAL);
+            world.getBlockAt(0, 1, 0).setType(Material.BEDROCK);
+            world.getBlockAt(1, 0, 0).setType(Material.BEDROCK);
+            world.getBlockAt(-1, 0, 0).setType(Material.BEDROCK);
+            world.getBlockAt(0, 0, 1).setType(Material.BEDROCK);
+            world.getBlockAt(0, 0, -1).setType(Material.BEDROCK);
+        }
         
         // load effects
         this.dayCycle.applyEffects(world);
@@ -309,8 +320,7 @@ public abstract class AlienWorld extends CelestialWorld {
             // cancel waypoints
             @EventHandler
             public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
-                AlienWorld world = getByWorld(e.getPlayer().getWorld());
-                if (world != null) {
+                if (WORLDS.containsKey(e.getPlayer().getWorld())) {
                     e.setCancelled(true);
                 }
             }
@@ -332,6 +342,7 @@ public abstract class AlienWorld extends CelestialWorld {
                     }
                 }
             }
+            
         });
     }
 

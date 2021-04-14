@@ -14,11 +14,6 @@ public final class GalacticStructure {
      * The 3d array of structure blocks
      */
     private final StructureBlock[][][] structure;
-    
-    /**
-     * The name of this structure
-     */
-    final String name;
 
     /**
      * The default rotation of this structure
@@ -32,8 +27,7 @@ public final class GalacticStructure {
     final int dy;
     final int dz;
     
-    GalacticStructure(String name, StructureRotation rotation, int dx, int dy, int dz) {
-        this.name = name;
+    GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
         this.rotation = rotation;
         this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
     }
@@ -60,7 +54,7 @@ public final class GalacticStructure {
         int y = 0;
         int z = 0;
         while (loop) {
-            iterator.iterate(x, y,z, ax, ay, az);
+            iterator.iterate(x, y, z, ax, ay, az);
             if (x == this.dx) {
                 x = 0;
                 ax = 0;
