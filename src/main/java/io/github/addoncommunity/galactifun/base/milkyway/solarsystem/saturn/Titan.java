@@ -5,7 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
@@ -249,10 +249,10 @@ public final class Titan extends AlienWorld {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().enableWeather().enableFire()
-            .addNitrogen(97)
-            .addComponent(AtmosphericGas.METHANE, 2.7)
-            .addComponent(AtmosphericGas.HYDROCARBONS, 0.2)
-            .addComponent(AtmosphericGas.HYDROGEN, 0.1)
+            .add(Gas.NITROGEN, 97)
+            .add(Gas.METHANE, 2.7)
+            .add(Gas.HYDROCARBONS, 0.2)
+            .add(Gas.HYDROGEN, 0.1)
             .build();
     }
 

@@ -6,7 +6,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;
@@ -29,8 +29,8 @@ public final class Jupiter extends CelestialBody {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder().addStorm().addThunder().enableFire().enableWeather()
-            .addComponent(AtmosphericGas.HYDROGEN, 90)
-            .addComponent(AtmosphericGas.HELIUM, 10)
+            .add(Gas.HYDROGEN, 90)
+            .add(Gas.HELIUM, 10)
             .build();
     }
 

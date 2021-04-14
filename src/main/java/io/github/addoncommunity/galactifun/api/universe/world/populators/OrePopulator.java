@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.api.universe.world.populators;
 
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -10,7 +9,10 @@ import org.bukkit.generator.BlockPopulator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Populator utility for simple ore population
@@ -32,7 +34,7 @@ public class OrePopulator extends BlockPopulator {
     @Nullable
     private final String id;
     @Nonnull
-    private final Material[] source;
+    private final Set<Material> source;
 
 
     public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
@@ -45,7 +47,7 @@ public class OrePopulator extends BlockPopulator {
         this.maxSize= maxSize;
         this.ore = slimefunItem.getType();
         this.id = slimefunItem.getItemId();
-        this.source = source;
+        this.source = EnumSet.of(source[0], Arrays.copyOfRange(source, 1, source.length));
     }
 
     public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
@@ -58,7 +60,7 @@ public class OrePopulator extends BlockPopulator {
         this.maxSize= maxSize;
         this.ore = ore;
         this.id = null;
-        this.source = source;
+        this.source = EnumSet.of(source[0], Arrays.copyOfRange(source, 1, source.length));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class OrePopulator extends BlockPopulator {
                 int z = random.nextInt(16);
                 
                 int length = 0;
-                while (ArrayUtils.contains(this.source, chunk.getBlock(x, y, z).getType()) && length < this.maxSize) {
+                while (length < this.maxSize && this.source.contains(chunk.getBlock(x, y, z).getType())) {
                     chunk.getBlock(x, y, z).setType(this.ore);
                     
                     if (this.id != null) {

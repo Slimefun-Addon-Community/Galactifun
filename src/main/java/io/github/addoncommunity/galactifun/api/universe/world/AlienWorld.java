@@ -1,16 +1,24 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.core.ConfigUtils;
-import io.github.mooy1.infinitylib.core.PluginUtils;
-import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
-import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import lombok.Getter;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
@@ -28,18 +36,13 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
 /**
  * Any alien world
@@ -65,7 +68,7 @@ public abstract class AlienWorld extends CelestialWorld {
         return WORLDS.values();
     }
     
-    private static final int MAX_ALIENS = ConfigUtils.getInt("aliens.max-per-player", 1, 64, 12);
+    private static final int MAX_ALIENS = Galactifun.inst().getConfigInt("aliens.max-per-player", 4, 64);
 
     /**
      * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
@@ -79,11 +82,6 @@ public abstract class AlienWorld extends CelestialWorld {
     @Getter
     private World world;
 
-    /**
-     * Configuration
-     */
-    private WorldConfig config;
-
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
@@ -91,9 +89,10 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nullable
     @Override
     protected World loadWorld() {
-        String worldName = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+        String worldName = "world_galactifun_" + this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
 
-        if (!(this.config = WorldConfig.load(worldName, enabledByDefault())).isEnabled()) {
+        // TODO implement disabling
+        if (!enabledByDefault()) {
             return null;
         }
 
@@ -101,7 +100,7 @@ public abstract class AlienWorld extends CelestialWorld {
         beforeWorldLoad();
 
         // fetch or create world
-        World world = new WorldCreator("galactifun_" + worldName)
+        World world = new WorldCreator(worldName)
                 .generator(new ChunkGenerator() {
 
                     @Nonnull
@@ -115,7 +114,7 @@ public abstract class AlienWorld extends CelestialWorld {
                     @Nonnull
                     @Override
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                        List<BlockPopulator> list = new ArrayList<>(4);
+                        List<BlockPopulator> list = new ArrayList<>(0);
                         getPopulators(list);
                         return list;
                     }
@@ -123,8 +122,18 @@ public abstract class AlienWorld extends CelestialWorld {
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
-
+        
         Validate.notNull(world, "There was an error loading the world for " + worldName);
+        
+        if (world.getEnvironment() == World.Environment.THE_END) {
+            // Prevents ender dragon spawn using portal, surrounds portal with bedrock
+            world.getBlockAt(0, 0, 0).setType(Material.END_PORTAL);
+            world.getBlockAt(0, 1, 0).setType(Material.BEDROCK);
+            world.getBlockAt(1, 0, 0).setType(Material.BEDROCK);
+            world.getBlockAt(-1, 0, 0).setType(Material.BEDROCK);
+            world.getBlockAt(0, 0, 1).setType(Material.BEDROCK);
+            world.getBlockAt(0, 0, -1).setType(Material.BEDROCK);
+        }
         
         // load effects
         this.dayCycle.applyEffects(world);
@@ -238,14 +247,14 @@ public abstract class AlienWorld extends CelestialWorld {
     static {
 
         // world ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
+        Galactifun.inst().scheduleRepeatingSync(() -> {
             for (AlienWorld world : WORLDS.values()) {
                 world.tickWorld();
             }
         }, 100);
 
         // alien ticker
-        PluginUtils.scheduleRepeatingSync(() -> {
+        Galactifun.inst().scheduleRepeatingSync(() -> {
             for (Alien alien : Alien.ALIENS.values()) {
                 alien.onUniqueTick();
             }
@@ -258,10 +267,10 @@ public abstract class AlienWorld extends CelestialWorld {
                     }
                 }
             }
-        }, ConfigUtils.getInt("aliens.tick-interval", 1, 20, 2));
+        }, Galactifun.inst().getConfigInt("aliens.tick-interval", 1, 20));
 
         // world listener
-        PluginUtils.registerListener(new Listener() {
+        Galactifun.inst().registerListener(new Listener() {
 
             // remove old effects and apply new effects
             @EventHandler
@@ -311,8 +320,7 @@ public abstract class AlienWorld extends CelestialWorld {
             // cancel waypoints
             @EventHandler
             public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
-                AlienWorld world = getByWorld(e.getPlayer().getWorld());
-                if (world != null) {
+                if (WORLDS.containsKey(e.getPlayer().getWorld())) {
                     e.setCancelled(true);
                 }
             }
@@ -334,6 +342,7 @@ public abstract class AlienWorld extends CelestialWorld {
                     }
                 }
             }
+            
         });
     }
 

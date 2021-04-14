@@ -22,8 +22,8 @@ import java.util.Random;
 
 public final class EarthOrbit extends AlienWorld {
 
-    private static final Sphere COMET = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
-    private static final Sphere ASTEROID = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
+    private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
+    private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
     public EarthOrbit() {
         super("Earth Orbit", Orbit.kilometers(24000), CelestialType.SPACE, new ItemChoice(Material.BLACK_STAINED_GLASS));
@@ -57,9 +57,9 @@ public final class EarthOrbit extends AlienWorld {
                     if (rand == 0) { // 2 % debris
                         chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
                     } else if (rand == 1) { // 2 % comet
-                        COMET.generate(random ,chunk, x, y, z, 5, 2);
+                        EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z) , 5, 2);
                     } else { // 6 % asteroid
-                        ASTEROID.generate(random ,chunk, x, y, z, 5, 2);
+                        EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z) , 5, 2);
                     }
                 }
             }

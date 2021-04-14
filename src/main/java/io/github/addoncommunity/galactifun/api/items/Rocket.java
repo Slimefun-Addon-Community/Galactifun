@@ -5,8 +5,6 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.core.ConfigUtils;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.mooy1.infinitylib.slimefun.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -31,7 +29,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -47,12 +44,10 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 public final class Rocket extends SlimefunItem {
-
-    private static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
+    
+    private static final List<String> LAUNCH_MESSAGES = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
 
     @Getter
     private final int fuelCapacity;
@@ -133,24 +128,22 @@ public final class Rocket extends SlimefunItem {
             double distance = celestialWorld.getDistanceTo(world);
             ItemStack item = celestialWorld.getItem().clone();
             ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                List<String> lore = meta.getLore();
-                if (lore != null) {
-                    lore.remove(lore.size() - 1);
+            List<String> lore = meta.getLore();
+            if (lore != null) {
+                lore.remove(lore.size() - 1);
 
-                    if (distance > 0) {
-                        lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                            ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                            : distance + " Light Years")
-                        ));
-                    } else {
-                        lore.add(ChatColors.color("&7You are here!"));
-                    }
-
-                    meta.setLore(lore);
-                    item = item.clone();
-                    item.setItemMeta(meta);
+                if (distance > 0) {
+                    lore.add(ChatColors.color("&7Distance: " + (distance < 1
+                        ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                        : distance + " Light Years")
+                    ));
+                } else {
+                    lore.add(ChatColors.color("&7You are here!"));
                 }
+
+                meta.setLore(lore);
+                item = item.clone();
+                item.setItemMeta(meta);
             }
 
             menu.addItem(i++, item, (p1, slot, it, action) -> {
@@ -163,7 +156,7 @@ public final class Rocket extends SlimefunItem {
                         p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
                         ChatUtils.awaitInput(p, (response) -> {
                             String trimmed = response.trim();
-                            if (COORD_PATTERN.matcher(trimmed).matches()) {
+                            if (Util.COORD_PATTERN.matcher(trimmed).matches()) {
                                 String[] split = Util.SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
@@ -180,15 +173,9 @@ public final class Rocket extends SlimefunItem {
 
         menu.open(p);
     }
-
+    
     private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuelLeft, double eff, int x, int z) {
-        ConfigurationSection section = ConfigUtils.load("config.yml").getConfiguration().getConfigurationSection("rockets");
-        if (section == null) {
-            PluginUtils.log(Level.SEVERE, "Could not load launch messages!");
-            return;
-        }
-        List<String> messages = section.getStringList("launch-msgs");
-
+        
         // yes ik boolean#tostring isn't needed but just for safety
         BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
 
@@ -200,9 +187,9 @@ public final class Rocket extends SlimefunItem {
 
             @Override
             public void run() {
-                if (times++ < 20) {
+                if (this.times++ < 20) {
                     for (BlockFace face : Util.SURROUNDING_FACES) {
-                        Block block = pad.getRelative(face);
+                        Block block = this.pad.getRelative(face);
                         world.spawnParticle(Particle.ASH, block.getLocation(), 100, 0.5, 0.5, 0.5);
                     }
                 } else {
@@ -220,7 +207,7 @@ public final class Rocket extends SlimefunItem {
             destChunk.load(true);
         }
 
-        PluginUtils.runSync(() -> {
+        Galactifun.inst().runSync(() -> {
             destBlock.setType(Material.CHEST);
             BlockData data = destBlock.getBlockData();
             if (data instanceof Rotatable) {
@@ -245,13 +232,13 @@ public final class Rocket extends SlimefunItem {
             }
             state.update();
 
-            p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "...");
+            p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
         }, 40);
 
-        PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 80);
-        PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 120);
-        PluginUtils.runSync(() -> p.sendMessage(ChatColor.GOLD + messages.get(ThreadLocalRandom.current().nextInt(messages.size())) + "..."), 160);
-        PluginUtils.runSync(() -> {
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
+        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
+        Galactifun.inst().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             for (Entity entity : world.getEntities()) {

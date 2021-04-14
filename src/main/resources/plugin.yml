@@ -11,8 +11,3 @@ commands:
     description: galactifun main command
     usage: /galactifun <subcommand>
     aliases: [gf, galactic]
-    
-permissions:
-  galactifun.admin:
-    description: galactifun admin perm
-    default: op
