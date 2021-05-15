@@ -1,5 +1,10 @@
 package io.github.addoncommunity.galactifun.base;
 
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
@@ -12,11 +17,8 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
-import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Holds the base machines and setup
@@ -101,7 +103,7 @@ public final class BaseItems {
         }).setCapacity(1024).setEnergyConsumption(512).setProcessingSpeed(1).register(galactifun);
         
         new AssemblyTable(CoreCategory.MACHINES, ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-                SlimefunItems.STEEL_PLATE, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, SlimefunItems.STEEL_PLATE,
+                SlimefunItems.STEEL_PLATE, new ItemStack(Material.CRAFTING_TABLE), SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
         }).register(galactifun);

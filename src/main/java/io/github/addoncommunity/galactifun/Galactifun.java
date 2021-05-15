@@ -2,6 +2,9 @@ package io.github.addoncommunity.galactifun;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
+import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
@@ -68,6 +71,13 @@ public final class Galactifun extends AbstractAddon {
     public void onDisable() {
         // todo make better
         BossAlien.removeBossBars();
+    }
+
+    @Override
+    @OverridingMethodsMustInvokeSuper
+    public void onLoad() {
+        // default to not logging world settings because its annoying with lots of worlds
+        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
     public static Galactifun inst() {
