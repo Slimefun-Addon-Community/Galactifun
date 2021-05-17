@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;
@@ -105,7 +105,7 @@ public final class Martian extends Alien {
                 ItemUtils.consumeItem(item, trade.getAmount(), true);
             }
 
-            PluginUtils.runSync(() -> {
+            Galactifun.inst().runSync(() -> {
                 if (entity.isValid()) {
                     entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
 

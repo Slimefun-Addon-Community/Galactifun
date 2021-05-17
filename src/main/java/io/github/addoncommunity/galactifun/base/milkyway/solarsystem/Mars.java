@@ -5,7 +5,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericGas;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
@@ -90,9 +90,9 @@ public final class Mars extends SimpleAlienWorld {
     @Override
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder()
-            .addCarbonDioxide(94.9)
-            .addNitrogen(2.6)
-            .addComponent(AtmosphericGas.ARGON, 1.9)
+            .add(Gas.CARBON_DIOXIDE, 94.9)
+            .add(Gas.NITROGEN, 2.6)
+            .add(Gas.ARGON, 1.9)
             .build();
     }
 

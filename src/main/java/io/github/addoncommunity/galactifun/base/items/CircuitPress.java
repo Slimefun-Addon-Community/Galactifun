@@ -1,24 +1,34 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.mooy1.infinitylib.slimefun.utils.DelayedRecipeType;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
+// TODO improve recipes
 public class CircuitPress extends AContainer {
-    
-    public static final DelayedRecipeType TYPE = new DelayedRecipeType(BaseItems.CIRCUIT_PRESS);
 
+    private static final List<MachineRecipe> RECIPES = new ArrayList<>();
+    public static final RecipeType TYPE = new RecipeType(
+            new NamespacedKey(Galactifun.inst(), BaseItems.CIRCUIT_PRESS.getItemId().toLowerCase(Locale.ROOT)),
+            BaseItems.CIRCUIT_PRESS,
+            (stacks, itemStack) -> RECIPES.add(new MachineRecipe(10, Arrays.copyOf(stacks, 2), new ItemStack[] {itemStack}))
+    );
+    
     public CircuitPress(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);
-        TYPE.accept(((stacks, itemStack) -> registerRecipe(10, Arrays.copyOf(stacks, 2), new ItemStack[] {itemStack})));
     }
 
     @Override

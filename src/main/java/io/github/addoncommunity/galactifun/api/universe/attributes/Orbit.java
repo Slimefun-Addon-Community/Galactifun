@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.core.PluginUtils;
 import org.apache.commons.lang.Validate;
 
 import javax.annotation.Nonnull;
@@ -21,7 +21,7 @@ public final class Orbit {
     private static long totalDays;
 
     static {
-        PluginUtils.scheduleRepeatingSync(() -> totalDays++, 24000);
+        Galactifun.inst().scheduleRepeatingSync(() -> totalDays++, 24000);
     }
     
     @Nonnull

@@ -24,7 +24,7 @@ public final class AtmosphereBuilder {
     @Nonnull
     private AtmosphericEffect[] effects = new AtmosphericEffect[0];
     @Nonnull
-    private final Map<AtmosphericGas, Double> composition = new EnumMap<>(AtmosphericGas.class);
+    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
     
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
@@ -47,24 +47,12 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addComponent(@Nonnull AtmosphericGas component, double percentage) {
+    public AtmosphereBuilder add(Gas gas, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
-        this.composition.put(component, percentage);
+        this.composition.put(gas, percentage);
         return this;
     }
 
-    public AtmosphereBuilder addOxygen(double percentage) {
-        return addComponent(AtmosphericGas.OXYGEN, percentage);
-    }
-
-    public AtmosphereBuilder addNitrogen(double percentage) {
-        return addComponent(AtmosphericGas.NITROGEN, percentage);
-    }
-
-    public AtmosphereBuilder addCarbonDioxide(double percentage) {
-        return addComponent(AtmosphericGas.CARBON_DIOXIDE, percentage);
-    }
-    
     public AtmosphereBuilder enableWeather() {
         this.weatherCycle = true;
         return this;
@@ -97,7 +85,7 @@ public final class AtmosphereBuilder {
         Validate.isTrue(percent < 101, "Percentage cannot be more than 100%!");
         
         if (percent != 0) {
-            this.composition.put(AtmosphericGas.OTHER, this.composition.getOrDefault(AtmosphericGas.OTHER, 0.0) + 100 - percent);
+            this.composition.put(Gas.OTHER, this.composition.getOrDefault(Gas.OTHER, 0.0) + 100 - percent);
         }
 
         return new Atmosphere(this.weatherCycle, this.storming, this.thundering,
