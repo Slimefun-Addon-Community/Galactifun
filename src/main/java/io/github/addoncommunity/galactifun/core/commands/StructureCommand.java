@@ -1,16 +1,5 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
@@ -18,6 +7,15 @@ import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public final class StructureCommand extends AbstractCommand {
 
@@ -30,11 +28,9 @@ public final class StructureCommand extends AbstractCommand {
 
     @Override
     public void onExecute(@Nonnull CommandSender sender, @Nonnull String[] args) {
-        if (args.length == 1 || !(sender instanceof Player)) {
+        if (args.length == 1 || !(sender instanceof Player p)) {
             return;
         }
-
-        Player p = (Player) sender;
 
         if (args[1].equals("save")) {
             if (args.length != 3) {

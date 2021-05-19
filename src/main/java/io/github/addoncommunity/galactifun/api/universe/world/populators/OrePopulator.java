@@ -81,24 +81,12 @@ public class OrePopulator extends BlockPopulator {
 
                     if ((length < this.minSize) || (random.nextInt(100) < 50)) {
                         switch (random.nextInt(6)) {
-                            case 0:
-                                x = Math.min(x + 1, 15);
-                                break;
-                            case 1:
-                                y = Math.min(y + 1, this.maxy);
-                                break;
-                            case 2:
-                                z = Math.min(z + 1, 15);
-                                break;
-                            case 3:
-                                x = Math.max(x - 1, 0);
-                                break;
-                            case 4:
-                                y = Math.max(y - 1, this.miny);
-                                break;
-                            case 5:
-                                z = Math.max(z - 1, 0);
-                                break;
+                            case 0 -> x = Math.min(x + 1, 15);
+                            case 1 -> y = Math.min(y + 1, this.maxy);
+                            case 2 -> z = Math.min(z + 1, 15);
+                            case 3 -> x = Math.max(x - 1, 0);
+                            case 4 -> y = Math.max(y - 1, this.miny);
+                            case 5 -> z = Math.max(z - 1, 0);
                         }
                         length++;
                     }

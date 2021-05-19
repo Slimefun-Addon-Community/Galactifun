@@ -76,11 +76,7 @@ public final class Titan extends AlienWorld {
                 }
 
                 switch (biome) {
-                    case BADLANDS:
-                    case MODIFIED_BADLANDS_PLATEAU:
-                    case MODIFIED_WOODED_BADLANDS_PLATEAU:
-                    case ERODED_BADLANDS:
-                    case DESERT:
+                    case BADLANDS, MODIFIED_BADLANDS_PLATEAU, MODIFIED_WOODED_BADLANDS_PLATEAU, ERODED_BADLANDS, DESERT -> {
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
@@ -88,12 +84,8 @@ public final class Titan extends AlienWorld {
                         }
                         chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
                         generateRest(height, chunk, random, x, z);
-                        break;
-
-                    case WOODED_BADLANDS_PLATEAU:
-                    case BADLANDS_PLATEAU:
-                    case DESERT_HILLS:
-                    case DESERT_LAKES:
+                    }
+                    case WOODED_BADLANDS_PLATEAU, BADLANDS_PLATEAU, DESERT_HILLS, DESERT_LAKES -> {
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 if (random.nextBoolean()) {
@@ -105,40 +97,20 @@ public final class Titan extends AlienWorld {
                         }
                         chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
                         generateRest(height, chunk, random, x, z);
-                        break;
-                    case BIRCH_FOREST:
-                    case WOODED_HILLS:
-                    case WOODED_MOUNTAINS:
-                    case FLOWER_FOREST:
-                    case BIRCH_FOREST_HILLS:
-                    case TALL_BIRCH_FOREST:
-                    case TALL_BIRCH_HILLS:
-                    case FOREST:
+                    }
+                    case BIRCH_FOREST, WOODED_HILLS, WOODED_MOUNTAINS, FLOWER_FOREST, BIRCH_FOREST_HILLS, TALL_BIRCH_FOREST, TALL_BIRCH_HILLS, FOREST -> {
                         if (random.nextBoolean()) {
                             chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
                         } else {
                             chunk.setBlock(x, height + 1, z, Material.CRIMSON_NYLIUM);
                         }
                         generateRest(height, chunk, random, x, z);
-                        break;
-                    case SNOWY_TAIGA:
-                    case SNOWY_TAIGA_HILLS:
-                    case SNOWY_TAIGA_MOUNTAINS:
+                    }
+                    case SNOWY_TAIGA, SNOWY_TAIGA_HILLS, SNOWY_TAIGA_MOUNTAINS -> {
                         chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
                         generateRest(height, chunk, random, x, z);
-                        break;
-                    case COLD_OCEAN:
-                    case DEEP_LUKEWARM_OCEAN:
-                    case DEEP_OCEAN:
-                    case DEEP_WARM_OCEAN:
-                    case LUKEWARM_OCEAN:
-                    case DEEP_COLD_OCEAN:
-                    case FROZEN_OCEAN:
-                    case DEEP_FROZEN_OCEAN:
-                    case WARM_OCEAN:
-                    case OCEAN:
-                    case BEACH:
-                    case SNOWY_BEACH:
+                    }
+                    case COLD_OCEAN, DEEP_LUKEWARM_OCEAN, DEEP_OCEAN, DEEP_WARM_OCEAN, LUKEWARM_OCEAN, DEEP_COLD_OCEAN, FROZEN_OCEAN, DEEP_FROZEN_OCEAN, WARM_OCEAN, OCEAN, BEACH, SNOWY_BEACH -> {
                         if (height <= 58) {
                             for (int i = 58; i > height; i--) {
                                 chunk.setBlock(x, i, z, Material.WATER);
@@ -146,10 +118,11 @@ public final class Titan extends AlienWorld {
                         }
                         chunk.setBlock(x, height + 1, z, Material.SAND);
                         generateRest(height, chunk, random, x, z);
-                        break;
-                    default:
+                    }
+                    default -> {
                         chunk.setBlock(x, height + 1, z, Material.BLUE_ICE);
                         generateRest(height, chunk, random, x, z);
+                    }
                 }
             }
         }

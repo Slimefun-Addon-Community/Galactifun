@@ -3,13 +3,13 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.mooy1.infinitylib.items.LoreUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -130,8 +130,9 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         stats.add("&6Type: " + this.type.getName());
         getItemStats(stats);
         stats.add("&7Distance: &8Unknown");
-        LoreUtils.setLore(this.item, stats);
-
+        ItemMeta meta = this.item.getItemMeta();
+        meta.setLore(stats);
+        this.item.setItemMeta(meta);
     }
     
     protected abstract void getItemStats(@Nonnull List<String> stats);
