@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
@@ -55,7 +56,7 @@ public final class TitanKing extends BossAlien {
     @Nonnull
     @Override
     protected BossBarStyle createBossBarStyle() {
-        return new BossBarStyle("Titan King", null, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
+        return new BossBarStyle("Titan King", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
     }
 
     @Override

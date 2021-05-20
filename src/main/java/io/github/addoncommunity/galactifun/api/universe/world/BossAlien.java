@@ -166,7 +166,12 @@ public abstract class BossAlien extends Alien {
     protected abstract BossBarStyle createBossBarStyle();
 
     protected record BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-        public BossBarStyle {} // this is to allow creation of this record by subclasses
+        public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
+            this.name = name;
+            this.color = color;
+            this.style = style;
+            this.flags = flags;
+        }
     }
     
 }
