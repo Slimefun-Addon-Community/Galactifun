@@ -1,8 +1,5 @@
 package io.github.addoncommunity.galactifun;
 
-import java.util.Arrays;
-import java.util.List;
-
 import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
@@ -17,6 +14,10 @@ import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public final class Galactifun extends AbstractAddon {
 
@@ -54,6 +55,7 @@ public final class Galactifun extends AbstractAddon {
         return new Metrics(this, 10411);
     }
 
+    @Nonnull
     @Override
     protected String getGithubPath() {
         return "Slimefun-Addon-Community/Galactifun/master";

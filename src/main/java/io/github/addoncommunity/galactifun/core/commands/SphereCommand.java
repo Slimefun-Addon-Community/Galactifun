@@ -20,12 +20,10 @@ public final class SphereCommand extends AbstractCommand {
 
     @Override
     public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        if (!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player p)) {
             return;
         }
-        
-        Player p = (Player) commandSender;
-        
+
         if (strings.length < 3) {
             p.sendMessage(ChatColor.RED + "Usage: /galactifun sphere <radius> <material>...");
             return;

@@ -216,8 +216,7 @@ public final class Rocket extends SlimefunItem {
             destBlock.setBlockData(data, true);
 
             BlockState state = PaperLib.getBlockState(destBlock, false).getState();
-            if (state instanceof Chest) {
-                Chest chest = (Chest) state;
+            if (state instanceof Chest chest) {
                 Inventory inv = chest.getInventory();
                 inv.clear(); // just in case
                 inv.addItem(this.getItem().clone());

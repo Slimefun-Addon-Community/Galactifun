@@ -50,7 +50,7 @@ public final class Orbit {
     
     private Orbit(double min, double max, long days) {
         Validate.isTrue(max >= 0, "Orbits must be positive!");
-        Validate.isTrue(max > max, "Max orbit must be greater than min orbit!");
+        Validate.isTrue(max > min, "Max orbit must be greater than min orbit!");
         Validate.isTrue(days > 0, "Variable orbits must last greater than 0 days!");
         
         this.min = min;

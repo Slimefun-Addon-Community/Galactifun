@@ -1,5 +1,18 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.codec.Charsets;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,22 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import lombok.experimental.UtilityClass;
-
-import org.apache.commons.codec.Charsets;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
  * A class for loading Galactic Structures
@@ -83,7 +80,7 @@ public final class StructureRegistry {
         }
         try {
             structure = load(Objects.requireNonNull(plugin.getResource(name),
-                    "No galactic structure found in " + plugin.getName() + "'s resources named " + name));
+                "No galactic structure found in " + plugin.getName() + "'s resources named " + name));
         } catch (Exception e) {
             throw new IllegalStateException("Failed to load galactic structure '" + name + "' from '" + plugin.getName() + "'", e);
         }
@@ -97,9 +94,9 @@ public final class StructureRegistry {
     @Nonnull
     public static GalacticStructure createStructure(StructureRotation rotation, Block pos1, Block pos2) {
         GalacticStructure structure = new GalacticStructure(rotation,
-                pos2.getX() - pos1.getX(),
-                pos2.getY() - pos1.getY(),
-                pos2.getZ() - pos1.getZ()
+            pos2.getX() - pos1.getX(),
+            pos2.getY() - pos1.getY(),
+            pos2.getZ() - pos1.getZ()
         );
         structure.setAll((x, y, z) -> {
             Block block = pos1.getRelative(x, y, z);
@@ -124,9 +121,9 @@ public final class StructureRegistry {
 
         // add dimensions
         save.append(structure.rotation)
-                .append(',').append(structure.dx)
-                .append(',').append(structure.dy)
-                .append(',').append(structure.dz);
+            .append(',').append(structure.dx)
+            .append(',').append(structure.dy)
+            .append(',').append(structure.dz);
 
         // add blocks
         structure.getAll((block, x, y, z) -> save.append(';').append(block.save()));
@@ -156,8 +153,8 @@ public final class StructureRegistry {
                 STRUCTURES.put(file.getName().substring(0, file.getName().length() - 3), structure);
             } catch (Exception e) {
                 Galactifun.inst().log(Level.SEVERE,
-                        "Failed to load galactic structure '" + file.getName() + "' from structure folder due to " +
-                                e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
+                    "Failed to load galactic structure '" + file.getName() + "' from structure folder due to " +
+                        e.getClass().getSimpleName() + (e.getMessage() != null ? ": " + e.getMessage() : "")
                 );
             }
         }
@@ -170,10 +167,10 @@ public final class StructureRegistry {
         String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()), -1);
         String[] dims = PatternUtils.COMMA.split(split[0]);
         GalacticStructure structure = new GalacticStructure(
-                StructureRotation.valueOf(dims[0]),
-                Integer.parseInt(dims[1]),
-                Integer.parseInt(dims[2]),
-                Integer.parseInt(dims[3])
+            StructureRotation.valueOf(dims[0]),
+            Integer.parseInt(dims[1]),
+            Integer.parseInt(dims[2]),
+            Integer.parseInt(dims[3])
         );
         AtomicInteger i = new AtomicInteger(1);
         structure.setAll((x, y, z) -> {
@@ -182,13 +179,11 @@ public final class StructureRegistry {
                 return StructureBlock.AIR;
             }
             String[] blockSplit = PatternUtils.COMMA.split(block);
-            switch (blockSplit.length) {
-                case 1:
-                    return new StructureBlock(Material.valueOf(blockSplit[0]));
-                case 2:
-                    return new DirectionalStructureBlock(Material.valueOf(blockSplit[0]), BlockFace.valueOf(blockSplit[1]));
-            }
-            throw new IllegalArgumentException("Failed to load structure block from String '" + block + "'");
+            return switch (blockSplit.length) {
+                case 1 -> new StructureBlock(Material.valueOf(blockSplit[0]));
+                case 2 -> new DirectionalStructureBlock(Material.valueOf(blockSplit[0]), BlockFace.valueOf(blockSplit[1]));
+                default -> throw new IllegalArgumentException("Failed to load structure block from String '" + block + "'");
+            };
         });
         return structure;
     }

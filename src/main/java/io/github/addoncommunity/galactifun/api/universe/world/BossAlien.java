@@ -72,8 +72,7 @@ public abstract class BossAlien extends Alien {
     public final void onHit(@Nonnull EntityDamageByEntityEvent e) {
         this.onBossHit(e);
 
-        if (!e.isCancelled() && e.getEntity() instanceof LivingEntity) {
-            LivingEntity entity = (LivingEntity) e.getEntity();
+        if (!e.isCancelled() && e.getEntity() instanceof LivingEntity entity) {
             BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
@@ -85,8 +84,7 @@ public abstract class BossAlien extends Alien {
 
     @Override
     public void onDamage(@Nonnull EntityDamageEvent e) {
-        if (e.getEntity() instanceof LivingEntity) {
-            LivingEntity entity = (LivingEntity) e.getEntity();
+        if (e.getEntity() instanceof LivingEntity entity) {
             BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
@@ -166,13 +164,8 @@ public abstract class BossAlien extends Alien {
     // TODO maybe add a default style?
     @Nonnull
     protected abstract BossBarStyle createBossBarStyle();
-    
-    protected static final class BossBarStyle {
-        private final String name;
-        private final BarColor color;
-        private final BarStyle style;
-        private final BarFlag[] flags;
 
+    protected record BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
         public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
             this.name = name;
             this.color = color;
