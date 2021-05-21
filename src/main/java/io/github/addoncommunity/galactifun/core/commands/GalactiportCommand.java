@@ -25,11 +25,9 @@ public final class GalactiportCommand extends AbstractCommand {
 
     @Override
     public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        if (!(commandSender instanceof Player) || strings.length != 2) {
+        if (!(commandSender instanceof Player p) || strings.length != 2) {
             return;
         }
-        
-        Player p = (Player) commandSender;
 
         World world = Bukkit.getWorld(strings[1]);
         

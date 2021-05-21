@@ -103,7 +103,7 @@ public final class BaseItems {
         }).setCapacity(1024).setEnergyConsumption(512).setProcessingSpeed(1).register(galactifun);
         
         new AssemblyTable(CoreCategory.MACHINES, ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-                SlimefunItems.STEEL_PLATE, new ItemStack(Material.CRAFTING_TABLE), SlimefunItems.STEEL_PLATE,
+                SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
         }).register(galactifun);

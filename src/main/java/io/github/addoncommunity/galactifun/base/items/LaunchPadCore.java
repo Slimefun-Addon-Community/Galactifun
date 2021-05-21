@@ -71,11 +71,8 @@ public final class LaunchPadCore extends TickingContainer {
         Block b = block.getRelative(BlockFace.UP);
         
         SlimefunItem sfItem = BlockStorage.check(b);
-        if (!(sfItem instanceof Rocket)) {
-            return;
-        }
-        Rocket rocket = (Rocket) sfItem;
-        
+        if (!(sfItem instanceof Rocket rocket)) return;
+
         Location l = b.getLocation();
         
         String s = BlockStorage.getLocationInfo(l, "isLaunching");

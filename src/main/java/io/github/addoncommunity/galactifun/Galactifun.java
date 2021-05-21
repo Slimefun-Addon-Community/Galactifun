@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import org.bukkit.Bukkit;
@@ -57,6 +58,7 @@ public final class Galactifun extends AbstractAddon {
         return new Metrics(this, 10411);
     }
 
+    @Nonnull
     @Override
     protected String getGithubPath() {
         return "Slimefun-Addon-Community/Galactifun/master";
