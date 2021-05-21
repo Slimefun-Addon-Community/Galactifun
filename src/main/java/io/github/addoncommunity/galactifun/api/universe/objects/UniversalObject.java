@@ -1,23 +1,25 @@
-package io.github.addoncommunity.galactifun.api.universe;
+package io.github.addoncommunity.galactifun.api.universe.objects;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Any object in the universe
@@ -68,10 +70,10 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     private final List<UniversalObject<?>> orbiters = new ArrayList<>();
     
     UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice) {
-        Validate.notNull(name, "Name cannot be null");
-        Validate.notNull(orbit, "Orbit cannot be null");
-        Validate.notNull(type, "Type cannot be null");
-        Validate.notNull(choice, "Item Choice cannot be null");
+        Validate.notNull(name);
+        Validate.notNull(orbit);
+        Validate.notNull(type);
+        Validate.notNull(choice);
         
         this.orbit = orbit;
         this.name = ChatUtils.removeColorCodes(name);
@@ -82,7 +84,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @SafeVarargs
     public final void addOrbiters(@Nonnull T... orbiters) {
         for (UniversalObject<?> orbiter : orbiters) {
-            Validate.notNull(orbiter, "Cannot add a null orbiter");
+            Validate.notNull(orbiter);
             this.orbiters.add(orbiter);
             orbiter.orbiting = this;
         }

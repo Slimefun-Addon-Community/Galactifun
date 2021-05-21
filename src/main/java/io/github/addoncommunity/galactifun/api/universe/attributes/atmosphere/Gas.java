@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 public enum Gas {
+
     OXYGEN,
     NITROGEN,
     CARBON_DIOXIDE,
@@ -13,4 +14,5 @@ public enum Gas {
     SULFUR,
     AMMONIA,
     OTHER
+
 }

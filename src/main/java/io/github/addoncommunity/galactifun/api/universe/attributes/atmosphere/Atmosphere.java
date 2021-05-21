@@ -4,7 +4,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-
 import lombok.Getter;
 
 import org.bukkit.GameRule;
@@ -81,12 +80,8 @@ public final class Atmosphere {
         }
     }
 
-    public double getOxygenPercentage() {
-        return this.composition.getOrDefault(Gas.OXYGEN, 0.0);
-    }
-
-    public double getCarbonDioxidePercentage() {
-        return this.composition.getOrDefault(Gas.CARBON_DIOXIDE, 0.0);
+    public double getGasContent(Gas gas) {
+        return this.composition.getOrDefault(gas, 0.0);
     }
     
 }

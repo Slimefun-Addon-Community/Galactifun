@@ -1,12 +1,14 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
 public final class AlienSpawnCommand extends AbstractCommand {
 

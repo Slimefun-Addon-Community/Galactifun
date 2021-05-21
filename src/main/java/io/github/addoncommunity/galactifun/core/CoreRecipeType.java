@@ -1,10 +1,12 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+
+import io.github.addoncommunity.galactifun.Galactifun;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
 
 @UtilityClass
 public final class CoreRecipeType {

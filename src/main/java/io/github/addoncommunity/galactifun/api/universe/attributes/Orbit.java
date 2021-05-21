@@ -1,10 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.util.Util;
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.Validate;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.util.Util;
 
 /**
  * Represents an orbit of a celestial object

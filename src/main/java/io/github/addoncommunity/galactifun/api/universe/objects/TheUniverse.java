@@ -1,12 +1,14 @@
-package io.github.addoncommunity.galactifun.api.universe;
+package io.github.addoncommunity.galactifun.api.universe.objects;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import lombok.Getter;
+
+import org.bukkit.Material;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import lombok.Getter;
-import org.bukkit.Material;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * The universe, serving simply as a holder for all galaxies. At some point could be made abstract

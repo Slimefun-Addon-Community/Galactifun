@@ -1,15 +1,17 @@
 package io.github.addoncommunity.galactifun.core;
 
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.core.categories.AssemblyCategory;
 import io.github.addoncommunity.galactifun.core.categories.GalacticCategory;
 import io.github.mooy1.infinitylib.slimefun.utils.MultiCategory;
 import io.github.mooy1.infinitylib.slimefun.utils.SubCategory;
-import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
 
 /**
  * Slimefun item categories 

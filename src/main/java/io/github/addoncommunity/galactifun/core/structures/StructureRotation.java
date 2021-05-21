@@ -1,8 +1,8 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import org.bukkit.block.BlockFace;
-
 import javax.annotation.Nonnull;
+
+import org.bukkit.block.BlockFace;
 
 /**
  * Directions that a structure can be rotated in

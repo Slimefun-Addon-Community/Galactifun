@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 

@@ -1,10 +1,11 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import javax.annotation.Nonnull;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 
 /**
  * Class for the Titan, an alien of Titan

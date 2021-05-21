@@ -1,25 +1,26 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.EffectType;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.universe.world.populators.VolcanoPopulator;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Class for Venus
@@ -49,7 +50,7 @@ public final class Venus extends SimpleAlienWorld {
     protected Atmosphere createAtmosphere() {
         return new AtmosphereBuilder()
                 .setNether().addStorm().addThunder()
-                .addEffects(new AtmosphericEffect(EffectType.WITHER, 3))
+                .addEffects(AtmosphericEffect.RADIOACTIVE)
                 .add(Gas.CARBON_DIOXIDE, 96.5).add(Gas.NITROGEN, 3.5).build();
     }
 

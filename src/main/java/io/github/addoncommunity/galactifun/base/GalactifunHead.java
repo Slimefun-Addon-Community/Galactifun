@@ -1,8 +1,10 @@
 package io.github.addoncommunity.galactifun.base;
 
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import lombok.experimental.UtilityClass;
+
 import org.bukkit.inventory.ItemStack;
+
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
 @UtilityClass
 public final class GalactifunHead {

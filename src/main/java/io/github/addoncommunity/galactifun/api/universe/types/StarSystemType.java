@@ -1,9 +1,8 @@
 package io.github.addoncommunity.galactifun.api.universe.types;
 
+import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.annotation.Nonnull;
 
 /**
  * Star system types

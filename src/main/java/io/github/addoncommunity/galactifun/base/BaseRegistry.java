@@ -1,9 +1,13 @@
 package io.github.addoncommunity.galactifun.base;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
-import io.github.addoncommunity.galactifun.api.universe.Galaxy;
-import io.github.addoncommunity.galactifun.api.universe.StarSystem;
-import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+
+import io.github.addoncommunity.galactifun.api.universe.objects.CelestialBody;
+import io.github.addoncommunity.galactifun.api.universe.objects.Galaxy;
+import io.github.addoncommunity.galactifun.api.universe.objects.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.objects.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
@@ -26,8 +30,6 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Ence
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Titan;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import lombok.experimental.UtilityClass;
-import org.bukkit.Material;
 
 /**
  * Registry of constants for the base celestial objects

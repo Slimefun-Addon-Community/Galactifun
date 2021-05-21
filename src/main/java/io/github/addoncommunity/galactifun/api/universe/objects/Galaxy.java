@@ -1,11 +1,12 @@
-package io.github.addoncommunity.galactifun.api.universe;
+package io.github.addoncommunity.galactifun.api.universe.objects;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * A galaxy filled with star systems

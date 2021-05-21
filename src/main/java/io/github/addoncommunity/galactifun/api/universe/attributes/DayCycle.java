@@ -1,11 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
+import javax.annotation.Nonnull;
 import lombok.Getter;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-
-import javax.annotation.Nonnull;
 
 /**
  * Represents the amount of sunlight a celestial object gets

@@ -1,12 +1,13 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
+import java.util.EnumMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
-
-import javax.annotation.Nonnull;
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * Utility class for making atmospheres

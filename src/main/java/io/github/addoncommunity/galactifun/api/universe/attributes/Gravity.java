@@ -1,11 +1,11 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
+import javax.annotation.Nonnull;
 import lombok.Getter;
+
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import javax.annotation.Nonnull;
 
 /**
  * Represents the gravitational pull.

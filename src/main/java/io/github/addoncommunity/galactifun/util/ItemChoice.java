@@ -1,12 +1,13 @@
 package io.github.addoncommunity.galactifun.util;
 
+import javax.annotation.Nonnull;
 import lombok.Getter;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
+import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 
 /**
  * A utility class that lets you choose between using a material or head texture for an item

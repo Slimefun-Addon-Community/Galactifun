@@ -1,4 +1,11 @@
-package io.github.addoncommunity.galactifun.api.universe;
+package io.github.addoncommunity.galactifun.api.universe.objects;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import lombok.Getter;
+
+import org.apache.commons.lang.Validate;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -6,11 +13,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import lombok.Getter;
-import org.apache.commons.lang.Validate;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * A celestial object
@@ -35,9 +37,9 @@ public abstract class CelestialBody extends UniversalObject<CelestialBody> {
                          @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
         
-        Validate.notNull(this.gravity = createGravity(), "Cannot use a null gravity!");
-        Validate.notNull(this.dayCycle = createDayCycle(), "Cannot use a null day cycle!");
-        Validate.notNull(this.atmosphere = createAtmosphere(), "Cannot use a null atmosphere");
+        Validate.notNull(this.gravity = createGravity());
+        Validate.notNull(this.dayCycle = createDayCycle());
+        Validate.notNull(this.atmosphere = createAtmosphere());
         
     }
     
