@@ -36,7 +36,7 @@ public final class Orbit {
      */
     @Nonnull
     public static Orbit kilometers(double kilometers, long days) {
-        return new Orbit(kilometers / Util.KM_PER_LY,  365d / days);
+        return new Orbit(kilometers / Util.KM_PER_LY,  365D / days);
     }
 
     @Nonnull
@@ -59,7 +59,7 @@ public final class Orbit {
 
     public double getOrbitPos() {
         if (this.year == 0) return 0;
-        return ((System.currentTimeMillis() % this.year) * 360d) / this.year;
+        return ((System.currentTimeMillis() % this.year) * 360D) / this.year;
     }
 
     private static double cube(double num) {
