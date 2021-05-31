@@ -61,7 +61,7 @@
 
     <build>
         <finalName>${project.name} v${project.version}</finalName>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean package -T 2</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 
         <resources>

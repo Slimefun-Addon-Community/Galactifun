@@ -54,10 +54,10 @@ public final class BaseRegistry {
     public static final AlienWorld ENCELADUS = new Enceladus();
     public static final AlienWorld TITAN_MOON = new Titan();
 
-    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", Orbit.lightYears(27_000D),
+    public static final StarSystem SOLAR_SYSTEM = new StarSystem("Solar System", Orbit.lightYears(27_000, 250_000_000D),
             StarSystemType.NORMAL, new ItemChoice(Material.SUNFLOWER));
     
-    public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", Orbit.lightYears(12_000_000_000D),
+    public static final Galaxy MILKY_WAY = new Galaxy("Milky Way", Orbit.lightYears(12_000_000_000D, 0),
             GalaxyType.SPIRAL, new ItemChoice(Material.MILK_BUCKET));
     
 

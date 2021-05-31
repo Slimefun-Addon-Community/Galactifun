@@ -36,7 +36,7 @@ public final class Earth extends CelestialWorld {
     }
     
     public Earth() {
-        super("Earth", Orbit.kilometers(149_600_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK));
+        super("Earth", Orbit.kilometers(149_600_000L, 1D), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK));
     }
 
     @Nonnull

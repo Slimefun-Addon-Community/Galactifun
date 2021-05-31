@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public final class Jupiter extends CelestialBody {
 
     public Jupiter() {
-        super("&6Jupiter", Orbit.kilometers(778_340_821L), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
+        super("&6Jupiter", Orbit.kilometers(778_340_821L, 12D), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
     }
 
     @Nonnull

@@ -48,6 +48,10 @@ public abstract class CelestialWorld extends CelestialBody {
         }
     }
 
+    public boolean isReachableByRocket() {
+        return true;
+    }
+
     /**
      * Gets the world, called when registered
      */

@@ -45,7 +45,7 @@ public final class Titan extends AlienWorld {
     );
 
     public Titan() {
-        super("&6Titan", Orbit.kilometers(1_200_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
+        super("&6Titan", Orbit.kilometers(1_200_000L, 16), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
     }
 
     @Override

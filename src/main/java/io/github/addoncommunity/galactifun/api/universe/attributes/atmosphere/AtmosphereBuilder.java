@@ -33,7 +33,6 @@ public final class AtmosphereBuilder {
 
     /**
      * Note that adding this method <b>will</b> spawn the {@link EnderDragon}
-     * // TODO see about canceling ender dragon spawn 
      * @return this object
      */
     public AtmosphereBuilder setEnd() {

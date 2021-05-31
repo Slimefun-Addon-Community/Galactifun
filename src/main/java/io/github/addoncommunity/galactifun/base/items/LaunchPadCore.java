@@ -58,7 +58,7 @@ public final class LaunchPadCore extends TickingContainer {
     
     static {
         FUELS.put(SlimefunItems.OIL_BUCKET, 0.5);
-        FUELS.put(SlimefunItems.FUEL_BUCKET, 1d);
+        FUELS.put(SlimefunItems.FUEL_BUCKET, 1D);
     }
 
     public LaunchPadCore(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {

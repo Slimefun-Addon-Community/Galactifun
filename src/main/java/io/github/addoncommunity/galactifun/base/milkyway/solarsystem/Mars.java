@@ -31,7 +31,7 @@ import java.util.Random;
 public final class Mars extends SimpleAlienWorld {
 
     public Mars() {
-        super("&cMars", Orbit.kilometers(227_943_824L), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
+        super("&cMars", Orbit.kilometers(227_943_824L, 687), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
     }
     
     @Nonnull

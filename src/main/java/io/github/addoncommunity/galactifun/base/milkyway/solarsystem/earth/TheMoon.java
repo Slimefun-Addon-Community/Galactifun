@@ -24,7 +24,7 @@ import java.util.Random;
 public final class TheMoon extends SimpleAlienWorld {
     
     public TheMoon() {
-        super("The Moon", Orbit.kilometers(382_500L), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
+        super("The Moon", Orbit.kilometers(382_500L, 27), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
     }
     
     @Override

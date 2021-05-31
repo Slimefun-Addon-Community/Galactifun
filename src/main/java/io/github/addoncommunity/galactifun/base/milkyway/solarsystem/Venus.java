@@ -29,7 +29,7 @@ import java.util.Random;
 public final class Venus extends SimpleAlienWorld {
 
     public Venus() {
-        super("Venus", Orbit.kilometers(108_860_000L), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
+        super("Venus", Orbit.kilometers(108_860_000L, 225), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
     }
 
     @Override

@@ -1,17 +1,5 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -23,6 +11,16 @@ import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
 import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Class for the Saturnian moon Enceladus
@@ -35,7 +33,7 @@ public final class Enceladus extends AlienWorld {
     private static final Sphere WATER_POCKET = new Sphere(Material.WATER);
 
     public Enceladus() {
-        super("&bEnceladus", Orbit.kilometers(237_948L), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEnceladus", Orbit.kilometers(237_948L, 1), CelestialType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Override

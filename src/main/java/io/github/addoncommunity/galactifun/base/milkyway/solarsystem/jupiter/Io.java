@@ -20,7 +20,7 @@ import java.util.Random;
 public final class Io extends SimpleAlienWorld {
 
     public Io() {
-        super("&6Io", Orbit.kilometers(421_800L), CelestialType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
+        super("&6Io", Orbit.kilometers(421_800L, 2), CelestialType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
     }
 
     @Nonnull

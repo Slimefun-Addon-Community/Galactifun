@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 public final class Saturn extends CelestialBody {
     
     public Saturn() {
-        super("Saturn", Orbit.kilometers(1_490_500_000), CelestialType.GAS_GIANT, new ItemChoice(Material.QUARTZ_BLOCK));
+        super("Saturn", Orbit.kilometers(1_490_500_000, 29D), CelestialType.GAS_GIANT, new ItemChoice(Material.QUARTZ_BLOCK));
     }
 
     @Nonnull

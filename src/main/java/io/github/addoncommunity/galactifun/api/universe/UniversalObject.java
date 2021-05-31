@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.Util;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -93,7 +94,11 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
      */
     public final double getDistanceTo(@Nonnull UniversalObject<?> object) {
         if (this.orbiting == object.getOrbiting()) {
-            return Math.abs(this.orbit.getCurrentDistance() - object.orbit.getCurrentDistance());
+            return Util.lawOfCosines(
+                this.orbit.getCurrentDistance(),
+                object.orbit.getCurrentDistance(),
+                Math.abs(this.orbit.getOrbitPos() - object.orbit.getOrbitPos())
+            );
         }
         if (this.orbiting == null || getLevel() < object.getLevel()) {
             return object.orbit.getCurrentDistance() + getDistanceTo(object.getOrbiting());

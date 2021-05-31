@@ -1,15 +1,13 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
-import java.util.EnumMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import lombok.Getter;
-
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
