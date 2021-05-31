@@ -10,6 +10,7 @@ import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -116,6 +117,11 @@ public abstract class AlienWorld extends CelestialWorld {
                         return list;
                     }
 
+                    @Override
+                    public Location getFixedSpawnLocation(@Nonnull World world, @Nonnull Random random) {
+                        Block b = world.getHighestBlockAt(random.nextInt(), random.nextInt());
+                        return b.getLocation();
+                    }
                 })
                 .environment(this.atmosphere.getEnvironment())
                 .createWorld();
