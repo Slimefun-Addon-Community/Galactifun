@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @UtilityClass
 public final class Util {
 
-    public static final double KM_PER_LY = 9_700_000_000D;
+    public static final double KM_PER_LY = 9_700_000_000d;
     public static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
     public static final Pattern SPACE_PATTERN = Pattern.compile(" ");
     public static final BlockFace[] SURROUNDING_FACES = {
@@ -66,11 +66,23 @@ public final class Util {
     
     public static String timeSince(double nanoTime) {
         nanoTime = System.nanoTime() - nanoTime;
-        if (nanoTime >= 1_000_000_000D) {
-            return ((int) (nanoTime / 1_000_000D)) / 1000 + " s";
+        if (nanoTime >= 1_000_000_000d) {
+            return ((int) (nanoTime / 1_000_000d)) / 1000 + " s";
         } else {
-            return ((int) (nanoTime / 1_000D)) / 1000D + " ms";
+            return ((int) (nanoTime / 1_000d)) / 1000d + " ms";
         }
+    }
+
+    /**
+     * Applies the Law of Cosines between two sides and the angle between them
+     *
+     * @param sideOne the first side
+     * @param sideTwo the second side
+     * @param angle the angle between them, in degrees
+     * @return the length of the side opposite the angle in a triangle
+     */
+    public static double lawOfCosines(double sideOne, double sideTwo, double angle) {
+        return Math.sqrt((sideOne * sideOne) + (sideTwo * sideTwo) - (2 * sideOne * sideTwo * Math.cos(Math.toRadians(angle))));
     }
     
 }

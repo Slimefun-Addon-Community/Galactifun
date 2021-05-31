@@ -26,7 +26,7 @@ public final class EarthOrbit extends AlienWorld {
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
     public EarthOrbit() {
-        super("Earth Orbit", Orbit.kilometers(24000), CelestialType.SPACE, new ItemChoice(Material.BLACK_STAINED_GLASS));
+        super("Earth Orbit", Orbit.kilometers(24_000, 1), CelestialType.SPACE, new ItemChoice(Material.BLACK_STAINED_GLASS));
     }
     
     @Override

@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.util.Util;
 import org.apache.commons.lang.Validate;
 
@@ -8,7 +7,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Represents an orbit of a celestial object
- * 
+ *
  * @author Mooy1
  */
 public final class Orbit {
@@ -16,64 +15,55 @@ public final class Orbit {
     /**
      * An orbit of 0, should only be used in special cases
      */
-    public static final Orbit ZERO = new Orbit(0);
-    
-    private static long totalDays;
+    public static final Orbit ZERO = new Orbit(0, 0);
 
-    static {
-        Galactifun.inst().scheduleRepeatingSync(() -> totalDays++, 24000);
-    }
-    
-    @Nonnull
-    public static Orbit kilometers(double kilometers) {
-        return new Orbit(kilometers / Util.KM_PER_LY);
-    }
+    private static final long EARTH_YEAR = 35;
 
+    private final long year;
+
+    /**
+     * @param kilometers the orbital distance
+     * @param year the time it takes to orbit in earth years
+     */
     @Nonnull
-    public static Orbit lightYears(double lightYears) {
-        return new Orbit(lightYears);
+    public static Orbit kilometers(double kilometers, double year) {
+        return new Orbit(kilometers / Util.KM_PER_LY, year);
     }
 
+    /**
+     * @param kilometers the orbital distance
+     * @param days the time it takes to orbit in earth days
+     */
     @Nonnull
-    public static Orbit kilometers(double min, double max, long days) {
-        return new Orbit(min / Util.KM_PER_LY, max / Util.KM_PER_LY, days);
+    public static Orbit kilometers(double kilometers, long days) {
+        return new Orbit(kilometers / Util.KM_PER_LY,  365d / days);
     }
 
     @Nonnull
-    public static Orbit lightYears(double min, double max, long days) {
-        return new Orbit(min, max, days);
+    public static Orbit lightYears(double lightYears, double year) {
+        return new Orbit(lightYears, year);
     }
-    
-    private final double min;
-    private final double dev;
-    private final long days;
-    
-    private Orbit(double min, double max, long days) {
-        Validate.isTrue(max >= 0, "Orbits must be positive!");
-        Validate.isTrue(max > min, "Max orbit must be greater than min orbit!");
-        Validate.isTrue(days > 0, "Variable orbits must last greater than 0 days!");
-        
-        this.min = min;
-        // double the days so that distance is smooth over time
-        this.days = days << 1;
-        // deviation divided by number of days
-        this.dev = max - min / days;
-    }
-    
-    private Orbit(double distance) {
+
+    private final double distance;
+
+    private Orbit(double distance, double year) {
         Validate.isTrue(distance >= 0, "Orbits must be positive!");
-        
-        this.min = distance;
-        this.days = 0;
-        this.dev = 0;
+
+        this.distance = distance;
+        this.year = (long) (EARTH_YEAR * year) * 1200000;
     }
-    
+
     public double getCurrentDistance() {
-        if (this.days == 0) {
-            return this.min;
-        } else {
-            return this.min + this.dev * (totalDays % this.days);
-        }
+        return this.distance;
+    }
+
+    public double getOrbitPos() {
+        if (this.year == 0) return 0;
+        return ((System.currentTimeMillis() % this.year) * 360d) / this.year;
+    }
+
+    private static double cube(double num) {
+        return num * num * num;
     }
     
 }
