@@ -36,12 +36,12 @@ public class CustomTree {
      * @param location the location of the bottom log. <b>This is modified</b>
      */
     public void generate(@Nonnull Location location) {
+        generateOakTop(location.clone(), leaves);
+
         for (int y = 0; y < trunkHeight; y++) {
             location.add(0, 1, 0);
             location.getBlock().setType(log, false);
         }
-
-        generateOakTop(location, leaves);
     }
 
     /**
