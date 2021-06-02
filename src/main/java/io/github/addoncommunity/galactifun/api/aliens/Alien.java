@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -8,13 +9,13 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -24,6 +25,8 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.util.Vector;
 
+import com.destroystokyo.paper.entity.ai.Goal;
+import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
@@ -31,45 +34,59 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 /**
  * Abstract class for an alien
- * 
- * @see Martian
  *
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
  *
+ * @see Martian
  */
 @Getter
-public abstract class Alien {
+public abstract class Alien<T extends Mob> {
 
-    private final EntityType type;
+    private final Class<T> clazz;
     private final String id;
     private final String name;
 
-    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type) {
+    public Alien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+        this.clazz = clazz;
         Validate.notNull(this.id = id);
         Validate.notNull(this.name = ChatColors.color(name));
-        Validate.notNull(this.type = type);
-        Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
         Validate.isTrue(getMaxHealth() > 0);
         Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
         Validate.notNull(getSpawnOffset());
     }
 
-    public LivingEntity spawn(@Nonnull Location loc, @Nonnull World world) {
-        LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
-        PersistentDataAPI.setString(entity, Galactifun.inst().getAlienManager().getKey(), this.id);
+    @Nonnull
+    public final T spawn(@Nonnull Location loc, @Nonnull World world) {
+        T mob = world.spawn(loc, this.clazz);
+        // TODO better way to access key
+        PersistentDataAPI.setString(mob, Galactifun.inst().getAlienManager().getKey(), this.id);
 
-        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(getMaxHealth());
-        entity.setHealth(getMaxHealth());
-        entity.setCustomName(this.name);
-        entity.setCustomNameVisible(true);
-        entity.setRemoveWhenFarAway(true);
+        Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(getMaxHealth());
+        mob.setHealth(getMaxHealth());
+        mob.setCustomName(this.name);
+        mob.setCustomNameVisible(true);
+        mob.setRemoveWhenFarAway(true);
 
-        onSpawn(entity);
+        Map<Goal<T>, Integer> goals = this.getGoals();
+        if (!goals.isEmpty()) {
+            MobGoals mobGoals = Bukkit.getMobGoals();
+            mobGoals.removeAllGoals(mob);
+            for (Map.Entry<Goal<T>, Integer> goal : goals.entrySet()) {
+                mobGoals.addGoal(mob, goal.getValue(), goal.getKey());
+            }
+        }
 
-        return entity;
+        onSpawn(mob);
+        return mob;
     }
+
+    protected void onSpawn(@Nonnull T spawned) { }
+
+    protected void onUniqueTick() { }
+
+    protected void onMobTick(@Nonnull Mob mob) { }
 
     public final int attemptSpawn(Random rand, World world) {
         int spawned = 0;
@@ -91,17 +108,11 @@ public abstract class Alien {
         return spawned;
     }
 
-    protected void onUniqueTick() { }
-
-    protected void onMobTick(@Nonnull LivingEntity mob) { }
-
-    protected void onSpawn(@Nonnull LivingEntity spawned) { }
+    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
     protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
     
     protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
-
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
     protected void onTarget(@Nonnull EntityTargetEvent e) { }
 
@@ -111,8 +122,16 @@ public abstract class Alien {
 
     protected void onDamage(EntityDamageEvent e) { }
 
+    /**
+     * Gets the AI of the Alien. The returned map is a map of a mob goal and its priority
+     *
+     * @return a map of the Alien's goals, or an empty map for default AI
+     */
+    protected Map<Goal<T>, Integer> getGoals() {
+        return Map.of();
+    }
     protected abstract int getMaxHealth();
-    
+
     /**
      * Returns the chance for the alien to spawn per spawn attempt
      *
@@ -134,7 +153,6 @@ public abstract class Alien {
      * the {@link Zombie} light level conditions
      *
      * @param lightLevel the light level of the block the alien is attempting to spawn on
-     *
      * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
      */
     protected boolean getSpawnInLightLevel(int lightLevel) {

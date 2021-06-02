@@ -62,7 +62,7 @@ public class BoulderPopulator extends BlockPopulator {
                 Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
 
                 if (this.source.contains(b.getType())) {
-                    b.getRelative(BlockFace.UP).setType(this.ore);
+                    b.getRelative(BlockFace.UP).setType(this.ore, false);
 
                     if (this.id != null) {
                         BlockStorage.store(chunk.getBlock(x, b.getRelative(BlockFace.UP).getY(), z), this.id);

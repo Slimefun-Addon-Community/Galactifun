@@ -7,9 +7,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,12 +26,12 @@ import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
  * @author Seggan
  * @author Mooy1
  */
-public final class Leech extends Alien {
+public final class Leech extends Alien<Silverfish> {
 
     private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
     
     public Leech() {
-        super("LEECH", "&eLeech", EntityType.SILVERFISH);
+        super(Silverfish.class, "LEECH", "&eLeech");
     }
 
     @Override

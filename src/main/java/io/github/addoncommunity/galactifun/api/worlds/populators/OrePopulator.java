@@ -73,7 +73,7 @@ public class OrePopulator extends BlockPopulator {
                 
                 int length = 0;
                 while (length < this.maxSize && this.source.contains(chunk.getBlock(x, y, z).getType())) {
-                    chunk.getBlock(x, y, z).setType(this.ore);
+                    chunk.getBlock(x, y, z).setType(this.ore, false);
                     
                     if (this.id != null) {
                         BlockStorage.store(chunk.getBlock(x, y, z), this.id);

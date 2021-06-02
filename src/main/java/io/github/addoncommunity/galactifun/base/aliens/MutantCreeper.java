@@ -6,8 +6,6 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -24,15 +22,15 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  * @author GallowsDove
  * @author Mooy1
  */
-public final class MutantCreeper extends Alien {
+public final class MutantCreeper extends Alien<Creeper> {
     
     public MutantCreeper() {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER);
+        super(Creeper.class,"MUTANT_CREEPER", "Mutant Creeper");
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned) {
-        ((Creeper) spawned).setPowered(true);
+    public void onSpawn(@Nonnull Creeper spawned) {
+        spawned.setPowered(true);
     }
 
     @Override

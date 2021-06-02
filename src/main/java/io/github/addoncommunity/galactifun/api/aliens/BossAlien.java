@@ -11,8 +11,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,17 +31,17 @@ import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
  *
  */
 
-public abstract class BossAlien extends Alien {
+public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
-
+    // TODO move static
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type) {
-        super(id, name, type);
+    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+        super(clazz, id, name);
         Validate.notNull(this.style = createBossBarStyle());
     }
     
@@ -56,13 +56,11 @@ public abstract class BossAlien extends Alien {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onSpawn(@Nonnull LivingEntity spawned) {
+    public void onSpawn(@Nonnull T spawned) {
         BossBar bossbar = this.style.create(KEY);
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
-
         spawned.setRemoveWhenFarAway(false);
-
         instances.put(spawned, bossbar);
     }
 
@@ -118,7 +116,7 @@ public abstract class BossAlien extends Alien {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onMobTick(@Nonnull LivingEntity mob) {
+    public void onMobTick(@Nonnull Mob mob) {
         if (this.tick == 0) {
             Location l = mob.getLocation();
             long dist = (long) getBossBarDistance() * getBossBarDistance();

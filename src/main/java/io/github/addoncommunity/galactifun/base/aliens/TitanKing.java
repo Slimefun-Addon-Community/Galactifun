@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Evoker;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Spellcaster;
@@ -23,10 +23,10 @@ import io.github.addoncommunity.galactifun.base.BaseRegistry;
  *
  * @author Seggan
  */
-public final class TitanKing extends BossAlien {
+public final class TitanKing extends BossAlien<Evoker> {
 
     public TitanKing() {
-        super("TITAN_KING", "Titan King", EntityType.EVOKER);
+        super(Evoker.class, "TITAN_KING", "Titan King");
     }
 
     @Override
