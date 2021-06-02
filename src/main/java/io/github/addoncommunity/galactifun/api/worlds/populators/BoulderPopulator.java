@@ -1,7 +1,13 @@
 package io.github.addoncommunity.galactifun.api.worlds.populators;
 
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -9,12 +15,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 
 /**
