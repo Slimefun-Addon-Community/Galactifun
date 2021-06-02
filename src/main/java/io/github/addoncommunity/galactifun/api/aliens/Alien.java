@@ -55,11 +55,14 @@ public abstract class Alien<T extends Mob> {
         Validate.isTrue(getMaxHealth() > 0);
         Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
         Validate.notNull(getSpawnOffset());
+
+        Galactifun.inst().getAlienManager().register(this);
     }
 
     @Nonnull
     public final T spawn(@Nonnull Location loc, @Nonnull World world) {
         T mob = world.spawn(loc, this.clazz);
+
         // TODO better way to access key
         PersistentDataAPI.setString(mob, Galactifun.inst().getAlienManager().getKey(), this.id);
 

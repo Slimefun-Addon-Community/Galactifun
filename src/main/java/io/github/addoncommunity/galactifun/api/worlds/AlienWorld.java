@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -42,7 +43,7 @@ public abstract class AlienWorld extends CelestialWorld {
      * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
      */
     @Nonnull
-    private final List<Alien> species = new ArrayList<>(4);
+    private final List<Alien<?>> species = new ArrayList<>(4);
 
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
@@ -109,7 +110,10 @@ public abstract class AlienWorld extends CelestialWorld {
         // after
         afterWorldLoad(world);
 
-        return this.world = world;
+        // TODO improve register system
+        Galactifun.inst().getWorldManager().register(this);
+
+        return world;
     }
 
     /**
@@ -155,7 +159,7 @@ public abstract class AlienWorld extends CelestialWorld {
     /**
      * Adds alien species to this world
      */
-    public final void addSpecies(@Nonnull Alien... aliens) {
+    public final void addSpecies(@Nonnull Alien<?>... aliens) {
         this.species.addAll(Arrays.asList(aliens));
     }
 
@@ -164,12 +168,12 @@ public abstract class AlienWorld extends CelestialWorld {
      */
     void tickWorld(AlienManager manager) {
         // player effects
-        for (Player p : this.world.getPlayers()) {
+        for (Player p : getWorld().getPlayers()) {
             applyEffects(p);
         }
         
         // time
-        this.dayCycle.tick(this.world);
+        this.dayCycle.tick(getWorld());
 
         // mob spawns
         if (!this.species.isEmpty()) {
@@ -177,12 +181,12 @@ public abstract class AlienWorld extends CelestialWorld {
             Collections.shuffle(this.species);
 
             Random rand = ThreadLocalRandom.current();
-            int players = this.world.getPlayers().size();
-            int mobs = this.world.getLivingEntities().size() - players;
+            int players = getWorld().getPlayers().size();
+            int mobs = getWorld().getLivingEntities().size() - players;
             int max = players * manager.getMaxAliensPerPlayer();
 
-            for (Alien alien : this.species) {
-                if ((mobs += alien.attemptSpawn(rand, this.world)) > max) {
+            for (Alien<?> alien : this.species) {
+                if ((mobs += alien.attemptSpawn(rand, getWorld())) > max) {
                     break;
                 }
             }

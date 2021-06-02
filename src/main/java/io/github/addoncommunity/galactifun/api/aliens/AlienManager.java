@@ -15,6 +15,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -30,12 +31,11 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 public final class AlienManager implements Listener, Runnable {
 
-
     @Getter
     private final NamespacedKey key;
     @Getter
     private final int maxAliensPerPlayer;
-    private final Map<String, Alien> aliens = new HashMap<>();
+    private final Map<String, Alien<?>> aliens = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
@@ -45,32 +45,37 @@ public final class AlienManager implements Listener, Runnable {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
     }
 
+    // TODO improve alien register system
+    public void register(Alien<?> alien) {
+        this.aliens.put(alien.getId(), alien);
+    }
+
     @Nullable
-    public Alien getAlien(@Nonnull String id) {
+    public Alien<?> getAlien(@Nonnull String id) {
         return this.aliens.get(id);
     }
 
     @Nullable
-    public Alien getAlien(@Nonnull Entity entity) {
+    public Alien<?> getAlien(@Nonnull Entity entity) {
         String id = PersistentDataAPI.getString(entity, this.key);
         return id == null ? null : getAlien(id);
     }
 
-    public Collection<Alien> getAliens() {
+    public Collection<Alien<?>> getAliens() {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
     @Override
     public void run() {
-        for (Alien alien : this.aliens.values()) {
+        for (Alien<?> alien : this.aliens.values()) {
             alien.onUniqueTick();
         }
 
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
-                Alien alien = getAlien(entity);
+                Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onMobTick(entity);
+                    alien.onMobTick((Mob) alien.getClazz().cast(entity));
                 }
             }
         }
@@ -78,7 +83,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienTarget(@Nonnull EntityTargetEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onTarget(e);
         }
@@ -86,7 +91,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
-        Alien alien = getAlien(e.getRightClicked());
+        Alien<?> alien = getAlien(e.getRightClicked());
         if (alien != null) {
             alien.onInteract(e);
         }
@@ -94,7 +99,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onHit(e);
         }
@@ -106,7 +111,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienDie(@Nonnull EntityDeathEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onDeath(e);
         }
@@ -114,7 +119,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienCombust(@Nonnull EntityCombustEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             e.setCancelled(true);
         }
@@ -122,7 +127,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onCastSpell(e);
         }
@@ -130,7 +135,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler
     public void onAlienDamage(@Nonnull EntityDamageEvent e) {
-        Alien alien = getAlien(e.getEntity());
+        Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onDamage(e);
         }

@@ -38,6 +38,14 @@ public final class WorldManager implements Listener, Runnable {
         galactifun.scheduleRepeatingSync(this, 100);
     }
 
+    public void register(AlienWorld world) {
+        this.alienWorlds.put(world.getWorld(), world);
+    }
+
+    public void register(CelestialWorld world) {
+        this.worlds.put(world.getWorld(), world);
+    }
+
     @Nullable
     public CelestialWorld getWorld(@Nonnull World world) {
         return this.worlds.get(world);

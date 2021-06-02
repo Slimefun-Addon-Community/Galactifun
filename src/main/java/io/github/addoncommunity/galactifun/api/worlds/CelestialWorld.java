@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import org.bukkit.World;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
@@ -25,10 +26,14 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
 public abstract class CelestialWorld extends CelestialBody {
 
     @Getter
-    protected World world;
+    private final World world;
 
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
+        this.world = loadWorld();
+
+        // TODO improve register system
+        Galactifun.inst().getWorldManager().register(this);
     }
 
     public boolean isReachableByRocket() {
