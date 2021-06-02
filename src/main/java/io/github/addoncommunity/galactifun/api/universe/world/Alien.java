@@ -97,13 +97,12 @@ public abstract class Alien implements Listener {
     }
 
     @SuppressWarnings("unchecked")
-    public <E extends Event> Alien addHandler(Class<E> eventClass, Function<E, Entity> alienAccessor, Consumer<E> eventHandler) {
+    public <E extends Event> void addHandler(Class<E> eventClass, Function<E, Entity> alienAccessor, Consumer<E> eventHandler) {
         Bukkit.getPluginManager().registerEvent(eventClass, this, EventPriority.HIGH, (listener, event) -> {
             if (Alien.getByEntity(alienAccessor.apply((E) event)) == this) {
                 eventHandler.accept((E) event);
             }
         }, Galactifun.inst(), true);
-        return this;
     }
 
     protected void onUniqueTick() { }
