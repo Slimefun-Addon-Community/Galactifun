@@ -1,11 +1,21 @@
 package io.github.addoncommunity.galactifun;
 
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import lombok.Getter;
+
+import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
+import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
+import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
+import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.GalacticExplorer;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
@@ -15,19 +25,23 @@ import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-
+@Getter
 public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
-    
-    @Override
-    public void onEnable() {
+
+    private AlienManager alienManager;
+    private WorldManager worldManager;
+    private TheUniverse theUniverse;
+    private GalacticExplorer galacticExplorer;
+
+    protected void enable() {
         instance = this;
-        
-        super.onEnable();
+
+        this.theUniverse = new TheUniverse();
+        this.alienManager = new AlienManager(this);
+        this.worldManager = new WorldManager(this, this.alienManager);
+        this.galacticExplorer = new GalacticExplorer(this.theUniverse, this.worldManager);
 
         StructureRegistry.loadStructureFolder(this);
         BaseRegistry.setup();
@@ -39,15 +53,18 @@ public final class Galactifun extends AbstractAddon {
         runSync(() -> log(
                 "################# Galactifun " + getPluginVersion() + " #################",
                 "",
-                "Loaded " + AlienWorld.getEnabled().size() + " worlds: ",
-                AlienWorld.getEnabled().toString(),
-                "",
                 "Galactifun is open source, you can contribute or report bugs at: ",
                 getBugTrackerURL(),
                 "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
                 "",
                 "###################################################"
         ));
+    }
+
+    @Override
+    protected void disable() {
+        // todo make better
+        BossAlien.removeBossBars();
     }
 
     @Override
@@ -62,14 +79,19 @@ public final class Galactifun extends AbstractAddon {
     }
 
     @Override
-    protected List<AbstractCommand> getSubCommands() {
-        return Arrays.asList(new GalactiportCommand(), new AlienSpawnCommand(), new SphereCommand(), new StructureCommand());
+    protected List<AbstractCommand> setupSubCommands() {
+        return Arrays.asList(
+                new GalactiportCommand(),
+                new AlienSpawnCommand(this.alienManager),
+                new SphereCommand(),
+                new StructureCommand(this)
+        );
     }
 
+    @Nonnull
     @Override
-    public void onDisable() {
-        // todo make better
-        BossAlien.removeBossBars();
+    public String getAutoUpdatePath() {
+        return "auto-update";
     }
 
     public static Galactifun inst() {

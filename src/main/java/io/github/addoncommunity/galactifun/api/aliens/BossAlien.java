@@ -1,14 +1,15 @@
-package io.github.addoncommunity.galactifun.api.universe.world;
+package io.github.addoncommunity.galactifun.api.aliens;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -17,11 +18,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
 
 /**
  * Abstract class for an alien boss
@@ -35,14 +33,15 @@ import java.util.Map;
 
 public abstract class BossAlien extends Alien {
 
+
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
-        super(id, name, type, health);
+    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type) {
+        super(id, name, type);
         Validate.notNull(this.style = createBossBarStyle());
     }
     
@@ -58,8 +57,7 @@ public abstract class BossAlien extends Alien {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull LivingEntity spawned) {
-        BossBarStyle style = this.style;
-        BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
+        BossBar bossbar = this.style.create(KEY);
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
 
@@ -77,7 +75,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.maxHealth);
+                bossbar.setProgress(finalHealth / getMaxHealth());
             }
         }
     }
@@ -89,7 +87,7 @@ public abstract class BossAlien extends Alien {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.maxHealth);
+                bossbar.setProgress(finalHealth / getMaxHealth());
             }
         }
     }
@@ -146,10 +144,9 @@ public abstract class BossAlien extends Alien {
             return instances.get(entity);
         }
 
-        BossBarStyle style = createBossBarStyle();
-        BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
+        BossBar bossbar = this.style.create(KEY);
         bossbar.setVisible(true);
-        bossbar.setProgress(entity.getHealth() / this.maxHealth);
+        bossbar.setProgress(entity.getHealth() / getMaxHealth());
         instances.put(entity, bossbar);
         return bossbar;
     }
@@ -165,13 +162,4 @@ public abstract class BossAlien extends Alien {
     @Nonnull
     protected abstract BossBarStyle createBossBarStyle();
 
-    protected record BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-        public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-            this.name = name;
-            this.color = color;
-            this.style = style;
-            this.flags = flags;
-        }
-    }
-    
 }

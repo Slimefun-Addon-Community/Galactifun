@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import javax.annotation.Nonnull;
+
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -11,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
 
 /**
  * Class for the slywhale, a passive alien of Titan
@@ -21,7 +22,7 @@ import javax.annotation.Nonnull;
 public final class Skywhale extends Alien {
 
     public Skywhale() {
-        super("SKYWHALE", "&fSkywhale", EntityType.PHANTOM, 100);
+        super("SKYWHALE", "&fSkywhale", EntityType.PHANTOM);
     }
 
     @Override
@@ -38,6 +39,11 @@ public final class Skywhale extends Alien {
     protected void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.PHANTOM_MEMBRANE, 20));
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 100;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.universe.world.BossAlien;
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import javax.annotation.Nonnull;
+
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -14,7 +14,9 @@ import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
+import io.github.addoncommunity.galactifun.api.aliens.BossBarStyle;
+import io.github.addoncommunity.galactifun.base.BaseRegistry;
 
 /**
  * Class for the Titan king, the boss bound on Titan
@@ -24,7 +26,7 @@ import javax.annotation.Nonnull;
 public final class TitanKing extends BossAlien {
 
     public TitanKing() {
-        super("TITAN_KING", "Titan King", EntityType.EVOKER, 300);
+        super("TITAN_KING", "Titan King", EntityType.EVOKER);
     }
 
     @Override
@@ -43,6 +45,11 @@ public final class TitanKing extends BossAlien {
                 false
             ));
         }
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 300;
     }
 
 

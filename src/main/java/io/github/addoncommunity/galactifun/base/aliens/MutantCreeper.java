@@ -1,8 +1,9 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.base.BaseMats;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -13,8 +14,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.addoncommunity.galactifun.base.BaseMats;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * A class for a charged alien creeper, passive until attacked
@@ -25,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class MutantCreeper extends Alien {
     
     public MutantCreeper() {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40);
+        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER);
     }
 
     @Override
@@ -37,6 +39,11 @@ public final class MutantCreeper extends Alien {
     protected void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new SlimefunItemStack(BaseMats.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 40;
     }
 
     @Override

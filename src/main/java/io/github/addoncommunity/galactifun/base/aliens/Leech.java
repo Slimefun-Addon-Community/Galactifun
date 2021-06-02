@@ -1,8 +1,11 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -13,10 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
 /**
  * Class for the leech, an alien of Titan. They can steal your items when attacking
@@ -29,7 +31,7 @@ public final class Leech extends Alien {
     private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
     
     public Leech() {
-        super("LEECH", "&eLeech", EntityType.SILVERFISH, 10);
+        super("LEECH", "&eLeech", EntityType.SILVERFISH);
     }
 
     @Override
@@ -72,10 +74,7 @@ public final class Leech extends Alien {
         
         // heal
         LivingEntity attacker = (LivingEntity) e.getDamager();
-        attacker.setHealth(Math.min(
-                this.maxHealth,
-                attacker.getHealth() + 2)
-        );
+        attacker.setHealth(Math.min(getMaxHealth(), attacker.getHealth() + 2));
     }
 
     @Override
@@ -87,6 +86,11 @@ public final class Leech extends Alien {
                 e.getDrops().add(itemStack);
             }
         }
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 10;
     }
 
     @Override

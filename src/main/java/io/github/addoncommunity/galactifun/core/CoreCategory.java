@@ -1,15 +1,17 @@
 package io.github.addoncommunity.galactifun.core;
 
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.core.categories.AssemblyCategory;
 import io.github.addoncommunity.galactifun.core.categories.GalacticCategory;
-import io.github.mooy1.infinitylib.slimefun.utils.MultiCategory;
-import io.github.mooy1.infinitylib.slimefun.utils.SubCategory;
-import lombok.experimental.UtilityClass;
+import io.github.mooy1.infinitylib.categories.MultiCategory;
+import io.github.mooy1.infinitylib.categories.SubCategory;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
 
 /**
  * Slimefun item categories 
@@ -37,24 +39,18 @@ public final class CoreCategory {
     public static final Category MACHINES = new SubCategory(
             Galactifun.inst().getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
     );
-    
-    /* flex categories */
-    private static final Category ASSEMBLY_FLEX = new AssemblyCategory(
-            Galactifun.inst().getKey("assembly_flex"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
-    );
-    private static final Category GALACTIC_FLEX = new GalacticCategory(
-            Galactifun.inst().getKey("galactic_flex"), new CustomItem(Material.END_STONE, "&bThe Universe")
-    );
-    
-    /* multi category */
-    private static final Category MAIN = new MultiCategory(Galactifun.inst().getKey("main"),
-            new CustomItem(Material.BEACON, "&bGalactifun"),
-            EQUIPMENT, ITEMS, COMPONENTS, MACHINES, GALACTIC_FLEX, ASSEMBLY_FLEX
-    );
 
     public static void setup(Galactifun galactifun) {
-        MAIN.register(galactifun);
-        ASSEMBLY.register(galactifun);
+        Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
+                new CustomItem(Material.END_STONE, "&bThe Universe"), galactifun.getGalacticExplorer());
+
+        Category assembly = new AssemblyCategory(galactifun.getKey("assembly_flex"),
+                new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
+
+        new MultiCategory(galactifun.getKey("main"),
+                new CustomItem(Material.BEACON, "&bGalactifun"),
+                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, universe, assembly
+        ).register(galactifun);
     }
     
 }
