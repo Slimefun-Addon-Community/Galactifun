@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
+import org.bukkit.Bukkit;
+
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
@@ -65,6 +67,12 @@ public final class Galactifun extends AbstractAddon {
     protected void disable() {
         // todo make better
         BossAlien.removeBossBars();
+    }
+
+    @Override
+    public void onLoad() {
+        // default to not logging world settings
+        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
     @Override
