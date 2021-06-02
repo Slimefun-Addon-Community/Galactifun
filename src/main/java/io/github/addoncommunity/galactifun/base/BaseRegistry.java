@@ -1,13 +1,16 @@
 package io.github.addoncommunity.galactifun.base;
 
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
-import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.aliens.Leech;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
@@ -26,8 +29,6 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Ence
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Titan;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import lombok.experimental.UtilityClass;
-import org.bukkit.Material;
 
 /**
  * Registry of constants for the base celestial objects
@@ -80,10 +81,6 @@ public final class BaseRegistry {
         SATURN.addOrbiters(TITAN_MOON, ENCELADUS);
         SOLAR_SYSTEM.addOrbiters(VENUS, EARTH, MARS, JUPITER, SATURN);
         MILKY_WAY.addOrbiters(SOLAR_SYSTEM);
-
-        // register
-        UniversalObject.registerAll(THE_MOON, ENCELADUS, EARTH_ORBIT, VENUS, EARTH, MARS, IO,
-                EUROPA, JUPITER, TITAN_MOON, SATURN, SOLAR_SYSTEM, MILKY_WAY);
     }
 
 }

@@ -1,17 +1,23 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
 public final class AlienSpawnCommand extends AbstractCommand {
 
-    public AlienSpawnCommand() {
+    private final AlienManager alienManager;
+
+    public AlienSpawnCommand(AlienManager alienManager) {
         super("spawn", "spawns an alien", true);
+        this.alienManager = alienManager;
     }
 
     @Override
@@ -20,7 +26,7 @@ public final class AlienSpawnCommand extends AbstractCommand {
             return;
         }
 
-        Alien alien = Alien.getByID(strings[1]);
+        Alien alien = this.alienManager.getAlien(strings[1]);
 
         if (alien != null) {
             alien.spawn(p.getLocation(), p.getWorld());
@@ -30,7 +36,9 @@ public final class AlienSpawnCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> ids) {
         if (strings.length == 2) {
-            ids.addAll(Alien.ALIENS.keySet());
+            for (Alien alien : this.alienManager.getAliens()) {
+                ids.add(alien.getId());
+            }
         }
     }
     

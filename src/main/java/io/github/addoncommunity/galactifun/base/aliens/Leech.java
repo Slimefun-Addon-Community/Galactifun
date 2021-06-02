@@ -1,8 +1,11 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,10 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
 /**
  * Class for the leech, an alien of Titan. They can steal your items when attacking
@@ -29,7 +31,7 @@ public final class Leech extends Alien<Silverfish> {
     private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
     
     public Leech() {
-        super(Silverfish.class, "LEECH", "&eLeech", 10);
+        super(Silverfish.class, "LEECH", "&eLeech");
     }
 
     @Override
@@ -72,10 +74,7 @@ public final class Leech extends Alien<Silverfish> {
         
         // heal
         LivingEntity attacker = (LivingEntity) e.getDamager();
-        attacker.setHealth(Math.min(
-                this.maxHealth,
-                attacker.getHealth() + 2)
-        );
+        attacker.setHealth(Math.min(getMaxHealth(), attacker.getHealth() + 2));
     }
 
     @Override
@@ -87,6 +86,11 @@ public final class Leech extends Alien<Silverfish> {
                 e.getDrops().add(itemStack);
             }
         }
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 10;
     }
 
     @Override

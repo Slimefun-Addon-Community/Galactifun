@@ -7,8 +7,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.api.universe.world.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.api.universe.world.populators.BoulderPopulator;
+import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import org.bukkit.Material;

@@ -1,24 +1,22 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import lombok.Getter;
+
+import org.apache.commons.lang.Validate;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.apache.commons.lang.Validate;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Any object in the universe
@@ -28,24 +26,6 @@ import java.util.Map;
  * @param <T> the object that it can hold
  */
 public abstract class UniversalObject<T extends UniversalObject<?>> {
-
-    /**
-     * All objects in the universe including the universe
-     */
-    private static final Map<String, UniversalObject<?>> OBJECTS = new HashMap<>();
-    
-    @Nullable
-    public static UniversalObject<?> getByName(@Nonnull String name) {
-        return OBJECTS.get(name);
-    }
-    
-    public static void registerAll(@Nonnull UniversalObject<?>... objects) {
-        for (UniversalObject<?> object : objects) {
-            object.register();
-        }
-    }
-
-    private boolean registered;
     
     @Getter
     @Nonnull
@@ -59,7 +39,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     private final ItemStack item;
 
     @Nonnull
-    private final UniversalType type;
+    private final UniversalType type; // TODO add lore to item
     
     @Getter
     private UniversalObject<?> orbiting;
@@ -116,31 +96,6 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
             return this.orbiting.getLevel() + 1;
         }
     }
-
-    /**
-     * Call this to register the universal object
-     */
-    @OverridingMethodsMustInvokeSuper
-    public void register() {
-        if (this.registered) {
-            throw new UnsupportedOperationException("This Universal Object has already been registered!");
-        }
-        this.registered = true;
-        
-        // add to all
-        OBJECTS.put(this.name, this);
-        
-        // add item stats
-        List<String> stats = new ArrayList<>();
-        stats.add("&6Type: " + this.type.getName());
-        getItemStats(stats);
-        stats.add("&7Distance: &8Unknown");
-        ItemMeta meta = this.item.getItemMeta();
-        meta.setLore(stats);
-        this.item.setItemMeta(meta);
-    }
-    
-    protected abstract void getItemStats(@Nonnull List<String> stats);
 
     @Override
     public final int hashCode() {

@@ -1,9 +1,10 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes;
 
-import io.github.addoncommunity.galactifun.util.Util;
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.Validate;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.util.Util;
 
 /**
  * Represents an orbit of a celestial object
@@ -60,10 +61,6 @@ public final class Orbit {
     public double getOrbitPos() {
         if (this.year == 0) return 0;
         return ((System.currentTimeMillis() % this.year) * 360D) / this.year;
-    }
-
-    private static double cube(double num) {
-        return num * num * num;
     }
     
 }

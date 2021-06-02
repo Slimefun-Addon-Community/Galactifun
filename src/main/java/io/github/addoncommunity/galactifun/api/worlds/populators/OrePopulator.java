@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.world.populators;
+package io.github.addoncommunity.galactifun.api.worlds.populators;
 
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;

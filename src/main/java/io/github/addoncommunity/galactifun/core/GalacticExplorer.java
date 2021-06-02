@@ -1,25 +1,27 @@
 package io.github.addoncommunity.galactifun.core;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
-import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
-import io.github.addoncommunity.galactifun.api.universe.world.CelestialWorld;
-import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.players.LeaveListener;
-import io.github.mooy1.infinitylib.slimefun.presets.LorePreset;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
+import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
+import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
+import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.presets.LorePreset;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
 
 /**
  * Class for exploring the universe through ChestMenus
@@ -27,27 +29,34 @@ import java.util.UUID;
  * @author Mooy1
  */
 public final class GalacticExplorer {
-    
-    private static final Map<UUID, UniversalObject<?>> HISTORY = new HashMap<>();
-    
-    public static void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
-        open(p, HISTORY.computeIfAbsent(p.getUniqueId(), k -> TheUniverse.getInstance()), exitHandler, false);
-        LeaveListener.create(Galactifun.inst(), HISTORY);
+
+    private final TheUniverse theUniverse;
+    private final WorldManager worldManager;
+
+    private final Map<UUID, UniversalObject<?>> history = new HashMap<>();
+
+    public GalacticExplorer(TheUniverse theUniverse, WorldManager worldManager) {
+        this.theUniverse = theUniverse;
+        this.worldManager = worldManager;
     }
     
-    private static void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {
+    public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
+        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> this.theUniverse), exitHandler, false);
+    }
+    
+    private void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
         List<UniversalObject<?>> orbiters = object.getOrbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
-            open(p, TheUniverse.getInstance(), exitHandler, true);
+            open(p, this.theUniverse, exitHandler, true);
             return;
         }
         
         // add to history
         if (history) {
-            HISTORY.put(p.getUniqueId(), object);
+            this.history.put(p.getUniqueId(), object);
         }
 
         // setup menu
@@ -65,7 +74,7 @@ public final class GalacticExplorer {
             });
         }
         
-        CelestialWorld current = CelestialWorld.getByWorld(p.getWorld());
+        CelestialWorld current = this.worldManager.getWorld(p.getWorld());
         boolean known = current != null;
 
         // objects

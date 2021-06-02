@@ -1,17 +1,16 @@
 package io.github.addoncommunity.galactifun.util;
 
+import javax.annotation.Nonnull;
+
 import lombok.experimental.UtilityClass;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import javax.annotation.Nonnull;
-
 @UtilityClass
-public class GenUtils {
+public final class GenUtils {
 
     public static void generateSquare(@Nonnull Location center, @Nonnull Material material, int radius) {
-        assert center.getWorld() != null;
-
         int startX = center.getBlockX();
         int startZ = center.getBlockZ();
         for (int x = startX - radius; x <= startX + radius; x++) {
