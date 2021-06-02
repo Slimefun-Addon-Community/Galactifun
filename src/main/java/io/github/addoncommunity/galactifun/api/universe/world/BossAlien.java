@@ -10,7 +10,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -42,7 +41,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
+    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, int health) {
         super(clazz, id, name, health);
         Validate.notNull(this.style = createBossBarStyle());
     }
