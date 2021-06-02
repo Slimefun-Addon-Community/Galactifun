@@ -8,8 +8,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Seggan
  * @author Mooy
  */
-public final class Martian extends Alien {
+public final class Martian extends Alien<ZombieVillager> {
 
     private final Map<ItemStack, ItemStack> trades = new HashMap<>();
     private final ItemStack[] armor = {
@@ -40,7 +40,7 @@ public final class Martian extends Alien {
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
     public Martian() {
-        super("MARTIAN", "&4Martian", EntityType.ZOMBIE_VILLAGER, 32);
+        super(ZombieVillager.class, "MARTIAN", "&4Martian", 32);
         setupTrades();
     }
 
@@ -57,7 +57,7 @@ public final class Martian extends Alien {
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned) {
+    public void onSpawn(@Nonnull ZombieVillager spawned) {
         spawned.setCanPickupItems(false);
 
         // 1/64 chance

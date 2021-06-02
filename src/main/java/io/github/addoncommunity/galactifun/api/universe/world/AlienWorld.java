@@ -55,6 +55,22 @@ public abstract class AlienWorld extends CelestialWorld {
      * All enabled alien worlds
      */
     private static final Map<World, AlienWorld> WORLDS = new HashMap<>();
+    private static final int MAX_ALIENS = Galactifun.inst().getConfigInt("aliens.max-per-player", 4, 64);
+
+    /**
+     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
+     */
+    @Nonnull
+    private final List<Alien> species = new ArrayList<>(4);
+    /**
+     * This world, only null if disabled
+     */
+    @Getter
+    private World world;
+
+    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+        super(name, orbit, type, choice);
+    }
 
     @Nullable
     public static AlienWorld getByWorld(@Nonnull World world) {
@@ -64,24 +80,6 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nonnull
     public static Collection<AlienWorld> getEnabled() {
         return WORLDS.values();
-    }
-    
-    private static final int MAX_ALIENS = Galactifun.inst().getConfigInt("aliens.max-per-player", 4, 64);
-
-    /**
-     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
-     */
-    @Nonnull
-    private final List<Alien> species = new ArrayList<>(4);
-
-    /**
-     * This world, only null if disabled
-     */
-    @Getter
-    private World world;
-
-    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
-        super(name, orbit, type, choice);
     }
 
     @Nullable
@@ -99,35 +97,35 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // fetch or create world
         World world = new WorldCreator(worldName)
-                .generator(new ChunkGenerator() {
+            .generator(new ChunkGenerator() {
 
-                    @Nonnull
-                    @Override
-                    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
-                        ChunkData chunk = createChunkData(world);
-                        generateChunk(chunk, grid, random, world, chunkX, chunkZ);
-                        return chunk;
-                    }
+                @Nonnull
+                @Override
+                public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
+                    ChunkData chunk = createChunkData(world);
+                    generateChunk(chunk, grid, random, world, chunkX, chunkZ);
+                    return chunk;
+                }
 
-                    @Nonnull
-                    @Override
-                    public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                        List<BlockPopulator> list = new ArrayList<>(0);
-                        getPopulators(list);
-                        return list;
-                    }
+                @Nonnull
+                @Override
+                public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
+                    List<BlockPopulator> list = new ArrayList<>(0);
+                    getPopulators(list);
+                    return list;
+                }
 
-                    @Override
-                    public Location getFixedSpawnLocation(@Nonnull World world, @Nonnull Random random) {
-                        Block b = world.getHighestBlockAt(random.nextInt(), random.nextInt());
-                        return b.getLocation();
-                    }
-                })
-                .environment(this.atmosphere.getEnvironment())
-                .createWorld();
-        
+                @Override
+                public Location getFixedSpawnLocation(@Nonnull World world, @Nonnull Random random) {
+                    Block b = world.getHighestBlockAt(random.nextInt(), random.nextInt());
+                    return b.getLocation();
+                }
+            })
+            .environment(this.atmosphere.getEnvironment())
+            .createWorld();
+
         Validate.notNull(world, "There was an error loading the world for " + worldName);
-        
+
         if (world.getEnvironment() == World.Environment.THE_END) {
             // Prevents ender dragon spawn using portal, surrounds portal with bedrock
             world.getBlockAt(0, 0, 0).setType(Material.END_PORTAL);
@@ -137,7 +135,7 @@ public abstract class AlienWorld extends CelestialWorld {
             world.getBlockAt(0, 0, 1).setType(Material.BEDROCK);
             world.getBlockAt(0, 0, -1).setType(Material.BEDROCK);
         }
-        
+
         // load effects
         this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
@@ -153,7 +151,7 @@ public abstract class AlienWorld extends CelestialWorld {
 
     /**
      * Called before the world is loaded, while this is being registered
-     *
+     * <p>
      * use this to validate or initialize anything that is used in the chunk generator
      */
     protected void beforeWorldLoad() {
@@ -162,7 +160,7 @@ public abstract class AlienWorld extends CelestialWorld {
 
     /**
      * Called after the world is loaded, while this is being registered
-     *
+     * <p>
      * use this to add any custom world settings you want
      */
     protected void afterWorldLoad(@Nonnull World world) {
@@ -206,7 +204,7 @@ public abstract class AlienWorld extends CelestialWorld {
         for (Player p : this.world.getPlayers()) {
             applyEffects(p);
         }
-        
+
         // time
         this.dayCycle.tick(this.world);
 
@@ -241,12 +239,11 @@ public abstract class AlienWorld extends CelestialWorld {
             }
         }
     }
-    
+
     private void applyEffects(@Nonnull Player p) {
         this.gravity.applyGravity(p);
         this.atmosphere.applyEffects(p);
     }
-
     static {
 
         // world ticker
@@ -258,15 +255,15 @@ public abstract class AlienWorld extends CelestialWorld {
 
         // alien ticker
         Galactifun.inst().scheduleRepeatingSync(() -> {
-            for (Alien alien : Alien.ALIENS.values()) {
+            for (Alien<?> alien : Alien.ALIENS.values()) {
                 alien.onUniqueTick();
             }
 
             for (World world : WORLDS.keySet()) {
                 for (LivingEntity entity : world.getLivingEntities()) {
-                    Alien alien = Alien.getByEntity(entity);
+                    Alien<?> alien = Alien.getByEntity(entity);
                     if (alien != null) {
-                        alien.onMobTick(entity);
+                        alien.onMobTick(alien.getClazz().cast(entity));
                     }
                 }
             }
@@ -277,7 +274,7 @@ public abstract class AlienWorld extends CelestialWorld {
 
             // remove old effects and apply new effects
             @EventHandler
-            public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
+            public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
                 AlienWorld object = getByWorld(e.getFrom());
                 if (object != null) {
                     object.getGravity().removeGravity(e.getPlayer());
@@ -344,7 +341,6 @@ public abstract class AlienWorld extends CelestialWorld {
                     }
                 }
             }
-            
         });
     }
 

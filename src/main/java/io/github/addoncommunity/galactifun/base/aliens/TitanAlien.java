@@ -1,7 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Illusioner;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import javax.annotation.Nonnull;
@@ -11,10 +11,10 @@ import javax.annotation.Nonnull;
  *
  * @author Seggan
  */
-public final class TitanAlien extends Alien {
+public final class TitanAlien extends Alien<Illusioner> {
     
     public TitanAlien() {
-        super("TITAN", "Titan", EntityType.ILLUSIONER, 32);
+        super(Illusioner.class, "TITAN", "Titan", 32);
     }
 
     @Override

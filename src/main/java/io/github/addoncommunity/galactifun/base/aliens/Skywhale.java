@@ -2,8 +2,6 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -18,15 +16,15 @@ import javax.annotation.Nonnull;
  *
  * @author Seggan
  */
-public final class Skywhale extends Alien {
+public final class Skywhale extends Alien<Phantom> {
 
     public Skywhale() {
-        super("SKYWHALE", "&fSkywhale", EntityType.PHANTOM, 100);
+        super(Phantom.class, "SKYWHALE", "&fSkywhale", 100);
     }
 
     @Override
-    protected void onSpawn(@Nonnull LivingEntity spawned) {
-        ((Phantom) spawned).setSize(100);
+    protected void onSpawn(@Nonnull Phantom spawned) {
+        spawned.setSize(100);
     }
 
     @Override

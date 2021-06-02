@@ -4,9 +4,9 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.world.Alien;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,12 +24,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Seggan
  * @author Mooy1
  */
-public final class Leech extends Alien {
+public final class Leech extends Alien<Silverfish> {
 
     private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
     
     public Leech() {
-        super("LEECH", "&eLeech", EntityType.SILVERFISH, 10);
+        super(Silverfish.class, "LEECH", "&eLeech", 10);
     }
 
     @Override
