@@ -5,8 +5,6 @@ import io.github.addoncommunity.galactifun.base.BaseMats;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -22,15 +20,15 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author GallowsDove
  * @author Mooy1
  */
-public final class MutantCreeper extends Alien {
+public final class MutantCreeper extends Alien<Creeper> {
     
     public MutantCreeper() {
-        super("MUTANT_CREEPER", "Mutant Creeper", EntityType.CREEPER, 40);
+        super(Creeper.class,"MUTANT_CREEPER", "Mutant Creeper", 40);
     }
 
     @Override
-    public void onSpawn(@Nonnull LivingEntity spawned) {
-        ((Creeper) spawned).setPowered(true);
+    public void onSpawn(@Nonnull Creeper spawned) {
+        spawned.setPowered(true);
     }
 
     @Override

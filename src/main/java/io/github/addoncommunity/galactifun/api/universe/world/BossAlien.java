@@ -12,6 +12,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  */
 
-public abstract class BossAlien extends Alien {
+public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
@@ -41,8 +42,8 @@ public abstract class BossAlien extends Alien {
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
-        super(id, name, type, health);
+    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int health) {
+        super(clazz, id, name, health);
         Validate.notNull(this.style = createBossBarStyle());
     }
     
@@ -57,7 +58,7 @@ public abstract class BossAlien extends Alien {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onSpawn(@Nonnull LivingEntity spawned) {
+    public void onSpawn(@Nonnull T spawned) {
         BossBarStyle style = this.style;
         BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
         bossbar.setVisible(true);
@@ -120,7 +121,7 @@ public abstract class BossAlien extends Alien {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onMobTick(@Nonnull LivingEntity mob) {
+    public void onMobTick(@Nonnull Mob mob) {
         if (this.tick == 0) {
             Location l = mob.getLocation();
             long dist = (long) getBossBarDistance() * getBossBarDistance();

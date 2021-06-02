@@ -1,18 +1,20 @@
 package io.github.addoncommunity.galactifun.api.universe.world;
 
+import com.destroystokyo.paper.entity.ai.Goal;
+import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import lombok.Getter;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,46 +35,96 @@ import java.util.Objects;
 
 /**
  * Abstract class for an alien
- * 
- * @see Martian
  *
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
- *
+ * @see Martian
  */
-public abstract class Alien {
+public abstract class Alien<T extends Mob> {
 
-    public static final Map<String, Alien> ALIENS = new HashMap<>();
+    public static final Map<String, Alien<?>> ALIENS = new HashMap<>();
+    private static final NamespacedKey KEY = Galactifun.inst().getKey("alien");
 
-    @Nullable
-    public static Alien getByID(@Nonnull String id) {
-        return ALIENS.get(id);
+    static {
+        Galactifun.inst().registerListener(new Listener() {
+
+            @EventHandler
+            public void onAlienTarget(@Nonnull EntityTargetEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onTarget(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getRightClicked());
+                if (alien != null) {
+                    alien.onInteract(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onHit(e);
+                }
+                alien = Alien.getByEntity(e.getDamager());
+                if (alien != null) {
+                    alien.onAttack(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienDie(@Nonnull EntityDeathEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onDeath(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienCombust(@Nonnull EntityCombustEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    e.setCancelled(true);
+                }
+            }
+
+            @EventHandler
+            public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onCastSpell(e);
+                }
+            }
+
+            @EventHandler
+            public void onAlienDamage(@Nonnull EntityDamageEvent e) {
+                Alien<?> alien = Alien.getByEntity(e.getEntity());
+                if (alien != null) {
+                    alien.onDamage(e);
+                }
+            }
+        });
     }
 
-    @Nullable
-    public static Alien getByEntity(@Nonnull Entity entity) {
-        String id = PersistentDataAPI.getString(entity, Alien.KEY);
-        return id == null ? null : getByID(id);
-    }
-
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "alien");
-
+    @Getter
+    @Nonnull
+    private final Class<T> clazz;
+    protected final int maxHealth;
     @Nonnull
     private final String id;
     @Nonnull
     private final String name;
-    @Getter
-    @Nonnull
-    private final EntityType type;
-    protected final int maxHealth;
-    
-    public Alien(@Nonnull String id, @Nonnull String name, @Nonnull EntityType type, int maxHealth) {
-        
+
+    public Alien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, int maxHealth) {
+        this.clazz = clazz;
+
         Validate.notNull(this.id = id);
         Validate.notNull(this.name = ChatColors.color(name));
-        Validate.notNull(this.type = type);
-        Validate.isTrue(type.isAlive(), "Entity type " + type + " is not alive!");
         Validate.isTrue((this.maxHealth = maxHealth) > 0);
         Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
         Validate.notNull(getSpawnOffset());
@@ -81,43 +133,82 @@ public abstract class Alien {
 
     }
 
-    @Nonnull
-    public final LivingEntity spawn(@Nonnull Location loc, @Nonnull World world) {
-        LivingEntity entity = (LivingEntity) world.spawnEntity(loc, this.type);
-        PersistentDataAPI.setString(entity, KEY, this.id);
-
-        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
-        entity.setHealth(this.maxHealth);
-        entity.setCustomName(this.name);
-        entity.setCustomNameVisible(true);
-
-        entity.setRemoveWhenFarAway(true);
-
-        onSpawn(entity);
-
-        return entity;
+    @Nullable
+    public static Alien<?> getByID(@Nonnull String id) {
+        return ALIENS.get(id);
     }
 
-    protected void onSpawn(@Nonnull LivingEntity spawned) { }
+    @Nullable
+    public static Alien<?> getByEntity(@Nonnull Entity entity) {
+        String id = PersistentDataAPI.getString(entity, Alien.KEY);
+        return id == null ? null : getByID(id);
+    }
 
-    protected void onUniqueTick() { }
+    @Nonnull
+    public final T spawn(@Nonnull Location loc, @Nonnull World world) {
+        T mob = world.spawn(loc, clazz);
+        PersistentDataAPI.setString(mob, KEY, this.id);
 
-    protected void onMobTick(@Nonnull LivingEntity mob) { }
+        Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
+        mob.setHealth(this.maxHealth);
+        mob.setCustomName(this.name);
+        mob.setCustomNameVisible(true);
 
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
-    
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
+        mob.setRemoveWhenFarAway(true);
 
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
+        Map<Goal<T>, Integer> goals = this.getGoals();
+        if (!goals.isEmpty()) {
+            MobGoals mobGoals = Bukkit.getMobGoals();
+            mobGoals.removeAllGoals(mob);
+            for (Map.Entry<Goal<T>, Integer> goal : goals.entrySet()) {
+                mobGoals.addGoal(mob, goal.getValue(), goal.getKey());
+            }
+        }
 
-    protected void onTarget(@Nonnull EntityTargetEvent e) { }
+        onSpawn(mob);
 
-    protected void onDeath(@Nonnull EntityDeathEvent e) { }
+        return mob;
+    }
 
-    protected void onCastSpell(EntitySpellCastEvent e) { }
+    protected void onSpawn(@Nonnull T spawned) {
+    }
 
-    protected void onDamage(EntityDamageEvent e) { }
-    
+    protected void onUniqueTick() {
+    }
+
+    protected void onMobTick(@Nonnull Mob mob) {
+    }
+
+    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    }
+
+    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+    }
+
+    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+    }
+
+    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    }
+
+    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    }
+
+    protected void onCastSpell(EntitySpellCastEvent e) {
+    }
+
+    protected void onDamage(EntityDamageEvent e) {
+    }
+
+    /**
+     * Gets the AI of the Alien. The returned map is a map of a mob goal and its priority
+     *
+     * @return a map of the Alien's goals, or an empty map for default AI
+     */
+    protected Map<Goal<T>, Integer> getGoals() {
+        return new HashMap<>();
+    }
+
     /**
      * Returns the chance for the alien to spawn per spawn attempt
      *
@@ -139,7 +230,6 @@ public abstract class Alien {
      * the {@link Zombie} light level conditions
      *
      * @param lightLevel the light level of the block the alien is attempting to spawn on
-     *
      * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
      */
     protected boolean getSpawnInLightLevel(int lightLevel) {
@@ -148,71 +238,6 @@ public abstract class Alien {
 
     protected Vector getSpawnOffset() {
         return new Vector();
-    }
-
-    static {
-        Galactifun.inst().registerListener(new Listener() {
-
-            @EventHandler
-            public void onAlienTarget(@Nonnull EntityTargetEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    alien.onTarget(e);
-                }
-            }
-
-            @EventHandler
-            public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
-                Alien alien = Alien.getByEntity(e.getRightClicked());
-                if (alien != null) {
-                    alien.onInteract(e);
-                }
-            }
-
-            @EventHandler
-            public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    alien.onHit(e);
-                }
-                alien = Alien.getByEntity(e.getDamager());
-                if (alien != null) {
-                    alien.onAttack(e);
-                }
-            }
-
-            @EventHandler
-            public void onAlienDie(@Nonnull EntityDeathEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    alien.onDeath(e);
-                }
-            }
-
-            @EventHandler
-            public void onAlienCombust(@Nonnull EntityCombustEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    e.setCancelled(true);
-                }
-            }
-
-            @EventHandler
-            public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    alien.onCastSpell(e);
-                }
-            }
-
-            @EventHandler
-            public void onAlienDamage(@Nonnull EntityDamageEvent e) {
-                Alien alien = Alien.getByEntity(e.getEntity());
-                if (alien != null) {
-                    alien.onDamage(e);
-                }
-            }
-        });
     }
 
 }
