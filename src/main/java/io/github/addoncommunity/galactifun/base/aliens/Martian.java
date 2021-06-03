@@ -1,10 +1,12 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
-import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -16,11 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.base.BaseMats;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 /**
  * Class for the martian
