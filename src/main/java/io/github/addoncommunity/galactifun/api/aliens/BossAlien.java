@@ -1,14 +1,14 @@
-package io.github.addoncommunity.galactifun.api.universe.world;
+package io.github.addoncommunity.galactifun.api.aliens;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
-import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -17,11 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien boss
@@ -35,14 +33,15 @@ import java.util.Map;
 
 public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
+    // TODO move static
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, int health) {
-        super(clazz, id, name, health);
+    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+        super(clazz, id, name);
         Validate.notNull(this.style = createBossBarStyle());
     }
     
@@ -58,13 +57,10 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull T spawned) {
-        BossBarStyle style = this.style;
-        BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
+        BossBar bossbar = this.style.create(KEY);
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
-
         spawned.setRemoveWhenFarAway(false);
-
         instances.put(spawned, bossbar);
     }
 
@@ -77,7 +73,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.maxHealth);
+                bossbar.setProgress(finalHealth / getMaxHealth());
             }
         }
     }
@@ -89,7 +85,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / this.maxHealth);
+                bossbar.setProgress(finalHealth / getMaxHealth());
             }
         }
     }
@@ -146,10 +142,9 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             return instances.get(entity);
         }
 
-        BossBarStyle style = createBossBarStyle();
-        BossBar bossbar = Bukkit.createBossBar(KEY, style.name, style.color, style.style, style.flags);
+        BossBar bossbar = this.style.create(KEY);
         bossbar.setVisible(true);
-        bossbar.setProgress(entity.getHealth() / this.maxHealth);
+        bossbar.setProgress(entity.getHealth() / getMaxHealth());
         instances.put(entity, bossbar);
         return bossbar;
     }
@@ -165,13 +160,4 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Nonnull
     protected abstract BossBarStyle createBossBarStyle();
 
-    protected record BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-        public BossBarStyle(String name, BarColor color, BarStyle style, BarFlag... flags) {
-            this.name = name;
-            this.color = color;
-            this.style = style;
-            this.flags = flags;
-        }
-    }
-    
 }

@@ -1,10 +1,11 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import javax.annotation.Nonnull;
+
 import org.bukkit.entity.Illusioner;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import javax.annotation.Nonnull;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
 
 /**
  * Class for the Titan, an alien of Titan
@@ -14,13 +15,18 @@ import javax.annotation.Nonnull;
 public final class TitanAlien extends Alien<Illusioner> {
     
     public TitanAlien() {
-        super(Illusioner.class, "TITAN", "Titan", 32);
+        super(Illusioner.class, "TITAN", "Titan");
     }
 
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         // TODO add drops
         e.getDrops().clear();
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 32;
     }
 
     @Override

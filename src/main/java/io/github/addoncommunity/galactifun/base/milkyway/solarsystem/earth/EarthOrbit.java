@@ -1,14 +1,10 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.api.universe.world.AlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.addoncommunity.galactifun.util.Sphere;
-import io.github.addoncommunity.galactifun.util.Util;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,9 +12,15 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.util.Sphere;
+import io.github.addoncommunity.galactifun.util.Util;
 
 public final class EarthOrbit extends AlienWorld {
 

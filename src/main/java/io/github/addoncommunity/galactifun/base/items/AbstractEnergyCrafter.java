@@ -1,9 +1,14 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import io.github.mooy1.infinitylib.slimefun.abstracts.TickingContainer;
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
+
+import io.github.mooy1.infinitylib.slimefun.AbstractTickingContainer;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -11,18 +16,13 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
 
 /**
  * An abstract crafter that needs energy to craft. Taken directly from InfinityExpansion
  *
  * @author Mooy1
  */
-public abstract class AbstractEnergyCrafter extends TickingContainer implements EnergyNetComponent {
+public abstract class AbstractEnergyCrafter extends AbstractTickingContainer implements EnergyNetComponent {
 
     protected final int energy;
     protected final int statusSlot;
@@ -36,7 +36,7 @@ public abstract class AbstractEnergyCrafter extends TickingContainer implements 
     public abstract void update(@Nonnull BlockMenu blockMenu);
 
     @Override
-    public final void tick(@Nonnull BlockMenu blockMenu, @Nonnull Block block, @Nonnull Config config) {
+    public final void tick(@Nonnull BlockMenu blockMenu, @Nonnull Block block) {
         if (blockMenu.hasViewer()) {
             int charge = getCharge(block.getLocation());
             if (charge < this.energy) { //not enough energy

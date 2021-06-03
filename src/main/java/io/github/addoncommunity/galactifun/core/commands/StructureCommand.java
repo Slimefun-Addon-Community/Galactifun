@@ -1,5 +1,17 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
 import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
@@ -7,23 +19,17 @@ import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
 
 public final class StructureCommand extends AbstractCommand {
 
-    private static final NamespacedKey POS1 = Galactifun.inst().getKey("pos1");
-    private static final NamespacedKey POS2 = Galactifun.inst().getKey("pos2");
+    private final NamespacedKey pos1;
+    private final NamespacedKey pos2;
 
-    public StructureCommand() {
+    public StructureCommand(Galactifun galactifun) {
         super("structure", "The command for structures", true);
+
+        this.pos1 = galactifun.getKey("pos1");
+        this.pos2 = galactifun.getKey("pos2");
     }
 
     @Override
@@ -38,20 +44,22 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            Block pos1 = p.getPersistentDataContainer().get(StructureCommand.POS1, PersistenceUtils.BLOCK);
+            Location pos1 = p.getPersistentDataContainer().get(this.pos1, PersistenceUtils.LOCATION);
             if (pos1 == null) {
                 p.sendMessage(ChatColor.RED + "pos1 not set!");
                 return;
             }
-            
-            Block pos2 = p.getPersistentDataContainer().get(StructureCommand.POS2, PersistenceUtils.BLOCK);
+
+            Location pos2 = p.getPersistentDataContainer().get(this.pos2, PersistenceUtils.LOCATION);
             if (pos2 == null) {
                 p.sendMessage(ChatColor.RED + "pos2 not set!");
                 return;
             }
 
             double time = System.nanoTime();
-            StructureRegistry.saveStructure(args[2], StructureRegistry.createStructure(StructureRotation.fromFace(p.getFacing()), pos1, pos2));
+            StructureRotation rotation = StructureRotation.fromFace(p.getFacing());
+            GalacticStructure struct = StructureRegistry.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
+            StructureRegistry.saveStructure(args[2], struct);
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
             return;
         }
@@ -63,13 +71,13 @@ public final class StructureCommand extends AbstractCommand {
         }
 
         if (args[1].equals("pos1")) {
-            p.getPersistentDataContainer().set(POS1, PersistenceUtils.BLOCK, target);
+            p.getPersistentDataContainer().set(this.pos1, PersistenceUtils.LOCATION, target.getLocation());
             p.sendMessage(ChatColor.GREEN + "Set pos1 to " + toString(target));
             return;
         }
 
         if (args[1].equals("pos2")) {
-            p.getPersistentDataContainer().set(POS2, PersistenceUtils.BLOCK, target);
+            p.getPersistentDataContainer().set(this.pos2, PersistenceUtils.LOCATION, target.getLocation());
             p.sendMessage(ChatColor.GREEN + "Set pos2 to " + toString(target));
             return;
         }

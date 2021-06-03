@@ -19,7 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.world.Alien;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
@@ -42,7 +42,7 @@ public final class Martian extends Alien<ZombieVillager> {
     private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
     
     public Martian() {
-        super(ZombieVillager.class, "MARTIAN", "&4Martian", 32);
+        super(ZombieVillager.class, "MARTIAN", "&4Martian");
         setupTrades();
     }
 
@@ -79,6 +79,11 @@ public final class Martian extends Alien<ZombieVillager> {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.IRON_INGOT, 2));
         e.getDrops().add(new ItemStack(Material.RED_SAND));
+    }
+
+    @Override
+    protected int getMaxHealth() {
+        return 32;
     }
 
     @Override

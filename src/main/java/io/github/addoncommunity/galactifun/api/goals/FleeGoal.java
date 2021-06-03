@@ -68,7 +68,6 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> {
         if (!pathfinder.hasPath()) {
             Location mobLoc = mob.getLocation();
             Location l = null;
-            found:
             for (int tries = 0; tries < 100; tries++) {
                 l = new Location(
                         mob.getWorld(),
@@ -77,18 +76,17 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> {
                         mobLoc.getBlockZ() + ThreadLocalRandom.current().nextInt(10) - 5
                 );
                 if (pathfinder.findPath(l) == null) {
-                    for (int y = 1; y < 6; y++) {
-                        l.add(0, 1, 0);
-                        if (pathfinder.findPath(l) != null) break found;
-                    }
-                    for (int y = 1; y < 6; y++) {
-                        l.subtract(0, 1, 0);
-                        if (pathfinder.findPath(l) != null) break found;
-                    }
+                    l.add(0, 1, 0);
+                    if (pathfinder.findPath(l) != null) break;
+
+                    l.subtract(0, 2, 0);
+                    if (pathfinder.findPath(l) != null) break;
                 }
             }
 
-            pathfinder.moveTo(l, 3);
+            if (pathfinder.findPath(l) != null) {
+                pathfinder.moveTo(l, 3);
+            }
         }
     }
 

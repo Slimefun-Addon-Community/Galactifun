@@ -1,12 +1,13 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
-import org.apache.commons.lang.Validate;
-import org.bukkit.World;
-import org.bukkit.entity.EnderDragon;
-
-import javax.annotation.Nonnull;
 import java.util.EnumMap;
 import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.World;
+
+import org.apache.commons.lang.Validate;
 
 /**
  * Utility class for making atmospheres
@@ -19,27 +20,20 @@ public final class AtmosphereBuilder {
     private boolean storming;
     private boolean thundering;
     private boolean flammable;
-    @Nonnull
     private World.Environment environment = World.Environment.NORMAL;
-    @Nonnull
     private AtmosphericEffect[] effects = new AtmosphericEffect[0];
-    @Nonnull
     private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
-    
+
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
         return this;
     }
 
-    /**
-     * Note that adding this method <b>will</b> spawn the {@link EnderDragon}
-     * @return this object
-     */
     public AtmosphereBuilder setEnd() {
         this.environment = World.Environment.THE_END;
         return this;
     }
-    
+
     public AtmosphereBuilder addEffects(@Nonnull AtmosphericEffect... effects) {
         Validate.notNull(effects);
         this.effects = effects;
