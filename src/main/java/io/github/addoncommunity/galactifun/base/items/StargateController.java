@@ -154,6 +154,7 @@ public class StargateController extends SlimefunItem {
             for (ComponentPosition position : PORTAL_POSITIONS) {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
+                ((EndGateway) portal.getState()).setAge(201);
             }
             String destAddress = BlockStorage.getLocationInfo(b.getLocation(), "destination");
             if (destAddress != null) setDestination(destAddress, b, p);
