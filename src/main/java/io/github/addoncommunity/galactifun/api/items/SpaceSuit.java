@@ -14,6 +14,7 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
+// TODO implement
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
     public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {

@@ -132,7 +132,7 @@ public final class Titan extends AlienWorld {
 
     /**
      * Replaces river with the closest biome it finds
-     */ // TODO try to find an easier way to do this
+     */
     private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
         int dev = 1;
         Biome biome = grid.getBiome(x, height, z);

@@ -1,20 +1,22 @@
 package io.github.addoncommunity.galactifun.base;
 
+import java.util.Arrays;
+
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import lombok.experimental.UtilityClass;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
 
 /**
  * A class containing commonly used items in recipes
@@ -178,6 +180,12 @@ public final class BaseMats {
             "&7These meteors contain Tungsten"
     );
 
+    public static final SlimefunItemStack ENDER_BLOCK = new SlimefunItemStack(
+            "ENDER_BLOCK",
+            Material.PRISMARINE_BRICKS,
+            "&3Ender Block"
+    );
+
     public static void setup() {
         createComponent(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
@@ -289,6 +297,7 @@ public final class BaseMats {
                 null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
         createComponent(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseRegistry.MARS.getItem());
+        createComponent(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
     }
 
     private static void createComponent(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {

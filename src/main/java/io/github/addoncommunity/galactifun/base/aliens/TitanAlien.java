@@ -20,7 +20,6 @@ public final class TitanAlien extends Alien<Illusioner> {
 
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
-        // TODO add drops
         e.getDrops().clear();
     }
 

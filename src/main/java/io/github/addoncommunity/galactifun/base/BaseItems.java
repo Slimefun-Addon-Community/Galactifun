@@ -7,10 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
-import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
-import io.github.addoncommunity.galactifun.base.items.CircuitPress;
-import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
-import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
+import io.github.addoncommunity.galactifun.base.items.*;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
@@ -62,6 +59,20 @@ public final class BaseItems {
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
             LorePreset.energyPerSecond(2048)
     );
+    public static final SlimefunItemStack STARGATE_RING = new SlimefunItemStack(
+            "STARGATE_RING",
+            Material.QUARTZ_BLOCK,
+            "&9Stargate Ring",
+            "",
+            "&7Used to construct a stargate"
+    );
+    public static final SlimefunItemStack STARGATE_CONTROLLER = new SlimefunItemStack(
+            "STARGATE_CONTROLLER",
+            Material.CHISELED_QUARTZ_BLOCK,
+            "&9Stargate Controller",
+            "",
+            "&7Used to control a stargate"
+    );
 
     private static final int TIER_ONE_FUEL = 10;
     private static final int TIER_ONE_STORAGE = 9;
@@ -106,6 +117,20 @@ public final class BaseItems {
                 SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
+        }).register(galactifun);
+
+        new StargateRing(CoreCategory.COMPONENTS, STARGATE_RING, AssemblyTable.TYPE, new ItemStack[]{
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET
+        }).register(galactifun);
+        new StargateController(CoreCategory.COMPONENTS, STARGATE_CONTROLLER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                STARGATE_RING, BaseMats.GLOWSTONE_CIRCUIT, STARGATE_RING,
+                BaseMats.REDSTONE_CIRCUIT, BaseMats.DIAMOND_CIRCUIT, BaseMats.REDSTONE_CIRCUIT,
+                STARGATE_RING, BaseMats.LAPIS_CIRCUIT, STARGATE_RING
         }).register(galactifun);
         
         new Rocket(CoreCategory.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
