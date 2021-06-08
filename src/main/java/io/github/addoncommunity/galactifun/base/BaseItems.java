@@ -7,7 +7,12 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
-import io.github.addoncommunity.galactifun.base.items.*;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
+import io.github.addoncommunity.galactifun.base.items.CircuitPress;
+import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
+import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
+import io.github.addoncommunity.galactifun.base.items.StargateController;
+import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;

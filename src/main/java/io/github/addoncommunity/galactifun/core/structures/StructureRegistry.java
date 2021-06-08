@@ -1,18 +1,5 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.codec.Charsets;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,6 +11,22 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import org.apache.commons.codec.Charsets;
 
 /**
  * A class for loading Galactic Structures

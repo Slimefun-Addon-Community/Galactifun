@@ -3,7 +3,12 @@ package io.github.addoncommunity.galactifun.base.items;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -101,6 +106,7 @@ public class StargateController extends SlimefunItem {
             public void onPlayerBreak(BlockBreakEvent e, ItemStack item, List<ItemStack> drops) {
                 if (Boolean.parseBoolean(BlockStorage.getLocationInfo(e.getBlock().getLocation(), "locked"))) {
                     e.setCancelled(true);
+                    e.getPlayer().sendMessage(ChatColor.RED + "Deactivate the Stargate before destroying it");
                 }
             }
         });
@@ -144,6 +150,12 @@ public class StargateController extends SlimefunItem {
         return Optional.of(portals);
     }
 
+    public static void lockBlocks(Block controller, boolean lock) {
+        String data = Boolean.toString(lock);
+        getRingBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
+        getPortalBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
+    }
+
     private void onUse(PlayerRightClickEvent event, Player p, Block b) {
         if (!isPartOfStargate(b)) {
             p.sendMessage(ChatColor.RED + "The Stargate is not assembled!");
@@ -155,9 +167,15 @@ public class StargateController extends SlimefunItem {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
                 ((EndGateway) portal.getState()).setAge(201);
+                BlockStorage.addBlockInfo(portal, "portal", "true");
             }
+
             String destAddress = BlockStorage.getLocationInfo(b.getLocation(), "destination");
-            if (destAddress != null) setDestination(destAddress, b, p);
+            if (destAddress != null) {
+                setDestination(destAddress, b, p);
+            }
+
+            lockBlocks(b, true);
             p.sendMessage(ChatColor.YELLOW + "Stargate activated!");
             return;
         }
@@ -213,8 +231,10 @@ public class StargateController extends SlimefunItem {
             getPortalBlocks(b).ifPresent(li -> {
                 for (Block block : li) {
                     block.setType(Material.AIR);
+                    BlockStorage.clearBlockInfo(b);
                 }
             });
+            lockBlocks(b, false);
             p.closeInventory();
             return false;
         });

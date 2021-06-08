@@ -1,15 +1,17 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
 /**
  * Command to teleport to world spawns

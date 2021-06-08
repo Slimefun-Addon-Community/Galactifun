@@ -1,11 +1,13 @@
 package io.github.addoncommunity.galactifun.util;
 
-import org.apache.commons.lang.Validate;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
+import org.apache.commons.lang.Validate;
 
 /**
  * A class for optimized generation of spheres of blocks

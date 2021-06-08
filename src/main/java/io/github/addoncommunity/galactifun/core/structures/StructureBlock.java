@@ -1,11 +1,12 @@
 package io.github.addoncommunity.galactifun.core.structures;
 
+import java.util.EnumMap;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import java.util.EnumMap;
 
 /**
  * A structure block with just a material, cached for each material
