@@ -3,8 +3,10 @@ package io.github.addoncommunity.galactifun.api.worlds;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -17,6 +19,11 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -27,6 +34,9 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -44,6 +54,9 @@ public abstract class AlienWorld extends CelestialWorld {
      */
     @Nonnull
     private final List<Alien<?>> species = new ArrayList<>(4);
+
+    @Nonnull
+    protected final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
 
     public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
@@ -107,6 +120,18 @@ public abstract class AlienWorld extends CelestialWorld {
         this.dayCycle.applyEffects(world);
         this.atmosphere.applyEffects(world);
 
+        Galactifun.inst().registerListener(new Listener() {
+            @EventHandler(priority = EventPriority.LOW)
+            public void onBreak(BlockBreakEvent e) {
+
+            }
+
+            @EventHandler(priority = EventPriority.LOW)
+            public void onPlace(BlockPlaceEvent e) {
+
+            }
+        });
+
         // after
         afterWorldLoad(world);
 
@@ -114,6 +139,19 @@ public abstract class AlienWorld extends CelestialWorld {
         Galactifun.inst().getWorldManager().register(this);
 
         return world;
+    }
+
+    /**
+     * To allow worlds to be made of {@link SlimefunItem}s without using huge amounts of {@link BlockStorage},
+     * I invented block mappings. Simply pass a {@link Material} and a {@link SlimefunItemStack}, and any
+     * generated {@code vanillaItem}s will drop {@code slimefunItem}s
+     *
+     * @implNote they work by not adding block data to <i>generated</i> blocks, but to <i>placed</i>
+     * blocks in that world. Therefore, any block that doesn't have data is the Slimefun one, and
+     * those that do are vanilla
+     */
+    public final void addBlockMapping(@Nonnull Material vanillaItem, @Nonnull SlimefunItemStack slimefunItem) {
+        blockMappings.put(vanillaItem, slimefunItem);
     }
 
     /**
