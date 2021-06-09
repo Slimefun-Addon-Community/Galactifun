@@ -29,7 +29,7 @@ public final class TheMoon extends SimpleAlienWorld {
     public TheMoon() {
         super("The Moon", Orbit.kilometers(382_500L, 27), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
 
-        addBlockMapping(Material.LIGHT_GRAY_CONCRETE_POWDER, GeneratedItems.MOON_SAND);
+        addBlockMapping(Material.LIGHT_GRAY_CONCRETE_POWDER, GeneratedItems.MOON_DUST);
     }
     
     @Override

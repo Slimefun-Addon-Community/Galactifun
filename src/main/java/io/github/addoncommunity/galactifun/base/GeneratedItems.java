@@ -15,14 +15,14 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 @UtilityClass
 public final class GeneratedItems {
 
-    public static final SlimefunItemStack MOON_SAND = new SlimefunItemStack(
-            "MOON_SAND",
+    public static final SlimefunItemStack MOON_DUST = new SlimefunItemStack(
+            "MOON_DUST",
             Material.LIGHT_GRAY_CONCRETE_POWDER,
-            "&7Moon Sand"
+            "&7Moon Dust"
     );
 
     public static void setup() {
-        register(MOON_SAND, BaseRegistry.THE_MOON);
+        register(MOON_DUST, BaseRegistry.THE_MOON);
     }
 
     private static void register(SlimefunItemStack item, AlienWorld world) {
