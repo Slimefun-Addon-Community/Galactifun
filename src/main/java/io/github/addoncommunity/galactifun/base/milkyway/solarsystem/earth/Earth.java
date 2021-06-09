@@ -1,5 +1,13 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -8,12 +16,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-
-import javax.annotation.Nonnull;
-import java.util.Objects;
 /**
  * A class to connect the default earth world into the api
  *

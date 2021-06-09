@@ -1,5 +1,11 @@
 package io.github.addoncommunity.galactifun.api.items;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectiveArmor;
@@ -7,12 +13,8 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+// TODO implement
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
     public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {

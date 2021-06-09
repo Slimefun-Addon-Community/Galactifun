@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -16,6 +15,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Util;
+import org.apache.commons.lang.Validate;
 
 /**
  * A simple alien world

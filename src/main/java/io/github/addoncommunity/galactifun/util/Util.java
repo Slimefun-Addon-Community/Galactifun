@@ -1,12 +1,14 @@
 package io.github.addoncommunity.galactifun.util;
 
-import lombok.experimental.UtilityClass;
-import org.bukkit.block.BlockFace;
-
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Random;
 import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
+import lombok.experimental.UtilityClass;
+
+import org.bukkit.block.BlockFace;
 
 /**
  * Utilities

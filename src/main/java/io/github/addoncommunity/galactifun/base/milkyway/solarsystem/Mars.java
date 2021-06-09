@@ -1,5 +1,16 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -11,15 +22,6 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.util.noise.SimplexOctaveGenerator;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Class for Mars

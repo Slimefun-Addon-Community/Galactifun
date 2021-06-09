@@ -1,15 +1,17 @@
 package io.github.addoncommunity.galactifun.api.worlds.populators;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import lombok.AllArgsConstructor;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 /**
  * Volcano populator

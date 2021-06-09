@@ -1,5 +1,14 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -9,13 +18,6 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulator;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 public final class Io extends SimpleAlienWorld {
 

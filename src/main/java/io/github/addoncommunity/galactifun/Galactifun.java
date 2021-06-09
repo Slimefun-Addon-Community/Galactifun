@@ -18,6 +18,7 @@ import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.GalacticExplorer;
+import io.github.addoncommunity.galactifun.core.StargateListener;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
@@ -51,6 +52,8 @@ public final class Galactifun extends AbstractAddon {
         BaseMats.setup();
         BaseItems.setup(this);
 
+        registerListener(new StargateListener());
+
         // log after startup
         runSync(() -> log(
                 "################# Galactifun " + getPluginVersion() + " #################",
@@ -77,7 +80,7 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected Metrics setupMetrics() {
-        return new Metrics(this, 10411);
+        return new Metrics(this, 11613);
     }
 
     @Nonnull

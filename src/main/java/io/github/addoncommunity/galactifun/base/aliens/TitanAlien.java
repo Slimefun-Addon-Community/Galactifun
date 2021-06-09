@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import javax.annotation.Nonnull;
+
 import org.bukkit.entity.Illusioner;
 import org.bukkit.event.entity.EntityDeathEvent;
 
@@ -19,7 +20,6 @@ public final class TitanAlien extends Alien<Illusioner> {
 
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
-        // TODO add drops
         e.getDrops().clear();
     }
 

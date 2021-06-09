@@ -1,5 +1,9 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter;
 
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+
 import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -9,9 +13,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-
-import javax.annotation.Nonnull;
 
 public final class Jupiter extends CelestialBody {
 

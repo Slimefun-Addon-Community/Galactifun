@@ -4,14 +4,13 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
-import org.apache.commons.lang.Validate;
-
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
+import org.apache.commons.lang.Validate;
 
 /**
  * A celestial object

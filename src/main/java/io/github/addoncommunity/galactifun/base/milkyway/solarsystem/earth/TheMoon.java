@@ -1,5 +1,14 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -7,13 +16,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 /**
  * The moon

@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
@@ -20,6 +19,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien boss

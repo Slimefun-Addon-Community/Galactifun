@@ -5,8 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.World;
+
+import org.apache.commons.lang.Validate;
 
 /**
  * Utility class for making atmospheres

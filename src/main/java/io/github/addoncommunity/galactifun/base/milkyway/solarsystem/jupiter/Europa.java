@@ -1,5 +1,16 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -7,15 +18,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 public final class Europa extends AlienWorld {
 

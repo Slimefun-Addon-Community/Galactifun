@@ -1,14 +1,12 @@
 package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
 
-import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
-import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -19,11 +17,15 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
+import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * Class for the Saturnian moon Titan
@@ -130,7 +132,7 @@ public final class Titan extends AlienWorld {
 
     /**
      * Replaces river with the closest biome it finds
-     */ // TODO try to find an easier way to do this
+     */
     private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
         int dev = 1;
         Biome biome = grid.getBiome(x, height, z);

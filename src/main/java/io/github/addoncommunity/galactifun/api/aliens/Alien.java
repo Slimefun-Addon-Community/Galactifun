@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -8,7 +9,6 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -25,12 +25,13 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.util.Vector;
 
-import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien
@@ -72,11 +73,12 @@ public abstract class Alien<T extends Mob> {
         mob.setCustomNameVisible(true);
         mob.setRemoveWhenFarAway(true);
 
-        Map<Goal<T>, Integer> goals = this.getGoals();
+        Map<AbstractGoal<T>, Integer> goals = new HashMap<>();
+        this.getGoals(goals, mob);
         if (!goals.isEmpty()) {
             MobGoals mobGoals = Bukkit.getMobGoals();
             mobGoals.removeAllGoals(mob);
-            for (Map.Entry<Goal<T>, Integer> goal : goals.entrySet()) {
+            for (Map.Entry<AbstractGoal<T>, Integer> goal : goals.entrySet()) {
                 mobGoals.addGoal(mob, goal.getValue(), goal.getKey());
             }
         }
@@ -114,7 +116,7 @@ public abstract class Alien<T extends Mob> {
     protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
     protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
-    
+
     protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
 
     protected void onTarget(@Nonnull EntityTargetEvent e) { }
@@ -126,13 +128,14 @@ public abstract class Alien<T extends Mob> {
     protected void onDamage(EntityDamageEvent e) { }
 
     /**
-     * Gets the AI of the Alien. The returned map is a map of a mob goal and its priority
+     * Gets the AI of the Alien. The map is a map of a mob goal and its priority
      *
-     * @return a map of the Alien's goals, or an empty map for default AI
+     * @param goals a map of the Alien's goals, add the goals to this or add nothing for default AI
+     * @param mob the mob
      */
-    protected Map<Goal<T>, Integer> getGoals() {
-        return Map.of();
+    protected void getGoals(@Nonnull Map<AbstractGoal<T>, Integer> goals, @Nonnull T mob) {
     }
+
     protected abstract int getMaxHealth();
 
     /**

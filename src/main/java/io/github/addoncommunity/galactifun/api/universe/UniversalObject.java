@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +16,7 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import org.apache.commons.lang.Validate;
 
 /**
  * Any object in the universe
