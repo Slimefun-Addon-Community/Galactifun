@@ -233,7 +233,7 @@ public class StargateController extends SlimefunItem {
             getPortalBlocks(b).ifPresent(li -> {
                 for (Block block : li) {
                     block.setType(Material.AIR);
-                    BlockStorage.clearBlockInfo(b);
+                    BlockStorage.clearBlockInfo(block);
                 }
             });
             lockBlocks(b, false);

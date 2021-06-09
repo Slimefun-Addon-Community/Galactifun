@@ -5,7 +5,9 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.GameRule;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 
@@ -72,6 +74,11 @@ public final class Venus extends SimpleAlienWorld {
         } else {
             return Material.BASALT;
         }
+    }
+
+    @Override
+    protected void afterWorldLoad(@Nonnull World world) {
+        world.setGameRule(GameRule.DO_FIRE_TICK, false);
     }
 
     @Nonnull

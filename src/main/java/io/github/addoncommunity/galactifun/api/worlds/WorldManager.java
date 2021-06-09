@@ -53,7 +53,13 @@ public final class WorldManager implements Listener, Runnable {
 
     @Nullable
     public AlienWorld getAlienWorld(@Nonnull World world) {
-        return this.alienWorlds.get(world);
+        for (AlienWorld alienWorld : alienWorlds.values()) {
+            if (alienWorld.getWorld().getUID().equals(world.getUID())) {
+                return alienWorld;
+            }
+        }
+
+        return null;
     }
 
     @Nonnull
@@ -64,7 +70,9 @@ public final class WorldManager implements Listener, Runnable {
     @Override
     public void run() {
         for (AlienWorld world : this.alienWorlds.values()) {
-            world.tickWorld(this.alienManager);
+            if (world.getWorld() != null) {
+                world.tickWorld(this.alienManager);
+            }
         }
     }
 

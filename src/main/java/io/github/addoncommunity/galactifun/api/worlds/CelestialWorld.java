@@ -34,6 +34,9 @@ public abstract class CelestialWorld extends CelestialBody {
 
         // TODO improve register system
         Galactifun.inst().getWorldManager().register(this);
+        if (this instanceof AlienWorld alienWorld) {
+            Galactifun.inst().getWorldManager().register(alienWorld);
+        }
     }
 
     public boolean isReachableByRocket() {

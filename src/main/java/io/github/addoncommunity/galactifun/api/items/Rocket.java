@@ -52,7 +52,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 public final class Rocket extends SlimefunItem {
 
     // TODO move static
-    private static final List<String> LAUNCH_MESSAGES = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
+    private static final List<String> LAUNCH_MESSAGES = new ArrayList<>();
+    // Galactifun.inst().getConfig().getStringList("rockets.launch-msgs")
 
     @Getter
     private final int fuelCapacity;

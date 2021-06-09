@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,6 +66,7 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nullable
     @Override
     protected World loadWorld() {
+        Galactifun.inst().log(Level.INFO, "Loading planet " + this.name);
         String worldName = "world_galactifun_" + this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
 
         // TODO implement disabling
@@ -121,22 +123,33 @@ public abstract class AlienWorld extends CelestialWorld {
         this.atmosphere.applyEffects(world);
 
         Galactifun.inst().registerListener(new Listener() {
-            @EventHandler(priority = EventPriority.LOW)
+            @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
             public void onBreak(BlockBreakEvent e) {
+                Block b = e.getBlock();
+                if (!blockMappings.containsKey(b.getType())) return;
+                if (!b.getWorld().getUID().equals(world.getUID())) return;
 
+                if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), "placed"))) {
+                    e.setDropItems(false);
+                    b.getWorld().dropItemNaturally(
+                            b.getLocation().add(0.5, 0.5, 0.5),
+                            blockMappings.get(b.getType()).clone()
+                    );
+                }
             }
 
-            @EventHandler(priority = EventPriority.LOW)
+            @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
             public void onPlace(BlockPlaceEvent e) {
+                Block b = e.getBlock();
+                if (!blockMappings.containsKey(b.getType())) return;
+                if (!b.getWorld().getUID().equals(world.getUID())) return;
 
+                BlockStorage.addBlockInfo(b, "placed", Boolean.toString(true));
             }
         });
 
         // after
         afterWorldLoad(world);
-
-        // TODO improve register system
-        Galactifun.inst().getWorldManager().register(this);
 
         return world;
     }
