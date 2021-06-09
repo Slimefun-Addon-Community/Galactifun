@@ -166,7 +166,9 @@ public class StargateController extends SlimefunItem {
             for (ComponentPosition position : PORTAL_POSITIONS) {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
-                ((EndGateway) portal.getState()).setAge(201);
+                EndGateway gateway = (EndGateway) portal.getState();
+                gateway.setAge(201);
+                gateway.update(false, false);
                 BlockStorage.addBlockInfo(portal, "portal", "true");
             }
 
@@ -281,7 +283,10 @@ public class StargateController extends SlimefunItem {
                 gateway.setExitLocation(dest);
                 gateway.update(false, false);
             } else {
-                throw new IllegalStateException("Portal doesn't have state: " + portal.getLocation());
+                portal.setType(Material.END_GATEWAY);
+                EndGateway gateway = (EndGateway) portal.getState();
+                gateway.setExitLocation(dest);
+                gateway.update(false, false);
             }
         }
 
