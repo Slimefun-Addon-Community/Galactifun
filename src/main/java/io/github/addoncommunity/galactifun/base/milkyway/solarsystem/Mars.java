@@ -81,14 +81,16 @@ public final class Mars extends SimpleAlienWorld {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
                 if (random.nextDouble() < 0.5) {
-                    int x = random.nextInt(8) + 4;
-                    int z = random.nextInt(8) + 4;
+                    int dist = Util.random(1, 4, random);
+
+                    int x = Util.random(dist, 16 - dist, random);
+                    int z = Util.random(dist, 16 - dist, random);
                     int y = Util.random(1, world.getHighestBlockAt(x, z).getY(), random);
 
                     GenUtils.generateSquare(
                             world.getBlockAt(x, y, z).getLocation(),
                             Material.PACKED_ICE,
-                            Util.random(1, 4, random)
+                            dist
                     );
                 }
             }
