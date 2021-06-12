@@ -33,9 +33,11 @@ public abstract class CelestialWorld extends CelestialBody {
         this.world = loadWorld();
 
         // TODO improve register system
-        Galactifun.inst().getWorldManager().register(this);
-        if (this instanceof AlienWorld alienWorld) {
-            Galactifun.inst().getWorldManager().register(alienWorld);
+        if (this.world != null) {
+            Galactifun.inst().getWorldManager().register(this);
+            if (this instanceof AlienWorld alienWorld) {
+                Galactifun.inst().getWorldManager().register(alienWorld);
+            }
         }
     }
 

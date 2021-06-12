@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.items;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -51,8 +52,17 @@ import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 
 public final class Rocket extends SlimefunItem {
 
-    // TODO move static
-    private static final List<String> LAUNCH_MESSAGES = new ArrayList<>();
+    // TODO make configurable
+    private static final List<String> LAUNCH_MESSAGES = Arrays.asList(
+            "Forgetting parachutes",
+            "Restocking snack bin",
+            "Aligning planets",
+            "Igniting sun",
+            "Inventing funny launch messages",
+            "Thanking TheBusyBiscuit",
+            "Faking Moon landings",
+            "Taking one small step"
+    );
     // Galactifun.inst().getConfig().getStringList("rockets.launch-msgs")
 
     @Getter

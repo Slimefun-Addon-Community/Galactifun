@@ -14,7 +14,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.addoncommunity.galactifun.util.Util;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -62,7 +61,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
                 }
 
                 // find max height
-                height = Util.fastFloor(getAverageHeight() + getMaxDeviation() * noise);
+                double temp = getAverageHeight() + getMaxDeviation() * noise;
+                height = temp >= 0 ? (int) temp : (int) temp - 1;
 
                 // y = 0, add bedrock and biome
                 chunk.setBlock(x, 0, z, Material.BEDROCK);

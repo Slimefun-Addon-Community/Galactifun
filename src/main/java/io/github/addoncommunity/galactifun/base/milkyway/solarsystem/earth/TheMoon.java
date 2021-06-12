@@ -15,7 +15,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.base.GeneratedItems;
 import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
@@ -28,8 +27,6 @@ public final class TheMoon extends SimpleAlienWorld {
     
     public TheMoon() {
         super("The Moon", Orbit.kilometers(382_500L, 27), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
-
-        addBlockMapping(Material.LIGHT_GRAY_CONCRETE_POWDER, GeneratedItems.MOON_DUST);
     }
     
     @Override

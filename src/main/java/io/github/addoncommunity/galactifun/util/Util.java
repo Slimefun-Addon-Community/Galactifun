@@ -48,17 +48,6 @@ public final class Util {
         return closest;
     }
 
-
-    /**
-     * Fast floor, faster than {@code (int) Math.floor(num)}
-     *
-     * @param num the number to floor
-     * @return the floored number
-     */
-    public static int fastFloor(double num) {
-        return num >= 0 ? (int) num : (int) num - 1;
-    }
-
     /**
      * From and to are inclusive
      */

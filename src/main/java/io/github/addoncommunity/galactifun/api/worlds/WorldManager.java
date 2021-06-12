@@ -53,13 +53,7 @@ public final class WorldManager implements Listener, Runnable {
 
     @Nullable
     public AlienWorld getAlienWorld(@Nonnull World world) {
-        for (AlienWorld alienWorld : alienWorlds.values()) {
-            if (alienWorld.getWorld().getUID().equals(world.getUID())) {
-                return alienWorld;
-            }
-        }
-
-        return null;
+        return alienWorlds.get(world);
     }
 
     @Nonnull
@@ -70,14 +64,12 @@ public final class WorldManager implements Listener, Runnable {
     @Override
     public void run() {
         for (AlienWorld world : this.alienWorlds.values()) {
-            if (world.getWorld() != null) {
-                world.tickWorld(this.alienManager);
-            }
+            world.tickWorld(this.alienManager);
         }
     }
 
     @EventHandler
-    public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e){
+    public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
         AlienWorld object = getAlienWorld(e.getFrom());
         if (object != null) {
             object.getGravity().removeGravity(e.getPlayer());
@@ -103,7 +95,6 @@ public final class WorldManager implements Listener, Runnable {
                 AlienWorld world = getAlienWorld(e.getTo().getWorld());
                 if (world != null) {
                     e.setCancelled(true);
-                    // TODO we should add ways to 'fast travel' to worlds that are super expensive so that people can build bases there
                 }
             }
         }
