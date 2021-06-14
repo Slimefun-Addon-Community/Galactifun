@@ -55,6 +55,9 @@ public final class TheMoon extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
+        if (y > top - 2) {
+            return Material.LIGHT_GRAY_CONCRETE_POWDER;
+        }
         if (random.nextFloat() > .02) {
             return Material.ANDESITE;
         } else {

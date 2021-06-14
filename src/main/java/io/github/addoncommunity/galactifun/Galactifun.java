@@ -16,6 +16,7 @@ import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import io.github.addoncommunity.galactifun.base.GeneratedItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.GalacticExplorer;
 import io.github.addoncommunity.galactifun.core.StargateListener;
@@ -51,6 +52,7 @@ public final class Galactifun extends AbstractAddon {
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
+        GeneratedItems.setup();
 
         registerListener(new StargateListener());
 

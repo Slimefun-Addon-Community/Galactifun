@@ -39,6 +39,9 @@ public final class CoreCategory {
     public static final Category MACHINES = new SubCategory(
             Galactifun.inst().getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
     );
+    public static final Category BLOCKS = new SubCategory(
+            Galactifun.inst().getKey("blocks"), new CustomItem(Material.COBBLESTONE, "&fGalactifun Blocks")
+    );
 
     public static void setup(Galactifun galactifun) {
         Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
@@ -49,7 +52,7 @@ public final class CoreCategory {
 
         new MultiCategory(galactifun.getKey("main"),
                 new CustomItem(Material.BEACON, "&bGalactifun"),
-                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, universe, assembly
+                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, assembly
         ).register(galactifun);
     }
     

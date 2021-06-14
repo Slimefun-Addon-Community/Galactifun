@@ -17,13 +17,5 @@ aliens:
 
 rockets:
 
-  # the messages that pop up during launch
-  launch-msgs:
-  - Forgetting parachutes
-  - Restocking snack bin
-  - Aligning planets
-  - Igniting sun
-  - Inventing funny launch messages
-  - Thanking TheBusyBiscuit
-  - Faking Moon landings
-  - Taking one small step
+  # the messages that pop up during launch, commented out because of infinitylib problems
+  #launch-msgs: [ Forgetting parachutes, Restocking snack bin, Aligning planets, Igniting sun, Inventing funny launch messages, Thanking TheBusyBiscuit, Faking Moon landings, Taking one small step ]
