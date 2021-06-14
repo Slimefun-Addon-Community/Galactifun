@@ -3,7 +3,9 @@ package io.github.addoncommunity.galactifun.api.worlds;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,6 +31,7 @@ public final class WorldManager implements Listener, Runnable {
 
     private final AlienManager alienManager;
     private final Map<World, CelestialWorld> worlds = new HashMap<>();
+    private final Set<CelestialWorld> allWorlds = new HashSet<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
 
     public WorldManager(Galactifun galactifun, AlienManager alienManager) {
@@ -39,11 +42,16 @@ public final class WorldManager implements Listener, Runnable {
     }
 
     public void register(AlienWorld world) {
-        this.alienWorlds.put(world.getWorld(), world);
+        if (world.getWorld() != null) {
+            this.alienWorlds.put(world.getWorld(), world);
+        }
     }
 
     public void register(CelestialWorld world) {
-        this.worlds.put(world.getWorld(), world);
+        this.allWorlds.add(world);
+        if (world.getWorld() != null) {
+            this.worlds.put(world.getWorld(), world);
+        }
     }
 
     @Nullable
@@ -57,8 +65,13 @@ public final class WorldManager implements Listener, Runnable {
     }
 
     @Nonnull
-    public Collection<CelestialWorld> getWorlds() {
+    public Collection<CelestialWorld> getEnabledWorlds() {
         return Collections.unmodifiableCollection(this.worlds.values());
+    }
+
+    @Nonnull
+    public Collection<CelestialWorld> getAllWorlds() {
+        return Collections.unmodifiableCollection(this.allWorlds);
     }
 
     @Override

@@ -2,6 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
@@ -30,6 +31,9 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     @Getter
     @Nonnull
     protected final String name;
+
+    @Getter
+    protected final String id;
     
     @Nonnull
     private final Orbit orbit;
@@ -56,6 +60,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
         
         this.orbit = orbit;
         this.name = ChatUtils.removeColorCodes(name);
+        this.id = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         this.item = new CustomItem(choice.getItem(), ChatColor.AQUA + name);
         this.type = type;
     }

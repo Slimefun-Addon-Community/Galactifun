@@ -126,7 +126,7 @@ public final class Rocket extends SlimefunItem {
         long maxDistance = Math.round(2_000_000 * (fuel * trueEff));
 
         List<CelestialWorld> reachable = new ArrayList<>();
-        for (CelestialWorld celestialWorld : manager.getWorlds()) {
+        for (CelestialWorld celestialWorld : manager.getEnabledWorlds()) {
             if (celestialWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance && celestialWorld.isReachableByRocket()) {
                 reachable.add(celestialWorld);
             }
