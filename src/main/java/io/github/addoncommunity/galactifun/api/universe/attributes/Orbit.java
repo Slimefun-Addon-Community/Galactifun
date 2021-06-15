@@ -60,7 +60,7 @@ public final class Orbit {
 
     public double getOrbitPos() {
         if (this.year == 0) return 0;
-        return ((System.currentTimeMillis() % this.year) * 360D) / this.year;
+        return ((System.currentTimeMillis() % this.year) * Math.PI * 2) / this.year;
     }
     
 }

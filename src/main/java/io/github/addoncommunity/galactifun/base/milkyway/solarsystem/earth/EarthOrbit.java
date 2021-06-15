@@ -11,7 +11,9 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -26,8 +28,9 @@ public final class EarthOrbit extends AlienWorld {
     private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
-    public EarthOrbit() {
-        super("Earth Orbit", Orbit.kilometers(24_000, 1), PlanetaryType.SPACE);
+    public EarthOrbit(PlanetaryObject earth) {
+        super("Earth Orbit", PlanetaryType.SPACE, Orbit.kilometers(24_000, 1), earth,
+                new ItemStack(Material.OBSIDIAN), DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Gravity.ZERO);
     }
     
     @Override
@@ -65,24 +68,6 @@ public final class EarthOrbit extends AlienWorld {
                 }
             }
         });
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.ETERNAL_NIGHT;
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return Atmosphere.NONE;
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.ZERO;
     }
 
 }

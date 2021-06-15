@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.aliens.BossBarStyle;
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 
 /**
  * Class for the Titan king, the boss bound on Titan
@@ -34,7 +34,7 @@ public final class TitanKing extends BossAlien<Evoker> {
         Mob entity = e.getEntity();
         if (e.getSpell() == Spellcaster.Spell.SUMMON_VEX) {
             for (int i = 0; i < 3; i++) {
-                ((Mob) BaseRegistry.LEECH.spawn(entity.getLocation(), entity.getWorld())).setTarget(entity.getTarget());
+                ((Mob) BaseUniverse.LEECH.spawn(entity.getLocation(), entity.getWorld())).setTarget(entity.getTarget());
             }
         } else if (e.getSpell() == Spellcaster.Spell.FANGS) {
             entity.addPotionEffect(new PotionEffect(

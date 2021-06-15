@@ -51,7 +51,7 @@ public final class StructureManager {
      * Gets a structure that was loaded from a file by name
      */
     @Nullable
-    public GalacticStructure getSavedStructure(String name) {
+    public GalacticStructure getSaved(String name) {
         return this.structures.get(name);
     }
 
@@ -59,7 +59,7 @@ public final class StructureManager {
      * Gets a structure or loads from a plugins resources
      */
     @Nonnull
-    public GalacticStructure getPluginStructure(JavaPlugin plugin, String name) {
+    public GalacticStructure getByPlugin(JavaPlugin plugin, String name) {
         if (!name.endsWith(".gs")) {
             name = name.concat(".gs");
         }

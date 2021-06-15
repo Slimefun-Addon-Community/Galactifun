@@ -8,7 +8,9 @@ import javax.annotation.Nonnull;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -24,31 +26,14 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
  */
 public final class TheMoon extends SimpleAlienWorld {
     
-    public TheMoon() {
-        super("The Moon", Orbit.kilometers(382_500L, 27), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
+    public TheMoon(PlanetaryObject earth) {
+        super("The Moon", PlanetaryType.TERRESTRIAL, Orbit.kilometers(382_500L, 27), earth,
+                new ItemStack(Material.ANDESITE), DayCycle.EARTH_LIKE, Atmosphere.NONE, Gravity.MOON_LIKE);
     }
     
     @Override
-    public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+    protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
         
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.EARTH_LIKE;
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return Atmosphere.NONE;
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.MOON_LIKE;
     }
 
     @Nonnull

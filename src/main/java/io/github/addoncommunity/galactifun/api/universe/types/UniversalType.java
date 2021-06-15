@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class UniversalType {
 
-    public static final UniversalType THE_UNIVERSE = new UniversalType("");
-
     @Getter
     private final String description;
     

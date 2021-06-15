@@ -10,9 +10,9 @@ import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
  *
  * @author Mooy1
  */
-public final class StarSystem extends UniversalObject<PlanetaryObject> {
+public final class StarSystem extends UniversalObject {
 
-    StarSystem(String name, StarSystemType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem) {
+    public StarSystem(String name, StarSystemType type, Orbit orbit, Galaxy orbiting, ItemStack baseItem) {
         super(name, type, orbit, orbiting, baseItem);
     }
 

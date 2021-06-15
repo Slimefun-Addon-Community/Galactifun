@@ -45,8 +45,7 @@ public final class AlienManager implements Listener, Runnable {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
     }
 
-    // TODO improve alien register system
-    public void register(Alien<?> alien) {
+    void register(Alien<?> alien) {
         this.aliens.put(alien.getId(), alien);
     }
 

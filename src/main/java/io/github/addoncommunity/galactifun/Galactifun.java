@@ -11,11 +11,12 @@ import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
+import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.base.GeneratedItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.GalacticExplorer;
@@ -23,7 +24,6 @@ import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
-import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -33,20 +33,27 @@ public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
 
-    private final StructureManager structureManager = new StructureManager(this);
-    private final AlienManager alienManager = new AlienManager(this);
-    private final WorldManager worldManager = new WorldManager(this);
-    private final TheUniverse theUniverse = new TheUniverse();
-    private final GalacticExplorer galacticExplorer = new GalacticExplorer(this);
+    private StructureManager structureManager;
+    private AlienManager alienManager;
+    private WorldManager worldManager;
+    private TheUniverse theUniverse;
+    private GalacticExplorer galacticExplorer;
+    private BaseUniverse baseUniverse;
 
     protected void enable() {
         instance = this;
 
-        BaseRegistry.setup();
+        this.structureManager = new StructureManager(this);
+        this.alienManager = new AlienManager(this);
+        this.worldManager = new WorldManager(this);
+        this.theUniverse =  new TheUniverse();
+        this.galacticExplorer = new GalacticExplorer(this);
+        this.baseUniverse = new BaseUniverse(this);
+
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        GeneratedItems.setup();
+        GeneratedItems.setup(this.baseUniverse);
 
         // log after startup
         runSync(() -> log(

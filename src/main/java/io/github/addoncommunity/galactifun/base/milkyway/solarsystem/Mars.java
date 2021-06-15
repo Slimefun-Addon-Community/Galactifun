@@ -11,12 +11,13 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
@@ -34,8 +35,15 @@ import io.github.addoncommunity.galactifun.util.Util;
  */
 public final class Mars extends SimpleAlienWorld {
 
-    public Mars() {
-        super("&cMars", Orbit.kilometers(227_943_824L, 687), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
+    public Mars(StarSystem starSystem) {
+        super("&cMars", PlanetaryType.TERRESTRIAL, Orbit.kilometers(227_943_824L, 687),
+                starSystem, new ItemStack(Material.RED_SAND), DayCycle.of(1, 1),
+                new AtmosphereBuilder()
+                        .add(Gas.CARBON_DIOXIDE, 94.9)
+                        .add(Gas.NITROGEN, 2.6)
+                        .add(Gas.ARGON, 1.9)
+                        .build(),
+                Gravity.metersPerSec(3.711));
     }
 
     @Nonnull
@@ -57,7 +65,7 @@ public final class Mars extends SimpleAlienWorld {
     protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull SimplexOctaveGenerator generator,
                                 @Nonnull Random random, int realX, int realZ, int x, int z, int height) {
         // generate caves
-        for (int y = 1; y <= height - 16; y++) {
+        for (int y = 1 ; y <= height - 16 ; y++) {
             double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
             // Choose a narrow selection of blocks
@@ -94,28 +102,6 @@ public final class Mars extends SimpleAlienWorld {
                 }
             }
         });
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.of(1, 1);
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder()
-                .add(Gas.CARBON_DIOXIDE, 94.9)
-                .add(Gas.NITROGEN, 2.6)
-                .add(Gas.ARGON, 1.9)
-                .build();
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.metersPerSec(3.711);
     }
 
 }

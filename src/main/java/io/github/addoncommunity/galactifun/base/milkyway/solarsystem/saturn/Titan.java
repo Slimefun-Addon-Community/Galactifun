@@ -15,12 +15,13 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
@@ -33,7 +34,7 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
  */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
-    private static final Set<Biome> forests = EnumSet.of(
+    private final Set<Biome> forests = EnumSet.of(
         Biome.FOREST,
         Biome.BIRCH_FOREST,
         Biome.TALL_BIRCH_FOREST,
@@ -45,8 +46,16 @@ public final class Titan extends AlienWorld {
         Biome.WOODED_MOUNTAINS
     );
 
-    public Titan() {
-        super("&6Titan", Orbit.kilometers(1_200_000L, 16), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.SAND));
+    public Titan(PlanetaryObject saturn) {
+        super("&6Titan", PlanetaryType.TERRESTRIAL, Orbit.kilometers(1_200_000L, 16), saturn,
+                new ItemStack(Material.SAND), DayCycle.EARTH_LIKE,
+                new AtmosphereBuilder().enableWeather().enableFire()
+                        .add(Gas.NITROGEN, 97)
+                        .add(Gas.METHANE, 2.7)
+                        .add(Gas.HYDROCARBONS, 0.2)
+                        .add(Gas.HYDROGEN, 0.1)
+                        .build(),
+                Gravity.metersPerSec(1.352));
     }
 
     @Override
@@ -55,20 +64,14 @@ public final class Titan extends AlienWorld {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
         generator.setScale(0.004);
 
-        int height;
-        int x;
-        int z;
-        int realX;
-        int realZ;
-
-        for (x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
-            for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
+        for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
                 // find max height
                 double startHeight = generator.noise(realX, realZ, 0.5, 0.5, true);
-                height = (int) (55 + 30 * + (startHeight * startHeight));
+                int height = (int) (55 + 30 * + (startHeight * startHeight));
 
                 Biome biome = grid.getBiome(x, height, z);
 
@@ -187,7 +190,7 @@ public final class Titan extends AlienWorld {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    if (forests.contains(b.getBiome())) {
+                    if (Titan.this.forests.contains(b.getBiome())) {
                         if (random.nextBoolean()) {
                             world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
                         } else {
@@ -211,29 +214,6 @@ public final class Titan extends AlienWorld {
                 }
             }
         });
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.EARTH_LIKE;
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder().enableWeather().enableFire()
-            .add(Gas.NITROGEN, 97)
-            .add(Gas.METHANE, 2.7)
-            .add(Gas.HYDROCARBONS, 0.2)
-            .add(Gas.HYDROGEN, 0.1)
-            .build();
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.metersPerSec(1.352);
     }
 
 }

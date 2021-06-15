@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -27,7 +28,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.util.Vector;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
@@ -48,16 +48,21 @@ public abstract class Alien<T extends Mob> {
     private final Class<T> clazz;
     private final String id;
     private final String name;
+    private AlienManager alienManager;
 
-    public Alien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+    public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name) {
         this.clazz = clazz;
-        Validate.notNull(this.id = id);
-        Validate.notNull(this.name = ChatColors.color(name));
+        this.id = id;
+        this.name = ChatColors.color(name);
+
         Validate.isTrue(getMaxHealth() > 0);
         Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
         Validate.notNull(getSpawnOffset());
+    }
 
-        Galactifun.inst().getAlienManager().register(this);
+    public final void register(@NonNull AlienManager manager) {
+        this.alienManager = manager;
+        manager.register(this);
     }
 
     @Nonnull
@@ -65,7 +70,7 @@ public abstract class Alien<T extends Mob> {
         T mob = world.spawn(loc, this.clazz);
 
         // TODO better way to access key
-        PersistentDataAPI.setString(mob, Galactifun.inst().getAlienManager().getKey(), this.id);
+        PersistentDataAPI.setString(mob, this.alienManager.getKey(), this.id);
 
         Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(getMaxHealth());
         mob.setHealth(getMaxHealth());

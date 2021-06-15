@@ -10,7 +10,9 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -20,51 +22,33 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 
 public final class Europa extends AlienWorld {
 
-    public Europa() {
-        super("&bEuropa", Orbit.kilometers(671_100, 3), PlanetaryType.FROZEN, new ItemChoice(Material.ICE));
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.ETERNAL_NIGHT;
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return Atmosphere.NONE;
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.metersPerSec(1.315);
+    public Europa(PlanetaryObject jupiter) {
+        super("&bEuropa", PlanetaryType.FROZEN,Orbit.kilometers(671_100, 3), jupiter,
+                new ItemStack(Material.ICE), DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Gravity.metersPerSec(1.315));
     }
 
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid, @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        int x;
-        int y;
-        int z;
-        for (x = 0; x < 16; x++) {
-            for (z = 0; z < 16; z++) {
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
+                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
 
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
 
-                for (y = 1 ; y <= 30 ; y++) {
-                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
+                int y = 1;
+                while (y <= 30) {
+                    chunk.setBlock(x, y++, z, Material.PACKED_ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
-                for (; y <= 60 ; y++) {
-                    chunk.setBlock(x, y, z, Material.ICE);
+                while (y <= 60) {
+                    chunk.setBlock(x, y++, z, Material.ICE);
                     grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
                 }
 
-                for (; y < 256 ; y++) {
-                    grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
+                while (y < 256) {
+                    grid.setBiome(x, y++, z, Biome.FROZEN_OCEAN);
                 }
             }
         }
@@ -79,4 +63,5 @@ public final class Europa extends AlienWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
 
     }
+
 }

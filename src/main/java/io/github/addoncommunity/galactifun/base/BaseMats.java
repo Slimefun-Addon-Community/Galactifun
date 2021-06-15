@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.base;
 
-import java.util.Arrays;
-
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -296,20 +294,20 @@ public final class BaseMats {
                 null, null, null,
                 null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        createComponent(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseRegistry.MARS.getItem());
+        createComponent(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, Galactifun.inst().getBaseUniverse().getMars().getItem());
         createComponent(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
     }
 
     private static void createComponent(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9)).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe).register(Galactifun.inst());
     }
 
     private static void createComponent(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9), new SlimefunItemStack(item, output)).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.inst());
     }
 
     private static void createAssembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.inst());
     }
 
 }

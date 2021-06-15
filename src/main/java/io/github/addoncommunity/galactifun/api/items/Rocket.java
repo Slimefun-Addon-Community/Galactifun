@@ -33,7 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.google.common.collect.BiMap;
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -101,7 +101,7 @@ public final class Rocket extends SlimefunItem {
         }
 
         WorldManager manager = Galactifun.inst().getWorldManager();
-        CelestialWorld world = manager.getWorld(p.getWorld());
+        PlanetaryWorld world = manager.getWorld(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
             return;
@@ -125,10 +125,10 @@ public final class Rocket extends SlimefunItem {
         double trueEff = eff / fuel;
         long maxDistance = Math.round(2_000_000 * (fuel * trueEff));
 
-        List<CelestialWorld> reachable = new ArrayList<>();
-        for (CelestialWorld celestialWorld : manager.getWorlds()) {
-            if (celestialWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance && celestialWorld.isReachableByRocket()) {
-                reachable.add(celestialWorld);
+        List<PlanetaryWorld> reachable = new ArrayList<>();
+        for (PlanetaryWorld planetaryWorld : manager.getEnabledWorlds()) {
+            if (planetaryWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance && planetaryWorld.isReachableByRocket()) {
+                reachable.add(planetaryWorld);
             }
         }
 
@@ -141,9 +141,9 @@ public final class Rocket extends SlimefunItem {
         menu.setEmptySlotsClickable(false);
 
         int i = 0;
-        for (CelestialWorld celestialWorld : reachable) {
-            double distance = celestialWorld.getDistanceTo(world);
-            ItemStack item = celestialWorld.getItem().clone();
+        for (PlanetaryWorld planetaryWorld : reachable) {
+            double distance = planetaryWorld.getDistanceTo(world);
+            ItemStack item = planetaryWorld.getItem().clone();
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
             if (lore != null) {
@@ -166,7 +166,7 @@ public final class Rocket extends SlimefunItem {
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
                 int usedFuel = (int) Math.ceil(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);
-                p1.sendMessage(ChatColor.YELLOW + "You are going to " + celestialWorld.getName() + " and will use " +
+                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.getName() + " and will use " +
                     usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {
                     if (input.equalsIgnoreCase("yes")) {
@@ -177,7 +177,7 @@ public final class Rocket extends SlimefunItem {
                                 String[] split = Util.SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
-                                launch(p1, b, celestialWorld, fuel - usedFuel, trueEff, x, z);
+                                launch(p1, b, planetaryWorld, fuel - usedFuel, trueEff, x, z);
                             } else {
                                 p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
                             }
@@ -191,7 +191,7 @@ public final class Rocket extends SlimefunItem {
         menu.open(p);
     }
     
-    private void launch(@Nonnull Player p, @Nonnull Block b, CelestialWorld worldTo, int fuelLeft, double eff, int x, int z) {
+    private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, double eff, int x, int z) {
         
         // yes ik boolean#tostring isn't needed but just for safety
         BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));

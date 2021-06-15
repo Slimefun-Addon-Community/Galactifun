@@ -15,6 +15,7 @@ import io.github.addoncommunity.galactifun.core.CoreRecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
+// TODO improve registering generated items
 @UtilityClass
 public final class GeneratedItems {
 
@@ -36,10 +37,10 @@ public final class GeneratedItems {
             "&bDry Ice"
     );
 
-    public static void setup() {
-        register(MOON_DUST, BaseRegistry.THE_MOON);
-        register(MARS_DUST, BaseRegistry.MARS);
-        register(DRY_ICE, BaseRegistry.MARS, BaseRegistry.TITAN_MOON);
+    public static void setup(BaseUniverse baseUniverse) {
+        register(MOON_DUST, baseUniverse.getTheMoon());
+        register(MARS_DUST, baseUniverse.getMars());
+        register(DRY_ICE, baseUniverse.getMars(), baseUniverse.getTitan());
     }
 
     private static void register(@Nonnull SlimefunItemStack item, @Nonnull AlienWorld... worlds) {

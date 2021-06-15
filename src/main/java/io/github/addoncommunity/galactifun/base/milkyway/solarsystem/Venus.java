@@ -5,16 +5,15 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.GameRule;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
@@ -30,35 +29,20 @@ import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulato
  */
 public final class Venus extends SimpleAlienWorld {
 
-    public Venus() {
-        super("Venus", Orbit.kilometers(108_860_000L, 225), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
+    public Venus(StarSystem starSystem) {
+        super("Venus", PlanetaryType.TERRESTRIAL, Orbit.kilometers(108_860_000L, 225),
+                starSystem, new ItemStack(Material.BLACK_TERRACOTTA), DayCycle.days(117),
+                new AtmosphereBuilder()
+                        .setNether().addStorm().addThunder()
+                        .addEffects(AtmosphericEffect.RADIATION)
+                        .add(Gas.CARBON_DIOXIDE, 96.5).add(Gas.NITROGEN, 3.5).build(),
+                Gravity.metersPerSec(8.87));
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new VolcanoPopulator(117, Material.OBSIDIAN, Material.LAVA));
         populators.add(new LakePopulator(80, Material.LAVA));
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.days(117);
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return new AtmosphereBuilder()
-                .setNether().addStorm().addThunder()
-                .addEffects(AtmosphericEffect.RADIATION)
-                .add(Gas.CARBON_DIOXIDE, 96.5).add(Gas.NITROGEN, 3.5).build();
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.metersPerSec(8.87);
     }
 
     @Nonnull
@@ -73,11 +57,6 @@ public final class Venus extends SimpleAlienWorld {
         } else {
             return Material.BASALT;
         }
-    }
-
-    @Override
-    protected void afterWorldLoad(@Nonnull World world) {
-        world.setGameRule(GameRule.DO_FIRE_TICK, false);
     }
 
     @Nonnull

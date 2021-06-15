@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -16,14 +17,22 @@ import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
  * @author Mooy1
  */
 @Getter
-public abstract class PlanetaryObject extends UniversalObject<PlanetaryObject> {
+public class PlanetaryObject extends UniversalObject {
 
     private final DayCycle dayCycle;
     private final Atmosphere atmosphere;
     private final Gravity gravity;
 
-    PlanetaryObject(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting,
-                    ItemStack baseItem, DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+    public PlanetaryObject(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+                           @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem);
+        this.dayCycle = dayCycle;
+        this.atmosphere = atmosphere;
+        this.gravity = gravity;
+    }
+
+    public PlanetaryObject(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                           @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;

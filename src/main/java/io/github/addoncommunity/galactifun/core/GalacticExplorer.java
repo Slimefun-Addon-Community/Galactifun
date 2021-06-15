@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
-import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.presets.LorePreset;
@@ -73,7 +73,7 @@ public final class GalacticExplorer {
             });
         }
         
-        CelestialWorld current = this.worldManager.getWorld(p.getWorld());
+        PlanetaryWorld current = this.worldManager.getWorld(p.getWorld());
         boolean known = current != null;
 
         // objects

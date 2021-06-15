@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -19,40 +20,50 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
  * Any object in the universe
  * 
  * @author Mooy1
- *
- * @param <T> The type of object that orbits this
  */
-@Getter
-public abstract class UniversalObject<T extends UniversalObject<?>> {
+public abstract class UniversalObject {
 
-    private final List<UniversalObject<?>> orbiters = new ArrayList<>();
+    @Getter
+    private final List<UniversalObject> orbiters = new ArrayList<>();
+    @Getter
     private final String name;
+    @Getter
     private final ItemStack item;
-    private final UniversalType type;
     private final Orbit orbit;
-    private final UniversalObject<? extends UniversalObject<T>> orbiting;
+    @Getter
+    private final UniversalObject orbiting;
     private final int orbitLevel;
 
-    UniversalObject(String name, UniversalType type, Orbit orbit, UniversalObject<UniversalObject<T>> orbiting, ItemStack baseItem) {
+    UniversalObject(@NonNull String name, @NonNull UniversalType type, @NonNull Orbit orbit,
+                    @NonNull UniversalObject orbiting, @NonNull ItemStack baseItem) {
         this.name = ChatColor.stripColor(ChatColors.color(name));
-        this.type = type;
-        this.orbit = orbit;
-        this.orbiting = orbiting;
-        this.orbitLevel = orbiting == null ? 0 : orbiting.getOrbitLevel();
         this.item = new CustomItem(baseItem, name, "&7Type: " + type.getDescription());
+        this.orbiting = orbiting;
+        this.orbit = orbit;
+        this.orbitLevel = orbiting.orbitLevel + 1;
+        orbiting.orbiters.add(this);
+    }
+
+    /**
+     * Constructor for the universe
+     */
+    UniversalObject(String name) {
+        this.name = ChatColor.stripColor(ChatColors.color(name));
+        this.item = null;
+        this.orbiting = null;
+        this.orbit = null;
+        this.orbitLevel = 0;
     }
 
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double getDistanceTo(@Nonnull UniversalObject<?> other) {
+    public final double getDistanceTo(@Nonnull UniversalObject other) {
         if (this.orbiting == other.orbiting) {
-            double thisDist1 = this.orbit.getCurrentDistance();
-            double otherDist1 = other.orbit.getCurrentDistance();
-            double thisDist2 = thisDist1 * thisDist1;
-            double otherDist2 = otherDist1 * otherDist1;
-            double angle = this.orbit.getOrbitPos() - other.orbit.getOrbitPos();
-            return Math.sqrt(thisDist2 + otherDist2 - (2 * thisDist1 * otherDist1 * Math.cos(Math.toRadians(angle))));
+            double thisDist = this.orbit.getCurrentDistance();
+            double otherDist = other.orbit.getCurrentDistance();
+            double cosAngle = Math.cos(this.orbit.getOrbitPos() - other.orbit.getOrbitPos());
+            return Math.sqrt(thisDist * thisDist + otherDist * otherDist - (2 * thisDist * otherDist * cosAngle));
         }
         if (this.orbiting == null || this.orbitLevel < other.orbitLevel) {
             return other.orbit.getCurrentDistance() + getDistanceTo(other.orbiting);

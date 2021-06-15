@@ -8,7 +8,9 @@ import javax.annotation.Nonnull;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -20,26 +22,9 @@ import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulato
 
 public final class Io extends SimpleAlienWorld {
 
-    public Io() {
-        super("&6Io", Orbit.kilometers(421_800L, 2), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
-    }
-
-    @Nonnull
-    @Override
-    protected DayCycle createDayCycle() {
-        return DayCycle.hours(42);
-    }
-
-    @Nonnull
-    @Override
-    protected Atmosphere createAtmosphere() {
-        return Atmosphere.NONE;
-    }
-
-    @Nonnull
-    @Override
-    protected Gravity createGravity() {
-        return Gravity.metersPerSec(1.796);
+    public Io(PlanetaryObject jupiter) {
+        super("&6Io", PlanetaryType.TERRESTRIAL, Orbit.kilometers(421_800L, 2), jupiter,
+                new ItemStack(Material.LAVA_BUCKET), DayCycle.hours(42), Atmosphere.NONE, Gravity.metersPerSec(1.796));
     }
 
     @Override

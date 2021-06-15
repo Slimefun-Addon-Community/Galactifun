@@ -88,7 +88,7 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            GalacticStructure loaded = this.manager.getSavedStructure(args[2]);
+            GalacticStructure loaded = this.manager.getSaved(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
