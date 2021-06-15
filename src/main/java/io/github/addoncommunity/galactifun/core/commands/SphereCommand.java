@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.util.Sphere;
-import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
 public final class SphereCommand extends AbstractCommand {
@@ -58,13 +57,8 @@ public final class SphereCommand extends AbstractCommand {
             }
         }
         
-        Sphere sphere = new Sphere(materials);
-        
-        double time = System.nanoTime();
-        
-        sphere.generate(target, radius, 0);
-        
-        p.sendMessage(ChatColor.GREEN + "Generated in " + Util.timeSince(time));
+        new Sphere(materials).generate(target, radius, 0);
+        p.sendMessage(ChatColor.GREEN + "Generated!");
     }
 
     @Override

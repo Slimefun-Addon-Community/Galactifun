@@ -14,9 +14,9 @@ import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.aliens.BossBarStyle;
-import io.github.addoncommunity.galactifun.base.BaseUniverse;
 
 /**
  * Class for the Titan king, the boss bound on Titan
@@ -25,8 +25,12 @@ import io.github.addoncommunity.galactifun.base.BaseUniverse;
  */
 public final class TitanKing extends BossAlien<Evoker> {
 
-    public TitanKing() {
-        super(Evoker.class, "TITAN_KING", "Titan King");
+    private final Alien<?> leech;
+
+    public TitanKing(Alien<?> leech) {
+        super(Evoker.class, "TITAN_KING", "Titan King",
+                new BossBarStyle(BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY));
+        this.leech = leech;
     }
 
     @Override
@@ -34,7 +38,7 @@ public final class TitanKing extends BossAlien<Evoker> {
         Mob entity = e.getEntity();
         if (e.getSpell() == Spellcaster.Spell.SUMMON_VEX) {
             for (int i = 0; i < 3; i++) {
-                ((Mob) BaseUniverse.LEECH.spawn(entity.getLocation(), entity.getWorld())).setTarget(entity.getTarget());
+                this.leech.spawn(entity.getLocation(), entity.getWorld()).setTarget(entity.getTarget());
             }
         } else if (e.getSpell() == Spellcaster.Spell.FANGS) {
             entity.addPotionEffect(new PotionEffect(
@@ -58,12 +62,6 @@ public final class TitanKing extends BossAlien<Evoker> {
         if (e.getDamager() instanceof Projectile) {
             e.setCancelled(true);
         }
-    }
-
-    @Nonnull
-    @Override
-    protected BossBarStyle createBossBarStyle() {
-        return new BossBarStyle("Titan King", BarColor.BLUE, BarStyle.SOLID, BarFlag.CREATE_FOG, BarFlag.DARKEN_SKY);
     }
 
     @Override

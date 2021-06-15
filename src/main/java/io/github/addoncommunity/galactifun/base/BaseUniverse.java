@@ -11,7 +11,6 @@ import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
-import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
@@ -45,6 +44,13 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Tita
 @Getter
 public final class BaseUniverse {
 
+    private final Alien<?> martian;
+    private final Alien<?> mutantCreeper;
+    private final Alien<?> titanAlien;
+    private final Alien<?> leech;
+    private final Alien<?> skywhale;
+    private final Alien<?> titanKing;
+
     private final Galaxy milkyWay;
 
     private final StarSystem solarSystem;
@@ -63,39 +69,34 @@ public final class BaseUniverse {
     private final AlienWorld titan;
     private final AlienWorld enceladus;
 
-    private final Alien<?> martian;
-    private final Alien<?> mutantCreeper;
-    private final Alien<?> titanAlien;
-    private final Alien<?> leech;
-    private final Alien<?> skywhale;
-    private final Alien<?> titanKing;
-
     public BaseUniverse(Galactifun galactifun) {
-        TheUniverse theUniverse = galactifun.getTheUniverse();
-        WorldManager worldManager = galactifun.getWorldManager();
         AlienManager alienManager = galactifun.getAlienManager();
 
+        this.mutantCreeper = new MutantCreeper().register(alienManager);
+        this.martian = new Martian().register(alienManager);
+        this.leech = new Leech().register(alienManager);
+        this.skywhale = new Skywhale().register(alienManager);
+        this.titanKing = new TitanKing(this.leech).register(alienManager);
+        this.titanAlien = new TitanAlien().register(alienManager);
+
+        WorldManager worldManager = galactifun.getWorldManager();
+
+        // TODO move constructor stuff here and leave classes with only functionality
+
         this.milkyWay = new Galaxy("Milky Way", GalaxyType.SPIRAL,
-                Orbit.lightYears(12_000_000_000D, 0), theUniverse, new ItemStack(Material.MILK_BUCKET));
+                Orbit.lightYears(12_000_000_000D, 0), galactifun.getTheUniverse(), new ItemStack(Material.MILK_BUCKET));
         this.solarSystem = new StarSystem("Solar System", StarSystemType.NORMAL,
                 Orbit.lightYears(27_000, 250_000_000D), this.milkyWay, new ItemStack(Material.SUNFLOWER));
-        this.venus = new Venus(this.solarSystem).register(worldManager);
-        this.earth = new Earth(this.solarSystem).register(worldManager);
-        this.mutantCreeper = new MutantCreeper();
-        this.theMoon = new TheMoon(this.earth).addSpecies(this.mutantCreeper).register(worldManager);
-        this.earthOrbit = new EarthOrbit(this.earth);
-        this.martian = new Martian();
-        this.mars = new Mars(this.solarSystem).addSpecies(this.martian).register(worldManager);
         this.jupiter = new Jupiter(this.solarSystem);
         this.io = new Io(this.jupiter);
         this.europa = new Europa(this.jupiter);
         this.saturn = new Saturn(this.solarSystem);
-        this.titanAlien = new TitanAlien();
-        this.leech = new Leech();
-        this.skywhale = new Skywhale();
-        this.titanKing = new TitanKing();
-        this.titan = new Titan(this.saturn)
-                .addSpecies(this.titanAlien, this.leech, this.skywhale, this.titanKing).register(worldManager);
+        this.earth = new Earth(this.solarSystem).register(worldManager);
+        this.earthOrbit = new EarthOrbit(this.earth);
+        this.venus = new Venus(this.solarSystem).register(worldManager);
+        this.theMoon = new TheMoon(this.earth).addSpecies(this.mutantCreeper).register(worldManager);
+        this.mars = new Mars(this.solarSystem).addSpecies(this.martian).register(worldManager);
+        this.titan = new Titan(this.saturn).addSpecies(this.titanAlien, this.leech, this.skywhale, this.titanKing).register(worldManager);
         this.enceladus = new Enceladus(galactifun, this.saturn).register(worldManager);
     }
 

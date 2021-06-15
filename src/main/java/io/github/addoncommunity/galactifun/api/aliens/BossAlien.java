@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
+import lombok.NonNull;
+
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
@@ -19,7 +21,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
-import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien boss
@@ -30,19 +31,19 @@ import org.apache.commons.lang.Validate;
  * @author GallowsDove
  *
  */
-
+// TODO cleanup bossbar stuff
 public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
-    // TODO move static
+    // TODO move stuff to alien manager
     private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+    public BossAlien(Class<T> clazz, String id, String name, @NonNull BossBarStyle style) {
         super(clazz, id, name);
-        Validate.notNull(this.style = createBossBarStyle());
+        this.style = style;
     }
     
     /**
@@ -57,7 +58,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull T spawned) {
-        BossBar bossbar = this.style.create(KEY);
+        BossBar bossbar = this.style.create(KEY, getName());
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
         spawned.setRemoveWhenFarAway(false);
@@ -142,7 +143,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             return instances.get(entity);
         }
 
-        BossBar bossbar = this.style.create(KEY);
+        BossBar bossbar = this.style.create(KEY, getName());
         bossbar.setVisible(true);
         bossbar.setProgress(entity.getHealth() / getMaxHealth());
         instances.put(entity, bossbar);
@@ -155,9 +156,5 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             bossbar.removeAll();
         }
     }
-
-    // TODO maybe add a default style?
-    @Nonnull
-    protected abstract BossBarStyle createBossBarStyle();
 
 }

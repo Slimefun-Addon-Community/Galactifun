@@ -60,16 +60,16 @@ public abstract class Alien<T extends Mob> {
         Validate.notNull(getSpawnOffset());
     }
 
-    public final void register(@NonNull AlienManager manager) {
+    public final Alien<?> register(@NonNull AlienManager manager) {
         this.alienManager = manager;
         manager.register(this);
+        return this;
     }
 
     @Nonnull
     public final T spawn(@Nonnull Location loc, @Nonnull World world) {
         T mob = world.spawn(loc, this.clazz);
 
-        // TODO better way to access key
         PersistentDataAPI.setString(mob, this.alienManager.getKey(), this.id);
 
         Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(getMaxHealth());
@@ -139,6 +139,7 @@ public abstract class Alien<T extends Mob> {
      * @param mob the mob
      */
     protected void getGoals(@Nonnull Map<AbstractGoal<T>, Integer> goals, @Nonnull T mob) {
+
     }
 
     protected abstract int getMaxHealth();

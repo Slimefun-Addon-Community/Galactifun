@@ -32,7 +32,7 @@ public final class GalacticExplorer {
 
     private final TheUniverse theUniverse;
     private final WorldManager worldManager;
-    private final Map<UUID, UniversalObject<?>> history = new HashMap<>();
+    private final Map<UUID, UniversalObject> history = new HashMap<>();
 
     public GalacticExplorer(Galactifun galactifun) {
         this.theUniverse = galactifun.getTheUniverse();
@@ -43,9 +43,9 @@ public final class GalacticExplorer {
         open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> this.theUniverse), exitHandler, false);
     }
     
-    private void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {
+    private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
-        List<UniversalObject<?>> orbiters = object.getOrbiters();
+        List<UniversalObject> orbiters = object.getOrbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
@@ -78,7 +78,7 @@ public final class GalacticExplorer {
 
         // objects
         for (int i = 0 ; i < Math.min(52, orbiters.size()); i++) {
-            UniversalObject<?> orbiter = orbiters.get(i);
+            UniversalObject orbiter = orbiters.get(i);
             ItemStack item = orbiter.getItem();
             
             if (known) {
