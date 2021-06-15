@@ -1,9 +1,10 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
+import java.io.IOException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -18,7 +19,6 @@ import org.apache.commons.lang.Validate;
  *            {@link Long}, or {@link Double}</b>
  */
 @ToString
-@EqualsAndHashCode
 public final class WorldSetting<T> {
 
     private final CelestialWorld world;
@@ -46,7 +46,7 @@ public final class WorldSetting<T> {
 
 
         // gets value or saves the default
-        FileConfiguration config = Galactifun.inst().getWorldConfig();
+        FileConfiguration config = Galactifun.inst().getWorldManager().getWorldConfig();
         ConfigurationSection section = config.getConfigurationSection(this.world.getId());
         if (section == null) {
             section = config.createSection(this.world.getId());
@@ -77,16 +77,14 @@ public final class WorldSetting<T> {
         this.value = newValue;
     }
 
-    public void save(@Nonnull FileConfiguration config) {
-        config.set(world.getId() + '.' + key, value);
-    }
-
-    public static void saveAll() {
-        FileConfiguration config = Galactifun.inst().getWorldConfig();
+    public static void saveAll() throws IOException {
+        FileConfiguration config = Galactifun.inst().getWorldManager().getWorldConfig();
         for (CelestialWorld world : Galactifun.inst().getWorldManager().getAllWorlds()) {
             for (WorldSetting<?> worldSetting : world.getWorldSettings()) {
-                worldSetting.save(config);
+                config.set(world.getId() + '.' + worldSetting.key, worldSetting.value);
             }
         }
+
+        config.save(Galactifun.inst().getWorldManager().getWorldConfigFile());
     }
 }

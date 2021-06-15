@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,10 +13,14 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import lombok.Getter;
+
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
@@ -33,12 +40,30 @@ public final class WorldManager implements Listener, Runnable {
     private final Map<World, CelestialWorld> worlds = new HashMap<>();
     private final Set<CelestialWorld> allWorlds = new HashSet<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
+    @Getter
+    private final File worldConfigFile;
+    @Getter
+    private final YamlConfiguration worldConfig;
 
     public WorldManager(Galactifun galactifun, AlienManager alienManager) {
         this.alienManager = alienManager;
 
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(this, 100);
+
+        this.worldConfigFile = new File("plugins/Galactifun", "worlds.yml");
+        this.worldConfig = new YamlConfiguration();
+        try {
+            try {
+                this.worldConfig.load(this.worldConfigFile);
+            } catch (FileNotFoundException e) {
+                this.worldConfigFile.createNewFile();
+            } catch (InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void register(AlienWorld world) {

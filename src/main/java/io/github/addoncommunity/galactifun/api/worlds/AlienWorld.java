@@ -70,7 +70,7 @@ public abstract class AlienWorld extends CelestialWorld {
     protected World loadWorld() {
         Galactifun.inst().log(Level.INFO, "Loading planet " + this.name);
 
-        boolean enabled = Galactifun.inst().getWorldConfig().getBoolean(this.id + ".enabled", enabledByDefault());
+        boolean enabled = Galactifun.inst().getWorldManager().getWorldConfig().getBoolean(this.id + ".enabled", enabledByDefault());
         if (!enabled) {
             return null;
         }

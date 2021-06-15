@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base;
 
+import java.util.Arrays;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -9,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
@@ -48,13 +51,11 @@ public final class GeneratedItems {
 
     @ParametersAreNonnullByDefault
     private static void register(Material mat, SlimefunItemStack item, AlienWorld... worlds) {
-        for (AlienWorld world : worlds) {
-            new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, new ItemStack[]{
-                    world.getItem(), null, null,
-                    null, null, null,
-                    null, null, null
-            }).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN,
+                Arrays.stream(worlds).map(UniversalObject::getItem).limit(9).toArray(ItemStack[]::new))
+                .register(Galactifun.inst());
 
+        for (AlienWorld world : worlds) {
             world.addBlockMapping(mat, item);
         }
     }

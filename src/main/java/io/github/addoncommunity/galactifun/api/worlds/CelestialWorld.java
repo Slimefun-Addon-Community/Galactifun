@@ -53,7 +53,7 @@ public abstract class CelestialWorld extends CelestialBody {
     @Nullable
     protected abstract World loadWorld();
 
-    public void addWorldSetting(@Nonnull WorldSetting<?> setting) {
+    public final void addWorldSetting(@Nonnull WorldSetting<?> setting) {
         worldSettings.add(setting);
     }
 

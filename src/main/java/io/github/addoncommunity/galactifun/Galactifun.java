@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +9,6 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
@@ -43,9 +41,9 @@ public final class Galactifun extends AbstractAddon {
     private TheUniverse theUniverse;
     private GalacticExplorer galacticExplorer;
 
-    @Getter
-    private YamlConfiguration worldConfig;
-    private File worldConfigFile;
+    public static Galactifun inst() {
+        return instance;
+    }
 
     protected void enable() {
         instance = this;
@@ -54,16 +52,6 @@ public final class Galactifun extends AbstractAddon {
         this.alienManager = new AlienManager(this);
         this.worldManager = new WorldManager(this, this.alienManager);
         this.galacticExplorer = new GalacticExplorer(this.theUniverse, this.worldManager);
-
-        this.worldConfigFile = new File("plugins/Galactifun", "worlds.yml");
-        if (!this.worldConfigFile.exists()) {
-            try {
-                this.worldConfigFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.worldConfig = YamlConfiguration.loadConfiguration(this.worldConfigFile);
 
         StructureRegistry.loadStructureFolder(this);
         BaseRegistry.setup();
@@ -90,9 +78,8 @@ public final class Galactifun extends AbstractAddon {
     protected void disable() {
         // todo make better
         BossAlien.removeBossBars();
-        WorldSetting.saveAll();
         try {
-            this.worldConfig.save(this.worldConfigFile);
+            WorldSetting.saveAll();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,10 +116,6 @@ public final class Galactifun extends AbstractAddon {
     @Override
     public String getAutoUpdatePath() {
         return "auto-update";
-    }
-
-    public static Galactifun inst() {
-        return instance;
     }
 
 }
