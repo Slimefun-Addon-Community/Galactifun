@@ -1,15 +1,20 @@
 package io.github.addoncommunity.galactifun.api.universe.types;
 
-import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Interface for identifying enums in this package
  * 
  * @author Mooy1
  */
-public interface UniversalType {
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+public class UniversalType {
 
-    @Nonnull
-    String getName();
+    public static final UniversalType THE_UNIVERSE = new UniversalType("");
+
+    @Getter
+    private final String description;
     
 }

@@ -16,12 +16,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
-import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.StructureManager;
+import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Sphere;
 
 /**
@@ -31,11 +30,11 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private static final GalacticStructure CRYOVOLCANO = StructureRegistry.getGalactifunStructure("cryovolcano");
+    private static final GalacticStructure CRYOVOLCANO = StructureManager.getGalactifunStructure("cryovolcano");
     private static final Sphere WATER_POCKET = new Sphere(Material.WATER);
 
     public Enceladus() {
-        super("&bEnceladus", Orbit.kilometers(237_948L, 1), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEnceladus", Orbit.kilometers(237_948L, 1), PlanetaryType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Override

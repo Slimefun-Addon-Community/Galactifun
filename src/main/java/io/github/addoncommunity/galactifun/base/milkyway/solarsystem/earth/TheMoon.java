@@ -13,9 +13,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * The moon
@@ -26,7 +25,7 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
 public final class TheMoon extends SimpleAlienWorld {
     
     public TheMoon() {
-        super("The Moon", Orbit.kilometers(382_500L, 27), CelestialType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
+        super("The Moon", Orbit.kilometers(382_500L, 27), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.ANDESITE));
     }
     
     @Override

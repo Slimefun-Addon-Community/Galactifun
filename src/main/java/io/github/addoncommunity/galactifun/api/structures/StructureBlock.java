@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.structures;
+package io.github.addoncommunity.galactifun.api.structures;
 
 import java.util.EnumMap;
 

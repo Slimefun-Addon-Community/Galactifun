@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
@@ -28,7 +28,6 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter.Jup
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Saturn;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn.Titan;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * Registry of constants for the base celestial objects
@@ -41,17 +40,17 @@ public final class BaseRegistry {
 
     public static final AlienWorld VENUS = new Venus();
 
-    public static final CelestialBody EARTH = new Earth();
+    public static final PlanetaryObject EARTH = new Earth();
     public static final AlienWorld EARTH_ORBIT = new EarthOrbit();
     public static final AlienWorld THE_MOON = new TheMoon();
 
     public static final AlienWorld MARS = new Mars();
 
-    public static final CelestialBody JUPITER = new Jupiter();
+    public static final PlanetaryObject JUPITER = new Jupiter();
     public static final AlienWorld IO = new Io();
     public static final AlienWorld EUROPA = new Europa();
 
-    public static final CelestialBody SATURN = new Saturn();
+    public static final PlanetaryObject SATURN = new Saturn();
     public static final AlienWorld ENCELADUS = new Enceladus();
     public static final AlienWorld TITAN_MOON = new Titan();
 

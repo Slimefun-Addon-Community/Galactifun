@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -27,11 +28,10 @@ import org.bukkit.util.Vector;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.goals.AbstractGoal;
+import io.github.addoncommunity.galactifun.api.aliens.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
-import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien

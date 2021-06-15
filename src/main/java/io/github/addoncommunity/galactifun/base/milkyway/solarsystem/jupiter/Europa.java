@@ -15,14 +15,13 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 public final class Europa extends AlienWorld {
 
     public Europa() {
-        super("&bEuropa", Orbit.kilometers(671_100, 3), CelestialType.FROZEN, new ItemChoice(Material.ICE));
+        super("&bEuropa", Orbit.kilometers(671_100, 3), PlanetaryType.FROZEN, new ItemChoice(Material.ICE));
     }
 
     @Nonnull

@@ -31,9 +31,8 @@ public final class WorldManager implements Listener, Runnable {
     private final Map<World, CelestialWorld> worlds = new HashMap<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
 
-    public WorldManager(Galactifun galactifun, AlienManager alienManager) {
-        this.alienManager = alienManager;
-
+    public WorldManager(Galactifun galactifun) {
+        this.alienManager = galactifun.getAlienManager();
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(this, 100);
     }

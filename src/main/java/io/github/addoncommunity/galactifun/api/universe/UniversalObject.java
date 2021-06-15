@@ -12,89 +12,52 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import io.github.addoncommunity.galactifun.util.Util;
-import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.apache.commons.lang.Validate;
 
 /**
  * Any object in the universe
  * 
  * @author Mooy1
- * 
- * @param <T> the object that it can hold
+ *
+ * @param <T> The type of object that orbits this
  */
+@Getter
 public abstract class UniversalObject<T extends UniversalObject<?>> {
-    
-    @Getter
-    @Nonnull
-    protected final String name;
-    
-    @Nonnull
-    private final Orbit orbit;
-    
-    @Getter
-    @Nonnull
-    private final ItemStack item;
 
-    @Nonnull
-    private final UniversalType type; // TODO add lore to item
-    
-    @Getter
-    private UniversalObject<?> orbiting;
-
-    @Getter
-    @Nonnull
     private final List<UniversalObject<?>> orbiters = new ArrayList<>();
-    
-    UniversalObject(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull UniversalType type, @Nonnull ItemChoice choice) {
-        Validate.notNull(name, "Name cannot be null");
-        Validate.notNull(orbit, "Orbit cannot be null");
-        Validate.notNull(type, "Type cannot be null");
-        Validate.notNull(choice, "Item Choice cannot be null");
-        
-        this.orbit = orbit;
-        this.name = ChatUtils.removeColorCodes(name);
-        this.item = new CustomItem(choice.getItem(), ChatColor.AQUA + name);
+    private final String name;
+    private final ItemStack item;
+    private final UniversalType type;
+    private final Orbit orbit;
+    private final UniversalObject<? extends UniversalObject<T>> orbiting;
+    private final int orbitLevel;
+
+    UniversalObject(String name, UniversalType type, Orbit orbit, UniversalObject<UniversalObject<T>> orbiting, ItemStack baseItem) {
+        this.name = ChatColor.stripColor(ChatColors.color(name));
         this.type = type;
-    }
-    
-    @SafeVarargs
-    public final void addOrbiters(@Nonnull T... orbiters) {
-        for (UniversalObject<?> orbiter : orbiters) {
-            Validate.notNull(orbiter, "Cannot add a null orbiter");
-            this.orbiters.add(orbiter);
-            orbiter.orbiting = this;
-        }
+        this.orbit = orbit;
+        this.orbiting = orbiting;
+        this.orbitLevel = orbiting == null ? 0 : orbiting.getOrbitLevel();
+        this.item = new CustomItem(baseItem, name, "&7Type: " + type.getDescription());
     }
 
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double getDistanceTo(@Nonnull UniversalObject<?> object) {
-        if (this.orbiting == object.getOrbiting()) {
-            return Util.lawOfCosines(
-                this.orbit.getCurrentDistance(),
-                object.orbit.getCurrentDistance(),
-                Math.abs(this.orbit.getOrbitPos() - object.orbit.getOrbitPos())
-            );
+    public final double getDistanceTo(@Nonnull UniversalObject<?> other) {
+        if (this.orbiting == other.orbiting) {
+            double thisDist1 = this.orbit.getCurrentDistance();
+            double otherDist1 = other.orbit.getCurrentDistance();
+            double thisDist2 = thisDist1 * thisDist1;
+            double otherDist2 = otherDist1 * otherDist1;
+            double angle = this.orbit.getOrbitPos() - other.orbit.getOrbitPos();
+            return Math.sqrt(thisDist2 + otherDist2 - (2 * thisDist1 * otherDist1 * Math.cos(Math.toRadians(angle))));
         }
-        if (this.orbiting == null || getLevel() < object.getLevel()) {
-            return object.orbit.getCurrentDistance() + getDistanceTo(object.getOrbiting());
+        if (this.orbiting == null || this.orbitLevel < other.orbitLevel) {
+            return other.orbit.getCurrentDistance() + getDistanceTo(other.orbiting);
         }
-        return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(object);
-    }
-
-    /**
-     * Internal way to compare objects, universe = 0, galaxy = 1, etc.
-     */
-    private int getLevel() {
-        if (this.orbiting == null) {
-            return 0;
-        } else {
-            return this.orbiting.getLevel() + 1;
-        }
+        return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(other);
     }
 
     @Override

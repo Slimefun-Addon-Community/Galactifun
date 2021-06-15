@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.structures;
+package io.github.addoncommunity.galactifun.api.structures;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +15,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import lombok.experimental.UtilityClass;
-
+import org.apache.commons.codec.Charsets;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,58 +25,45 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
-import org.apache.commons.codec.Charsets;
 
 /**
  * A class for loading Galactic Structures
  *
  * @author Mooy1
  */
-@UtilityClass
-public final class StructureRegistry {
+public final class StructureManager {
 
-    /**
-     * Folder for saved structures
-     */
-    private static final File STRUCTURE_FOLDER = new File(Galactifun.inst().getDataFolder(), "structures");
+    private final Map<String, GalacticStructure> structures = new HashMap<>();
+    private final File savedFolder;
 
-    /**
-     * All loaded structures
-     */
-    private static final Map<String, GalacticStructure> STRUCTURES = new HashMap<>();
+    public StructureManager(Galactifun galactifun) {
+        this.savedFolder = new File(galactifun.getDataFolder(), "structures");
+    }
 
     /**
      * Get the paths of all loaded structures
      */
-    public static Set<String> structurePaths() {
-        return STRUCTURES.keySet();
+    public Set<String> getStructureNames() {
+        return this.structures.keySet();
     }
 
     /**
      * Gets a structure that was loaded from a file by name
      */
     @Nullable
-    public static GalacticStructure getStructure(String name) {
-        return STRUCTURES.get(name);
-    }
-
-    /**
-     * Gets a structure from Galactifun
-     */
-    @Nonnull
-    public static GalacticStructure getGalactifunStructure(String name) {
-        return getPluginStructure(Galactifun.inst(), name);
+    public GalacticStructure getSavedStructure(String name) {
+        return this.structures.get(name);
     }
 
     /**
      * Gets a structure or loads from a plugins resources
      */
     @Nonnull
-    public static GalacticStructure getPluginStructure(JavaPlugin plugin, String name) {
+    public GalacticStructure getPluginStructure(JavaPlugin plugin, String name) {
         if (!name.endsWith(".gs")) {
             name = name.concat(".gs");
         }
-        GalacticStructure structure = STRUCTURES.get(plugin.getName() + ":" + name);
+        GalacticStructure structure = this.structures.get(plugin.getName() + ":" + name);
         if (structure != null) {
             return structure;
         }
@@ -87,7 +73,7 @@ public final class StructureRegistry {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to load galactic structure '" + name + "' from '" + plugin.getName() + "'", e);
         }
-        STRUCTURES.put(plugin.getName() + ":" + name.substring(name.lastIndexOf('/') + 1, name.length() - 3), structure);
+        this.structures.put(plugin.getName() + ":" + name.substring(name.lastIndexOf('/') + 1, name.length() - 3), structure);
         return structure;
     }
 
@@ -95,7 +81,7 @@ public final class StructureRegistry {
      * Creates a new structure from the world
      */
     @Nonnull
-    public static GalacticStructure createStructure(StructureRotation rotation, Block pos1, Block pos2) {
+    public GalacticStructure createStructure(StructureRotation rotation, Block pos1, Block pos2) {
         GalacticStructure structure = new GalacticStructure(rotation,
             pos2.getX() - pos1.getX(),
             pos2.getY() - pos1.getY(),
@@ -108,8 +94,8 @@ public final class StructureRegistry {
             }
             Material material = block.getType();
             BlockData data = block.getBlockData();
-            if (data instanceof Directional) {
-                return new DirectionalStructureBlock(material, ((Directional) data).getFacing());
+            if (data instanceof Directional dir) {
+                return new DirectionalStructureBlock(material, dir.getFacing());
             }
             return StructureBlock.get(material);
         });
@@ -119,7 +105,7 @@ public final class StructureRegistry {
     /**
      * Saves a structure to a file
      */
-    public static void saveStructure(String name, GalacticStructure structure) {
+    public void saveStructure(String name, GalacticStructure structure) {
         StringBuilder save = new StringBuilder();
 
         // add dimensions
@@ -132,8 +118,8 @@ public final class StructureRegistry {
         structure.getAll((block, x, y, z) -> save.append(';').append(block.save()));
 
         // save
-        File file = new File(STRUCTURE_FOLDER, name + ".gs");
-        STRUCTURES.put(name, structure);
+        File file = new File(this.savedFolder, name + ".gs");
+        this.structures.put(name, structure);
         file.getParentFile().mkdirs();
         try {
             Files.writeString(file.toPath(), save.toString(), Charsets.UTF_8);
@@ -145,15 +131,15 @@ public final class StructureRegistry {
     /**
      * Loads structures saved in structure folder
      */
-    public static void loadStructureFolder(Galactifun galactifun) {
+    public void loadStructureFolder(Galactifun galactifun) {
         galactifun.log("Loading structures...");
-        if (STRUCTURE_FOLDER.mkdir()) {
+        if (this.savedFolder.mkdir()) {
             return;
         }
-        for (File file : Objects.requireNonNull(STRUCTURE_FOLDER.listFiles((dir, name) -> name.endsWith(".gs")))) {
+        for (File file : Objects.requireNonNull(this.savedFolder.listFiles((dir, name) -> name.endsWith(".gs")))) {
             try {
                 GalacticStructure structure = load(new FileInputStream(file));
-                STRUCTURES.put(file.getName().substring(0, file.getName().length() - 3), structure);
+                this.structures.put(file.getName().substring(0, file.getName().length() - 3), structure);
             } catch (Exception e) {
                 Galactifun.inst().log(Level.SEVERE,
                     "Failed to load galactic structure '" + file.getName() + "' from structure folder due to " +
@@ -166,7 +152,7 @@ public final class StructureRegistry {
     /**
      * Loads structures from an input stream
      */
-    private static GalacticStructure load(InputStream stream) throws IOException {
+    private GalacticStructure load(InputStream stream) throws IOException {
         String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()), -1);
         String[] dims = PatternUtils.COMMA.split(split[0]);
         GalacticStructure structure = new GalacticStructure(

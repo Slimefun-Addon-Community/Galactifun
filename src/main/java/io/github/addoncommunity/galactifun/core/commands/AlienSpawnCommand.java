@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -15,9 +16,9 @@ public final class AlienSpawnCommand extends AbstractCommand {
 
     private final AlienManager alienManager;
 
-    public AlienSpawnCommand(AlienManager alienManager) {
+    public AlienSpawnCommand(Galactifun galactifun) {
         super("spawn", "spawns an alien", true);
-        this.alienManager = alienManager;
+        this.alienManager = galactifun.getAlienManager();
     }
 
     @Override
@@ -26,7 +27,7 @@ public final class AlienSpawnCommand extends AbstractCommand {
             return;
         }
 
-        Alien alien = this.alienManager.getAlien(strings[1]);
+        Alien<?> alien = this.alienManager.getAlien(strings[1]);
 
         if (alien != null) {
             alien.spawn(p.getLocation(), p.getWorld());
@@ -36,7 +37,7 @@ public final class AlienSpawnCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> ids) {
         if (strings.length == 2) {
-            for (Alien alien : this.alienManager.getAliens()) {
+            for (Alien<?> alien : this.alienManager.getAliens()) {
                 ids.add(alien.getId());
             }
         }

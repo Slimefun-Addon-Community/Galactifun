@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.core.structures;
+package io.github.addoncommunity.galactifun.api.structures;
 
 import javax.annotation.Nonnull;
 
@@ -23,7 +23,8 @@ public enum StructureRotation {
     public StructureRotation rotationTo(@Nonnull StructureRotation rotation) {
         return ROTATIONS[Math.abs(rotation.ordinal() - this.ordinal())];
     }
-    
+
+    @Nonnull
     public BlockFace rotateFace(BlockFace face) {
         return switch (face) {
             case NORTH -> FACES[this.ordinal()];
@@ -33,7 +34,8 @@ public enum StructureRotation {
             default -> face;
         };
     }
-    
+
+    @Nonnull
     public static StructureRotation fromFace(BlockFace face) {
         return switch (face) {
             case NORTH -> DEFAULT;

@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.goals;
+package io.github.addoncommunity.galactifun.api.aliens.goals;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -32,24 +32,24 @@ public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
 
     @Override
     public void start() {
-        time = 80;
+        this.time = 80;
     }
 
     @Override
     public void stop() {
-        time = 0;
+        this.time = 0;
     }
 
     @Override
     public void tick() {
-        if (time >= 80) {
-            time = 0;
-            List<Entity> nearby = mob.getNearbyEntities(20, 5, 10);
+        if (this.time >= 80) {
+            this.time = 0;
+            List<Entity> nearby = this.mob.getNearbyEntities(20, 5, 10);
             if (nearby.isEmpty()) return;
 
-            mob.lookAt(nearby.get(ThreadLocalRandom.current().nextInt(nearby.size())), 1, 90);
+            this.mob.lookAt(nearby.get(ThreadLocalRandom.current().nextInt(nearby.size())), 1, 90);
         } else {
-            time--;
+            this.time--;
         }
     }
 
@@ -58,4 +58,5 @@ public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
     public EnumSet<GoalType> getTypes() {
         return EnumSet.of(GoalType.MOVE, GoalType.LOOK, GoalType.JUMP);
     }
+
 }

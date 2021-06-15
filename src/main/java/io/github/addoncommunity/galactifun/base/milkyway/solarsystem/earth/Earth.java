@@ -13,9 +13,9 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+
 /**
  * A class to connect the default earth world into the api
  *
@@ -38,7 +38,7 @@ public final class Earth extends CelestialWorld {
     }
     
     public Earth() {
-        super("Earth", Orbit.kilometers(149_600_000L, 1D), CelestialType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK));
+        super("Earth", Orbit.kilometers(149_600_000L, 1D), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.GRASS_BLOCK));
     }
 
     @Nonnull

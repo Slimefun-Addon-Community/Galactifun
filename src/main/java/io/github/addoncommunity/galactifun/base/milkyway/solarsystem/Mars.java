@@ -19,12 +19,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.GenUtils;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Util;
 
 /**
@@ -36,7 +35,7 @@ import io.github.addoncommunity.galactifun.util.Util;
 public final class Mars extends SimpleAlienWorld {
 
     public Mars() {
-        super("&cMars", Orbit.kilometers(227_943_824L, 687), CelestialType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
+        super("&cMars", Orbit.kilometers(227_943_824L, 687), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.RED_SAND));
     }
 
     @Nonnull

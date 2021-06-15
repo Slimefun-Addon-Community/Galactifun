@@ -23,9 +23,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * Class for the Saturnian moon Titan
@@ -47,7 +46,7 @@ public final class Titan extends AlienWorld {
     );
 
     public Titan() {
-        super("&6Titan", Orbit.kilometers(1_200_000L, 16), CelestialType.TERRESTRIAL, new ItemChoice(Material.SAND));
+        super("&6Titan", Orbit.kilometers(1_200_000L, 16), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.SAND));
     }
 
     @Override

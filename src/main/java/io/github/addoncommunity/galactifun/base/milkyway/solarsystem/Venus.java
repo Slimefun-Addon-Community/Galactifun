@@ -18,11 +18,10 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulator;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * Class for Venus
@@ -32,7 +31,7 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
 public final class Venus extends SimpleAlienWorld {
 
     public Venus() {
-        super("Venus", Orbit.kilometers(108_860_000L, 225), CelestialType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
+        super("Venus", Orbit.kilometers(108_860_000L, 225), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.BLACK_TERRACOTTA));
     }
 
     @Override

@@ -32,12 +32,11 @@ public final class GalacticExplorer {
 
     private final TheUniverse theUniverse;
     private final WorldManager worldManager;
-
     private final Map<UUID, UniversalObject<?>> history = new HashMap<>();
 
-    public GalacticExplorer(TheUniverse theUniverse, WorldManager worldManager) {
-        this.theUniverse = theUniverse;
-        this.worldManager = worldManager;
+    public GalacticExplorer(Galactifun galactifun) {
+        this.theUniverse = galactifun.getTheUniverse();
+        this.worldManager = galactifun.getWorldManager();
     }
     
     public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {

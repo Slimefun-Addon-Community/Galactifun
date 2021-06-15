@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.goals;
+package io.github.addoncommunity.galactifun.api.aliens.goals;
 
 import java.util.EnumSet;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,7 +30,7 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> {
             @EventHandler(priority = EventPriority.MONITOR)
             public void onHit(EntityDamageEvent e) {
                 if (e.getEntity().getUniqueId().equals(mob.getUniqueId())) {
-                    ticks = fleeTicks;
+                    FleeGoal.this.ticks = fleeTicks;
                 }
             }
         });
@@ -48,29 +48,29 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> {
 
     @Override
     public boolean shouldActivate() {
-        return ticks > 0;
+        return this.ticks > 0;
     }
 
     @Override
     public boolean shouldStayActive() {
-        return ticks > 0;
+        return this.ticks > 0;
     }
 
     @Override
     public void stop() {
-        mob.getPathfinder().stopPathfinding();
+        this.mob.getPathfinder().stopPathfinding();
     }
 
     @Override
     public void tick() {
-        ticks--;
-        Pathfinder pathfinder = mob.getPathfinder();
+        this.ticks--;
+        Pathfinder pathfinder = this.mob.getPathfinder();
         if (!pathfinder.hasPath()) {
-            Location mobLoc = mob.getLocation();
+            Location mobLoc = this.mob.getLocation();
             Location l = null;
             for (int tries = 0; tries < 100; tries++) {
                 l = new Location(
-                        mob.getWorld(),
+                        this.mob.getWorld(),
                         mobLoc.getBlockX() + ThreadLocalRandom.current().nextInt(10) - 5,
                         mobLoc.getBlockY(),
                         mobLoc.getBlockZ() + ThreadLocalRandom.current().nextInt(10) - 5

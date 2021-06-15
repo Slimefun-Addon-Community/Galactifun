@@ -11,9 +11,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -24,7 +24,7 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
 
-    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull PlanetaryType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
 

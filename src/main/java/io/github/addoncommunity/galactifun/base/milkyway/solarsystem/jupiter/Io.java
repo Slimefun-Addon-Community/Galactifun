@@ -13,16 +13,15 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulator;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 public final class Io extends SimpleAlienWorld {
 
     public Io() {
-        super("&6Io", Orbit.kilometers(421_800L, 2), CelestialType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
+        super("&6Io", Orbit.kilometers(421_800L, 2), PlanetaryType.TERRESTRIAL, new ItemChoice(Material.LAVA_BUCKET));
     }
 
     @Nonnull

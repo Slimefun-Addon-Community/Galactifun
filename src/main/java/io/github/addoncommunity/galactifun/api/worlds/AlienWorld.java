@@ -32,9 +32,8 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -59,7 +58,7 @@ public abstract class AlienWorld extends CelestialWorld {
     @Nonnull
     protected final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
 
-    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull PlanetaryType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
     }
 

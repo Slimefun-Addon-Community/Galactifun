@@ -4,20 +4,19 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
 
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 
-public final class Jupiter extends CelestialBody {
+public final class Jupiter extends PlanetaryObject {
 
     public Jupiter() {
-        super("&6Jupiter", Orbit.kilometers(778_340_821L, 12D), CelestialType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
+        super("&6Jupiter", Orbit.kilometers(778_340_821L, 12D), PlanetaryType.GAS_GIANT, new ItemChoice(Material.RED_DYE));
     }
 
     @Nonnull

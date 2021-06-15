@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.goals;
+package io.github.addoncommunity.galactifun.api.aliens.goals;
 
 import java.util.EnumSet;
 
@@ -30,7 +30,7 @@ public abstract class AbstractGoal<T extends Mob> implements Goal<T> {
     @Nonnull
     @Override
     public GoalKey<T> getKey() {
-        return GoalKey.of(entityClass, Galactifun.inst().getKey(getGoalKey()));
+        return GoalKey.of(this.entityClass, Galactifun.inst().getKey(getGoalKey()));
     }
 
     @Nonnull

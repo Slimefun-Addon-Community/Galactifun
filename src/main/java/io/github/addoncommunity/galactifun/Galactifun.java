@@ -19,12 +19,11 @@ import io.github.addoncommunity.galactifun.base.BaseRegistry;
 import io.github.addoncommunity.galactifun.base.GeneratedItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.GalacticExplorer;
-import io.github.addoncommunity.galactifun.core.StargateListener;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
-import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
+import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -34,27 +33,20 @@ public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
 
-    private AlienManager alienManager;
-    private WorldManager worldManager;
-    private TheUniverse theUniverse;
-    private GalacticExplorer galacticExplorer;
+    private final StructureManager structureManager = new StructureManager(this);
+    private final AlienManager alienManager = new AlienManager(this);
+    private final WorldManager worldManager = new WorldManager(this);
+    private final TheUniverse theUniverse = new TheUniverse();
+    private final GalacticExplorer galacticExplorer = new GalacticExplorer(this);
 
     protected void enable() {
         instance = this;
 
-        this.theUniverse = new TheUniverse();
-        this.alienManager = new AlienManager(this);
-        this.worldManager = new WorldManager(this, this.alienManager);
-        this.galacticExplorer = new GalacticExplorer(this.theUniverse, this.worldManager);
-
-        StructureRegistry.loadStructureFolder(this);
         BaseRegistry.setup();
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
         GeneratedItems.setup();
-
-        registerListener(new StargateListener());
 
         // log after startup
         runSync(() -> log(
@@ -95,7 +87,7 @@ public final class Galactifun extends AbstractAddon {
     protected List<AbstractCommand> setupSubCommands() {
         return Arrays.asList(
                 new GalactiportCommand(),
-                new AlienSpawnCommand(this.alienManager),
+                new AlienSpawnCommand(this),
                 new SphereCommand(),
                 new StructureCommand(this)
         );

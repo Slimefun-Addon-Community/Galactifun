@@ -13,21 +13,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.core.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
-import io.github.addoncommunity.galactifun.core.structures.StructureRotation;
-import io.github.addoncommunity.galactifun.util.Util;
+import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.StructureManager;
+import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
 public final class StructureCommand extends AbstractCommand {
 
+    private final StructureManager manager;
     private final NamespacedKey pos1;
     private final NamespacedKey pos2;
 
     public StructureCommand(Galactifun galactifun) {
         super("structure", "The command for structures", true);
 
+        this.manager = galactifun.getStructureManager();
         this.pos1 = galactifun.getKey("pos1");
         this.pos2 = galactifun.getKey("pos2");
     }
@@ -56,11 +57,10 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
 
-            double time = System.nanoTime();
             StructureRotation rotation = StructureRotation.fromFace(p.getFacing());
-            GalacticStructure struct = StructureRegistry.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
-            StructureRegistry.saveStructure(args[2], struct);
-            p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "' in " + Util.timeSince(time));
+            GalacticStructure struct = this.manager.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
+            this.manager.saveStructure(args[2], struct);
+            p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
             return;
         }
         
@@ -88,18 +88,15 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            GalacticStructure loaded = StructureRegistry.getStructure(args[2]);
+            GalacticStructure loaded = this.manager.getSavedStructure(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
                 return;
             }
 
-            double time = System.nanoTime();
-            
             loaded.paste(target, StructureRotation.fromFace(p.getFacing()));
-            
-            p.sendMessage(ChatColor.GREEN + "Pasted in " + Util.timeSince(time));
+            p.sendMessage(ChatColor.GREEN + "Pasted!");
         }
     }
     
@@ -112,7 +109,7 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(StructureRegistry.structurePaths());
+            options.addAll(this.manager.getStructureNames());
         }
     }
     

@@ -8,11 +8,10 @@ import lombok.Getter;
 import org.bukkit.World;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.CelestialBody;
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.Earth;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * Any world that can be travelled to by rockets or other means
@@ -23,12 +22,12 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
  * 
  * @author Mooy1
  */
-public abstract class CelestialWorld extends CelestialBody {
+public abstract class CelestialWorld extends PlanetaryObject {
 
     @Getter
     private final World world;
 
-    public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
+    public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull PlanetaryType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
         this.world = loadWorld();
 

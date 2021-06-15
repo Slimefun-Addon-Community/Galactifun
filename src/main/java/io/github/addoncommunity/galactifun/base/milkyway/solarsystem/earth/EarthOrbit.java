@@ -16,9 +16,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.addoncommunity.galactifun.util.Util;
 
@@ -28,7 +27,7 @@ public final class EarthOrbit extends AlienWorld {
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
     
     public EarthOrbit() {
-        super("Earth Orbit", Orbit.kilometers(24_000, 1), CelestialType.SPACE, new ItemChoice(Material.BLACK_STAINED_GLASS));
+        super("Earth Orbit", Orbit.kilometers(24_000, 1), PlanetaryType.SPACE);
     }
     
     @Override

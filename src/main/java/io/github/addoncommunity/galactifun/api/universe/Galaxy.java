@@ -1,20 +1,19 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
-import javax.annotation.Nonnull;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.GalaxyType;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
 
 /**
  * A galaxy filled with star systems
  *
  * @author Mooy1
  */
-public final class Galaxy extends UniversalObject<StarSystem> {
+public final class Galaxy extends UniversalObject<TheUniverse> {
 
-    public Galaxy(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull GalaxyType type, @Nonnull ItemChoice choice) {
-        super(name, orbit, type, choice);
+    Galaxy(String name, GalaxyType type, Orbit orbit, TheUniverse orbiting, ItemStack baseItem) {
+        super(name, type, orbit, orbiting, baseItem);
     }
 
 }
