@@ -36,7 +36,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     protected final String id;
     
     @Nonnull
-    private final Orbit orbit;
+    protected final Orbit orbit;
     
     @Getter
     @Nonnull
@@ -77,7 +77,7 @@ public abstract class UniversalObject<T extends UniversalObject<?>> {
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double getDistanceTo(@Nonnull UniversalObject<?> object) {
+    public double getDistanceTo(@Nonnull UniversalObject<?> object) {
         if (this.orbiting == object.getOrbiting()) {
             return Util.lawOfCosines(
                 this.orbit.getCurrentDistance(),
