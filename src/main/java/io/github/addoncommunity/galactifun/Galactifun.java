@@ -5,21 +5,17 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.structures.StructureManager;
-import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
+import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
-import io.github.addoncommunity.galactifun.base.GeneratedItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import io.github.addoncommunity.galactifun.core.GalacticExplorer;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
@@ -28,7 +24,6 @@ import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
-@Getter
 public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
@@ -36,9 +31,6 @@ public final class Galactifun extends AbstractAddon {
     private StructureManager structureManager;
     private AlienManager alienManager;
     private WorldManager worldManager;
-    private TheUniverse theUniverse;
-    private GalacticExplorer galacticExplorer;
-    private BaseUniverse baseUniverse;
 
     protected void enable() {
         instance = this;
@@ -46,14 +38,13 @@ public final class Galactifun extends AbstractAddon {
         this.structureManager = new StructureManager(this);
         this.alienManager = new AlienManager(this);
         this.worldManager = new WorldManager(this);
-        this.theUniverse =  new TheUniverse();
-        this.galacticExplorer = new GalacticExplorer(this);
-        this.baseUniverse = new BaseUniverse(this);
 
+        BaseAlien.setup(this.alienManager);
+        BaseUniverse.setup(this.worldManager);
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        GeneratedItems.setup(this.baseUniverse);
+        GeneratedItems.setup(this);
 
         // log after startup
         runSync(() -> log(
@@ -69,6 +60,8 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected void disable() {
+        instance = null;
+
         // todo make better
         BossAlien.removeBossBars();
     }
@@ -108,6 +101,18 @@ public final class Galactifun extends AbstractAddon {
 
     public static Galactifun inst() {
         return instance;
+    }
+
+    public static StructureManager structureManager() {
+        return instance.structureManager;
+    }
+
+    public static AlienManager alienManager() {
+        return instance.alienManager;
+    }
+
+    public static WorldManager worldManager() {
+        return instance.worldManager;
     }
 
 }

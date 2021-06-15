@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
+package io.github.addoncommunity.galactifun.base.universe.saturn;
 
 import java.util.List;
 import java.util.Random;
@@ -14,15 +14,15 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.util.Sphere;
 
 /**
@@ -32,13 +32,12 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure cryoVolcano;
+    private final GalacticStructure cryoVolcano = Galactifun.inst().getStructureManager().getByPlugin(Galactifun.inst(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
-    public Enceladus(Galactifun galactifun, PlanetaryObject saturn) {
-        super("&bEnceladus", PlanetaryType.FROZEN, Orbit.kilometers(237_948L, 1), saturn,
-                new ItemStack(Material.ICE), DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Gravity.relativeToEarth(0.0113));
-        this.cryoVolcano = galactifun.getStructureManager().getByPlugin(galactifun, "cryovolcano");
+    public Enceladus(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                     DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

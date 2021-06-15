@@ -13,24 +13,14 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  * @author Seggan
  */
 public final class TitanAlien extends Alien<Illusioner> {
-    
-    public TitanAlien() {
-        super(Illusioner.class, "TITAN", "Titan");
+
+    public TitanAlien(String id, String name, int maxHealth, int spawnChance) {
+        super(Illusioner.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-    }
-
-    @Override
-    protected int getMaxHealth() {
-        return 32;
-    }
-
-    @Override
-    protected int getSpawnChance() {
-        return 40;
     }
 
 }

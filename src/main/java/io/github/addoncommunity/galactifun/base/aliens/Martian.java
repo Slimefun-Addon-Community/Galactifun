@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.base.BaseMats;
+import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
@@ -32,30 +33,15 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
  */
 public final class Martian extends Alien<ZombieVillager> {
 
-    private final Map<ItemStack, ItemStack> trades = new HashMap<>();
-    private final ItemStack[] armor = {
-            new ItemStack(Material.IRON_BOOTS),
-            new ItemStack(Material.IRON_LEGGINGS),
-            new ItemStack(Material.IRON_CHESTPLATE),
-            new ItemStack(Material.IRON_HELMET)
-    };
-    private final ItemStack sword = new ItemStack(Material.IRON_SWORD);
-    
-    public Martian() {
-        super(ZombieVillager.class, "MARTIAN", "&4Martian");
-        setupTrades();
-    }
+    private final Map<String, ItemStack> trades = new HashMap<>();
 
-    private void setupTrades() {
+    public Martian(String id, String name, int maxHealth, int spawnChance) {
+        super(ZombieVillager.class, id, name, maxHealth, spawnChance);
+
         // Fixes the sword
-        addTrade(Material.IRON_SWORD, new ItemStack(Material.IRON_SWORD));
-        addTrade(Material.IRON_ORE, new ItemStack(Material.IRON_INGOT));
-        this.trades.put(SlimefunItems.REINFORCED_PLATE, BaseMats.TUNGSTEN);
-        // TODO add more trades
-    }
-
-    private void addTrade(Material material, ItemStack trade) {
-        this.trades.put(new ItemStack(material), trade);
+        this.trades.put(Material.IRON_SWORD.name(), new ItemStack(Material.IRON_SWORD));
+        this.trades.put(Material.IRON_ORE.name(), new ItemStack(Material.IRON_INGOT));
+        this.trades.put(SlimefunItems.REINFORCED_PLATE.getItemId(), BaseMats.TUNGSTEN);
     }
 
     @Override
@@ -70,8 +56,13 @@ public final class Martian extends Alien<ZombieVillager> {
         
         Objects.requireNonNull(spawned.getEquipment());
 
-        spawned.getEquipment().setArmorContents(this.armor);
-        spawned.getEquipment().setItemInMainHand(this.sword);
+        spawned.getEquipment().setArmorContents(new ItemStack[] {
+                new ItemStack(Material.IRON_BOOTS),
+                new ItemStack(Material.IRON_LEGGINGS),
+                new ItemStack(Material.IRON_CHESTPLATE),
+                new ItemStack(Material.IRON_HELMET)
+        });
+        spawned.getEquipment().setItemInMainHand(new ItemStack(Material.IRON_SWORD));
     }
 
     @Override
@@ -82,23 +73,16 @@ public final class Martian extends Alien<ZombieVillager> {
     }
 
     @Override
-    protected int getMaxHealth() {
-        return 32;
-    }
-
-    @Override
-    protected int getSpawnChance() {
-        return 50;
-    }
-
-    @Override
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
-        LivingEntity entity = (LivingEntity) e.getRightClicked();
         ItemStack item = e.getPlayer().getInventory().getItem(e.getHand());
+        if (item == null) {
+            return;
+        }
 
-        ItemStack trade = this.trades.get(item);
+        ItemStack trade = this.trades.get(StackUtils.getIDorType(item));
 
         if (trade != null && item.getAmount() >= trade.getAmount()) {
+            LivingEntity entity = (LivingEntity) e.getRightClicked();
             Objects.requireNonNull(entity.getEquipment()).setItemInOffHand(item);
             entity.addPotionEffect(new PotionEffect(
                 PotionEffectType.SLOW,

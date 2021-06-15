@@ -100,8 +100,8 @@ public final class Rocket extends SlimefunItem {
             return;
         }
 
-        WorldManager manager = Galactifun.inst().getWorldManager();
-        PlanetaryWorld world = manager.getWorld(p.getWorld());
+        WorldManager worldManager = Galactifun.worldManager();
+        PlanetaryWorld world = worldManager.getWorld(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
             return;
@@ -122,12 +122,11 @@ public final class Rocket extends SlimefunItem {
             throw new IllegalStateException("Fuel not zero but efficiency zero!");
         }
 
-        double trueEff = eff / fuel;
-        long maxDistance = Math.round(2_000_000 * (fuel * trueEff));
+        long maxDistance = Math.round(2_000_000 * eff);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
-        for (PlanetaryWorld planetaryWorld : manager.getEnabledWorlds()) {
-            if (planetaryWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance && planetaryWorld.isReachableByRocket()) {
+        for (PlanetaryWorld planetaryWorld : worldManager.getSpaceWorlds()) {
+            if (planetaryWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
                 reachable.add(planetaryWorld);
             }
         }
@@ -163,6 +162,7 @@ public final class Rocket extends SlimefunItem {
                 item.setItemMeta(meta);
             }
 
+            double trueEff = eff / fuel;
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
                 int usedFuel = (int) Math.ceil(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);

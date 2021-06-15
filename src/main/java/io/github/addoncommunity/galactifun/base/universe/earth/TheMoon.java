@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
+package io.github.addoncommunity.galactifun.base.universe.earth;
 
 import java.util.List;
 import java.util.Random;
@@ -15,7 +15,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 
 /**
@@ -25,12 +25,12 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
  * @author Mooy1
  */
 public final class TheMoon extends SimpleAlienWorld {
-    
-    public TheMoon(PlanetaryObject earth) {
-        super("The Moon", PlanetaryType.TERRESTRIAL, Orbit.kilometers(382_500L, 27), earth,
-                new ItemStack(Material.ANDESITE), DayCycle.EARTH_LIKE, Atmosphere.NONE, Gravity.MOON_LIKE);
+
+    public TheMoon(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                   DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
-    
+
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
         

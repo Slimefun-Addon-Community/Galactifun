@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 
 /**
  * A celestial object
@@ -23,7 +23,7 @@ public class PlanetaryObject extends UniversalObject {
     private final Atmosphere atmosphere;
     private final Gravity gravity;
 
-    public PlanetaryObject(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                            @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
@@ -31,7 +31,7 @@ public class PlanetaryObject extends UniversalObject {
         this.gravity = gravity;
     }
 
-    public PlanetaryObject(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                            @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;

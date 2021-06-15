@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -29,15 +28,14 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
-import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -52,25 +50,22 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 public abstract class AlienWorld extends PlanetaryWorld {
 
-    /**
-     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
-     */
-    private final List<Alien<?>> species = new ArrayList<>();
     private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
+    private final List<Alien<?>> species = new ArrayList<>();
 
-    public AlienWorld(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public AlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public AlienWorld(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public AlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Nullable
     @Override
-    protected final World loadWorld(WorldManager worldManager) {
+    protected final World loadWorld() {
         Galactifun.inst().log(Level.INFO, "Loading Alien World " + getName());
         String worldName = "world_galactifun_" + getName().toLowerCase(Locale.ROOT).replace(' ', '_');
 
@@ -127,6 +122,16 @@ public abstract class AlienWorld extends PlanetaryWorld {
         return world;
     }
 
+    public final void addSpecies(@NonNull Alien<?>... aliens) {
+        for (Alien<?> alien : aliens) {
+            if (alien.isRegistered()) {
+                this.species.add(alien);
+            } else {
+                throw new IllegalStateException("You must register an alien before adding it to a world!");
+            }
+        }
+    }
+
     /**
      * To allow worlds to be made of {@link SlimefunItem}s without using huge amounts of {@link BlockStorage},
      * I invented block mappings. Simply pass a {@link Material} and a {@link SlimefunItemStack}, and any
@@ -141,18 +146,10 @@ public abstract class AlienWorld extends PlanetaryWorld {
         this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
+    // TODO improve
     @Nullable
     SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
-    }
-
-    @Override
-    public AlienWorld register(@NonNull WorldManager worldManager) {
-        super.register(worldManager);
-        if (getWorld() != null) {
-            worldManager.register(this);
-        }
-        return this;
     }
 
     protected boolean canSpawnVanillaMobs() {
@@ -177,25 +174,21 @@ public abstract class AlienWorld extends PlanetaryWorld {
      */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
-    /**
-     * Adds alien species to this world
-     */
-    public final AlienWorld addSpecies(@Nonnull Alien<?>... aliens) {
-        this.species.addAll(Arrays.asList(aliens));
-        return this;
+    final void applyEffects(@Nonnull Player p) {
+        getGravity().applyGravity(p);
+        getAtmosphere().applyEffects(p);
     }
 
-    /**
-     * Ticks the world every 5 seconds
-     */
-    void tickWorld(AlienManager manager) {
+    final void tickWorld() {
+        World world = getWorld();
+
+        // time
+        getDayCycle().tick(world);
+
         // player effects
-        for (Player p : getWorld().getPlayers()) {
+        for (Player p : world.getPlayers()) {
             applyEffects(p);
         }
-        
-        // time
-        getDayCycle().tick(getWorld());
 
         // mob spawns
         if (!this.species.isEmpty()) {
@@ -203,21 +196,16 @@ public abstract class AlienWorld extends PlanetaryWorld {
             Collections.shuffle(this.species);
 
             Random rand = ThreadLocalRandom.current();
-            int players = getWorld().getPlayers().size();
-            int mobs = getWorld().getLivingEntities().size() - players;
-            int max = players * manager.getMaxAliensPerPlayer();
+            int players = world.getPlayers().size();
+            int mobs = world.getLivingEntities().size() - players;
+            int max = players * getWorldManager().getMaxAliensPerPlayer();
 
             for (Alien<?> alien : this.species) {
-                if ((mobs += alien.attemptSpawn(rand, getWorld())) > max) {
+                if ((mobs += alien.attemptSpawn(rand, world)) > max) {
                     break;
                 }
             }
         }
-    }
-
-    protected final void applyEffects(@Nonnull Player p) {
-        getGravity().applyGravity(p);
-        getAtmosphere().applyEffects(p);
     }
 
 }

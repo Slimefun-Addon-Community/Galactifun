@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.universe;
 
 import java.util.List;
 import java.util.Random;
@@ -18,9 +18,8 @@ import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -35,15 +34,9 @@ import io.github.addoncommunity.galactifun.util.Util;
  */
 public final class Mars extends SimpleAlienWorld {
 
-    public Mars(StarSystem starSystem) {
-        super("&cMars", PlanetaryType.TERRESTRIAL, Orbit.kilometers(227_943_824L, 687),
-                starSystem, new ItemStack(Material.RED_SAND), DayCycle.of(1, 1),
-                new AtmosphereBuilder()
-                        .add(Gas.CARBON_DIOXIDE, 94.9)
-                        .add(Gas.NITROGEN, 2.6)
-                        .add(Gas.ARGON, 1.9)
-                        .build(),
-                Gravity.metersPerSec(3.711));
+    public Mars(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+                DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Nonnull

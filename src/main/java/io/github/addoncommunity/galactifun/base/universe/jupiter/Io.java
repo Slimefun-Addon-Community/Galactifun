@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem;
+package io.github.addoncommunity.galactifun.base.universe.jupiter;
 
 import java.util.List;
 import java.util.Random;
@@ -10,39 +10,27 @@ import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.addoncommunity.galactifun.api.universe.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulator;
 
-/**
- * Class for Venus
- *
- * @author Seggan
- */
-public final class Venus extends SimpleAlienWorld {
+public final class Io extends SimpleAlienWorld {
 
-    public Venus(StarSystem starSystem) {
-        super("Venus", PlanetaryType.TERRESTRIAL, Orbit.kilometers(108_860_000L, 225),
-                starSystem, new ItemStack(Material.BLACK_TERRACOTTA), DayCycle.days(117),
-                new AtmosphereBuilder()
-                        .setNether().addStorm().addThunder()
-                        .addEffects(AtmosphericEffect.RADIATION)
-                        .add(Gas.CARBON_DIOXIDE, 96.5).add(Gas.NITROGEN, 3.5).build(),
-                Gravity.metersPerSec(8.87));
+    public Io(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+              DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new VolcanoPopulator(117, Material.OBSIDIAN, Material.LAVA));
-        populators.add(new LakePopulator(80, Material.LAVA));
+        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new LakePopulator(75, Material.LAVA));
     }
 
     @Nonnull
@@ -50,29 +38,25 @@ public final class Venus extends SimpleAlienWorld {
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
         if (y > 75) {
             return Material.BLACKSTONE;
-        } else if (y > 10) {
-            return Material.BASALT;
-        } else if (y > 8) {
-            return Material.YELLOW_TERRACOTTA;
         } else {
-            return Material.BASALT;
+            return Material.YELLOW_TERRACOTTA;
         }
     }
 
     @Nonnull
     @Override
     protected Biome getBiome() {
-        return Biome.BASALT_DELTAS;
+        return Biome.DESERT_HILLS;
     }
 
     @Override
     protected int getAverageHeight() {
-        return 100;
+        return 80;
     }
 
     @Override
     protected int getMaxDeviation() {
-        return 50;
+        return 45;
     }
 
     @Override

@@ -23,13 +23,13 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  * @author Mooy1
  */
 public final class MutantCreeper extends Alien<Creeper> {
-    
-    public MutantCreeper() {
-        super(Creeper.class,"MUTANT_CREEPER", "Mutant Creeper");
+
+    public MutantCreeper(String id, String name, int maxHealth, int spawnChance) {
+        super(Creeper.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
-    public void onSpawn(@Nonnull Creeper spawned) {
+    protected void onSpawn(@Nonnull Creeper spawned) {
         spawned.setPowered(true);
     }
 
@@ -40,22 +40,12 @@ public final class MutantCreeper extends Alien<Creeper> {
     }
 
     @Override
-    protected int getMaxHealth() {
-        return 40;
-    }
-
-    @Override
-    public void onTarget(@Nonnull EntityTargetEvent e) {
+    protected void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
     }
 
     @Override
-    protected int getSpawnChance() {
-        return 40;
-    }
-
-    @Override
-    public void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
         Creeper creeper = (Creeper) e.getEntity();
         if (e.getDamager() instanceof Player p) {
             if (p.getGameMode() != GameMode.CREATIVE) {

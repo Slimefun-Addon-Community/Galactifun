@@ -41,11 +41,11 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(Class<T> clazz, String id, String name, @NonNull BossBarStyle style) {
-        super(clazz, id, name);
+    public BossAlien(Class<T> clazz, String id, String name, int maxHealth, int spawnChance, @NonNull BossBarStyle style) {
+        super(clazz, id, name, maxHealth, spawnChance);
         this.style = style;
     }
-    
+
     /**
      * Returns the max distance from the boss that you can see its {@link BossBar}
      *

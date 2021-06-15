@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.jupiter;
+package io.github.addoncommunity.galactifun.base.universe.jupiter;
 
 import java.util.List;
 import java.util.Random;
@@ -17,14 +17,14 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 
 public final class Europa extends AlienWorld {
 
-    public Europa(PlanetaryObject jupiter) {
-        super("&bEuropa", PlanetaryType.FROZEN,Orbit.kilometers(671_100, 3), jupiter,
-                new ItemStack(Material.ICE), DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Gravity.metersPerSec(1.315));
+    public Europa(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

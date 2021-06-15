@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -18,8 +17,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.base.universe.Mars;
 
 /**
  * A simple alien world
@@ -29,23 +28,14 @@ import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
 
-    public SimpleAlienWorld(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                           DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
-        validate();
     }
 
-    public SimpleAlienWorld(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
-                          DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                            DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
-        validate();
-    }
-
-    private void validate() {
-        Validate.isTrue(getMaxDeviation() >= 0);
-        Validate.isTrue(getAverageHeight() >= 0 && getAverageHeight() + getMaxDeviation() <= 256);
-        Validate.isTrue(getOctaves() > 0);
-        Validate.isTrue(getScale() > 0);
     }
 
     @Override
@@ -74,14 +64,14 @@ public abstract class SimpleAlienWorld extends AlienWorld {
 
                 // y = 1 to height, generate and add biome
                 int y = 1;
-                for (; y <= height; y++) {
-                    chunk.setBlock(x, y, z, generateMaterial(random, x, y, z, height));
+                while (y <= height) {
+                    chunk.setBlock(x, y++, z, generateMaterial(random, x, y, z, height));
                     grid.setBiome(x, y, z, getBiome());
                 }
 
                 // y = height to 256, just add biome
-                for (; y < 256; y++) {
-                    grid.setBiome(x, y, z, getBiome());
+                while (y < 256) {
+                    grid.setBiome(x, y++, z, getBiome());
                 }
 
                 // more

@@ -28,10 +28,10 @@ import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
  */
 public final class Leech extends Alien<Silverfish> {
 
-    private static final NamespacedKey EATEN = Galactifun.inst().getKey("eaten");
-    
-    public Leech() {
-        super(Silverfish.class, "LEECH", "&eLeech");
+    private final NamespacedKey eatenKey = Galactifun.inst().getKey("eaten");
+
+    public Leech(String id, String name, int maxHealth, int spawnChance) {
+        super(Silverfish.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
@@ -59,15 +59,15 @@ public final class Leech extends Alien<Silverfish> {
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
         
-        ItemStack[] eatenItems = container.get(EATEN, PersistenceUtils.STACK_ARRAY);
+        ItemStack[] eatenItems = container.get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
             // add on to the array
             ItemStack[] arr = new ItemStack[eatenItems.length + 1];
             System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
             arr[eatenItems.length] = item;
-            container.set(EATEN, PersistenceUtils.STACK_ARRAY, arr);
+            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, arr);
         } else {
-            container.set(EATEN, PersistenceUtils.STACK_ARRAY, new ItemStack[] {item});
+            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] {item});
         }
         
         inv.setItem(slot, null);
@@ -80,22 +80,12 @@ public final class Leech extends Alien<Silverfish> {
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(EATEN, PersistenceUtils.STACK_ARRAY);
+        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
             for (ItemStack itemStack : eatenItems) {
                 e.getDrops().add(itemStack);
             }
         }
-    }
-
-    @Override
-    protected int getMaxHealth() {
-        return 10;
-    }
-
-    @Override
-    protected int getSpawnChance() {
-        return 1;
     }
     
 }

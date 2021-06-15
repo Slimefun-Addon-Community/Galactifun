@@ -7,8 +7,8 @@ package io.github.addoncommunity.galactifun.api.universe;
  */
 public final class TheUniverse extends UniversalObject {
     
-    public TheUniverse() {
-        super("The Universe");
+    public TheUniverse(String name) {
+        super(name);
     }
 
 }

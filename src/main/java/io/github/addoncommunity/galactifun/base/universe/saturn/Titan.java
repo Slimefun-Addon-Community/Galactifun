@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.saturn;
+package io.github.addoncommunity.galactifun.base.universe.saturn;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -22,9 +22,8 @@ import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphereBuilder;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 
 /**
@@ -46,16 +45,9 @@ public final class Titan extends AlienWorld {
         Biome.WOODED_MOUNTAINS
     );
 
-    public Titan(PlanetaryObject saturn) {
-        super("&6Titan", PlanetaryType.TERRESTRIAL, Orbit.kilometers(1_200_000L, 16), saturn,
-                new ItemStack(Material.SAND), DayCycle.EARTH_LIKE,
-                new AtmosphereBuilder().enableWeather().enableFire()
-                        .add(Gas.NITROGEN, 97)
-                        .add(Gas.METHANE, 2.7)
-                        .add(Gas.HYDROCARBONS, 0.2)
-                        .add(Gas.HYDROGEN, 0.1)
-                        .build(),
-                Gravity.metersPerSec(1.352));
+    public Titan(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                 DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -8,12 +9,11 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.NonNull;
 
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
@@ -23,7 +23,6 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
  */
 public abstract class UniversalObject {
 
-    @Getter
     private final List<UniversalObject> orbiters = new ArrayList<>();
     @Getter
     private final String name;
@@ -36,7 +35,7 @@ public abstract class UniversalObject {
 
     UniversalObject(@NonNull String name, @NonNull UniversalType type, @NonNull Orbit orbit,
                     @NonNull UniversalObject orbiting, @NonNull ItemStack baseItem) {
-        this.name = ChatColor.stripColor(ChatColors.color(name));
+        this.name = ChatUtils.removeColorCodes(name);
         this.item = new CustomItem(baseItem, name, "&7Type: " + type.getDescription());
         this.orbiting = orbiting;
         this.orbit = orbit;
@@ -48,7 +47,7 @@ public abstract class UniversalObject {
      * Constructor for the universe
      */
     UniversalObject(String name) {
-        this.name = ChatColor.stripColor(ChatColors.color(name));
+        this.name = ChatUtils.removeColorCodes(name);
         this.item = null;
         this.orbiting = null;
         this.orbit = null;
@@ -71,19 +70,9 @@ public abstract class UniversalObject {
         return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(other);
     }
 
-    @Override
-    public final int hashCode() {
-        return this.name.hashCode();
-    }
-
-    @Override
-    public final boolean equals(Object obj) {
-        return this == obj;
-    }
-
-    @Override
-    public final String toString() {
-        return this.name;
+    @Nonnull
+    public List<UniversalObject> getOrbiters() {
+        return Collections.unmodifiableList(this.orbiters);
     }
 
 }

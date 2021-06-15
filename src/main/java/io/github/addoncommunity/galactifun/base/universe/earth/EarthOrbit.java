@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth;
+package io.github.addoncommunity.galactifun.base.universe.earth;
 
 import java.util.List;
 import java.util.Random;
@@ -18,7 +18,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -27,21 +27,18 @@ public final class EarthOrbit extends AlienWorld {
 
     private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
-    
-    public EarthOrbit(PlanetaryObject earth) {
-        super("Earth Orbit", PlanetaryType.SPACE, Orbit.kilometers(24_000, 1), earth,
-                new ItemStack(Material.OBSIDIAN), DayCycle.ETERNAL_NIGHT, Atmosphere.NONE, Gravity.ZERO);
+
+    public EarthOrbit(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                      DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
-    
+
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        int x;
-        int y;
-        int z;
-        for (x = 0 ; x < 16 ; x++) {
-            for (y = 0 ; y < 256 ; y++) {
-                for (z = 0 ; z < 16 ; z++) {
+        for (int x = 0 ; x < 16 ; x++) {
+            for (int y = world.getMinHeight(); y < world.getMaxHeight() ; y++) {
+                for (int z = 0 ; z < 16 ; z++) {
                     grid.setBiome(x, y, z, Biome.THE_VOID);
                 }
             }
