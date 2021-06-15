@@ -15,7 +15,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 
 /**
@@ -26,7 +26,7 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
  */
 public final class TheMoon extends SimpleAlienWorld {
 
-    public TheMoon(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public TheMoon(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                    DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }

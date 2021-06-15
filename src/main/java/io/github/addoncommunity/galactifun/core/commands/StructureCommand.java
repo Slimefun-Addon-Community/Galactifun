@@ -21,14 +21,12 @@ import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
 public final class StructureCommand extends AbstractCommand {
 
-    private final StructureManager manager;
     private final NamespacedKey pos1;
     private final NamespacedKey pos2;
 
     public StructureCommand(Galactifun galactifun) {
         super("structure", "The command for structures", true);
 
-        this.manager = galactifun.getStructureManager();
         this.pos1 = galactifun.getKey("pos1");
         this.pos2 = galactifun.getKey("pos2");
     }
@@ -38,6 +36,8 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 1 || !(sender instanceof Player p)) {
             return;
         }
+
+        StructureManager manager = Galactifun.structureManager();
 
         if (args[1].equals("save")) {
             if (args.length != 3) {
@@ -58,8 +58,8 @@ public final class StructureCommand extends AbstractCommand {
             }
 
             StructureRotation rotation = StructureRotation.fromFace(p.getFacing());
-            GalacticStructure struct = this.manager.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
-            this.manager.saveStructure(args[2], struct);
+            GalacticStructure struct = manager.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
+            manager.saveStructure(args[2], struct);
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
             return;
         }
@@ -88,7 +88,7 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
             
-            GalacticStructure loaded = this.manager.getSaved(args[2]);
+            GalacticStructure loaded = manager.getSaved(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
@@ -109,7 +109,7 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(this.manager.getStructureNames());
+            options.addAll(Galactifun.structureManager().getStructureNames());
         }
     }
     

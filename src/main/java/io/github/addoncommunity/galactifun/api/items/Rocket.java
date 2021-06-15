@@ -31,12 +31,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.google.common.collect.BiMap;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -94,8 +94,8 @@ public final class Rocket extends SlimefunItem {
     private void openGUI(@Nonnull Player p, @Nonnull Block b) {
         if (!BlockStorage.check(b, this.getId())) return;
 
-        String s = BlockStorage.getLocationInfo(b.getLocation(), "isLaunching");
-        if (Boolean.parseBoolean(s)) {
+        String string = BlockStorage.getLocationInfo(b.getLocation(), "isLaunching");
+        if (Boolean.parseBoolean(string)) {
             p.sendMessage(ChatColor.RED + "The rocket is already launching!");
             return;
         }
@@ -107,22 +107,20 @@ public final class Rocket extends SlimefunItem {
             return;
         }
 
-        s = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
-        if (s == null) return;
-        int fuel = Integer.parseInt(s);
+        string = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
+        if (string == null) return;
+        int fuel = Integer.parseInt(string);
         if (fuel == 0) {
             p.sendMessage(ChatColor.RED + "The rocket has no fuel!");
             return;
         }
 
-        s = BlockStorage.getLocationInfo(b.getLocation(), "fuelEff");
-        if (s == null) return;
-        double eff = Double.parseDouble(s);
-        if (eff == 0) {
-            throw new IllegalStateException("Fuel not zero but efficiency zero!");
-        }
+        string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
+        if (string == null) return;
+        Integer eff = LaunchPadCore.FUELS.get(string);
+        if (eff == null) return;
 
-        long maxDistance = Math.round(2_000_000 * eff);
+        long maxDistance = Math.round(2_000_000 * eff * fuel);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
         for (PlanetaryWorld planetaryWorld : worldManager.getSpaceWorlds()) {
@@ -162,10 +160,10 @@ public final class Rocket extends SlimefunItem {
                 item.setItemMeta(meta);
             }
 
-            double trueEff = eff / fuel;
+            String fuelType = string;
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
-                int usedFuel = (int) Math.ceil(((distance * Util.KM_PER_LY) / 2_000_000) / trueEff);
+                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / 2_000_000);
                 p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.getName() + " and will use " +
                     usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {
@@ -177,7 +175,7 @@ public final class Rocket extends SlimefunItem {
                                 String[] split = Util.SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
-                                launch(p1, b, planetaryWorld, fuel - usedFuel, trueEff, x, z);
+                                launch(p1, b, planetaryWorld, fuel - usedFuel, fuelType, x, z);
                             } else {
                                 p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
                             }
@@ -191,7 +189,7 @@ public final class Rocket extends SlimefunItem {
         menu.open(p);
     }
     
-    private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, double eff, int x, int z) {
+    private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
         
         // yes ik boolean#tostring isn't needed but just for safety
         BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
@@ -238,8 +236,7 @@ public final class Rocket extends SlimefunItem {
                 inv.clear(); // just in case
                 inv.addItem(this.getItem().clone());
 
-                BiMap<ItemStack, Double> fuels = LaunchPadCore.FUELS;
-                ItemStack fuel = fuels.inverse().get(Util.getClosest(fuels.values(), eff));
+                ItemStack fuel = StackUtils.getItemByID(fuelType);
                 if (fuel != null) {
                     fuel = fuel.clone();
                     fuel.setAmount(fuelLeft);

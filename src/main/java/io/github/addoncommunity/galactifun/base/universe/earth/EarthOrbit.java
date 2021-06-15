@@ -18,7 +18,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -28,7 +28,7 @@ public final class EarthOrbit extends AlienWorld {
     private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
 
-    public EarthOrbit(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public EarthOrbit(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }

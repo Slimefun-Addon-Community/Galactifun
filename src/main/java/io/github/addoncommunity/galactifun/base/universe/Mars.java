@@ -19,7 +19,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -34,7 +34,7 @@ import io.github.addoncommunity.galactifun.util.Util;
  */
 public final class Mars extends SimpleAlienWorld {
 
-    public Mars(String name, UniversalType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public Mars(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                 DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }

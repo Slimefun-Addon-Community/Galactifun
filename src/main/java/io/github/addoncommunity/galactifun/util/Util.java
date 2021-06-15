@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.util;
 
-import java.util.Collection;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -26,27 +25,6 @@ public final class Util {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
-
-    /**
-     * Gets the closest {@code double} by value in the collection to the search double
-     *
-     * @param collection collection to search
-     * @param search double to search for
-     * @return closest double in the collection to search
-     */
-    public static double getClosest(@Nonnull Collection<Double> collection, double search) {
-        double dist = Double.MAX_VALUE;
-        double closest = search;
-        for (Double obj : collection) {
-            double newDist = Math.abs(obj - search);
-            if (newDist < dist) {
-                dist = newDist;
-                closest = search;
-            }
-        }
-
-        return closest;
-    }
 
     /**
      * From and to are inclusive

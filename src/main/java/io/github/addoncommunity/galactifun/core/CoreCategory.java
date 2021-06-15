@@ -45,7 +45,7 @@ public final class CoreCategory {
 
     public static void setup(Galactifun galactifun) {
         Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
-            new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer(galactifun));
+            new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer()); // TODO explorer could be used in rockey
 
         Category assembly = new AssemblyCategory(galactifun.getKey("assembly_flex"),
                 new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));

@@ -23,7 +23,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 
 /**
@@ -45,7 +45,7 @@ public final class Titan extends AlienWorld {
         Biome.WOODED_MOUNTAINS
     );
 
-    public Titan(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }

@@ -21,7 +21,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
-import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.util.Sphere;
 
@@ -32,10 +32,10 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure cryoVolcano = Galactifun.inst().getStructureManager().getByPlugin(Galactifun.inst(), "cryovolcano");
+    private final GalacticStructure cryoVolcano = Galactifun.structureManager().getStructure(Galactifun.inst(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
-    public Enceladus(String name, UniversalType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                      DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }

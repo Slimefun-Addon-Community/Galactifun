@@ -44,7 +44,6 @@ public final class Galactifun extends AbstractAddon {
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        GeneratedItems.setup(this);
 
         // log after startup
         runSync(() -> log(
@@ -87,7 +86,7 @@ public final class Galactifun extends AbstractAddon {
     protected List<AbstractCommand> setupSubCommands() {
         return Arrays.asList(
                 new GalactiportCommand(),
-                new AlienSpawnCommand(this),
+                new AlienSpawnCommand(),
                 new SphereCommand(),
                 new StructureCommand(this)
         );

@@ -59,7 +59,7 @@ public final class StructureManager {
      * Gets a structure or loads from a plugins resources
      */
     @Nonnull
-    public GalacticStructure getByPlugin(JavaPlugin plugin, String name) {
+    public GalacticStructure getStructure(JavaPlugin plugin, String name) {
         if (!name.endsWith(".gs")) {
             name = name.concat(".gs");
         }
