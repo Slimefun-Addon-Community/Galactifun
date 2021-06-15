@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -39,17 +42,53 @@ public final class WorldManager implements Listener {
     private final int maxAliensPerPlayer;
     private final List<PlanetaryWorld> spaceWorlds = new ArrayList<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
+    private final YamlConfiguration config;
+    private final YamlConfiguration defaultConfig;
 
     public WorldManager(Galactifun galactifun) {
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
+
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
+
+        File configFile = new File("plugins/Galactifun", "worlds.yml");
+        this.config = new YamlConfiguration();
+        this.defaultConfig = new YamlConfiguration();
+        this.config.setDefaults(this.defaultConfig);
+
+        if (configFile.exists()) {
+            try {
+                this.config.load(configFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        galactifun.runAsync(() -> {
+            try {
+                this.config.options().copyDefaults(true);
+                this.config.save(configFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     void register(PlanetaryWorld world) {
         this.spaceWorlds.add(world);
         if (world instanceof AlienWorld alienWorld) {
             this.alienWorlds.put(alienWorld.getWorld(), alienWorld);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    <T> T getSetting(PlanetaryWorld world, String path, Class<T> clazz, T defaultValue) {
+        path = world.getId() + '.' + path;
+        this.defaultConfig.set(path, defaultValue);
+        if (clazz == String.class) {
+            return (T) this.config.getString(path);
+        } else {
+            return this.config.getObject(path, clazz);
         }
     }
 
@@ -68,8 +107,8 @@ public final class WorldManager implements Listener {
         return Collections.unmodifiableList(this.spaceWorlds);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    private void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
+    @EventHandler
+    public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
         AlienWorld object = getAlienWorld(e.getFrom());
         if (object != null) {
             object.getGravity().removeGravity(e.getPlayer());

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -65,14 +64,14 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
     @Nullable
     @Override
-    protected final World loadWorld() {
-        Galactifun.inst().log(Level.INFO, "Loading Alien World " + getName());
-        String worldName = "world_galactifun_" + getName().toLowerCase(Locale.ROOT).replace(' ', '_');
+    protected World loadWorld() {
+        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
 
-        // TODO implement disabling
-        if (!enabledByDefault()) {
+        if (!getWorldManager().getSetting(this, "enabled", Boolean.class, enabledByDefault())) {
             return null;
         }
+
+        String worldName = "world_galactifun_" + this.id;
 
         // fetch or create world
         World world = new WorldCreator(worldName)
@@ -102,9 +101,9 @@ public abstract class AlienWorld extends PlanetaryWorld {
                 })
                 .environment(getAtmosphere().getEnvironment())
                 .createWorld();
-        
+
         Validate.notNull(world, "There was an error loading the world for " + worldName);
-        
+
         if (world.getEnvironment() == World.Environment.THE_END) {
             // Prevents ender dragon spawn using portal, surrounds portal with bedrock
             world.getBlockAt(0, 0, 0).setType(Material.END_PORTAL);
@@ -114,7 +113,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
             world.getBlockAt(0, 0, 1).setType(Material.BEDROCK);
             world.getBlockAt(0, 0, -1).setType(Material.BEDROCK);
         }
-        
+
         // load effects
         getDayCycle().applyEffects(world);
         getAtmosphere().applyEffects(world);
@@ -189,6 +188,9 @@ public abstract class AlienWorld extends PlanetaryWorld {
         for (Player p : world.getPlayers()) {
             applyEffects(p);
         }
+
+        // time
+        getDayCycle().tick(getWorld());
 
         // mob spawns
         if (!this.species.isEmpty()) {

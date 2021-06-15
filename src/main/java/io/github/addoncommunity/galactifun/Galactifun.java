@@ -63,6 +63,7 @@ public final class Galactifun extends AbstractAddon {
 
         // todo make better
         BossAlien.removeBossBars();
+        WorldSetting.saveAll();
     }
 
     @Override

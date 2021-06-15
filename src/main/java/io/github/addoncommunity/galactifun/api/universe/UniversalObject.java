@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.universe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
@@ -27,6 +28,8 @@ public abstract class UniversalObject {
     @Getter
     private final String name;
     @Getter
+    protected final String id;
+    @Getter
     private final ItemStack item;
     private final Orbit orbit;
     @Getter
@@ -40,6 +43,7 @@ public abstract class UniversalObject {
         this.orbiting = orbiting;
         this.orbit = orbit;
         this.orbitLevel = orbiting.orbitLevel + 1;
+        this.id = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         orbiting.orbiters.add(this);
     }
 
@@ -48,6 +52,7 @@ public abstract class UniversalObject {
      */
     UniversalObject(String name) {
         this.name = ChatUtils.removeColorCodes(name);
+        this.id = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
         this.item = null;
         this.orbiting = null;
         this.orbit = null;
