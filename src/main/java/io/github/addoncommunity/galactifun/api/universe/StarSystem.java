@@ -17,4 +17,12 @@ public final class StarSystem extends UniversalObject<CelestialBody> {
         super(name, orbit, type, choice);
     }
 
+    @Override
+    public double getDistanceTo(@Nonnull UniversalObject<?> object) {
+        if (object instanceof StarSystem system) {
+            return Math.abs(this.orbit.getCurrentDistance() - system.orbit.getCurrentDistance());
+        } else {
+            return super.getDistanceTo(object);
+        }
+    }
 }

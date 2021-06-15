@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
+import io.github.addoncommunity.galactifun.api.worlds.WorldSetting;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseRegistry;
@@ -38,6 +40,10 @@ public final class Galactifun extends AbstractAddon {
     private WorldManager worldManager;
     private TheUniverse theUniverse;
     private GalacticExplorer galacticExplorer;
+
+    public static Galactifun inst() {
+        return instance;
+    }
 
     protected void enable() {
         instance = this;
@@ -72,6 +78,11 @@ public final class Galactifun extends AbstractAddon {
     protected void disable() {
         // todo make better
         BossAlien.removeBossBars();
+        try {
+            WorldSetting.saveAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -105,10 +116,6 @@ public final class Galactifun extends AbstractAddon {
     @Override
     public String getAutoUpdatePath() {
         return "auto-update";
-    }
-
-    public static Galactifun inst() {
-        return instance;
     }
 
 }

@@ -27,7 +27,6 @@ public final class Earth extends CelestialWorld {
     
     @Nonnull
     private static World getMainWorld() {
-        // TODO test
         String name = Galactifun.inst().getConfig().getString("worlds.earth-name", "world");
         World world = new WorldCreator(Objects.requireNonNull(name)).createWorld(); // this will load the world as only the default world loads on startup
         if (world == null) {

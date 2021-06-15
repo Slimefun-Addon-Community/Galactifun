@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -18,26 +21,25 @@ import io.github.addoncommunity.galactifun.util.ItemChoice;
  * Any world that can be travelled to by rockets or other means
  * this should only be used to allow worlds from vanilla or other plugins to be travelled to,
  * if you want to make your own world use {@link SimpleAlienWorld} or {@link AlienWorld}
- * 
- * @see Earth
- * 
+ *
  * @author Mooy1
+ * @see Earth
  */
+@Getter
 public abstract class CelestialWorld extends CelestialBody {
 
-    @Getter
     private final World world;
+
+    private final List<WorldSetting<?>> worldSettings = new ArrayList<>();
 
     public CelestialWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
         super(name, orbit, type, choice);
         this.world = loadWorld();
 
         // TODO improve register system
-        if (this.world != null) {
-            Galactifun.inst().getWorldManager().register(this);
-            if (this instanceof AlienWorld alienWorld) {
-                Galactifun.inst().getWorldManager().register(alienWorld);
-            }
+        Galactifun.inst().getWorldManager().register(this);
+        if (this instanceof AlienWorld alienWorld) {
+            Galactifun.inst().getWorldManager().register(alienWorld);
         }
     }
 
@@ -50,5 +52,9 @@ public abstract class CelestialWorld extends CelestialBody {
      */
     @Nullable
     protected abstract World loadWorld();
+
+    public final void addWorldSetting(@Nonnull WorldSetting<?> setting) {
+        worldSettings.add(setting);
+    }
 
 }
