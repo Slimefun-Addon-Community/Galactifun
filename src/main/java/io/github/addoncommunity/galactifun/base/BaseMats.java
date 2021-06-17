@@ -331,14 +331,13 @@ public final class BaseMats {
     }
 
     private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {
-        for (AlienWorld world : worlds) {
-            new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, new ItemStack[] {
-                    world.getItem(), null, null,
-                    null, null, null,
-                    null, null, null
-            }).register(Galactifun.inst());
+        ItemStack[] recipe = new ItemStack[worlds.length];
+        for (int i = 0 ; i < worlds.length ; i++) {
+            AlienWorld world = worlds[i];
+            recipe[i] = world.getItem();
             world.addBlockMapping(item.getType(), item);
         }
+        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.inst());
     }
 
 }

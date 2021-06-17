@@ -67,7 +67,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
     protected World loadWorld() {
         Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
 
-        if (!getWorldManager().getSetting(this, "enabled", Boolean.class, enabledByDefault())) {
+        if (!getSetting("enabled", Boolean.class, enabledByDefault())) {
             return null;
         }
 
@@ -129,6 +129,10 @@ public abstract class AlienWorld extends PlanetaryWorld {
                 throw new IllegalStateException("You must register an alien before adding it to a world!");
             }
         }
+    }
+
+    protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
+        return getWorldManager().getSetting(this, path, clazz, defaultValue);
     }
 
     /**

@@ -46,16 +46,17 @@ public final class WorldManager implements Listener {
     private final YamlConfiguration defaultConfig;
 
     public WorldManager(Galactifun galactifun) {
+        this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
+
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
-
-        this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
 
         File configFile = new File("plugins/Galactifun", "worlds.yml");
         this.config = new YamlConfiguration();
         this.defaultConfig = new YamlConfiguration();
         this.config.setDefaults(this.defaultConfig);
 
+        // Load the config
         if (configFile.exists()) {
             try {
                 this.config.load(configFile);
@@ -64,6 +65,7 @@ public final class WorldManager implements Listener {
             }
         }
 
+        // Save the config after startup
         galactifun.runAsync(() -> {
             try {
                 this.config.options().copyDefaults(true);
@@ -82,7 +84,7 @@ public final class WorldManager implements Listener {
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getSetting(PlanetaryWorld world, String path, Class<T> clazz, T defaultValue) {
+    <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
         path = world.getId() + '.' + path;
         this.defaultConfig.set(path, defaultValue);
         if (clazz == String.class) {

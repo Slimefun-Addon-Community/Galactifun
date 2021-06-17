@@ -9,13 +9,21 @@ worlds:
 
 aliens:
 
-  # How often aliens tick in Minecraft ticks, there are 20 ticks in 1 second
+  # How often aliens tick in Minecraft ticks- there are 20 ticks in 1 second
   tick-interval: 2
 
   # maximum number of aliens per player per world
   max-per-player: 8
 
 rockets:
-
-  # the messages that pop up during launch, commented out because of infinitylib problems
-  #launch-msgs: [ Forgetting parachutes, Restocking snack bin, Aligning planets, Igniting sun, Inventing funny launch messages, Thanking TheBusyBiscuit, Faking Moon landings, Taking one small step ]
+  
+  # Messages while rocket it launching
+  launch-msgs: 
+    - Forgetting parachutes
+    - Restocking snack bin
+    - Aligning planets
+    - Igniting sun
+    - Inventing funny launch messages
+    - Thanking TheBusyBiscuit
+    - Faking Moon landings
+    - Taking one small step
