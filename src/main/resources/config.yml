@@ -17,7 +17,7 @@ aliens:
 
 rockets:
   
-  # Messages while rocket it launching
+  # Messages while rocket is launching
   launch-msgs: 
     - Forgetting parachutes
     - Restocking snack bin

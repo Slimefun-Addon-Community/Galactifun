@@ -18,6 +18,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
  * 
  * @author Mooy1
  */
+// TODO move these categories somewhere not public, addons should use their own
 @UtilityClass
 public final class CoreCategory {
 
@@ -45,7 +46,7 @@ public final class CoreCategory {
 
     public static void setup(Galactifun galactifun) {
         Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
-            new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer()); // TODO explorer could be used in rockey
+            new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer()); // TODO explorer could be used in rocket
 
         Category assembly = new AssemblyCategory(galactifun.getKey("assembly_flex"),
                 new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));

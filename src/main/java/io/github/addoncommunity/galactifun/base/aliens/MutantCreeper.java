@@ -24,7 +24,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 public final class MutantCreeper extends Alien<Creeper> {
 
-    public MutantCreeper(String id, String name, int maxHealth, int spawnChance) {
+    public MutantCreeper(String id, String name, double maxHealth, int spawnChance) {
         super(Creeper.class, id, name, maxHealth, spawnChance);
     }
 

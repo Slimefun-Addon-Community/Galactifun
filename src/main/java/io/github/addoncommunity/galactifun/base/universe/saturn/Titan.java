@@ -63,7 +63,7 @@ public final class Titan extends AlienWorld {
 
                 // find max height
                 double startHeight = generator.noise(realX, realZ, 0.5, 0.5, true);
-                int height = (int) (55 + 30 * + (startHeight * startHeight));
+                int height = (int) (55 + 30 * (startHeight * startHeight));
 
                 Biome biome = grid.getBiome(x, height, z);
 

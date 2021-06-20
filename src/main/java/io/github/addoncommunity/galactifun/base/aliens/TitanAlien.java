@@ -14,7 +14,7 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  */
 public final class TitanAlien extends Alien<Illusioner> {
 
-    public TitanAlien(String id, String name, int maxHealth, int spawnChance) {
+    public TitanAlien(String id, String name, double maxHealth, int spawnChance) {
         super(Illusioner.class, id, name, maxHealth, spawnChance);
     }
 

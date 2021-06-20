@@ -20,7 +20,7 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  */
 public final class Skywhale extends Alien<Phantom> {
 
-    public Skywhale(@NonNull String id, @NonNull String name, int maxHealth, int spawnChance) {
+    public Skywhale(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         super(Phantom.class, id, name, maxHealth, spawnChance);
     }
 

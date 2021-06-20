@@ -30,7 +30,7 @@ public final class Leech extends Alien<Silverfish> {
 
     private final NamespacedKey eatenKey = Galactifun.inst().getKey("eaten");
 
-    public Leech(String id, String name, int maxHealth, int spawnChance) {
+    public Leech(String id, String name, double maxHealth, int spawnChance) {
         super(Silverfish.class, id, name, maxHealth, spawnChance);
     }
 

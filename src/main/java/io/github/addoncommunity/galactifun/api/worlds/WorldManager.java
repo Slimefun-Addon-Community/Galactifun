@@ -66,7 +66,7 @@ public final class WorldManager implements Listener {
         }
 
         // Save the config after startup
-        galactifun.runAsync(() -> {
+        galactifun.runSync(() -> {
             try {
                 this.config.options().copyDefaults(true);
                 this.config.save(configFile);

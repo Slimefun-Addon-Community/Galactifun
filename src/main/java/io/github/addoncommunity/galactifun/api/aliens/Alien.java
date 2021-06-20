@@ -47,11 +47,11 @@ public class Alien<T extends Mob> {
     private final Class<T> clazz;
     private final String id;
     private final String name;
-    private final int maxHealth;
     private final int spawnChance;
+    private final double maxHealth;
     private AlienManager alienManager;
 
-    public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, int maxHealth, int spawnChance) {
+    public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         Validate.isTrue(maxHealth > 0);
         Validate.isTrue(spawnChance > 0 && spawnChance <= 100);
 

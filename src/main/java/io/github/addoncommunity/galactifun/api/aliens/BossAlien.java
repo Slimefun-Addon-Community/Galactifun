@@ -41,7 +41,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     private final BossBarStyle style;
     private int tick = 0;
 
-    public BossAlien(Class<T> clazz, String id, String name, int maxHealth, int spawnChance, @NonNull BossBarStyle style) {
+    public BossAlien(Class<T> clazz, String id, String name, double maxHealth, int spawnChance, @NonNull BossBarStyle style) {
         super(clazz, id, name, maxHealth, spawnChance);
         this.style = style;
     }

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.mooy1.infinitylib.presets.LorePreset;
 
 public final class SphereCommand extends AbstractCommand {
     
@@ -57,8 +58,20 @@ public final class SphereCommand extends AbstractCommand {
             }
         }
         
-        new Sphere(materials).generate(target, radius, 0);
-        p.sendMessage(ChatColor.GREEN + "Generated!");
+        Sphere sphere = new Sphere(materials);
+        long nano = System.nanoTime();
+        sphere.generate(target, radius, 0);
+        nano = System.nanoTime() - nano;
+
+        StringBuilder message = new StringBuilder().append(ChatColor.GREEN).append("Generated in ");
+
+        if (nano > 1_000_000_000) {
+            message.append(LorePreset.format(nano / 1_000_000_000D)).append("s");
+        } else {
+            message.append(LorePreset.format(nano / 1_000_000D)).append("ms");
+        }
+
+        p.sendMessage(message.toString());
     }
 
     @Override

@@ -1,7 +1,9 @@
 package io.github.addoncommunity.galactifun.api.universe.types;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
+
 /**
- * Type of celestial body
+ * Type of an {@link PlanetaryObject}
  * 
  * @author Mooy1
  */

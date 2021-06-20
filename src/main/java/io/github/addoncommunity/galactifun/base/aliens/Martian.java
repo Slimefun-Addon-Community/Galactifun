@@ -35,7 +35,7 @@ public final class Martian extends Alien<ZombieVillager> {
 
     private final Map<String, ItemStack> trades = new HashMap<>();
 
-    public Martian(String id, String name, int maxHealth, int spawnChance) {
+    public Martian(String id, String name, double maxHealth, int spawnChance) {
         super(ZombieVillager.class, id, name, maxHealth, spawnChance);
 
         // Fixes the sword
