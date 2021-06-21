@@ -2,13 +2,14 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import javax.annotation.Nonnull;
 
+import lombok.NonNull;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 
@@ -19,8 +20,8 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  */
 public final class Skywhale extends Alien<Phantom> {
 
-    public Skywhale() {
-        super(Phantom.class, "SKYWHALE", "&fSkywhale");
+    public Skywhale(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+        super(Phantom.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
@@ -40,27 +41,18 @@ public final class Skywhale extends Alien<Phantom> {
     }
 
     @Override
-    protected int getMaxHealth() {
-        return 100;
-    }
-
-    @Override
     protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         e.getRightClicked().addPassenger(e.getPlayer());
     }
 
     @Override
-    protected int getSpawnChance() {
-        return 3;
-    }
-
-    @Override
-    protected boolean getSpawnInLightLevel(int lightLevel) {
+    protected boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel > 7;
     }
 
     @Override
-    protected Vector getSpawnOffset() {
-        return new Vector(0, 100, 0);
+    protected double getSpawnHeightOffset() {
+        return 100;
     }
+
 }

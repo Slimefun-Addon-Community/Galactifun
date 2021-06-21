@@ -1,24 +1,17 @@
 package io.github.addoncommunity.galactifun.api.universe.types;
 
-import javax.annotation.Nonnull;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Star system types
  * 
  * @author Mooy1
  */
-@AllArgsConstructor
-public enum StarSystemType implements UniversalType {
+public final class StarSystemType extends UniversalType {
 
-    NORMAL("Normal"),
-    
-    BINARY("Binary");
-    
-    @Getter
-    @Nonnull
-    private final String name;
-    
+    public static final StarSystemType NORMAL = new StarSystemType("Normal");
+    public static final StarSystemType BINARY = new StarSystemType("Binary");
+
+    public StarSystemType(String name) {
+        super(name);
+    }
+
 }

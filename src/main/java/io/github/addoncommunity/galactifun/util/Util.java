@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.util;
 
-import java.util.Collection;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -28,52 +27,10 @@ public final class Util {
     };
 
     /**
-     * Gets the closest {@code double} by value in the collection to the search double
-     *
-     * @param collection collection to search
-     * @param search double to search for
-     * @return closest double in the collection to search
-     */
-    public static double getClosest(@Nonnull Collection<Double> collection, double search) {
-        double dist = Double.MAX_VALUE;
-        double closest = search;
-        for (Double obj : collection) {
-            double newDist = Math.abs(obj - search);
-            if (newDist < dist) {
-                dist = newDist;
-                closest = search;
-            }
-        }
-
-        return closest;
-    }
-
-    /**
      * From and to are inclusive
      */
     public static int random(int from, int to, @Nonnull Random random) {
         return from + random.nextInt(1 + to - from);
-    }
-    
-    public static String timeSince(double nanoTime) {
-        nanoTime = System.nanoTime() - nanoTime;
-        if (nanoTime >= 1_000_000_000D) {
-            return ((int) (nanoTime / 1_000_000D)) / 1000 + " s";
-        } else {
-            return ((int) (nanoTime / 1_000D)) / 1000D + " ms";
-        }
-    }
-
-    /**
-     * Applies the Law of Cosines between two sides and the angle between them
-     *
-     * @param sideOne the first side
-     * @param sideTwo the second side
-     * @param angle the angle between them, in degrees
-     * @return the length of the side opposite the angle in a triangle
-     */
-    public static double lawOfCosines(double sideOne, double sideTwo, double angle) {
-        return Math.sqrt((sideOne * sideOne) + (sideTwo * sideTwo) - (2 * sideOne * sideTwo * Math.cos(Math.toRadians(angle))));
     }
     
 }

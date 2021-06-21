@@ -1,25 +1,18 @@
 package io.github.addoncommunity.galactifun.api.universe.types;
 
-import javax.annotation.Nonnull;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Types of galaxies
  * 
  * @author Mooy1
  */
-@AllArgsConstructor
-public enum GalaxyType implements UniversalType {
+public final class GalaxyType extends UniversalType {
     
-    ELLIPTICAL("Elliptical"),
-    
-    SPIRAL("Spiral"),
-    
-    IRREGULAR("Irregular");
-    
-    @Getter
-    @Nonnull
-    private final String name;
+    public static final GalaxyType ELLIPTICAL = new GalaxyType("Elliptical");
+    public static final GalaxyType SPIRAL = new GalaxyType("Spiral");
+    public static final GalaxyType IRREGULAR = new GalaxyType("Irregular");
+
+    public GalaxyType(String name) {
+        super(name);
+    }
+
 }

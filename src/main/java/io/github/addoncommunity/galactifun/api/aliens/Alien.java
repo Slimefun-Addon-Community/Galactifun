@@ -8,7 +8,9 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
+import lombok.NonNull;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -23,15 +25,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.util.Vector;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.goals.AbstractGoal;
+import io.github.addoncommunity.galactifun.api.aliens.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
-import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien
@@ -43,38 +42,40 @@ import org.apache.commons.lang.Validate;
  * @see Martian
  */
 @Getter
-public abstract class Alien<T extends Mob> {
+public class Alien<T extends Mob> {
 
     private final Class<T> clazz;
     private final String id;
     private final String name;
+    private final int spawnChance;
+    private final double maxHealth;
+    private AlienManager alienManager;
 
-    public Alien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name) {
+    public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+        Validate.isTrue(maxHealth > 0);
+        Validate.isTrue(spawnChance > 0 && spawnChance <= 100);
+
         this.clazz = clazz;
-        Validate.notNull(this.id = id);
-        Validate.notNull(this.name = ChatColors.color(name));
-        Validate.isTrue(getMaxHealth() > 0);
-        Validate.isTrue(getSpawnChance() > 0 && getSpawnChance() <= 100);
-        Validate.notNull(getSpawnOffset());
-
-        Galactifun.inst().getAlienManager().register(this);
+        this.id = id;
+        this.name = ChatColors.color(name);
+        this.maxHealth = maxHealth;
+        this.spawnChance = spawnChance;
     }
 
     @Nonnull
     public final T spawn(@Nonnull Location loc, @Nonnull World world) {
         T mob = world.spawn(loc, this.clazz);
 
-        // TODO better way to access key
-        PersistentDataAPI.setString(mob, Galactifun.inst().getAlienManager().getKey(), this.id);
+        PersistentDataAPI.setString(mob, this.alienManager.getKey(), this.id);
 
-        Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(getMaxHealth());
-        mob.setHealth(getMaxHealth());
+        Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
+        mob.setHealth(this.maxHealth);
         mob.setCustomName(this.name);
         mob.setCustomNameVisible(true);
         mob.setRemoveWhenFarAway(true);
 
         Map<AbstractGoal<T>, Integer> goals = new HashMap<>();
-        this.getGoals(goals, mob);
+        getGoals(goals, mob);
         if (!goals.isEmpty()) {
             MobGoals mobGoals = Bukkit.getMobGoals();
             mobGoals.removeAllGoals(mob);
@@ -87,6 +88,18 @@ public abstract class Alien<T extends Mob> {
         return mob;
     }
 
+    public final void register(@Nonnull AlienManager alienManager) {
+        if (isRegistered()) {
+            throw new IllegalStateException("Alien already registered!");
+        }
+        this.alienManager = alienManager;
+        alienManager.register(this);
+    }
+
+    public final boolean isRegistered() {
+        return this.alienManager != null;
+    }
+
     protected void onSpawn(@Nonnull T spawned) { }
 
     protected void onUniqueTick() { }
@@ -96,7 +109,7 @@ public abstract class Alien<T extends Mob> {
     public final int attemptSpawn(Random rand, World world) {
         int spawned = 0;
         for (Chunk chunk : world.getLoadedChunks()) {
-            if (rand.nextInt(100) > getSpawnChance() || spawned >= getMaxAliensPerGroup()) {
+            if (rand.nextInt(100) > this.spawnChance) {
                 break;
             }
 
@@ -105,8 +118,8 @@ public abstract class Alien<T extends Mob> {
             Block b = world.getHighestBlockAt(x, z).getRelative(0, 1, 0);
 
             // currently doesn't allow for aquatic aliens
-            if (b.getType().isAir() && getSpawnInLightLevel(b.getLightLevel())) {
-                spawn(b.getLocation().add(getSpawnOffset()), world);
+            if (b.getType().isAir() && canSpawnInLightLevel(b.getLightLevel())) {
+                spawn(b.getLocation().add(0, getSpawnHeightOffset(), 0), world);
                 spawned++;
             }
         }
@@ -134,24 +147,7 @@ public abstract class Alien<T extends Mob> {
      * @param mob the mob
      */
     protected void getGoals(@Nonnull Map<AbstractGoal<T>, Integer> goals, @Nonnull T mob) {
-    }
 
-    protected abstract int getMaxHealth();
-
-    /**
-     * Returns the chance for the alien to spawn per spawn attempt
-     *
-     * @return the chance for the alien to spawn
-     */
-    protected abstract int getSpawnChance();
-
-    /**
-     * This will return the max possible aliens spawned per spawn attempt
-     *
-     * @return aliens per group
-     */
-    protected int getMaxAliensPerGroup() {
-        return 1;
     }
 
     /**
@@ -161,12 +157,12 @@ public abstract class Alien<T extends Mob> {
      * @param lightLevel the light level of the block the alien is attempting to spawn on
      * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
      */
-    protected boolean getSpawnInLightLevel(int lightLevel) {
+    protected boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel <= 7;
     }
 
-    protected Vector getSpawnOffset() {
-        return new Vector();
+    protected double getSpawnHeightOffset() {
+        return 0;
     }
 
 }

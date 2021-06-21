@@ -1,13 +1,12 @@
 package io.github.addoncommunity.galactifun.base;
 
-import java.util.Arrays;
-
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
@@ -27,6 +26,22 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 @UtilityClass
 public final class BaseMats {
 
+
+    public static final SlimefunItemStack MOON_DUST = new SlimefunItemStack(
+            "MOON_DUST",
+            Material.LIGHT_GRAY_CONCRETE_POWDER,
+            "&7Moon Dust"
+    );
+    public static final SlimefunItemStack MARS_DUST = new SlimefunItemStack(
+            "MARS_DUST",
+            Material.RED_SAND,
+            "&cMars Dust"
+    );
+    public static final SlimefunItemStack DRY_ICE = new SlimefunItemStack(
+            "DRY_ICE",
+            Material.PACKED_ICE,
+            "&bDry Ice"
+    );
     public static final SlimefunItemStack ALUMINUM_COMPOSITE = new SlimefunItemStack(
             "ALUMINUM_COMPOSITE",
             Material.IRON_INGOT,
@@ -187,52 +202,55 @@ public final class BaseMats {
     );
 
     public static void setup() {
-        createComponent(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
+        worldItem(MOON_DUST, BaseUniverse.THE_MOON);
+        worldItem(MARS_DUST, BaseUniverse.MARS);
+        worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
+        component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
                 SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST
         );
-        createComponent(TUNGSTEN, RecipeType.SMELTERY, FALLEN_METEOR);
-        createComponent(ALUMINUM_COMPOSITE_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE, 8));
-        createComponent(HEAVY_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE_SHEET, 8));
-        createComponent(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN);
-        createComponent(ULTRA_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(SPACE_GRADE_PLATE, 4));
-        createComponent(GOLD_FOIL, RecipeType.COMPRESSOR, 4, SlimefunItems.GOLD_24K_BLOCK);
-        createComponent(REINFORCED_CHANNEL, RecipeType.ENHANCED_CRAFTING_TABLE, 8,
+        component(TUNGSTEN, RecipeType.SMELTERY, FALLEN_METEOR);
+        component(ALUMINUM_COMPOSITE_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE, 8));
+        component(HEAVY_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE_SHEET, 8));
+        component(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN);
+        component(ULTRA_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(SPACE_GRADE_PLATE, 4));
+        component(GOLD_FOIL, RecipeType.COMPRESSOR, 4, SlimefunItems.GOLD_24K_BLOCK);
+        component(REINFORCED_CHANNEL, RecipeType.ENHANCED_CRAFTING_TABLE, 8,
                 ALUMINUM_COMPOSITE_SHEET, null, ALUMINUM_COMPOSITE_SHEET,
                 ALUMINUM_COMPOSITE_SHEET, null, ALUMINUM_COMPOSITE_SHEET,
                 ALUMINUM_COMPOSITE_SHEET, null, ALUMINUM_COMPOSITE_SHEET
         );
-        createComponent(FAN_BLADE, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(FAN_BLADE, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_INGOT, null,
                 SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
                 null, SlimefunItems.STEEL_INGOT, null
         );
-        createComponent(NOZZLE, RecipeType.ENHANCED_CRAFTING_TABLE, 2,
+        component(NOZZLE, RecipeType.ENHANCED_CRAFTING_TABLE, 2,
                 SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
                 null, new ItemStack(Material.IRON_TRAPDOOR), null
         );
-        createComponent(FILTER, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(FILTER, RecipeType.ENHANCED_CRAFTING_TABLE,
                 SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
                 SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH,
                 SlimefunItems.CLOTH, new ItemStack(Material.CHARCOAL), SlimefunItems.CLOTH
         );
-        createComponent(OXYGEN_REGENERATOR, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(OXYGEN_REGENERATOR, RecipeType.ENHANCED_CRAFTING_TABLE,
                 SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL, FILTER,
                 NOZZLE, GOLD_FOIL, FILTER,
                 SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL, FILTER
         );
-        createComponent(SPARK_PLUG, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(SPARK_PLUG, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
                 SlimefunItems.ALUMINUM_INGOT, null, MUNPOWDER,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
         );
-        createComponent(SPARK_PLUG_2, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(SPARK_PLUG_2, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
                 TUNGSTEN, null, MUNPOWDER,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
         );
-        createAssembly(ROCKET_ENGINE,
+        assembly(ROCKET_ENGINE,
                 null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null,
                 null, null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null, null,
                 null, DIAMOND_CIRCUIT, NOZZLE, NOZZLE, DIAMOND_CIRCUIT, null,
@@ -240,7 +258,7 @@ public final class BaseMats {
                 SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
                 SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE
         );
-        createAssembly(ROCKET_ENGINE_2,
+        assembly(ROCKET_ENGINE_2,
                 null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null,
                 null, null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null, null,
                 null, DIAMOND_CIRCUIT, NOZZLE, NOZZLE, DIAMOND_CIRCUIT, null,
@@ -248,7 +266,7 @@ public final class BaseMats {
                 SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE,
                 SlimefunItems.REINFORCED_PLATE, null, null, null, null, SlimefunItems.REINFORCED_PLATE
         );
-        createAssembly(ROCKET_ENGINE_3,
+        assembly(ROCKET_ENGINE_3,
                 null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null,
                 null, null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null, null,
                 null, DIAMOND_CIRCUIT, NOZZLE, NOZZLE, DIAMOND_CIRCUIT, null,
@@ -256,12 +274,12 @@ public final class BaseMats {
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE,
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE
         );
-        createComponent(ADVANCED_PROCESSING_UNIT, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(ADVANCED_PROCESSING_UNIT, RecipeType.ENHANCED_CRAFTING_TABLE,
                 REDSTONE_CIRCUIT, GLOWSTONE_CIRCUIT, REDSTONE_CIRCUIT,
                 DIAMOND_CIRCUIT, SlimefunItems.ADVANCED_CIRCUIT_BOARD, DIAMOND_CIRCUIT,
                 REDSTONE_CIRCUIT, LAPIS_CIRCUIT, REDSTONE_CIRCUIT
         );
-        createAssembly(LIFE_SUPPORT_MODULE,
+        assembly(LIFE_SUPPORT_MODULE,
                 SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL, REINFORCED_CHANNEL, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT, REINFORCED_CHANNEL, REINFORCED_CHANNEL, ADVANCED_PROCESSING_UNIT, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.STEEL_INGOT, LAPIS_CIRCUIT, OXYGEN_REGENERATOR, OXYGEN_REGENERATOR, LAPIS_CIRCUIT, SlimefunItems.STEEL_INGOT,
@@ -269,7 +287,7 @@ public final class BaseMats {
                 SlimefunItems.STEEL_INGOT, ADVANCED_PROCESSING_UNIT, REINFORCED_CHANNEL, REINFORCED_CHANNEL, ADVANCED_PROCESSING_UNIT, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT, REINFORCED_CHANNEL, REINFORCED_CHANNEL, SlimefunItems.STEEL_INGOT, SlimefunItems.STEEL_INGOT
         );
-        createAssembly(NOSE_CONE,
+        assembly(NOSE_CONE,
                 null, null, new ItemStack(Material.REDSTONE_TORCH), new ItemStack(Material.REDSTONE_TORCH), null, null,
                 null, null, ALUMINUM_COMPOSITE, ALUMINUM_COMPOSITE, null, null,
                 null, ALUMINUM_COMPOSITE, GLOWSTONE_CIRCUIT, GLOWSTONE_CIRCUIT, ALUMINUM_COMPOSITE, null,
@@ -277,39 +295,49 @@ public final class BaseMats {
                 ALUMINUM_COMPOSITE, null, null, null, null, ALUMINUM_COMPOSITE,
                 ALUMINUM_COMPOSITE, null, null, null, null, ALUMINUM_COMPOSITE
         );
-        createComponent(FUEL_TANK, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(FUEL_TANK, RecipeType.ENHANCED_CRAFTING_TABLE,
                 HEAVY_DUTY_SHEET, HEAVY_DUTY_SHEET, HEAVY_DUTY_SHEET,
                 HEAVY_DUTY_SHEET, null, HEAVY_DUTY_SHEET,
                 HEAVY_DUTY_SHEET, HEAVY_DUTY_SHEET, HEAVY_DUTY_SHEET
         );
-        createComponent(FUEL_TANK_2, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(FUEL_TANK_2, RecipeType.ENHANCED_CRAFTING_TABLE,
                 ULTRA_DUTY_SHEET, ULTRA_DUTY_SHEET, ULTRA_DUTY_SHEET,
                 ULTRA_DUTY_SHEET, null, ULTRA_DUTY_SHEET,
                 ULTRA_DUTY_SHEET, ULTRA_DUTY_SHEET, ULTRA_DUTY_SHEET
         );
-        createComponent(DIAMOND_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.DIAMOND_BLOCK));
-        createComponent(REDSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.REDSTONE_BLOCK));
-        createComponent(LAPIS_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.LAPIS_BLOCK));
-        createComponent(GLOWSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.GLOWSTONE));
+        component(DIAMOND_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.DIAMOND_BLOCK));
+        component(REDSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.REDSTONE_BLOCK));
+        component(LAPIS_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.LAPIS_BLOCK));
+        component(GLOWSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.GLOWSTONE));
         
-        createComponent(MUNPOWDER, CoreRecipeType.ALIEN_DROP,             
+        component(MUNPOWDER, CoreRecipeType.ALIEN_DROP,
                 null, null, null,
                 null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        createComponent(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseRegistry.MARS.getItem());
-        createComponent(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
+        component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.getItem());
+        component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
     }
 
-    private static void createComponent(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9)).register(Galactifun.inst());
+    private static void component(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe).register(Galactifun.inst());
     }
 
-    private static void createComponent(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, Arrays.copyOf(recipe, 9), new SlimefunItemStack(item, output)).register(Galactifun.inst());
+    private static void component(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.inst());
     }
 
-    private static void createAssembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, Arrays.copyOf(recipe, 36)).register(Galactifun.inst());
+    private static void assembly(SlimefunItemStack item, ItemStack... recipe) {
+        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.inst());
+    }
+
+    private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {
+        ItemStack[] recipe = new ItemStack[worlds.length];
+        for (int i = 0 ; i < worlds.length ; i++) {
+            AlienWorld world = worlds[i];
+            recipe[i] = world.getItem();
+            world.addBlockMapping(item.getType(), item);
+        }
+        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.inst());
     }
 
 }
