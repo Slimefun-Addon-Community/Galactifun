@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -27,7 +25,6 @@ import org.bukkit.util.Vector;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -73,15 +70,7 @@ public abstract class Alien<T extends Mob> {
         mob.setCustomNameVisible(true);
         mob.setRemoveWhenFarAway(true);
 
-        Map<AbstractGoal<T>, Integer> goals = new HashMap<>();
-        this.getGoals(goals, mob);
-        if (!goals.isEmpty()) {
-            MobGoals mobGoals = Bukkit.getMobGoals();
-            mobGoals.removeAllGoals(mob);
-            for (Map.Entry<AbstractGoal<T>, Integer> goal : goals.entrySet()) {
-                mobGoals.addGoal(mob, goal.getValue(), goal.getKey());
-            }
-        }
+        this.editGoals(Bukkit.getMobGoals(), mob);
 
         onSpawn(mob);
         return mob;
@@ -128,12 +117,12 @@ public abstract class Alien<T extends Mob> {
     protected void onDamage(EntityDamageEvent e) { }
 
     /**
-     * Gets the AI of the Alien. The map is a map of a mob goal and its priority
+     * Edits the AI of the Alien. The map is a map of a mob goal and its priority
      *
      * @param goals a map of the Alien's goals, add the goals to this or add nothing for default AI
      * @param mob the mob
      */
-    protected void getGoals(@Nonnull Map<AbstractGoal<T>, Integer> goals, @Nonnull T mob) {
+    protected void editGoals(@Nonnull MobGoals goals, @Nonnull T mob) {
     }
 
     protected abstract int getMaxHealth();

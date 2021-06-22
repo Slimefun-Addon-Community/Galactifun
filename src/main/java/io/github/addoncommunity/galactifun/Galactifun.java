@@ -24,6 +24,7 @@ import io.github.addoncommunity.galactifun.core.GalacticExplorer;
 import io.github.addoncommunity.galactifun.core.StargateListener;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.core.commands.SealedCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
@@ -108,7 +109,8 @@ public final class Galactifun extends AbstractAddon {
                 new GalactiportCommand(),
                 new AlienSpawnCommand(this.alienManager),
                 new SphereCommand(),
-                new StructureCommand(this)
+                new StructureCommand(this),
+                new SealedCommand()
         );
     }
 
