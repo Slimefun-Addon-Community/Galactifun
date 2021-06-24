@@ -3,7 +3,6 @@ package io.github.addoncommunity.galactifun.api.worlds.populators;
 import javax.annotation.Nonnull;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,10 +12,9 @@ import io.github.addoncommunity.galactifun.util.GenUtils;
 /**
  * Class for a custom tree. Left subclassable
  */
-@Getter
 @AllArgsConstructor
 @SuppressWarnings("ClassCanBeRecord")
-public class CustomTree {
+public class CustomTree { // TODO make this into a populator? or move class
 
     protected final Material log;
     protected final Material leaves;
@@ -34,4 +32,5 @@ public class CustomTree {
             location.getBlock().setType(this.log, false);
         }
     }
+
 }

@@ -1,67 +1,50 @@
 package io.github.addoncommunity.galactifun;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
-import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
+import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
-import io.github.addoncommunity.galactifun.api.worlds.WorldSetting;
+import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.addoncommunity.galactifun.base.BaseRegistry;
-import io.github.addoncommunity.galactifun.base.GeneratedItems;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import io.github.addoncommunity.galactifun.core.GalacticExplorer;
-import io.github.addoncommunity.galactifun.core.StargateListener;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SealedCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
-import io.github.addoncommunity.galactifun.core.structures.StructureRegistry;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
-@Getter
 public final class Galactifun extends AbstractAddon {
 
     private static Galactifun instance;
 
+    private StructureManager structureManager;
     private AlienManager alienManager;
     private WorldManager worldManager;
-    private TheUniverse theUniverse;
-    private GalacticExplorer galacticExplorer;
-
-    public static Galactifun inst() {
-        return instance;
-    }
 
     protected void enable() {
         instance = this;
 
-        this.theUniverse = new TheUniverse();
+        this.structureManager = new StructureManager(this);
         this.alienManager = new AlienManager(this);
-        this.worldManager = new WorldManager(this, this.alienManager);
-        this.galacticExplorer = new GalacticExplorer(this.theUniverse, this.worldManager);
+        this.worldManager = new WorldManager(this);
 
-        StructureRegistry.loadStructureFolder(this);
-        BaseRegistry.setup();
+        BaseAlien.setup(this.alienManager);
+        BaseUniverse.setup(this.worldManager);
         CoreCategory.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
-        GeneratedItems.setup();
-
-        registerListener(new StargateListener());
 
         // log after startup
         runSync(() -> log(
@@ -77,13 +60,10 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected void disable() {
+        instance = null;
+
         // todo make better
         BossAlien.removeBossBars();
-        try {
-            WorldSetting.saveAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -107,7 +87,7 @@ public final class Galactifun extends AbstractAddon {
     protected List<AbstractCommand> setupSubCommands() {
         return Arrays.asList(
                 new GalactiportCommand(),
-                new AlienSpawnCommand(this.alienManager),
+                new AlienSpawnCommand(),
                 new SphereCommand(),
                 new StructureCommand(this),
                 new SealedCommand()
@@ -118,6 +98,22 @@ public final class Galactifun extends AbstractAddon {
     @Override
     public String getAutoUpdatePath() {
         return "auto-update";
+    }
+
+    public static Galactifun inst() {
+        return instance;
+    }
+
+    public static StructureManager structureManager() {
+        return instance.structureManager;
+    }
+
+    public static AlienManager alienManager() {
+        return instance.alienManager;
+    }
+
+    public static WorldManager worldManager() {
+        return instance.worldManager;
     }
 
 }

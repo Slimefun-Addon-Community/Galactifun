@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -14,18 +16,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.slimefun.AbstractTickingContainer;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -54,12 +54,13 @@ public final class LaunchPadCore extends AbstractTickingContainer {
             27, 28, 29, 30, 36, 37, 38, 39, 45, 46, 47, 48
     };
     private static final int FUEL_SLOT = 33;
-    
-    public static final BiMap<ItemStack, Double> FUELS = HashBiMap.create();
-    
+
+    // TODO improve fuel system
+    public static final Map<String, Integer> FUELS = new HashMap<>();
+
     static {
-        FUELS.put(SlimefunItems.OIL_BUCKET, 0.5);
-        FUELS.put(SlimefunItems.FUEL_BUCKET, 1D);
+        FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 1);
+        FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 2);
     }
 
     public LaunchPadCore(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
@@ -76,34 +77,27 @@ public final class LaunchPadCore extends AbstractTickingContainer {
 
         Location l = b.getLocation();
         
-        String s = BlockStorage.getLocationInfo(l, "isLaunching");
-        if (Boolean.parseBoolean(s)) return;
+        String string = BlockStorage.getLocationInfo(l, "isLaunching");
+        if (Boolean.parseBoolean(string)) return;
 
-        s = BlockStorage.getLocationInfo(l, "fuel");
+        string = BlockStorage.getLocationInfo(l, "fuel");
         int fuel = 0;
-        if (s != null) {
-            fuel = Integer.parseInt(s);
+        if (string != null) {
+            fuel = Integer.parseInt(string);
         }
-        s = BlockStorage.getLocationInfo(l, "fuelEff");
-        double eff = 0;
-        if (s != null) {
-            eff = Double.parseDouble(s);
-        }
+
+        string = BlockStorage.getLocationInfo(l, "fuelType");
 
         if (fuel < rocket.getFuelCapacity()) {
-            // TODO improve a lot
-            ItemStack slotItem = menu.getItemInSlot(FUEL_SLOT);
-            for (ItemStack stack : FUELS.keySet()) {
-                if (SlimefunUtils.isItemSimilar(slotItem, stack, false, false)) {
-                    menu.consumeItem(FUEL_SLOT);
-                    fuel++;
-                    eff += FUELS.get(stack);
-                    break;
+            String id = StackUtils.getID(menu.getItemInSlot(FUEL_SLOT));
+
+            if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
+                menu.consumeItem(FUEL_SLOT);
+                BlockStorage.addBlockInfo(l, "fuel", Integer.toString(++fuel));
+                if (string == null) {
+                    BlockStorage.addBlockInfo(l, "fuelType", id);
                 }
             }
-
-            BlockStorage.addBlockInfo(l, "fuel", Integer.toString(fuel));
-            BlockStorage.addBlockInfo(l, "fuelEff", Double.toString(eff));
         }
     }
 
@@ -112,7 +106,6 @@ public final class LaunchPadCore extends AbstractTickingContainer {
             p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
             return false;
         }
-
         return true;
     }
 

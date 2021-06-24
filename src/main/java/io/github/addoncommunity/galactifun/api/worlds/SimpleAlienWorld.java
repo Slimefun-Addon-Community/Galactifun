@@ -8,13 +8,17 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.Mars;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
-import org.apache.commons.lang.Validate;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.base.universe.Mars;
 
 /**
  * A simple alien world
@@ -24,17 +28,14 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
 
-    public SimpleAlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
-        super(name, orbit, type, choice);
+    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+                          DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    @Override
-    protected void beforeWorldLoad() {
-        // validate stuff before it is used in generators
-        Validate.isTrue(getMaxDeviation() >= 0);
-        Validate.isTrue(getAverageHeight() >= 0 && getAverageHeight() + getMaxDeviation() <= 256);
-        Validate.isTrue(getOctaves() > 0);
-        Validate.isTrue(getScale() > 0);
+    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                            DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override
@@ -44,15 +45,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, getOctaves());
         generator.setScale(getScale());
 
-        int height;
-        int realX;
-        int realZ;
-        int x;
-        int y;
-        int z;
-
-        for (x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
-            for (z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
+        for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 double noise = generator.noise(realX, realZ, getFrequency(), getAmplitude(), true);
                 
@@ -62,21 +56,22 @@ public abstract class SimpleAlienWorld extends AlienWorld {
 
                 // find max height
                 double temp = getAverageHeight() + getMaxDeviation() * noise;
-                height = temp >= 0 ? (int) temp : (int) temp - 1;
+                int height = temp >= 0 ? (int) temp : (int) temp - 1;
 
                 // y = 0, add bedrock and biome
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
                 grid.setBiome(x, 0, z, getBiome());
 
                 // y = 1 to height, generate and add biome
-                for (y = 1; y <= height; y++) {
-                    chunk.setBlock(x, y, z, generateMaterial(random, x, y, z, height));
+                int y = 1;
+                while (y <= height) {
+                    chunk.setBlock(x, y++, z, generateMaterial(random, x, y, z, height));
                     grid.setBiome(x, y, z, getBiome());
                 }
 
                 // y = height to 256, just add biome
-                for (; y < 256; y++) {
-                    grid.setBiome(x, y, z, getBiome());
+                while (y < 256) {
+                    grid.setBiome(x, y++, z, getBiome());
                 }
 
                 // more

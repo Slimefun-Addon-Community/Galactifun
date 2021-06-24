@@ -1,109 +1,112 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public final class WorldManager implements Listener, Runnable {
+public final class WorldManager implements Listener {
 
-    private final AlienManager alienManager;
-    private final Map<World, CelestialWorld> worlds = new HashMap<>();
-    private final Set<CelestialWorld> allWorlds = new HashSet<>();
+    @Getter
+    private final int maxAliensPerPlayer;
+    private final List<PlanetaryWorld> spaceWorlds = new ArrayList<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
-    @Getter
-    private final File worldConfigFile;
-    @Getter
-    private final YamlConfiguration worldConfig;
+    private final YamlConfiguration config;
+    private final YamlConfiguration defaultConfig;
 
-    public WorldManager(Galactifun galactifun, AlienManager alienManager) {
-        this.alienManager = alienManager;
+    public WorldManager(Galactifun galactifun) {
+        this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
 
         galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(this, 100);
+        galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
 
-        this.worldConfigFile = new File("plugins/Galactifun", "worlds.yml");
-        this.worldConfig = new YamlConfiguration();
-        try {
+        File configFile = new File("plugins/Galactifun", "worlds.yml");
+        this.config = new YamlConfiguration();
+        this.defaultConfig = new YamlConfiguration();
+        this.config.setDefaults(this.defaultConfig);
+
+        // Load the config
+        if (configFile.exists()) {
             try {
-                this.worldConfig.load(this.worldConfigFile);
-            } catch (FileNotFoundException e) {
-                this.worldConfigFile.createNewFile();
-            } catch (InvalidConfigurationException e) {
+                this.config.load(configFile);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+
+        // Save the config after startup
+        galactifun.runSync(() -> {
+            try {
+                this.config.options().copyDefaults(true);
+                this.config.save(configFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    void register(PlanetaryWorld world) {
+        this.spaceWorlds.add(world);
+        if (world instanceof AlienWorld alienWorld) {
+            this.alienWorlds.put(alienWorld.getWorld(), alienWorld);
         }
     }
 
-    public void register(AlienWorld world) {
-        if (world.getWorld() != null) {
-            this.alienWorlds.put(world.getWorld(), world);
-        }
-    }
-
-    public void register(CelestialWorld world) {
-        this.allWorlds.add(world);
-        if (world.getWorld() != null) {
-            this.worlds.put(world.getWorld(), world);
+    @SuppressWarnings("unchecked")
+    <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
+        path = world.getId() + '.' + path;
+        this.defaultConfig.set(path, defaultValue);
+        if (clazz == String.class) {
+            return (T) this.config.getString(path);
+        } else {
+            return this.config.getObject(path, clazz);
         }
     }
 
     @Nullable
-    public CelestialWorld getWorld(@Nonnull World world) {
-        return this.worlds.get(world);
+    public PlanetaryWorld getWorld(@Nonnull World world) {
+        return this.alienWorlds.get(world);
     }
 
     @Nullable
     public AlienWorld getAlienWorld(@Nonnull World world) {
-        return alienWorlds.get(world);
+        return this.alienWorlds.get(world);
     }
 
     @Nonnull
-    public Collection<CelestialWorld> getEnabledWorlds() {
-        return Collections.unmodifiableCollection(this.worlds.values());
-    }
-
-    @Nonnull
-    public Collection<CelestialWorld> getAllWorlds() {
-        return Collections.unmodifiableCollection(this.allWorlds);
-    }
-
-    @Override
-    public void run() {
-        for (AlienWorld world : this.alienWorlds.values()) {
-            world.tickWorld(this.alienManager);
-        }
+    public List<PlanetaryWorld> getSpaceWorlds() {
+        return Collections.unmodifiableList(this.spaceWorlds);
     }
 
     @EventHandler
@@ -118,16 +121,16 @@ public final class WorldManager implements Listener, Runnable {
         }
     }
 
-    @EventHandler
-    public void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         AlienWorld object = getAlienWorld(e.getPlayer().getWorld());
         if (object != null) {
             object.applyEffects(e.getPlayer());
         }
     }
 
-    @EventHandler
-    public void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    private void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
         if (!e.getPlayer().hasPermission("galactifun.admin")) {
             if (e.getTo().getWorld() != null) {
                 AlienWorld world = getAlienWorld(e.getTo().getWorld());
@@ -138,8 +141,8 @@ public final class WorldManager implements Listener, Runnable {
         }
     }
 
-    @EventHandler
-    public void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    private void onCreatureSpawn(@Nonnull CreatureSpawnEvent e) {
         if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
             AlienWorld world = getAlienWorld(e.getEntity().getWorld());
             if (world != null && !world.canSpawnVanillaMobs()) {
@@ -148,15 +151,15 @@ public final class WorldManager implements Listener, Runnable {
         }
     }
 
-    @EventHandler
-    public void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    private void onWaypointCreate(@Nonnull WaypointCreateEvent e) {
         if (this.alienWorlds.containsKey(e.getPlayer().getWorld())) {
             e.setCancelled(true);
         }
     }
 
-    @EventHandler
-    public void onCropGrow(@Nonnull BlockGrowEvent e) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onCropGrow(@Nonnull BlockGrowEvent e) {
         Block block = e.getBlock();
         AlienWorld world = getAlienWorld(block.getWorld());
         if (world != null) {
@@ -168,6 +171,32 @@ public final class WorldManager implements Listener, Runnable {
                     block.setBlockData(ageable);
                 }
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    private void onBreak(BlockBreakEvent e) {
+        Block b = e.getBlock();
+        World w = b.getWorld();
+        AlienWorld world = this.alienWorlds.get(w);
+        if (world != null) {
+            SlimefunItemStack item = world.getMappedItem(b);
+            if (item != null) {
+                Location l = b.getLocation();
+                if (BlockStorage.getLocationInfo(l, "stored") != null) {
+                    e.setDropItems(false);
+                    w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onPlace(BlockPlaceEvent e) {
+        Block b = e.getBlock();
+        AlienWorld world = this.alienWorlds.get(b.getWorld());
+        if (world != null && world.getMappedItem(b) != null) {
+            BlockStorage.addBlockInfo(b, "placed", "true");
         }
     }
 

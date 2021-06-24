@@ -21,9 +21,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.EndGateway;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.mooy1.infinitylib.presets.MenuPreset;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
@@ -41,7 +47,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 // TODO clean up if possible
-public class StargateController extends SlimefunItem {
+public final class StargateController extends SlimefunItem implements Listener {
 
     private static final int[] BACKGROUND = new int[]{1, 2, 6, 7, 8};
     private static final int ADDRESS_SLOT = 3;
@@ -97,6 +103,8 @@ public class StargateController extends SlimefunItem {
 
     public StargateController(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
+
+        Galactifun.inst().registerListener(this);
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(b -> onUse(e, e.getPlayer(), b)));
 
@@ -299,6 +307,30 @@ public class StargateController extends SlimefunItem {
         ));
 
         BlockStorage.addBlockInfo(b, "destination", destination);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onGateBreak(BlockBreakEvent e) {
+        Block b = e.getBlock();
+        if (b.getType() == Material.END_GATEWAY &&
+                Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), "locked"))) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "Deactivate the Stargate before destroying it");
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onUsePortal(PlayerTeleportEndGatewayEvent e) {
+        if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(e.getGateway().getLocation(), "portal"))) return;
+        Location dest = e.getGateway().getExitLocation();
+        if (dest == null) return;
+
+        Block b = dest.getBlock();
+        if (BlockStorage.check(b, BaseItems.STARGATE_CONTROLLER.getItemId()) &&
+                StargateController.getPortalBlocks(b).isEmpty()) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "The destination Stargate is not activated");
+        }
     }
 
     private static final record ComponentPosition(int y, int z) {

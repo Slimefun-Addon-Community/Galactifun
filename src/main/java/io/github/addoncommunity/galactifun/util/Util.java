@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.util;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Optional;
@@ -55,27 +54,6 @@ public final class Util {
                 Material.NETHERITE_BLOCK
         ));
         IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("WAXED")); // for now until paper 1.17 is stable
-    }
-
-    /**
-     * Gets the closest {@code double} by value in the collection to the search double
-     *
-     * @param collection collection to search
-     * @param search double to search for
-     * @return closest double in the collection to search
-     */
-    public static double getClosest(@Nonnull Collection<Double> collection, double search) {
-        double dist = Double.MAX_VALUE;
-        double closest = search;
-        for (Double obj : collection) {
-            double newDist = Math.abs(obj - search);
-            if (newDist < dist) {
-                dist = newDist;
-                closest = search;
-            }
-        }
-
-        return closest;
     }
 
     /**

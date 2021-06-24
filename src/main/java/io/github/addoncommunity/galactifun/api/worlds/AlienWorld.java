@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -13,27 +12,28 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import lombok.NonNull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
-import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
+import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
+import io.github.addoncommunity.galactifun.api.universe.StarSystem;
+import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
+import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
-import io.github.addoncommunity.galactifun.api.universe.types.CelestialType;
-import io.github.addoncommunity.galactifun.base.milkyway.solarsystem.earth.EarthOrbit;
-import io.github.addoncommunity.galactifun.util.ItemChoice;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -47,38 +47,32 @@ import org.apache.commons.lang.Validate;
  *
  * @see EarthOrbit
  */
-public abstract class AlienWorld extends CelestialWorld {
+public abstract class AlienWorld extends PlanetaryWorld {
 
-    protected final WorldSetting<Boolean> isEnabled = new WorldSetting<>(this, "enabled", enabledByDefault(), Boolean.class);
+    private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
+    private final List<Alien<?>> species = new ArrayList<>();
 
-    /**
-     * All alien species that can spawn on this planet. Is {@link List} for shuffling purposes
-     */
-    @Nonnull
-    private final List<Alien<?>> species = new ArrayList<>(4);
+    public AlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+                      DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+    }
 
-    @Nonnull
-    protected final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
-
-    public AlienWorld(@Nonnull String name, @Nonnull Orbit orbit, @Nonnull CelestialType type, @Nonnull ItemChoice choice) {
-        super(name, orbit, type, choice);
-        addWorldSetting(isEnabled);
+    public AlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+                      DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Nullable
     @Override
     protected World loadWorld() {
-        Galactifun.inst().log(Level.INFO, "Loading planet " + this.name);
+        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
 
-        boolean enabled = Galactifun.inst().getWorldManager().getWorldConfig().getBoolean(this.id + ".enabled", enabledByDefault());
-        if (!enabled) {
+        if (!getSetting("enabled", Boolean.class, enabledByDefault())) {
             return null;
         }
 
-        // before
-        beforeWorldLoad();
-
         String worldName = "world_galactifun_" + this.id;
+
         // fetch or create world
         World world = new WorldCreator(worldName)
                 .generator(new ChunkGenerator() {
@@ -105,7 +99,7 @@ public abstract class AlienWorld extends CelestialWorld {
                         return b.getLocation();
                     }
                 })
-                .environment(this.atmosphere.getEnvironment())
+                .environment(getAtmosphere().getEnvironment())
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
@@ -121,39 +115,24 @@ public abstract class AlienWorld extends CelestialWorld {
         }
 
         // load effects
-        this.dayCycle.applyEffects(world);
-        this.atmosphere.applyEffects(world);
-
-        Galactifun.inst().registerListener(new Listener() {
-            @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-            public void onBreak(BlockBreakEvent e) {
-                Block b = e.getBlock();
-                if (!blockMappings.containsKey(b.getType())) return;
-                if (!b.getWorld().getUID().equals(world.getUID())) return;
-
-                if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), "placed"))) {
-                    e.setDropItems(false);
-                    b.getWorld().dropItemNaturally(
-                            b.getLocation().add(0.5, 0.5, 0.5),
-                            blockMappings.get(b.getType()).clone()
-                    );
-                }
-            }
-
-            @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-            public void onPlace(BlockPlaceEvent e) {
-                Block b = e.getBlock();
-                if (!blockMappings.containsKey(b.getType())) return;
-                if (!b.getWorld().getUID().equals(world.getUID())) return;
-
-                BlockStorage.addBlockInfo(b, "placed", Boolean.toString(true));
-            }
-        });
-
-        // after
-        afterWorldLoad(world);
+        getDayCycle().applyEffects(world);
+        getAtmosphere().applyEffects(world);
 
         return world;
+    }
+
+    public final void addSpecies(@NonNull Alien<?>... aliens) {
+        for (Alien<?> alien : aliens) {
+            if (alien.isRegistered()) {
+                this.species.add(alien);
+            } else {
+                throw new IllegalStateException("You must register an alien before adding it to a world!");
+            }
+        }
+    }
+
+    protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
+        return getWorldManager().getSetting(this, path, clazz, defaultValue);
     }
 
     /**
@@ -165,26 +144,15 @@ public abstract class AlienWorld extends CelestialWorld {
      * blocks in that world. Therefore, any block that doesn't have data is the Slimefun one, and
      * those that do are vanilla
      */
+    // TODO improve
     public final void addBlockMapping(@Nonnull Material vanillaItem, @Nonnull SlimefunItemStack slimefunItem) {
-        blockMappings.put(vanillaItem, slimefunItem);
+        this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
-    /**
-     * Called before the world is loaded, while this is being registered
-     *
-     * use this to validate or initialize anything that is used in the chunk generator
-     */
-    protected void beforeWorldLoad() {
-        // can be overridden
-    }
-
-    /**
-     * Called after the world is loaded, while this is being registered
-     *
-     * use this to add any custom world settings you want
-     */
-    protected void afterWorldLoad(@Nonnull World world) {
-        // can be overridden
+    // TODO improve
+    @Nullable
+    SlimefunItemStack getMappedItem(Block b) {
+        return this.blockMappings.get(b.getType());
     }
 
     protected boolean canSpawnVanillaMobs() {
@@ -209,24 +177,24 @@ public abstract class AlienWorld extends CelestialWorld {
      */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
-    /**
-     * Adds alien species to this world
-     */
-    public final void addSpecies(@Nonnull Alien<?>... aliens) {
-        this.species.addAll(Arrays.asList(aliens));
+    final void applyEffects(@Nonnull Player p) {
+        getGravity().applyGravity(p);
+        getAtmosphere().applyEffects(p);
     }
 
-    /**
-     * Ticks the world every 5 seconds
-     */
-    void tickWorld(AlienManager manager) {
+    final void tickWorld() {
+        World world = getWorld();
+
+        // time
+        getDayCycle().tick(world);
+
         // player effects
-        for (Player p : getWorld().getPlayers()) {
+        for (Player p : world.getPlayers()) {
             applyEffects(p);
         }
 
         // time
-        this.dayCycle.tick(getWorld());
+        getDayCycle().tick(getWorld());
 
         // mob spawns
         if (!this.species.isEmpty()) {
@@ -234,21 +202,16 @@ public abstract class AlienWorld extends CelestialWorld {
             Collections.shuffle(this.species);
 
             Random rand = ThreadLocalRandom.current();
-            int players = getWorld().getPlayers().size();
-            int mobs = getWorld().getLivingEntities().size() - players;
-            int max = players * manager.getMaxAliensPerPlayer();
+            int players = world.getPlayers().size();
+            int mobs = world.getLivingEntities().size() - players;
+            int max = players * getWorldManager().getMaxAliensPerPlayer();
 
             for (Alien<?> alien : this.species) {
-                if ((mobs += alien.attemptSpawn(rand, getWorld())) > max) {
+                if ((mobs += alien.attemptSpawn(rand, world)) > max) {
                     break;
                 }
             }
         }
-    }
-
-    protected final void applyEffects(@Nonnull Player p) {
-        this.gravity.applyGravity(p);
-        this.atmosphere.applyEffects(p);
     }
 
 }

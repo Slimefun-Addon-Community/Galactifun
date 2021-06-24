@@ -15,7 +15,7 @@ public final class Orbit {
     /**
      * An orbit of 0, should only be used in special cases
      */
-    public static final Orbit ZERO = new Orbit(0, 0);
+    public static final Orbit NONE = new Orbit(0, 0);
 
     private static final long EARTH_YEAR = 35;
 
@@ -59,7 +59,7 @@ public final class Orbit {
 
     public double getOrbitPos() {
         if (this.year == 0) return 0;
-        return ((System.currentTimeMillis() % this.year) * 360D) / this.year;
+        return ((System.currentTimeMillis() % this.year) * Math.PI * 2) / this.year;
     }
     
 }

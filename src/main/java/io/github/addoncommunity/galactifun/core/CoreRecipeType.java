@@ -8,6 +8,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
+// TODO find a better place for these, maybe make an AlienDrop and WorldGenBlock class which extend SlimefunItem
 @UtilityClass
 public final class CoreRecipeType {
 

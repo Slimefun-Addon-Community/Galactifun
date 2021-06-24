@@ -33,28 +33,18 @@ public final class Sphere {
         int radius = min + ThreadLocalRandom.current().nextInt(dev + 1);
         int radiusSquared = radius * radius;
 
-        // moves in any direction
-        int x;
-        int y;
-        int z;
-
-        // for keeping track of distance
-        int vector1;
-        int vector2;
-        int vector3;
-
         // center block
         gen(0, 0, 0);
 
         // outer middle blocks, furthest from middle
         genMiddles(radius);
 
-        for (x = 1, vector1 = 1; x < radius; vector1 += (x++ << 1) + 1) {
+        for (int x = 1, vector1 = 1; x < radius; vector1 += (x++ << 1) + 1) {
 
             // middle blocks
             genMiddles(x);
 
-            for (y = x, vector2 = vector1 + y * y; y < radius; vector2 += (y++ << 1) + 1) {
+            for (int y = x, vector2 = vector1 + y * y; y < radius; vector2 += (y++ << 1) + 1) {
 
                 // check radius
                 if (vector2 < radiusSquared) {
@@ -69,7 +59,7 @@ public final class Sphere {
                     break;
                 }
 
-                for (z = y, vector3 = vector2 + z * z; z < radius; vector3 += (z++ << 1) + 1) {
+                for (int z = y, vector3 = vector2 + z * z; z < radius; vector3 += (z++ << 1) + 1) {
 
                     // check within radius
                     if (vector3 < radiusSquared) {

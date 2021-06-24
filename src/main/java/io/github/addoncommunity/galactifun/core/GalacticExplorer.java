@@ -12,10 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.TheUniverse;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
-import io.github.addoncommunity.galactifun.api.worlds.CelestialWorld;
-import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -30,27 +29,19 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
  */
 public final class GalacticExplorer {
 
-    private final TheUniverse theUniverse;
-    private final WorldManager worldManager;
-
-    private final Map<UUID, UniversalObject<?>> history = new HashMap<>();
-
-    public GalacticExplorer(TheUniverse theUniverse, WorldManager worldManager) {
-        this.theUniverse = theUniverse;
-        this.worldManager = worldManager;
-    }
+    private final Map<UUID, UniversalObject> history = new HashMap<>();
     
     public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
-        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> this.theUniverse), exitHandler, false);
+        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), exitHandler, false);
     }
     
-    private void open(@Nonnull Player p, @Nonnull UniversalObject<?> object, @Nonnull MenuClickHandler exitHandler, boolean history) {
+    private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
-        List<UniversalObject<?>> orbiters = object.getOrbiters();
+        List<UniversalObject> orbiters = object.getOrbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
-            open(p, this.theUniverse, exitHandler, true);
+            open(p, BaseUniverse.THE_UNIVERSE, exitHandler, true);
             return;
         }
         
@@ -74,12 +65,12 @@ public final class GalacticExplorer {
             });
         }
         
-        CelestialWorld current = this.worldManager.getWorld(p.getWorld());
+        PlanetaryWorld current = Galactifun.worldManager().getWorld(p.getWorld());
         boolean known = current != null;
 
         // objects
         for (int i = 0 ; i < Math.min(52, orbiters.size()); i++) {
-            UniversalObject<?> orbiter = orbiters.get(i);
+            UniversalObject orbiter = orbiters.get(i);
             ItemStack item = orbiter.getItem();
             
             if (known) {
