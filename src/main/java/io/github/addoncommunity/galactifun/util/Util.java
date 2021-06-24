@@ -48,12 +48,13 @@ public final class Util {
         IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("TERRACOTTA"));
         IMPERMEABLE_BLOCKS.addAll(Arrays.asList(
                 Material.OBSIDIAN,
+                Material.COPPER_BLOCK,
                 Material.IRON_BLOCK,
                 Material.GOLD_BLOCK,
                 Material.DIAMOND_BLOCK,
                 Material.NETHERITE_BLOCK
         ));
-        IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("WAXED")); // for now until paper 1.17 is stable
+        IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("WAXED"));
     }
 
     /**
@@ -95,6 +96,8 @@ public final class Util {
      */
     @Nonnull
     public static Optional<Set<Location>> floodFill(@Nonnull Location start, int max) {
+        if (max == 0) return Optional.empty();
+
         Set<Block> visited = new HashSet<>();
         Queue<Block> queue = new ArrayDeque<>();
         queue.add(start.getBlock());

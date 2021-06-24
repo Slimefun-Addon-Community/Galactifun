@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ public final class AtmosphereBuilder {
     private boolean thundering;
     private boolean flammable;
     private World.Environment environment = World.Environment.NORMAL;
-    private AtmosphericEffect[] effects = new AtmosphericEffect[0];
+    private Map<AtmosphericEffect, Integer> effects = new HashMap<>();
     private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
 
     public AtmosphereBuilder setNether() {
@@ -34,9 +35,9 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addEffects(@Nonnull AtmosphericEffect... effects) {
+    public AtmosphereBuilder addEffects(@Nonnull Map<AtmosphericEffect, Integer> effects) {
         Validate.notNull(effects);
-        this.effects = effects;
+        this.effects.putAll(effects);
         return this;
     }
 

@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base;
 
+import java.util.Map;
+
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -137,7 +139,7 @@ public final class BaseUniverse {
                     .setNether()
                     .addStorm()
                     .addThunder()
-                    .addEffects(AtmosphericEffect.RADIATION)
+                    .addEffects(Map.of(AtmosphericEffect.RADIATION, 1))
                     .add(Gas.CARBON_DIOXIDE, 96.5)
                     .add(Gas.NITROGEN, 3.5)
                     .build(),

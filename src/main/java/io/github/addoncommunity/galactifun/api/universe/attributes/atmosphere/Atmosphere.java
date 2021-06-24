@@ -7,9 +7,12 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -37,13 +40,13 @@ public final class Atmosphere {
     private final boolean flammable;
     private final int growthAttempts;
     private final World.Environment environment;
-    private final AtmosphericEffect[] effects;
+    private final Map<AtmosphericEffect, Integer> effects;
     private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
 
     // builder's constructor
     Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering, boolean flammable,
                @Nonnull World.Environment environment, Map<Gas, Double> composition,
-               @Nonnull AtmosphericEffect[] effects) {
+               @Nonnull Map<AtmosphericEffect, Integer> effects) {
         
         this.weatherEnabled = weatherEnabled;
         this.environment = environment;
@@ -69,8 +72,13 @@ public final class Atmosphere {
     }
     
     public void applyEffects(@Nonnull Player player) {
-        for (AtmosphericEffect effect : this.effects) {
-            effect.apply(player);
+        if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+            for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
+                int protection = 0; // TODO replace with space suit protection
+                protection += ProtectingBlock.getProtectionFor(player.getLocation(), entry.getKey());
+
+                entry.getKey().applier().accept(player, Math.max(0, entry.getValue() - protection));
+            }
         }
     }
 
