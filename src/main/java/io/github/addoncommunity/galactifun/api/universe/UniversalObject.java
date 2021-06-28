@@ -63,6 +63,10 @@ public abstract class UniversalObject {
      * Gets the distance in light years between 2 objects
      */
     public final double getDistanceTo(@Nonnull UniversalObject other) {
+        // star systems orbiting a galaxy would take a little while to get close enough :monkaS:
+        if (this instanceof StarSystem && other instanceof StarSystem) {
+            return Math.abs(this.orbit.getCurrentDistance() - other.orbit.getCurrentDistance());
+        }
         if (this.orbiting == other.orbiting) {
             double thisDist = this.orbit.getCurrentDistance();
             double otherDist = other.orbit.getCurrentDistance();
@@ -80,4 +84,16 @@ public abstract class UniversalObject {
         return Collections.unmodifiableList(this.orbiters);
     }
 
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof UniversalObject other)) return false;
+
+        return this.id.equals(other.id);
+    }
 }
