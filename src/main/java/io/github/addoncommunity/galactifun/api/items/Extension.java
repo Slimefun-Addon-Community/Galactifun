@@ -37,7 +37,7 @@ public class Extension extends UnplaceableBlock {
     private static SlimefunItemStack createItem(String name, AtmosphericEffect workFor, int extraRange, int extraProtection) {
         List<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add("&7Works on blocks that negate " + workFor.name() + " in an area");
+        lore.add("&7Works on blocks that negate " + workFor + " in an area");
         if (extraRange != 0) {
             lore.add("&7Extra Blocks Affected: " + extraRange);
         }

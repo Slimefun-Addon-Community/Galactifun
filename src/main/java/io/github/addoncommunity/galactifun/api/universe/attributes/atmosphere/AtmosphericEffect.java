@@ -4,6 +4,10 @@ import java.util.function.BiConsumer;
 
 import javax.annotation.Nonnull;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -16,8 +20,8 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
  * @author Mooy1
  * @author Seggan
  */
-public record AtmosphericEffect(@Nonnull String id, @Nonnull String name,
-                                @Nonnull BiConsumer<Player, Integer> applier) {
+@AllArgsConstructor
+public final class AtmosphericEffect {
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", PotionEffectType.WITHER);
     public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", (player, level) -> player.setFireTicks(240 * level));
@@ -32,6 +36,14 @@ public record AtmosphericEffect(@Nonnull String id, @Nonnull String name,
                 false
         ));
     });
+
+    @Nonnull
+    private final String id;
+    @Nonnull
+    private final String name;
+    @Nonnull
+    @Getter(AccessLevel.PACKAGE)
+    private final BiConsumer<Player, Integer> applier;
 
     public AtmosphericEffect(@Nonnull String id, @Nonnull BiConsumer<Player, Integer> applier) {
         this(id, ChatUtils.humanize(id), applier);

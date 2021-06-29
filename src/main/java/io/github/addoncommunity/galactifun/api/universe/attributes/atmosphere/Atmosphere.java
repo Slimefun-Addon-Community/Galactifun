@@ -94,7 +94,7 @@ public final class Atmosphere {
                 int level = Math.max(0, entry.getValue() - protection);
                 if (level > 0) {
                     player.sendMessage(ChatColor.RED + "You have been exposed to deadly " + effect + "!");
-                    effect.applier().accept(player, level);
+                    effect.getApplier().accept(player, level);
                 }
             }
         }
