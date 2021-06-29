@@ -132,7 +132,7 @@ public class Alien<T extends Mob> {
     /**
      * Edits the AI of the Alien. The map is a map of a mob goal and its priority
      *
-     * @param goals a map of the Alien's goals, add the goals to this or add nothing for default AI
+     * @param goals add the goals to this or add nothing for default AI
      * @param mob the mob
      */
     protected void editGoals(@Nonnull MobGoals goals, @Nonnull T mob) {
@@ -153,4 +153,16 @@ public class Alien<T extends Mob> {
         return 0;
     }
 
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Alien<?> other)) return false;
+
+        return this.id.equals(other.id);
+    }
 }
