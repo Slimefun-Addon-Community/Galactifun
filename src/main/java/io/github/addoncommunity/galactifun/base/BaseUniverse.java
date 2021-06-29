@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.base;
 
-import java.util.Map;
-
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -68,7 +66,6 @@ public final class BaseUniverse {
             new AtmosphereBuilder()
                     .addStorm()
                     .addThunder()
-                    .enableFire()
                     .enableWeather()
                     .add(Gas.HYDROGEN, 90)
                     .add(Gas.HELIUM, 10)
@@ -139,7 +136,7 @@ public final class BaseUniverse {
                     .setNether()
                     .addStorm()
                     .addThunder()
-                    .addEffects(Map.of(AtmosphericEffect.RADIATION, 1))
+                    .addEffect(AtmosphericEffect.RADIATION, 1)
                     .add(Gas.CARBON_DIOXIDE, 96.5)
                     .add(Gas.NITROGEN, 3.5)
                     .build(),
@@ -178,7 +175,6 @@ public final class BaseUniverse {
             DayCycle.EARTH_LIKE,
             new AtmosphereBuilder()
                     .enableWeather()
-                    .enableFire()
                     .add(Gas.NITROGEN, 97)
                     .add(Gas.METHANE, 2.7)
                     .add(Gas.HYDROCARBONS, 0.2)
@@ -198,6 +194,7 @@ public final class BaseUniverse {
     );
 
 
+    // todo add pressures
     public static void setup(WorldManager worldManager) {
         MARS.addSpecies(BaseAlien.MARTIAN);
         THE_MOON.addSpecies(BaseAlien.MUTANT_CREEPER);

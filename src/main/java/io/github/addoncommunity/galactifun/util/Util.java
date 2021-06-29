@@ -45,8 +45,9 @@ public final class Util {
 
     static {
         IMPERMEABLE_BLOCKS.addAll(SlimefunTag.GLASS_BLOCKS.getValues());
-        IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("TERRACOTTA"));
         IMPERMEABLE_BLOCKS.addAll(Arrays.asList(
+                Material.IRON_DOOR,
+                Material.IRON_TRAPDOOR,
                 Material.OBSIDIAN,
                 Material.COPPER_BLOCK,
                 Material.IRON_BLOCK,
@@ -72,18 +73,6 @@ public final class Util {
         } else {
             return ((int) (nanoTime / 1_000D)) / 1000D + " ms";
         }
-    }
-
-    /**
-     * Applies the Law of Cosines between two sides and the angle between them
-     *
-     * @param sideOne the first side
-     * @param sideTwo the second side
-     * @param angle the angle between them, in degrees
-     * @return the length of the side opposite the angle in a triangle
-     */
-    public static double lawOfCosines(double sideOne, double sideTwo, double angle) {
-        return Math.sqrt((sideOne * sideOne) + (sideTwo * sideTwo) - (2 * sideOne * sideTwo * Math.cos(Math.toRadians(angle))));
     }
 
     /**

@@ -21,28 +21,40 @@ public record AtmosphericEffect(@Nonnull String id, @Nonnull String name,
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", PotionEffectType.WITHER);
     public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", (player, level) -> player.setFireTicks(240 * level));
+    public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD", (player, level) -> {
+        player.damage(level * 2);
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.SLOW,
+                200,
+                Math.min(200, level),
+                false,
+                false,
+                false
+        ));
+    });
 
     public AtmosphericEffect(@Nonnull String id, @Nonnull BiConsumer<Player, Integer> applier) {
         this(id, ChatUtils.humanize(id), applier);
     }
 
     public AtmosphericEffect(@Nonnull String id, @Nonnull String name, @Nonnull PotionEffectType effectType) {
-        this(id, name, (player, level) -> {
-            if (level > 0) {
-                player.addPotionEffect(new PotionEffect(
-                        effectType,
-                        200,
-                        Math.min(200, level), // i think the max is 255 but to be on the safe side
-                        false,
-                        false,
-                        false
-                ));
-            }
-        });
+        this(id, name, (player, level) -> player.addPotionEffect(new PotionEffect(
+                effectType,
+                200,
+                Math.min(200, level - 1), // i think the max is 255 but to be on the safe side
+                false,
+                false,
+                false
+        )));
     }
 
     public AtmosphericEffect(@Nonnull String id, @Nonnull PotionEffectType effectType) {
         this(id, ChatUtils.humanize(id), effectType);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 
     @Override

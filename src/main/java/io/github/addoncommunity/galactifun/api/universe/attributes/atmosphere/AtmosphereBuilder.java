@@ -6,24 +6,26 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import lombok.NonNull;
+
 import org.bukkit.World;
 
 import org.apache.commons.lang.Validate;
 
 /**
  * Utility class for making atmospheres
- * 
+ *
  * @author Mooy1
  */
 public final class AtmosphereBuilder {
 
+    private final Map<AtmosphericEffect, Integer> effects = new HashMap<>();
+    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
     private boolean weatherCycle;
     private boolean storming;
     private boolean thundering;
-    private boolean flammable;
     private World.Environment environment = World.Environment.NORMAL;
-    private Map<AtmosphericEffect, Integer> effects = new HashMap<>();
-    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
+    private double pressure = 1;
 
     public AtmosphereBuilder setNether() {
         this.environment = World.Environment.NETHER;
@@ -35,13 +37,12 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addEffects(@Nonnull Map<AtmosphericEffect, Integer> effects) {
-        Validate.notNull(effects);
-        this.effects.putAll(effects);
+    public AtmosphereBuilder addEffect(@NonNull AtmosphericEffect effect, int level) {
+        this.effects.put(effect, level);
         return this;
     }
 
-    public AtmosphereBuilder add(Gas gas, double percentage) {
+    public AtmosphereBuilder add(@NonNull Gas gas, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
         this.composition.put(gas, percentage);
         return this;
@@ -62,28 +63,29 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder enableFire() {
-        this.flammable = true;
+    public AtmosphereBuilder setPressure(double pressureInAtm) {
+        Validate.isTrue(pressureInAtm > 0, "pressureInAtm is negative");
+        this.pressure = pressureInAtm;
         return this;
     }
-    
+
     @Nonnull
     public Atmosphere build() {
         double percent = 0;
-        
+
         for (Double decimal : this.composition.values()) {
             percent += decimal;
         }
 
         // account for rounding and slight impression
         Validate.isTrue(percent < 101, "Percentage cannot be more than 100%!");
-        
+
         if (percent != 0) {
             this.composition.put(Gas.OTHER, this.composition.getOrDefault(Gas.OTHER, 0.0) + 100 - percent);
         }
 
         return new Atmosphere(this.weatherCycle, this.storming, this.thundering,
-                this.flammable, this.environment, this.composition, this.effects);
+                this.environment, this.composition, this.pressure, this.effects);
     }
-    
+
 }

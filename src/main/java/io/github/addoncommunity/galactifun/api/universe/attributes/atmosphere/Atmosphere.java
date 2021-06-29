@@ -6,7 +6,9 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
+import lombok.NonNull;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -25,7 +27,13 @@ public final class Atmosphere {
     
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
 
-    public static final Atmosphere NONE = new AtmosphereBuilder().setEnd().build();
+    public static final Atmosphere NONE = new AtmosphereBuilder()
+            .setEnd()
+            .setPressure(0)
+            .addEffect(AtmosphericEffect.COLD, 5)
+            .addEffect(AtmosphericEffect.HEAT, 5)
+            .build();
+
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
         .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
         .add(Gas.OXYGEN, 20.946)
@@ -39,23 +47,27 @@ public final class Atmosphere {
     private final boolean thundering;
     private final boolean flammable;
     private final int growthAttempts;
+    private final double pressure;
     private final World.Environment environment;
     private final Map<AtmosphericEffect, Integer> effects;
     private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
 
     // builder's constructor
-    Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering, boolean flammable,
-               @Nonnull World.Environment environment, Map<Gas, Double> composition,
-               @Nonnull Map<AtmosphericEffect, Integer> effects) {
+    Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering,
+               @Nonnull World.Environment environment, @Nonnull Map<Gas, Double> composition,
+               double pressure, @Nonnull Map<AtmosphericEffect, Integer> effects) {
         
         this.weatherEnabled = weatherEnabled;
         this.environment = environment;
         this.thundering = thundering;
         this.storming = storming;
-        this.flammable = flammable;
-        this.composition.putAll(composition);
+        this.pressure = pressure;
         this.effects = effects;
-        this.growthAttempts = (int) (composition.getOrDefault(Gas.CARBON_DIOXIDE, 0.0) / EARTH_CARBON_DIOXIDE);
+        this.composition.putAll(composition);
+
+        // calculated values
+        this.flammable = composition.getOrDefault(Gas.OXYGEN, 0.0) > 5;
+        this.growthAttempts = (int) (this.getAdjustedComposition(Gas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
     }
     
     public void applyEffects(@Nonnull World world) {
@@ -74,16 +86,26 @@ public final class Atmosphere {
     public void applyEffects(@Nonnull Player player) {
         if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
             for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
-                int protection = 0; // TODO replace with space suit protection
-                protection += ProtectingBlock.getProtectionFor(player.getLocation(), entry.getKey());
+                AtmosphericEffect effect = entry.getKey();
 
-                entry.getKey().applier().accept(player, Math.max(0, entry.getValue() - protection));
+                int protection = 0; // TODO replace with space suit protection
+                protection += ProtectingBlock.getProtectionFor(player.getLocation(), effect);
+
+                int level = Math.max(0, entry.getValue() - protection);
+                if (level > 0) {
+                    player.sendMessage(ChatColor.RED + "You have been exposed to deadly " + effect + "!");
+                    effect.applier().accept(player, level);
+                }
             }
         }
     }
 
-    public double getComposition(Gas gas) {
+    public double getComposition(@NonNull Gas gas) {
         return this.composition.getOrDefault(gas, 0.0);
+    }
+
+    public double getAdjustedComposition(@NonNull Gas gas) {
+        return getComposition(gas) * this.pressure;
     }
     
 }
