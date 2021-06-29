@@ -198,10 +198,11 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         // mob spawns
         if (!this.species.isEmpty()) {
-            // shuffles the list so each alien has a fair chance of being first
-            Collections.shuffle(this.species);
-
             Random rand = ThreadLocalRandom.current();
+
+            // shuffles the list so each alien has a fair chance of being first
+            Collections.shuffle(this.species, rand);
+
             int players = world.getPlayers().size();
             int mobs = world.getLivingEntities().size() - players;
             int max = players * getWorldManager().getMaxAliensPerPlayer();

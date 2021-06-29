@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -48,6 +49,7 @@ public class Alien<T extends Mob> {
     private final double maxHealth;
     private AlienManager alienManager;
 
+    @ParametersAreNonnullByDefault
     public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         Validate.isTrue(maxHealth > 0);
         Validate.isTrue(spawnChance > 0 && spawnChance <= 100);
@@ -102,8 +104,8 @@ public class Alien<T extends Mob> {
                 break;
             }
 
-            int x = rand.nextInt(16) + chunk.getX() << 4;
-            int z = rand.nextInt(16) + chunk.getZ() << 4;
+            int x = rand.nextInt(16) + (chunk.getX() << 4);
+            int z = rand.nextInt(16) + (chunk.getZ() << 4);
             Block b = world.getHighestBlockAt(x, z).getRelative(0, 1, 0);
 
             // currently doesn't allow for aquatic aliens

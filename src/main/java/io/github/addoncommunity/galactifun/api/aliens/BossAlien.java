@@ -1,16 +1,14 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.NonNull;
 
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -33,14 +31,11 @@ import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
  */
 // TODO cleanup bossbar stuff
 public abstract class BossAlien<T extends Mob> extends Alien<T> {
-
-    // TODO move stuff to alien manager
-    private static final NamespacedKey KEY = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
-    private static final Map<LivingEntity, BossBar> instances = new HashMap<>();
     
     private final BossBarStyle style;
     private int tick = 0;
 
+    @ParametersAreNonnullByDefault
     public BossAlien(Class<T> clazz, String id, String name, double maxHealth, int spawnChance, @NonNull BossBarStyle style) {
         super(clazz, id, name, maxHealth, spawnChance);
         this.style = style;
@@ -58,11 +53,11 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull T spawned) {
-        BossBar bossbar = this.style.create(KEY, getName());
+        BossBar bossbar = this.style.create(Galactifun.alienManager().getBossKey(), getName());
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
         spawned.setRemoveWhenFarAway(false);
-        instances.put(spawned, bossbar);
+        Galactifun.alienManager().getBossInstances().put(spawned, bossbar);
     }
 
     @Override
@@ -103,7 +98,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     public void onDeath(@Nonnull EntityDeathEvent e) {
         BossBar bossbar = getBossBarForEntity(e.getEntity());
         bossbar.removeAll();
-        instances.remove(e.getEntity());
+        Galactifun.alienManager().getBossInstances().remove(e.getEntity());
     }
 
     @Override
@@ -139,19 +134,20 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
     @Nonnull
     protected final BossBar getBossBarForEntity(LivingEntity entity) {
-        if (instances.containsKey(entity)) {
-            return instances.get(entity);
+        AlienManager manager = Galactifun.alienManager();
+        if (manager.getBossInstances().containsKey(entity)) {
+            return manager.getBossInstances().get(entity);
         }
 
-        BossBar bossbar = this.style.create(KEY, getName());
+        BossBar bossbar = this.style.create(manager.getBossKey(), getName());
         bossbar.setVisible(true);
         bossbar.setProgress(entity.getHealth() / getMaxHealth());
-        instances.put(entity, bossbar);
+        manager.getBossInstances().put(entity, bossbar);
         return bossbar;
     }
 
     public static void removeBossBars() {
-        for (BossBar bossbar: instances.values()) {
+        for (BossBar bossbar: Galactifun.alienManager().getBossInstances().values()) {
             bossbar.setVisible(false);
             bossbar.removeAll();
         }
