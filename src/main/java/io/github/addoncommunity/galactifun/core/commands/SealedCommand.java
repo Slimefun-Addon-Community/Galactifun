@@ -6,12 +6,12 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 
 public final class SealedCommand extends AbstractCommand {
 
@@ -25,7 +25,7 @@ public final class SealedCommand extends AbstractCommand {
         if (strings.length != 2) return;
 
         double time = System.nanoTime();
-        Optional<Set<Location>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[1]));
+        Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[1]));
         if (filled.isPresent()) {
             p.sendMessage("Sealed");
         } else {

@@ -21,6 +21,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 
 /**
  * Utilities
@@ -83,7 +84,7 @@ public final class Util {
      * @return blocks traversed, or an empty optional if traversed blocks > max
      */
     @Nonnull
-    public static Optional<Set<Location>> floodFill(@Nonnull Location start, int max) {
+    public static Optional<Set<BlockPosition>> floodFill(@Nonnull Location start, int max) {
         if (max == 0) return Optional.empty();
 
         Set<Block> visited = new HashSet<>();
@@ -103,7 +104,7 @@ public final class Util {
             }
         }
 
-        return Optional.of(visited.parallelStream().map(Block::getLocation).collect(Collectors.toSet()));
+        return Optional.of(visited.parallelStream().map(BlockPosition::new).collect(Collectors.toSet()));
     }
 
     @Nonnull

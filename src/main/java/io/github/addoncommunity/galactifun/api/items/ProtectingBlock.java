@@ -38,6 +38,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public abstract class ProtectingBlock extends AbstractContainer implements EnergyNetComponent, HologramOwner {
@@ -45,8 +46,8 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     protected static final String PROTECTING = "protecting";
     protected static final String ENABLED = "enabled";
 
-    private static final Map<Location, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
-    private static final Set<Location> allBlocks = new HashSet<>();
+    private static final Map<BlockPosition, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
+    private static final Set<BlockPosition> allBlocks = new HashSet<>();
     private static final ItemStack ENABLED_ITEM = new CustomItem(
             Material.STRUCTURE_VOID,
             "&aEnabled",
@@ -73,7 +74,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
             @Override
             public void tick(Block b, SlimefunItem item, Config data) {
-                allBlocks.add(b.getLocation());
+                allBlocks.add(new BlockPosition(b));
 
                 BlockMenu menu = BlockStorage.getInventory(b);
                 int req = getEnergyRequirement();
@@ -90,7 +91,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             @Override
             public void uniqueTick() {
                 // to prevent memory leaks if something happens (block breaks aren't the only thing that can)
-                allBlocks.removeIf(l -> !(BlockStorage.check(l) instanceof ProtectingBlock));
+                allBlocks.removeIf(pos -> !(BlockStorage.check(pos.toLocation()) instanceof ProtectingBlock));
 
                 // every 6 slimefun ticks (every 3 seconds)
                 if (counter < 6) {
@@ -98,7 +99,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                 } else {
                     counter = 0;
                     protectedBlocks.clear();
-                    for (Location l : allBlocks) {
+                    for (BlockPosition l : allBlocks) {
                         updateProtections(l);
                     }
                 }
@@ -108,7 +109,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Nonnull
     public static Map<AtmosphericEffect, Integer> getProtectionsFor(@Nonnull Location l) {
-        return protectedBlocks.getOrDefault(l.toBlockLocation(), new HashMap<>());
+        return protectedBlocks.getOrDefault(new BlockPosition(l), new HashMap<>());
     }
 
     public static int getProtectionFor(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
@@ -119,7 +120,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     @OverridingMethodsMustInvokeSuper
     protected void onPlace(@Nonnull BlockPlaceEvent e, @Nonnull Block b) {
         BlockStorage.addBlockInfo(b, ENABLED, "true");
-        updateProtections(b.getLocation());
+        updateProtections(new BlockPosition(b));
     }
 
     @Override
@@ -182,14 +183,15 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
     }
 
-    private void updateProtections(@Nonnull Location l) {
+    private void updateProtections(@Nonnull BlockPosition pos) {
+        Location l = pos.toLocation();
         if (!BSUtils.getStoredBoolean(l, ENABLED)) {
-            updateHologram(l.getBlock(), "&cNot Enabled");
+            updateHologram(pos.getBlock(), "&cNot Enabled");
             return;
         }
 
         if (!BSUtils.getStoredBoolean(l, PROTECTING)) {
-            updateHologram(l.getBlock(), "&cNot Enough Energy");
+            updateHologram(pos.getBlock(), "&cNot Enough Energy");
             return;
         }
 
@@ -197,18 +199,18 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
-        Optional<Set<Location>> returned = Util.floodFill(l, getRange());
+        Optional<Set<BlockPosition>> returned = Util.floodFill(l, getRange());
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
-            updateHologram(l.getBlock(), "&cArea Not Sealed or Too Big");
+            updateHologram(pos.getBlock(), "&cArea Not Sealed or Too Big");
             return;
         }
 
-        for (Location b : returned.get()) {
+        for (BlockPosition b : returned.get()) {
             // add a protection to the location
             protectedBlocks.computeIfAbsent(b, k -> new HashMap<>()).put(inst.getEffect(), getProtection());
         }
 
-        updateHologram(l.getBlock(), "&aOperational");
+        updateHologram(pos.getBlock(), "&aOperational");
     }
 }
