@@ -18,6 +18,7 @@ import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -27,7 +28,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 @UtilityClass
 public final class BaseItems {
-    
+
     public static final SlimefunItemStack LAUNCH_PAD_CORE = new SlimefunItemStack(
             "LAUNCH_PAD_CORE",
             Material.SEA_LANTERN,
@@ -44,7 +45,7 @@ public final class BaseItems {
             "",
             "&7Used in constructing the Launch Pad"
     );
-    
+
     public static final SlimefunItemStack CIRCUIT_PRESS = new SlimefunItemStack(
             "CIRCUIT_PRESS",
             Material.PISTON,
@@ -110,14 +111,24 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
     );
-    
+
+    public static final SlimefunItemStack COOLING_UNIT_1 = new SlimefunItemStack(
+            "COOLING_UNIT_1",
+            HeadTexture.COOLING_UNIT.getTexture(),
+            "&bCooling Unit I",
+            "",
+            "&7Base Protection: 2",
+            "&7Base Range: 100 blocks",
+            "&7Upgrade Slots: 2"
+    );
+
     public static void setup(Galactifun galactifun) {
         new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL,
                 SlimefunItems.STEEL_PLATE, null, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL
         }).setCapacity(1024).setEnergyConsumption(512).setProcessingSpeed(1).register(galactifun);
-        
+
         new AssemblyTable(CoreCategory.MACHINES, ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
@@ -137,7 +148,7 @@ public final class BaseItems {
                 BaseMats.REDSTONE_CIRCUIT, BaseMats.DIAMOND_CIRCUIT, BaseMats.REDSTONE_CIRCUIT,
                 STARGATE_RING, BaseMats.LAPIS_CIRCUIT, STARGATE_RING
         }).register(galactifun);
-        
+
         new Rocket(CoreCategory.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
@@ -168,13 +179,13 @@ public final class BaseItems {
             BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
             BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
         }).register(galactifun);
-        
+
         new LaunchPadCore(CoreCategory.ITEMS, BaseItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.REINFORCED_PLATE, BaseMats.NOZZLE, SlimefunItems.REINFORCED_PLATE,
                 SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.REINFORCED_PLATE,
         }).register(galactifun);
-        
+
     }
-    
+
 }

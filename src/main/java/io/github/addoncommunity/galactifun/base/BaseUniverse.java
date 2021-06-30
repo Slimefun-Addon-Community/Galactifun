@@ -136,7 +136,7 @@ public final class BaseUniverse {
                     .setNether()
                     .addStorm()
                     .addThunder()
-                    .addEffect(AtmosphericEffect.RADIATION, 1)
+                    .addEffect(AtmosphericEffect.HEAT, 10)
                     .add(Gas.CARBON_DIOXIDE, 96.5)
                     .add(Gas.NITROGEN, 3.5)
                     .build(),
