@@ -13,6 +13,7 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
+import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
@@ -29,6 +30,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 @UtilityClass
 public final class BaseItems {
 
+    //<editor-fold desc="Random Stuff" defaultstate="collapsed">
     public static final SlimefunItemStack LAUNCH_PAD_CORE = new SlimefunItemStack(
             "LAUNCH_PAD_CORE",
             Material.SEA_LANTERN,
@@ -79,7 +81,9 @@ public final class BaseItems {
             "",
             "&7Used to control a stargate"
     );
+    //</editor-fold>
 
+    //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
     private static final int TIER_ONE_STORAGE = 9;
     private static final int TIER_TWO_FUEL = 100;
@@ -111,7 +115,9 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
     );
+    //</editor-fold>
 
+    //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
     public static final SlimefunItemStack COOLING_UNIT_1 = new SlimefunItemStack(
             "COOLING_UNIT_1",
             HeadTexture.COOLING_UNIT.getTexture(),
@@ -121,6 +127,7 @@ public final class BaseItems {
             "&7Base Range: 100 blocks",
             "&7Upgrade Slots: 2"
     );
+    //</editor-fold>
 
     public static void setup(Galactifun galactifun) {
         new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -185,6 +192,8 @@ public final class BaseItems {
                 SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.REINFORCED_PLATE,
         }).register(galactifun);
+
+        new CoolingUnit(COOLING_UNIT_1, new ItemStack[9], 1).register(galactifun);
 
     }
 

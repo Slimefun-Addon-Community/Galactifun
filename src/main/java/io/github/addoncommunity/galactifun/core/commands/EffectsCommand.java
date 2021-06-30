@@ -18,7 +18,7 @@ import io.github.mooy1.infinitylib.commands.AbstractCommand;
 public final class EffectsCommand extends AbstractCommand {
 
     public EffectsCommand() {
-        super("effects", "gets all the effects of the current block (taking in protections)", false);
+        super("effects", "Gets all the effects of the current block (taking in protections)", false);
     }
 
     @Override

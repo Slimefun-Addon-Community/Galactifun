@@ -61,10 +61,10 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected void disable() {
-        instance = null;
-
         // todo make better
         BossAlien.removeBossBars();
+
+        instance = null; // REMEMBER TO KEEP THIS LAST
     }
 
     @Override

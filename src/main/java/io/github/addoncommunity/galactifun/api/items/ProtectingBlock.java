@@ -212,6 +212,10 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     protected abstract AtmosphericEffect getEffect();
 
+    public abstract int getDefaultProtection();
+
+    public abstract int getDefaultRange();
+
     /**
      * <b>Must</b> be even and be <= 8
      */
@@ -220,16 +224,21 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
     }
 
-    protected void applyExtensions(@Nonnull List<Extension> extensions, @Nonnull Block b) {
+    private void applyExtensions(@Nonnull List<Extension> extensions, @Nonnull Block b) {
         Location l = b.getLocation();
+
         energyRequirements.put(l, 0);
+        int amount = getDefaultRange();
+        int level = getDefaultProtection();
+
         for (Extension extension : extensions) {
             energyRequirements.merge(l, extension.getExtraEnergy(), Integer::sum);
-            BSUtils.addBlockInfo(b, PROTECTION_AMOUNT,
-                    extension.getExtraRange() + BSUtils.getStoredInt(l, PROTECTION_AMOUNT));
-            BSUtils.addBlockInfo(b, PROTECTION_LEVEL,
-                    extension.getExtraProtection() + BSUtils.getStoredInt(l, PROTECTION_LEVEL));
+            level += extension.getExtraProtection();
+            amount += extension.getExtraRange();
         }
+
+        BSUtils.addBlockInfo(b, PROTECTION_AMOUNT, amount);
+        BSUtils.addBlockInfo(b, PROTECTION_LEVEL, level);
     }
 
     private void updateProtections(@Nonnull Location l) {
