@@ -49,7 +49,6 @@ public final class Util {
                 Material.IRON_DOOR,
                 Material.IRON_TRAPDOOR,
                 Material.OBSIDIAN,
-                Material.COPPER_BLOCK,
                 Material.IRON_BLOCK,
                 Material.GOLD_BLOCK,
                 Material.DIAMOND_BLOCK,

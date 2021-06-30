@@ -27,18 +27,13 @@ public final class CoolingUnit extends ProtectingBlock {
     }
 
     @Override
-    public int getDefaultProtection() {
+    public int getProtection() {
         return this.tier * 2;
     }
 
     @Override
-    public int getDefaultRange() {
+    public int getRange() {
         return (this.tier - 1) * 50 + 100;
-    }
-
-    @Override
-    protected int getUpgradeSlots() {
-        return (this.tier - 1) * 2;
     }
 
     @Override

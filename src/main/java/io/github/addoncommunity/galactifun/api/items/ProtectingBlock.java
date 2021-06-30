@@ -1,9 +1,7 @@
 package io.github.addoncommunity.galactifun.api.items;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,12 +39,9 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import org.apache.commons.lang.Validate;
 
 public abstract class ProtectingBlock extends AbstractContainer implements EnergyNetComponent, HologramOwner {
 
-    protected static final String PROTECTION_AMOUNT = "protection_amount";
-    protected static final String PROTECTION_LEVEL = "protection_level";
     protected static final String PROTECTING = "protecting";
     protected static final String ENABLED = "enabled";
 
@@ -66,14 +61,9 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     );
     private static int counter = 0;
 
-    private final Map<Location, Integer> energyRequirements = new HashMap<>();
-
     @ParametersAreNonnullByDefault
     public ProtectingBlock(SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(CoreCategory.MACHINES, item, recipeType, recipe);
-
-        Validate.isTrue(getUpgradeSlots() % 2 == 0 && getUpgradeSlots() <= 8,
-                "upgradeSlots must be even and be smaller than or equal to 8");
 
         addItemHandler(new BlockTicker() {
             @Override
@@ -86,25 +76,12 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                 allBlocks.add(b.getLocation());
 
                 BlockMenu menu = BlockStorage.getInventory(b);
-                int req = getEnergyRequirement() + energyRequirements.getOrDefault(b.getLocation(), 0);
+                int req = getEnergyRequirement();
                 if (getCharge(b.getLocation()) < req) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
                     BlockStorage.addBlockInfo(b, PROTECTING, "true");
                     removeCharge(b.getLocation(), req);
-
-                    // get all those extensions
-                    List<Extension> extensions = new ArrayList<>();
-                    for (int i : getAvailableSlots()) {
-                        ItemStack stack = menu.getItemInSlot(i);
-                        if (SlimefunItem.getByItem(stack) instanceof Extension extension) {
-                            if (extension.getEffect().equals(getEffect())) {
-                                extensions.add(extension);
-                            }
-                        }
-                    }
-
-                    applyExtensions(extensions, b);
                 }
 
                 ProtectingBlock.this.tick(b, menu);
@@ -131,24 +108,11 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Nonnull
     public static Map<AtmosphericEffect, Integer> getProtectionsFor(@Nonnull Location l) {
-        return protectedBlocks.getOrDefault(l, new HashMap<>());
+        return protectedBlocks.getOrDefault(l.toBlockLocation(), new HashMap<>());
     }
 
     public static int getProtectionFor(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
         return getProtectionsFor(l).getOrDefault(effect, 0);
-    }
-
-    // hideous, i know. but it's fast and it works
-    @Nonnull
-    private int[] getAvailableSlots() {
-        int[] ints = new int[this.getUpgradeSlots()];
-        int onEachSide = this.getUpgradeSlots() / 2;
-        for (int i = 3, j = 5, n = 0; onEachSide > 0; i--, j++, n++, onEachSide--) {
-            ints[n++] = i;
-            ints[n] = j;
-        }
-
-        return ints;
     }
 
     @Override
@@ -166,10 +130,9 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Override
     protected final void setupMenu(@Nonnull BlockMenuPreset preset) {
-        int onEachSide = (9 - getUpgradeSlots()) / 2;
-        for (int i = 0, j = 8; i < onEachSide; i++, j--) {
+        for (int i = 0; i < 9; i++) {
+            if (i == 4) continue;
             preset.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
-            preset.addItem(j, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
         }
     }
 
@@ -212,33 +175,11 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     protected abstract AtmosphericEffect getEffect();
 
-    public abstract int getDefaultProtection();
+    public abstract int getProtection();
 
-    public abstract int getDefaultRange();
-
-    /**
-     * <b>Must</b> be even and be <= 8
-     */
-    protected abstract int getUpgradeSlots();
+    public abstract int getRange();
 
     protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
-    }
-
-    private void applyExtensions(@Nonnull List<Extension> extensions, @Nonnull Block b) {
-        Location l = b.getLocation();
-
-        energyRequirements.put(l, 0);
-        int amount = getDefaultRange();
-        int level = getDefaultProtection();
-
-        for (Extension extension : extensions) {
-            energyRequirements.merge(l, extension.getExtraEnergy(), Integer::sum);
-            level += extension.getExtraProtection();
-            amount += extension.getExtraRange();
-        }
-
-        BSUtils.addBlockInfo(b, PROTECTION_AMOUNT, amount);
-        BSUtils.addBlockInfo(b, PROTECTION_LEVEL, level);
     }
 
     private void updateProtections(@Nonnull Location l) {
@@ -256,17 +197,16 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
-        Optional<Set<Location>> returned = Util.floodFill(l, BSUtils.getStoredInt(l, PROTECTION_AMOUNT));
+        Optional<Set<Location>> returned = Util.floodFill(l, getRange());
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(l.getBlock(), "&cArea Not Sealed or Too Big");
             return;
         }
 
-        int level = BSUtils.getStoredInt(l, PROTECTION_LEVEL);
         for (Location b : returned.get()) {
             // add a protection to the location
-            protectedBlocks.computeIfAbsent(b, k -> new HashMap<>()).put(inst.getEffect(), level);
+            protectedBlocks.computeIfAbsent(b, k -> new HashMap<>()).put(inst.getEffect(), getProtection());
         }
 
         updateHologram(l.getBlock(), "&aOperational");
