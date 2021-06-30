@@ -81,7 +81,8 @@ public final class Galactifun extends AbstractAddon {
     @Nonnull
     @Override
     protected String getGithubPath() {
-        return "Slimefun-Addon-Community/Galactifun/master";
+        // todo change back once i get internet and can fix
+        return "Community/Galactifun/master";
     }
 
     @Override

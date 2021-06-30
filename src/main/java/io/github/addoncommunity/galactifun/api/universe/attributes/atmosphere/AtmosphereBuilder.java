@@ -17,6 +17,7 @@ import org.apache.commons.lang.Validate;
  *
  * @author Mooy1
  */
+@Nonnull
 public final class AtmosphereBuilder {
 
     private final Map<AtmosphericEffect, Integer> effects = new HashMap<>();
@@ -64,7 +65,7 @@ public final class AtmosphereBuilder {
     }
 
     public AtmosphereBuilder setPressure(double pressureInAtm) {
-        Validate.isTrue(pressureInAtm > 0, "pressureInAtm is negative");
+        Validate.isTrue(pressureInAtm >= 0, "pressureInAtm is negative!");
         this.pressure = pressureInAtm;
         return this;
     }
