@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.presets.MenuPreset;
 import io.github.mooy1.infinitylib.slimefun.AbstractContainer;
@@ -65,6 +66,8 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     );
     private static int counter = 0;
 
+    private final Map<Location, Integer> energyRequirements = new HashMap<>();
+
     @ParametersAreNonnullByDefault
     public ProtectingBlock(SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(CoreCategory.MACHINES, item, recipeType, recipe);
@@ -81,12 +84,14 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             @Override
             public void tick(Block b, SlimefunItem item, Config data) {
                 allBlocks.add(b.getLocation());
+
                 BlockMenu menu = BlockStorage.getInventory(b);
-                if (getCharge(b.getLocation()) < getEnergyRequirement()) {
+                int req = getEnergyRequirement() + energyRequirements.getOrDefault(b.getLocation(), 0);
+                if (getCharge(b.getLocation()) < req) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
                     BlockStorage.addBlockInfo(b, PROTECTING, "true");
-                    removeCharge(b.getLocation(), getEnergyRequirement());
+                    removeCharge(b.getLocation(), req);
 
                     // get all those extensions
                     List<Extension> extensions = new ArrayList<>();
@@ -131,13 +136,6 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     public static int getProtectionFor(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
         return getProtectionsFor(l).getOrDefault(effect, 0);
-    }
-
-    private static int getStoredInteger(@Nonnull Location l, @Nonnull String key) {
-        String s = BlockStorage.getLocationInfo(l, key);
-        if (s == null || s.isEmpty() || s.isBlank()) return 0;
-
-        return Integer.parseInt(s);
     }
 
     // hideous, i know. but it's fast and it works
@@ -223,6 +221,15 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     }
 
     protected void applyExtensions(@Nonnull List<Extension> extensions, @Nonnull Block b) {
+        Location l = b.getLocation();
+        energyRequirements.put(l, 0);
+        for (Extension extension : extensions) {
+            energyRequirements.merge(l, extension.getExtraEnergy(), Integer::sum);
+            BSUtils.addBlockInfo(b, PROTECTION_AMOUNT,
+                    extension.getExtraRange() + BSUtils.getStoredInt(l, PROTECTION_AMOUNT));
+            BSUtils.addBlockInfo(b, PROTECTION_LEVEL,
+                    extension.getExtraProtection() + BSUtils.getStoredInt(l, PROTECTION_LEVEL));
+        }
     }
 
     private void updateProtections(@Nonnull Location l) {
@@ -240,14 +247,14 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
-        Optional<Set<Location>> returned = Util.floodFill(l, getStoredInteger(l, PROTECTION_AMOUNT));
+        Optional<Set<Location>> returned = Util.floodFill(l, BSUtils.getStoredInt(l, PROTECTION_AMOUNT));
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(l.getBlock(), "&cArea Not Sealed or Too Big");
             return;
         }
 
-        int level = getStoredInteger(l, PROTECTION_LEVEL);
+        int level = BSUtils.getStoredInt(l, PROTECTION_LEVEL);
         for (Location b : returned.get()) {
             // add a protection to the location
             protectedBlocks.computeIfAbsent(b, k -> new HashMap<>()).put(inst.getEffect(), level);
