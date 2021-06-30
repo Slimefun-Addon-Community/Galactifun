@@ -1,7 +1,9 @@
 package io.github.addoncommunity.galactifun.api.items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,13 +81,28 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             @Override
             public void tick(Block b, SlimefunItem item, Config data) {
                 allBlocks.add(b.getLocation());
+                BlockMenu menu = BlockStorage.getInventory(b);
                 if (getCharge(b.getLocation()) < getEnergyRequirement()) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
                     BlockStorage.addBlockInfo(b, PROTECTING, "true");
                     removeCharge(b.getLocation(), getEnergyRequirement());
+
+                    // get all those extensions
+                    List<Extension> extensions = new ArrayList<>();
+                    for (int i : getAvailableSlots()) {
+                        ItemStack stack = menu.getItemInSlot(i);
+                        if (SlimefunItem.getByItem(stack) instanceof Extension extension) {
+                            if (extension.getEffect().equals(getEffect())) {
+                                extensions.add(extension);
+                            }
+                        }
+                    }
+
+                    applyExtensions(extensions, b);
                 }
-                ProtectingBlock.this.tick(b);
+
+                ProtectingBlock.this.tick(b, menu);
             }
 
             @Override
@@ -123,6 +140,19 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         return Integer.parseInt(s);
     }
 
+    // hideous, i know. but it's fast and it works
+    @Nonnull
+    private int[] getAvailableSlots() {
+        int[] ints = new int[this.getUpgradeSlots()];
+        int onEachSide = this.getUpgradeSlots() / 2;
+        for (int i = 3, j = 5, n = 0; onEachSide > 0; i--, j++, n++, onEachSide--) {
+            ints[n++] = i;
+            ints[n] = j;
+        }
+
+        return ints;
+    }
+
     @Override
     @OverridingMethodsMustInvokeSuper
     protected void onPlace(@Nonnull BlockPlaceEvent e, @Nonnull Block b) {
@@ -137,7 +167,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     }
 
     @Override
-    protected void setupMenu(@Nonnull BlockMenuPreset preset) {
+    protected final void setupMenu(@Nonnull BlockMenuPreset preset) {
         int onEachSide = (9 - getUpgradeSlots()) / 2;
         for (int i = 0, j = 8; i < onEachSide; i++, j--) {
             preset.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
@@ -146,6 +176,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     }
 
     @Override
+    @OverridingMethodsMustInvokeSuper
     protected void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
         if (Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), ENABLED))) {
             menu.replaceExistingItem(4, ENABLED_ITEM);
@@ -166,7 +197,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Nonnull
     @Override
-    protected int[] getTransportSlots(@Nonnull DirtyChestMenu menu, @Nonnull ItemTransportFlow flow, ItemStack item) {
+    protected final int[] getTransportSlots(@Nonnull DirtyChestMenu menu, @Nonnull ItemTransportFlow flow, ItemStack item) {
         return new int[0];
     }
 
@@ -176,6 +207,9 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         return EnergyNetComponentType.CONSUMER;
     }
 
+    /**
+     * @return energy per Slimefun tick
+     */
     protected abstract int getEnergyRequirement();
 
     protected abstract AtmosphericEffect getEffect();
@@ -185,7 +219,10 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
      */
     protected abstract int getUpgradeSlots();
 
-    protected void tick(@Nonnull Block b) {
+    protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
+    }
+
+    protected void applyExtensions(@Nonnull List<Extension> extensions, @Nonnull Block b) {
     }
 
     private void updateProtections(@Nonnull Location l) {
