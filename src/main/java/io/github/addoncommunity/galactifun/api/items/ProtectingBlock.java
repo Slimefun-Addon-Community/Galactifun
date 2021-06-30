@@ -176,17 +176,17 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     @Override
     @OverridingMethodsMustInvokeSuper
     protected void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
-        if (Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getLocation(), ENABLED))) {
+        if (BSUtils.getStoredBoolean(b.getLocation(), ENABLED)) {
             menu.replaceExistingItem(4, ENABLED_ITEM);
             menu.addMenuClickHandler(4, (p, slot, item, action) -> {
-                BlockStorage.addBlockInfo(b, ENABLED, Boolean.toString(false));
+                BlockStorage.addBlockInfo(b, ENABLED, "false");
                 this.onNewInstance(menu, b);
                 return false;
             });
         } else {
             menu.replaceExistingItem(4, DISABLED_ITEM);
             menu.addMenuClickHandler(4, (p, slot, item, action) -> {
-                BlockStorage.addBlockInfo(b, ENABLED, Boolean.toString(true));
+                BlockStorage.addBlockInfo(b, ENABLED, "true");
                 this.onNewInstance(menu, b);
                 return false;
             });
@@ -233,12 +233,12 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     }
 
     private void updateProtections(@Nonnull Location l) {
-        if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(l, ENABLED))) {
+        if (!BSUtils.getStoredBoolean(l, ENABLED)) {
             updateHologram(l.getBlock(), "&cNot Enabled");
             return;
         }
 
-        if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(l, PROTECTING))) {
+        if (!BSUtils.getStoredBoolean(l, PROTECTING)) {
             updateHologram(l.getBlock(), "&cNot Enough Energy");
             return;
         }
