@@ -65,11 +65,11 @@ public abstract class AlienWorld extends PlanetaryWorld {
     @Nullable
     @Override
     protected World loadWorld() {
-        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
-
         if (!getSetting("enabled", Boolean.class, enabledByDefault())) {
             return null;
         }
+
+        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
 
         String worldName = "world_galactifun_" + this.id;
 

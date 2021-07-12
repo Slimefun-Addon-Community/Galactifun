@@ -14,8 +14,6 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
-
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
  *
@@ -31,7 +29,6 @@ public final class Atmosphere {
             .setEnd()
             .setPressure(0)
             .addEffect(AtmosphericEffect.COLD, 5)
-            .addEffect(AtmosphericEffect.HEAT, 5)
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
@@ -89,7 +86,7 @@ public final class Atmosphere {
                 AtmosphericEffect effect = entry.getKey();
 
                 int protection = 0; // TODO replace with space suit protection
-                protection += ProtectingBlock.getProtectionFor(player.getLocation(), effect);
+                protection += ProtectionManager.getProtectionFor(player.getLocation(), effect);
 
                 int level = Math.max(0, entry.getValue() - protection);
                 if (level > 0) {

@@ -1,8 +1,6 @@
 package io.github.addoncommunity.galactifun.api.items;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +17,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -46,7 +45,6 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     protected static final String PROTECTING = "protecting";
     protected static final String ENABLED = "enabled";
 
-    private static final Map<BlockPosition, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
     private static final ItemStack ENABLED_ITEM = new CustomItem(
             Material.STRUCTURE_VOID,
@@ -98,22 +96,13 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                     counter++;
                 } else {
                     counter = 0;
-                    protectedBlocks.clear();
+                    ProtectionManager.clearProtectedBlocks();
                     for (BlockPosition l : allBlocks) {
                         updateProtections(l);
                     }
                 }
             }
         });
-    }
-
-    @Nonnull
-    public static Map<AtmosphericEffect, Integer> getProtectionsFor(@Nonnull Location l) {
-        return protectedBlocks.getOrDefault(new BlockPosition(l), new HashMap<>());
-    }
-
-    public static int getProtectionFor(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
-        return getProtectionsFor(l).getOrDefault(effect, 0);
     }
 
     @Override
@@ -208,7 +197,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         for (BlockPosition b : returned.get()) {
             // add a protection to the location
-            protectedBlocks.computeIfAbsent(b, k -> new HashMap<>()).put(inst.getEffect(), getProtection());
+            ProtectionManager.addProtection(b, inst.getEffect(), inst.getProtection());
         }
 
         updateHologram(pos.getBlock(), "&aOperational");

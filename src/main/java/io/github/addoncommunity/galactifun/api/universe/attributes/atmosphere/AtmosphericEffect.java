@@ -24,7 +24,12 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 public final class AtmosphericEffect {
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", PotionEffectType.WITHER);
-    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", (player, level) -> player.setFireTicks(240 * level));
+    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", (player, level) -> {
+        player.setFireTicks(240 * level);
+        if (level > 3) {
+            player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+        }
+    });
     public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD", (player, level) -> {
         player.damage(level * 2);
         player.addPotionEffect(new PotionEffect(
