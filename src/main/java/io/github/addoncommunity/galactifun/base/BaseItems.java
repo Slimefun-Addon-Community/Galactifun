@@ -82,15 +82,40 @@ public final class BaseItems {
             "&7Used to control a stargate"
     );
     //</editor-fold>
-
+    //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
+    public static final SlimefunItemStack COOLING_UNIT_1 = new SlimefunItemStack(
+            "COOLING_UNIT_1",
+            HeadTexture.COOLING_UNIT.getTexture(),
+            "&bCooling Unit I",
+            "",
+            "&7Protection: 2",
+            "&7Range: 100 blocks",
+            LoreBuilder.powerPerSecond(1024),
+            LoreBuilder.powerBuffer(2048)
+    );
+    public static final SlimefunItemStack COOLING_UNIT_2 = new SlimefunItemStack(
+            "COOLING_UNIT_2",
+            HeadTexture.COOLING_UNIT.getTexture(),
+            "&bCooling Unit II",
+            "",
+            "&7Protection: 4",
+            "&7Range: 150 blocks",
+            LoreBuilder.powerPerSecond(2048),
+            LoreBuilder.powerBuffer(4096)
+    );
+    public static final SlimefunItemStack COOLING_UNIT_3 = new SlimefunItemStack(
+            "COOLING_UNIT_3",
+            HeadTexture.COOLING_UNIT.getTexture(),
+            "&bCooling Unit III",
+            "",
+            "&7Protection: 6",
+            "&7Range: 200 blocks",
+            LoreBuilder.powerPerSecond(3072),
+            LoreBuilder.powerBuffer(6144)
+    );
     //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
     private static final int TIER_ONE_STORAGE = 9;
-    private static final int TIER_TWO_FUEL = 100;
-    private static final int TIER_TWO_STORAGE = 18;
-    private static final int TIER_THREE_FUEL = 500;
-    private static final int TIER_THREE_STORAGE = 36;
-
     public static final SlimefunItemStack TIER_ONE = new SlimefunItemStack(
             "ROCKET_TIER_ONE",
             GalactifunHead.ROCKET,
@@ -99,6 +124,8 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_ONE_FUEL,
             "&7Cargo Capacity: " + TIER_ONE_STORAGE
     );
+    private static final int TIER_TWO_FUEL = 100;
+    private static final int TIER_TWO_STORAGE = 18;
     public static final SlimefunItemStack TIER_TWO = new SlimefunItemStack(
             "ROCKET_TIER_TWO",
             GalactifunHead.ROCKET,
@@ -107,6 +134,9 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_TWO_FUEL,
             "&7Cargo Capacity: " + TIER_TWO_STORAGE
     );
+    //</editor-fold>
+    private static final int TIER_THREE_FUEL = 500;
+    private static final int TIER_THREE_STORAGE = 36;
     public static final SlimefunItemStack TIER_THREE = new SlimefunItemStack(
             "ROCKET_TIER_THREE",
             GalactifunHead.ROCKET,
@@ -117,20 +147,8 @@ public final class BaseItems {
     );
     //</editor-fold>
 
-    //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
-    public static final SlimefunItemStack COOLING_UNIT_1 = new SlimefunItemStack(
-            "COOLING_UNIT_1",
-            HeadTexture.COOLING_UNIT.getTexture(),
-            "&bCooling Unit I",
-            "",
-            "&7Base Protection: 2",
-            "&7Base Range: 100 blocks",
-            "&7Upgrade Slots: 2"
-    );
-    //</editor-fold>
-
     public static void setup(Galactifun galactifun) {
-        new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+        new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL,
                 SlimefunItems.STEEL_PLATE, null, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL
@@ -156,7 +174,7 @@ public final class BaseItems {
                 STARGATE_RING, BaseMats.LAPIS_CIRCUIT, STARGATE_RING
         }).register(galactifun);
 
-        new Rocket(CoreCategory.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
+        new Rocket(CoreCategory.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[]{
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
@@ -164,7 +182,7 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE, BaseMats.ROCKET_ENGINE, null, BaseMats.HEAVY_DUTY_SHEET
         }, TIER_ONE_FUEL, TIER_ONE_STORAGE).register(galactifun);
-        new Rocket(CoreCategory.ITEMS, TIER_TWO, AssemblyTable.TYPE, new ItemStack[] {
+        new Rocket(CoreCategory.ITEMS, TIER_TWO, AssemblyTable.TYPE, new ItemStack[]{
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
@@ -172,7 +190,7 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_2, BaseMats.ROCKET_ENGINE_2, null, BaseMats.HEAVY_DUTY_SHEET
         }, TIER_TWO_FUEL, TIER_TWO_STORAGE).register(galactifun);
-        new Rocket(CoreCategory.ITEMS, TIER_THREE, AssemblyTable.TYPE, new ItemStack[] {
+        new Rocket(CoreCategory.ITEMS, TIER_THREE, AssemblyTable.TYPE, new ItemStack[]{
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, null,
@@ -182,9 +200,9 @@ public final class BaseItems {
         }, TIER_THREE_FUEL, TIER_THREE_STORAGE).register(galactifun);
 
         new LaunchPadFloor(CoreCategory.ITEMS, BaseItems.LAUNCH_PAD_FLOOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-            null, null, null,
-            BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
-            BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
+                null, null, null,
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
         }).register(galactifun);
 
         new LaunchPadCore(CoreCategory.ITEMS, BaseItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
@@ -193,7 +211,23 @@ public final class BaseItems {
                 SlimefunItems.REINFORCED_PLATE, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.REINFORCED_PLATE,
         }).register(galactifun);
 
-        new CoolingUnit(COOLING_UNIT_1, new ItemStack[9], 1).register(galactifun);
+        new CoolingUnit(COOLING_UNIT_1, new ItemStack[]{
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.COOLING_UNIT, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                SlimefunItems.COOLING_UNIT, BaseMats.FAN_BLADE, SlimefunItems.COOLING_UNIT,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.COOLING_UNIT, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }, 1).register(galactifun);
+
+        new CoolingUnit(COOLING_UNIT_2, new ItemStack[]{
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.DRY_ICE, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.DRY_ICE, COOLING_UNIT_1, BaseMats.DRY_ICE,
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.DRY_ICE, BaseMats.SPACE_GRADE_PLATE
+        }, 2).register(galactifun);
+
+        new CoolingUnit(COOLING_UNIT_3, new ItemStack[]{
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET,
+                BaseMats.DRY_ICE, COOLING_UNIT_2, BaseMats.DRY_ICE,
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET
+        }, 3).register(galactifun);
 
     }
 
