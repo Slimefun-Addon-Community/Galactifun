@@ -16,8 +16,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -96,7 +96,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                     counter++;
                 } else {
                     counter = 0;
-                    ProtectionManager.clearProtectedBlocks();
+                    Galactifun.protectionManager().clearProtectedBlocks();
                     for (BlockPosition l : allBlocks) {
                         updateProtections(l);
                     }
@@ -197,7 +197,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         for (BlockPosition b : returned.get()) {
             // add a protection to the location
-            ProtectionManager.addProtection(b, inst.getEffect(), inst.getProtection());
+            Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
         }
 
         updateHologram(pos.getBlock(), "&aOperational");

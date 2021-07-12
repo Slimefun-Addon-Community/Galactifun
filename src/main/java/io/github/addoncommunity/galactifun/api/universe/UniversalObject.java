@@ -88,12 +88,4 @@ public abstract class UniversalObject {
     public int hashCode() {
         return this.id.hashCode();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof UniversalObject other)) return false;
-
-        return this.id.equals(other.id);
-    }
 }

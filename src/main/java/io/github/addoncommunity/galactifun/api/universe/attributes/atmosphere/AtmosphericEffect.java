@@ -76,14 +76,6 @@ public final class AtmosphericEffect {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof AtmosphericEffect other)) return false;
-
-        return this.id.equals(other.id);
-    }
-
-    @Override
     public int hashCode() {
         return this.id.hashCode();
     }
