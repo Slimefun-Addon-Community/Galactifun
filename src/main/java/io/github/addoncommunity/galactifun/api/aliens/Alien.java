@@ -159,12 +159,4 @@ public class Alien<T extends Mob> {
     public int hashCode() {
         return this.id.hashCode();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof Alien<?> other)) return false;
-
-        return this.id.equals(other.id);
-    }
 }

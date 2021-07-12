@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.structures.StructureManager;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
@@ -33,6 +34,7 @@ public final class Galactifun extends AbstractAddon {
     private StructureManager structureManager;
     private AlienManager alienManager;
     private WorldManager worldManager;
+    private ProtectionManager protectionManager;
 
     protected void enable() {
         instance = this;
@@ -40,6 +42,7 @@ public final class Galactifun extends AbstractAddon {
         this.structureManager = new StructureManager(this);
         this.alienManager = new AlienManager(this);
         this.worldManager = new WorldManager(this);
+        this.protectionManager = new ProtectionManager();
 
         BaseAlien.setup(this.alienManager);
         BaseUniverse.setup(this.worldManager);
@@ -117,6 +120,10 @@ public final class Galactifun extends AbstractAddon {
 
     public static WorldManager worldManager() {
         return instance.worldManager;
+    }
+
+    public static ProtectionManager protectionManager() {
+        return instance.protectionManager;
     }
 
 }

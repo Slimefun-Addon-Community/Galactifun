@@ -13,14 +13,6 @@ import org.apache.commons.lang.Validate;
  */
 public final class Orbit {
 
-    /**
-     * An orbit of 0, should only be used in special cases
-     *
-     * @deprecated possibly for removal, no use cases are known
-     */
-    @Deprecated
-    public static final Orbit NONE = new Orbit(0, 0);
-
     private static final long EARTH_YEAR = 35;
 
     private final long year;

@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
@@ -33,7 +32,7 @@ public final class EffectsCommand extends AbstractCommand {
 
         Map<AtmosphericEffect, Integer> effects = world.getAtmosphere().getEffects();
         for (Map.Entry<AtmosphericEffect, Integer> entry : effects.entrySet()) {
-            int level = entry.getValue() - ProtectionManager.getProtectionFor(p.getLocation(), entry.getKey());
+            int level = entry.getValue() - Galactifun.protectionManager().getProtectionFor(p.getLocation(), entry.getKey());
             if (level > 0) {
                 p.sendMessage(ChatColor.YELLOW + String.format("Effect: %s, Level: %d",
                         entry.getKey().toString(),
