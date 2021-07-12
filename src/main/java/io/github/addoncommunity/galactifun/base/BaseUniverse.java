@@ -139,6 +139,7 @@ public final class BaseUniverse {
                     .addEffect(AtmosphericEffect.HEAT, 10)
                     .add(Gas.CARBON_DIOXIDE, 96.5)
                     .add(Gas.NITROGEN, 3.5)
+                    .setPressure(93)
                     .build(),
             Gravity.metersPerSec(8.87)
     );
@@ -163,6 +164,8 @@ public final class BaseUniverse {
                     .add(Gas.CARBON_DIOXIDE, 94.9)
                     .add(Gas.NITROGEN, 2.6)
                     .add(Gas.ARGON, 1.9)
+                    .addEffect(AtmosphericEffect.COLD, 2)
+                    .setPressure(0.006)
                     .build(),
             Gravity.metersPerSec(3.711)
     );
@@ -179,6 +182,8 @@ public final class BaseUniverse {
                     .add(Gas.METHANE, 2.7)
                     .add(Gas.HYDROCARBONS, 0.2)
                     .add(Gas.HYDROGEN, 0.1)
+                    .addEffect(AtmosphericEffect.COLD, 6)
+                    .setPressure(1.5)
                     .build(),
             Gravity.metersPerSec(1.352)
     );
@@ -194,7 +199,6 @@ public final class BaseUniverse {
     );
 
 
-    // todo add pressures
     public static void setup(WorldManager worldManager) {
         MARS.addSpecies(BaseAlien.MARTIAN);
         THE_MOON.addSpecies(BaseAlien.MUTANT_CREEPER);

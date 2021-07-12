@@ -40,6 +40,7 @@ public final class AtmosphericEffect {
                 false,
                 false
         ));
+        player.setFreezeTicks(150 * level);
     });
 
     @Nonnull
