@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -27,6 +28,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -109,7 +111,7 @@ public final class WorldManager implements Listener {
         return Collections.unmodifiableList(this.spaceWorlds);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
         AlienWorld object = getAlienWorld(e.getFrom());
         if (object != null) {
@@ -125,6 +127,14 @@ public final class WorldManager implements Listener {
     private void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
         AlienWorld object = getAlienWorld(e.getPlayer().getWorld());
         if (object != null) {
+            object.applyEffects(e.getPlayer());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onPlayerChangeGameMode(@Nonnull PlayerGameModeChangeEvent e) {
+        AlienWorld object = getAlienWorld(e.getPlayer().getWorld());
+        if (object != null && !(e.getNewGameMode() == GameMode.CREATIVE || e.getNewGameMode() == GameMode.SPECTATOR)) {
             object.applyEffects(e.getPlayer());
         }
     }

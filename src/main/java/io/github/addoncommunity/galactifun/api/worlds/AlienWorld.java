@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 
 import lombok.NonNull;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -38,6 +37,7 @@ import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import org.apache.commons.lang.Validate;
 
 /**
  * Any alien world
@@ -65,11 +65,11 @@ public abstract class AlienWorld extends PlanetaryWorld {
     @Nullable
     @Override
     protected World loadWorld() {
-        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
-
         if (!getSetting("enabled", Boolean.class, enabledByDefault())) {
             return null;
         }
+
+        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
 
         String worldName = "world_galactifun_" + this.id;
 
@@ -198,10 +198,11 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         // mob spawns
         if (!this.species.isEmpty()) {
-            // shuffles the list so each alien has a fair chance of being first
-            Collections.shuffle(this.species);
-
             Random rand = ThreadLocalRandom.current();
+
+            // shuffles the list so each alien has a fair chance of being first
+            Collections.shuffle(this.species, rand);
+
             int players = world.getPlayers().size();
             int mobs = world.getLivingEntities().size() - players;
             int max = players * getWorldManager().getMaxAliensPerPlayer();

@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.slimefun.AbstractTickingContainer;
@@ -93,7 +94,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
 
             if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
                 menu.consumeItem(FUEL_SLOT);
-                BlockStorage.addBlockInfo(l, "fuel", Integer.toString(++fuel));
+                BSUtils.addBlockInfo(l.getBlock(), "fuel", ++fuel);
                 if (string == null) {
                     BlockStorage.addBlockInfo(l, "fuelType", id);
                 }
@@ -102,7 +103,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     }
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
-        if (Boolean.parseBoolean(BlockStorage.getLocationInfo(b.getRelative(BlockFace.UP).getLocation(), "isLaunching"))) {
+        if (BSUtils.getStoredBoolean(b.getRelative(BlockFace.UP).getLocation(), "isLaunching")) {
             p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
             return false;
         }

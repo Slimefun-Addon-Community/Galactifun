@@ -179,9 +179,7 @@ public final class Rocket extends SlimefunItem {
     }
     
     private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
-        
-        // yes ik boolean#tostring isn't needed but just for safety
-        BlockStorage.addBlockInfo(b, "isLaunching", Boolean.toString(true));
+        BlockStorage.addBlockInfo(b, "isLaunching", "true");
 
         World world = p.getWorld();
 

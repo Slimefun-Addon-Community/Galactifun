@@ -66,7 +66,6 @@ public final class BaseUniverse {
             new AtmosphereBuilder()
                     .addStorm()
                     .addThunder()
-                    .enableFire()
                     .enableWeather()
                     .add(Gas.HYDROGEN, 90)
                     .add(Gas.HELIUM, 10)
@@ -137,9 +136,10 @@ public final class BaseUniverse {
                     .setNether()
                     .addStorm()
                     .addThunder()
-                    .addEffects(AtmosphericEffect.RADIATION)
+                    .addEffect(AtmosphericEffect.HEAT, 10)
                     .add(Gas.CARBON_DIOXIDE, 96.5)
                     .add(Gas.NITROGEN, 3.5)
+                    .setPressure(93)
                     .build(),
             Gravity.metersPerSec(8.87)
     );
@@ -164,6 +164,8 @@ public final class BaseUniverse {
                     .add(Gas.CARBON_DIOXIDE, 94.9)
                     .add(Gas.NITROGEN, 2.6)
                     .add(Gas.ARGON, 1.9)
+                    .addEffect(AtmosphericEffect.COLD, 2)
+                    .setPressure(0.006)
                     .build(),
             Gravity.metersPerSec(3.711)
     );
@@ -176,11 +178,12 @@ public final class BaseUniverse {
             DayCycle.EARTH_LIKE,
             new AtmosphereBuilder()
                     .enableWeather()
-                    .enableFire()
                     .add(Gas.NITROGEN, 97)
                     .add(Gas.METHANE, 2.7)
                     .add(Gas.HYDROCARBONS, 0.2)
                     .add(Gas.HYDROGEN, 0.1)
+                    .addEffect(AtmosphericEffect.COLD, 6)
+                    .setPressure(1.5)
                     .build(),
             Gravity.metersPerSec(1.352)
     );

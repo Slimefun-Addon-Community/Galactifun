@@ -2,21 +2,16 @@ package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import javax.annotation.Nonnull;
 
+import io.github.addoncommunity.galactifun.util.Util;
 import org.apache.commons.lang.Validate;
 
-import io.github.addoncommunity.galactifun.util.Util;
-
 /**
- * Represents an orbit of a celestial object
+ * Represents the orbit of a celestial object
  *
  * @author Mooy1
+ * @author Seggan
  */
 public final class Orbit {
-
-    /**
-     * An orbit of 0, should only be used in special cases
-     */
-    public static final Orbit NONE = new Orbit(0, 0);
 
     private static final long EARTH_YEAR = 35;
 

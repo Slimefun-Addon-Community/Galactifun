@@ -80,4 +80,8 @@ public abstract class UniversalObject {
         return Collections.unmodifiableList(this.orbiters);
     }
 
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
 }

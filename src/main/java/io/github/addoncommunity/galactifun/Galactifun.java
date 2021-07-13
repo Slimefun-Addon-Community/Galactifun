@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.addoncommunity.galactifun.api.structures.StructureManager;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
@@ -17,7 +18,9 @@ import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
+import io.github.addoncommunity.galactifun.core.commands.EffectsCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
+import io.github.addoncommunity.galactifun.core.commands.SealedCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.mooy1.infinitylib.AbstractAddon;
@@ -31,6 +34,7 @@ public final class Galactifun extends AbstractAddon {
     private StructureManager structureManager;
     private AlienManager alienManager;
     private WorldManager worldManager;
+    private ProtectionManager protectionManager;
 
     protected void enable() {
         instance = this;
@@ -38,6 +42,7 @@ public final class Galactifun extends AbstractAddon {
         this.structureManager = new StructureManager(this);
         this.alienManager = new AlienManager(this);
         this.worldManager = new WorldManager(this);
+        this.protectionManager = new ProtectionManager();
 
         BaseAlien.setup(this.alienManager);
         BaseUniverse.setup(this.worldManager);
@@ -59,10 +64,10 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected void disable() {
-        instance = null;
-
         // todo make better
         BossAlien.removeBossBars();
+
+        instance = null; // REMEMBER TO KEEP THIS LAST
     }
 
     @Override
@@ -79,7 +84,8 @@ public final class Galactifun extends AbstractAddon {
     @Nonnull
     @Override
     protected String getGithubPath() {
-        return "Slimefun-Addon-Community/Galactifun/master";
+        // todo change back once i get internet and can fix
+        return "Community/Galactifun/master";
     }
 
     @Override
@@ -88,7 +94,9 @@ public final class Galactifun extends AbstractAddon {
                 new GalactiportCommand(),
                 new AlienSpawnCommand(),
                 new SphereCommand(),
-                new StructureCommand(this)
+                new StructureCommand(this),
+                new SealedCommand(),
+                new EffectsCommand()
         );
     }
 
@@ -112,6 +120,10 @@ public final class Galactifun extends AbstractAddon {
 
     public static WorldManager worldManager() {
         return instance.worldManager;
+    }
+
+    public static ProtectionManager protectionManager() {
+        return instance.protectionManager;
     }
 
 }

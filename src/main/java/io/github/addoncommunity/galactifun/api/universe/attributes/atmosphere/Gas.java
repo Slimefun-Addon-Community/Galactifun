@@ -1,5 +1,9 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
+import javax.annotation.Nonnull;
+
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+
 public enum Gas {
     OXYGEN,
     NITROGEN,
@@ -12,5 +16,12 @@ public enum Gas {
     HYDROGEN,
     SULFUR,
     AMMONIA,
-    OTHER
+    OTHER;
+
+
+    @Nonnull
+    @Override
+    public String toString() {
+        return ChatUtils.humanize(this.name());
+    }
 }

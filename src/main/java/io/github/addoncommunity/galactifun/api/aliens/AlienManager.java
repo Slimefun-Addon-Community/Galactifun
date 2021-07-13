@@ -8,11 +8,13 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -33,13 +35,19 @@ public final class AlienManager implements Listener, Runnable {
 
     @Getter
     private final NamespacedKey key;
+    @Getter
+    private final NamespacedKey bossKey;
+
     private final Map<String, Alien<?>> aliens = new HashMap<>();
+    @Getter(AccessLevel.PACKAGE)
+    private final Map<LivingEntity, BossBar> bossInstances = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(this, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
 
         this.key = new NamespacedKey(galactifun, "alien");
+        this.bossKey = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
     }
 
     void register(Alien<?> alien) {

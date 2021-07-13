@@ -1,16 +1,14 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 import lombok.NonNull;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -27,10 +25,10 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import io.github.addoncommunity.galactifun.api.aliens.goals.AbstractGoal;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien
@@ -51,6 +49,7 @@ public class Alien<T extends Mob> {
     private final double maxHealth;
     private AlienManager alienManager;
 
+    @ParametersAreNonnullByDefault
     public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         Validate.isTrue(maxHealth > 0);
         Validate.isTrue(spawnChance > 0 && spawnChance <= 100);
@@ -74,15 +73,7 @@ public class Alien<T extends Mob> {
         mob.setCustomNameVisible(true);
         mob.setRemoveWhenFarAway(true);
 
-        Map<AbstractGoal<T>, Integer> goals = new HashMap<>();
-        getGoals(goals, mob);
-        if (!goals.isEmpty()) {
-            MobGoals mobGoals = Bukkit.getMobGoals();
-            mobGoals.removeAllGoals(mob);
-            for (Map.Entry<AbstractGoal<T>, Integer> goal : goals.entrySet()) {
-                mobGoals.addGoal(mob, goal.getValue(), goal.getKey());
-            }
-        }
+        this.editGoals(Bukkit.getMobGoals(), mob);
 
         onSpawn(mob);
         return mob;
@@ -113,8 +104,8 @@ public class Alien<T extends Mob> {
                 break;
             }
 
-            int x = rand.nextInt(16) + chunk.getX() << 4;
-            int z = rand.nextInt(16) + chunk.getZ() << 4;
+            int x = rand.nextInt(16) + (chunk.getX() << 4);
+            int z = rand.nextInt(16) + (chunk.getZ() << 4);
             Block b = world.getHighestBlockAt(x, z).getRelative(0, 1, 0);
 
             // currently doesn't allow for aquatic aliens
@@ -141,13 +132,12 @@ public class Alien<T extends Mob> {
     protected void onDamage(EntityDamageEvent e) { }
 
     /**
-     * Gets the AI of the Alien. The map is a map of a mob goal and its priority
+     * Edits the AI of the Alien. The map is a map of a mob goal and its priority
      *
-     * @param goals a map of the Alien's goals, add the goals to this or add nothing for default AI
+     * @param goals add the goals to this or add nothing for default AI
      * @param mob the mob
      */
-    protected void getGoals(@Nonnull Map<AbstractGoal<T>, Integer> goals, @Nonnull T mob) {
-
+    protected void editGoals(@Nonnull MobGoals goals, @Nonnull T mob) {
     }
 
     /**
@@ -165,4 +155,8 @@ public class Alien<T extends Mob> {
         return 0;
     }
 
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
 }

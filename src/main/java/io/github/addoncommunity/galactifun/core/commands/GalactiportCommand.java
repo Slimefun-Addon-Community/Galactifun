@@ -22,7 +22,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 public final class GalactiportCommand extends AbstractCommand {
 
     public GalactiportCommand() {
-        super("world", "teleports you to the spawn of the specified world", true);
+        super("world", "Teleports you to the spawn of the specified world", true);
     }
 
     @Override

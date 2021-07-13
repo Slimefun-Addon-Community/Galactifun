@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.codec.Charsets;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import org.apache.commons.codec.Charsets;
 
 /**
  * A class for loading Galactic Structures
