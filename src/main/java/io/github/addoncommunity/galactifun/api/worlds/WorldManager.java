@@ -17,6 +17,7 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -39,6 +40,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -185,12 +189,21 @@ public final class WorldManager implements Listener {
         Block block = e.getBlock();
         AlienWorld world = getAlienWorld(block.getWorld());
         if (world != null) {
-            int attempts = world.getAtmosphere().getGrowthAttempts();
-            if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
-                BlockData data = block.getBlockData();
-                if (data instanceof Ageable ageable) {
-                    ageable.setAge(ageable.getAge() + attempts);
-                    block.setBlockData(ageable);
+            Atmosphere atmosphere = world.getAtmosphere();
+            ProtectionManager manager = Galactifun.protectionManager();
+            Location l = block.getLocation();
+            if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
+                block.setType(Material.ICE);
+            } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
+                block.breakNaturally();
+            } else {
+                int attempts = atmosphere.getGrowthAttempts();
+                if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
+                    BlockData data = block.getBlockData();
+                    if (data instanceof Ageable ageable) {
+                        ageable.setAge(ageable.getAge() + attempts);
+                        block.setBlockData(ageable);
+                    }
                 }
             }
         }

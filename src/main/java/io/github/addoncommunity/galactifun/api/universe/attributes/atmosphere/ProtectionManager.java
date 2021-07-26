@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 
 public final class ProtectionManager {
@@ -29,5 +31,24 @@ public final class ProtectionManager {
 
     public void clearProtectedBlocks() {
         protectedBlocks.clear();
+    }
+
+    @Nonnull
+    public Map<AtmosphericEffect, Integer> getEffectsAt(@Nonnull Location l) {
+        Map<AtmosphericEffect, Integer> ret = new HashMap<>();
+        AlienWorld world = Galactifun.worldManager().getAlienWorld(l.getWorld());
+        if (world != null) {
+            Atmosphere atmosphere = world.getAtmosphere();
+            for (Map.Entry<AtmosphericEffect, Integer> prot : getProtectionsFor(l).entrySet()) {
+                int val = atmosphere.getEffects().getOrDefault(prot.getKey(), 0) - prot.getValue();
+                if (val > 0) ret.put(prot.getKey(), val);
+            }
+        }
+
+        return ret;
+    }
+
+    public int getEffectAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
+        return getEffectsAt(l).getOrDefault(effect, 0);
     }
 }
