@@ -107,4 +107,8 @@ public final class Martian extends Alien<ZombieVillager> {
         }
     }
 
+    @Override
+    protected boolean canSpawnInLightLevel(int lightLevel) {
+        return true;
+    }
 }
