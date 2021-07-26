@@ -15,11 +15,13 @@ import lombok.Getter;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,6 +31,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -198,6 +201,19 @@ public final class WorldManager implements Listener {
                     w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
                 }
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    private void onSleep(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        AlienWorld world = getAlienWorld(p.getWorld());
+        if (world == null || world.getAtmosphere().getEnvironment() == World.Environment.NORMAL) return;
+        Block b = e.getClickedBlock();
+        if (b != null && Tag.BEDS.isTagged(b.getType())) {
+            e.setCancelled(true);
+            p.setBedSpawnLocation(p.getLocation(), true);
+            p.sendMessage("Respawn point set");
         }
     }
 
