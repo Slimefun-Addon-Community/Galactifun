@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -33,6 +34,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -50,6 +52,7 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public final class WorldManager implements Listener {
 
@@ -229,7 +232,7 @@ public final class WorldManager implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void onSleep(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        AlienWorld world = this.alienWorlds.get(p.getWorld());
+        PlanetaryWorld world = this.getWorld(p.getWorld());
         if (world == null || world.getAtmosphere().getEnvironment() == World.Environment.NORMAL) return;
         Block b = e.getClickedBlock();
         if (b != null && Tag.BEDS.isTagged(b.getType())) {
@@ -251,7 +254,7 @@ public final class WorldManager implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     private void onRespawnLoop(PlayerDeathEvent e) {
         Player p = e.getEntity();
-        if (this.alienWorlds.get(p.getWorld()) != null) {
+        if (this.getWorld(p.getWorld()) != null) {
             Long lastBoxed = this.lastDeaths.get(p.getUniqueId());
             if (lastBoxed != null) {
                 long timeSince = System.currentTimeMillis() - lastBoxed;
@@ -274,6 +277,29 @@ public final class WorldManager implements Listener {
             }
 
             this.lastDeaths.put(p.getUniqueId(), System.currentTimeMillis());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerPlaceWater(PlayerBucketEmptyEvent e) {
+        if (e.getBucket() != Material.WATER_BUCKET) return;
+        Player p = e.getPlayer();
+        PlanetaryWorld world = this.getWorld(p.getWorld());
+        if (world != null) {
+            e.setCancelled(true);
+            if (p.getGameMode() != GameMode.CREATIVE) {
+                ItemUtils.consumeItem(p.getInventory().getItem(e.getHand()), true);
+            }
+            ProtectionManager manager = Galactifun.protectionManager();
+            Block toBePlaced = e.getBlockClicked().getRelative(e.getBlockFace());
+            Location l = toBePlaced.getLocation();
+            if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
+                toBePlaced.setType(Material.ICE);
+            } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
+                p.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l, 5);
+            } else {
+                toBePlaced.setType(Material.WATER);
+            }
         }
     }
 
