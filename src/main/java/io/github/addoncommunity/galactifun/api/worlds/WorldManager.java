@@ -193,9 +193,9 @@ public final class WorldManager implements Listener {
             ProtectionManager manager = Galactifun.protectionManager();
             Location l = block.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
-                block.setType(Material.ICE);
+                Galactifun.inst().runSync(() -> block.setType(Material.ICE));
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
-                block.breakNaturally();
+                Galactifun.inst().runSync(block::breakNaturally);
             } else {
                 int attempts = atmosphere.getGrowthAttempts();
                 if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {

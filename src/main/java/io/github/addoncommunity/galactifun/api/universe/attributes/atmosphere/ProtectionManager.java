@@ -39,9 +39,9 @@ public final class ProtectionManager {
         AlienWorld world = Galactifun.worldManager().getAlienWorld(l.getWorld());
         if (world != null) {
             Atmosphere atmosphere = world.getAtmosphere();
-            for (Map.Entry<AtmosphericEffect, Integer> prot : getProtectionsFor(l).entrySet()) {
-                int val = atmosphere.getEffects().getOrDefault(prot.getKey(), 0) - prot.getValue();
-                if (val > 0) ret.put(prot.getKey(), val);
+            for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.getEffects().entrySet()) {
+                int val = eff.getValue() - getProtectionFor(l, eff.getKey());
+                if (val > 0) ret.put(eff.getKey(), val);
             }
         }
 
