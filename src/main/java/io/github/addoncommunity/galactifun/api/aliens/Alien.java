@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
@@ -117,6 +118,7 @@ public class Alien<T extends Mob> {
         return spawned;
     }
 
+    //@formatter:off
     protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
     protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
@@ -130,6 +132,9 @@ public class Alien<T extends Mob> {
     protected void onCastSpell(EntitySpellCastEvent e) { }
 
     protected void onDamage(EntityDamageEvent e) { }
+
+    protected void onShoot(ProjectileLaunchEvent e, Mob entity) { }
+    //@formatter:on
 
     /**
      * Edits the AI of the Alien. The map is a map of a mob goal and its priority

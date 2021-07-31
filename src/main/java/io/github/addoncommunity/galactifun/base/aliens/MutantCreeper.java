@@ -59,5 +59,9 @@ public final class MutantCreeper extends Alien<Creeper> {
             }
         }
     }
-    
+
+    @Override
+    protected boolean canSpawnInLightLevel(int lightLevel) {
+        return true;
+    }
 }

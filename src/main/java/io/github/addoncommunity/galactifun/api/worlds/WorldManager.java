@@ -7,19 +7,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,16 +33,26 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public final class WorldManager implements Listener {
 
@@ -46,6 +62,9 @@ public final class WorldManager implements Listener {
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
     private final YamlConfiguration config;
     private final YamlConfiguration defaultConfig;
+
+    private final Map<UUID, Integer> respawnTimes = new HashMap<>();
+    private final Map<UUID, Long> lastDeaths = new HashMap<>();
 
     public WorldManager(Galactifun galactifun) {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
@@ -173,12 +192,21 @@ public final class WorldManager implements Listener {
         Block block = e.getBlock();
         AlienWorld world = getAlienWorld(block.getWorld());
         if (world != null) {
-            int attempts = world.getAtmosphere().getGrowthAttempts();
-            if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
-                BlockData data = block.getBlockData();
-                if (data instanceof Ageable ageable) {
-                    ageable.setAge(ageable.getAge() + attempts);
-                    block.setBlockData(ageable);
+            Atmosphere atmosphere = world.getAtmosphere();
+            ProtectionManager manager = Galactifun.protectionManager();
+            Location l = block.getLocation();
+            if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
+                Galactifun.inst().runSync(() -> block.setType(Material.ICE));
+            } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
+                Galactifun.inst().runSync(block::breakNaturally);
+            } else {
+                int attempts = atmosphere.getGrowthAttempts();
+                if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
+                    BlockData data = block.getBlockData();
+                    if (data instanceof Ageable ageable) {
+                        ageable.setAge(ageable.getAge() + attempts);
+                        block.setBlockData(ageable);
+                    }
                 }
             }
         }
@@ -201,12 +229,77 @@ public final class WorldManager implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    private void onSleep(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        PlanetaryWorld world = this.getWorld(p.getWorld());
+        if (world == null || world.getAtmosphere().getEnvironment() == World.Environment.NORMAL) return;
+        Block b = e.getClickedBlock();
+        if (b != null && Tag.BEDS.isTagged(b.getType())) {
+            e.setCancelled(true);
+            p.setBedSpawnLocation(p.getLocation(), true);
+            p.sendMessage("Respawn point set");
+        }
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlace(BlockPlaceEvent e) {
         Block b = e.getBlock();
         AlienWorld world = this.alienWorlds.get(b.getWorld());
         if (world != null && world.getMappedItem(b) != null) {
             BlockStorage.addBlockInfo(b, "placed", "true");
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    private void onRespawnLoop(PlayerDeathEvent e) {
+        Player p = e.getEntity();
+        if (this.getWorld(p.getWorld()) != null) {
+            Long lastBoxed = this.lastDeaths.get(p.getUniqueId());
+            if (lastBoxed != null) {
+                long timeSince = System.currentTimeMillis() - lastBoxed;
+                if (timeSince < (60 * 1000)) {
+                    int times = this.respawnTimes.merge(p.getUniqueId(), 1, Integer::sum);
+                    if (times > 3) {
+                        p.sendMessage(
+                                ChatColor.YELLOW +
+                                        "A possible respawn loop has been detected! " +
+                                        "Do you wish to go back to Earth? (yes/no)"
+                        );
+                        ChatUtils.awaitInput(p, s -> {
+                            if (s.equalsIgnoreCase("yes")) {
+                                PaperLib.teleportAsync(p, BaseUniverse.EARTH.getWorld().getSpawnLocation());
+                                WorldManager.this.respawnTimes.remove(p.getUniqueId());
+                            }
+                        });
+                    }
+                }
+            }
+
+            this.lastDeaths.put(p.getUniqueId(), System.currentTimeMillis());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerPlaceWater(PlayerBucketEmptyEvent e) {
+        if (e.getBucket() != Material.WATER_BUCKET) return;
+        Player p = e.getPlayer();
+        PlanetaryWorld world = this.getWorld(p.getWorld());
+        if (world != null) {
+            e.setCancelled(true);
+            if (p.getGameMode() != GameMode.CREATIVE) {
+                ItemUtils.consumeItem(p.getInventory().getItem(e.getHand()), true);
+            }
+            ProtectionManager manager = Galactifun.protectionManager();
+            Block toBePlaced = e.getBlockClicked().getRelative(e.getBlockFace());
+            Location l = toBePlaced.getLocation();
+            if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
+                toBePlaced.setType(Material.ICE);
+            } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
+                p.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l, 5);
+            } else {
+                toBePlaced.setType(Material.WATER);
+            }
         }
     }
 

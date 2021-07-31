@@ -197,7 +197,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
         getDayCycle().tick(getWorld());
 
         // mob spawns
-        if (!this.species.isEmpty()) {
+        if (!this.species.isEmpty() && !world.getPlayers().isEmpty()) {
             Random rand = ThreadLocalRandom.current();
 
             // shuffles the list so each alien has a fair chance of being first
