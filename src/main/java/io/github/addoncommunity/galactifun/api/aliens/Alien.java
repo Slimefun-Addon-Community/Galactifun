@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -105,8 +106,8 @@ public class Alien<T extends Mob> {
                 break;
             }
 
-            int x = rand.nextInt(16) + (chunk.getX() << 4);
-            int z = rand.nextInt(16) + (chunk.getZ() << 4);
+            int x = rand.nextInt(AlienWorld.CHUNK_WIDTH) + (chunk.getX() << 4);
+            int z = rand.nextInt(AlienWorld.CHUNK_WIDTH) + (chunk.getZ() << 4);
             Block b = world.getHighestBlockAt(x, z).getRelative(0, 1, 0);
 
             // currently doesn't allow for aquatic aliens

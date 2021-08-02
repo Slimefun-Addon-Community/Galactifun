@@ -28,6 +28,8 @@ import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
 // TODO cleanup bossbar stuff
 public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
+    private static final int BOSS_BAR_DISTANCE_SQUARED = 400;
+
     private final BossBarStyle style;
     private int tick = 0;
 
@@ -35,15 +37,6 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     public BossAlien(Class<T> clazz, String id, String name, double maxHealth, int spawnChance, @Nonnull BossBarStyle style) {
         super(clazz, id, name, maxHealth, spawnChance);
         this.style = style;
-    }
-
-    /**
-     * Returns the max distance from the boss that you can see its {@link BossBar}
-     *
-     * @return the max distance to see the bossbar
-     */
-    protected int BossBarDistance() {
-        return 20;
     }
 
     @Override
@@ -112,7 +105,6 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     public void onMobTick(@Nonnull Mob mob) {
         if (this.tick == 0) {
             Location l = mob.getLocation();
-            long dist = (long) BossBarDistance() * BossBarDistance();
 
             BossBar bossbar = BossBarForEntity(mob);
             List<Player> players = bossbar.getPlayers();
@@ -120,9 +112,9 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             for (Player player : mob.getWorld().getPlayers()) {
                 double distSquared = l.distanceSquared(player.getLocation());
 
-                if (distSquared <= dist && !players.contains(player)) {
+                if (distSquared <= BOSS_BAR_DISTANCE_SQUARED && !players.contains(player)) {
                     bossbar.addPlayer(player);
-                } else if (distSquared > dist && players.contains(player)) {
+                } else {
                     bossbar.removePlayer(player);
                 }
             }

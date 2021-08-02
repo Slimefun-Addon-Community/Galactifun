@@ -120,17 +120,19 @@ public final class StructureManager {
         // save
         File file = new File(this.savedFolder, name + ".gs");
         this.structures.put(name, structure);
-        file.getParentFile().mkdirs();
-        try {
-            Files.writeString(file.toPath(), save.toString(), Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file.getParentFile().mkdirs()) {
+            try {
+                Files.writeString(file.toPath(), save.toString(), Charsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     /**
      * Loads structures saved in structure folder
      */
+    // TODO find where this was gonna be used
     public void loadStructureFolder(Galactifun galactifun) {
         galactifun.log("Loading structures...");
         if (this.savedFolder.mkdir()) {
@@ -152,7 +154,7 @@ public final class StructureManager {
     /**
      * Loads structures from an input stream
      */
-    private GalacticStructure load(InputStream stream) throws IOException {
+    private static GalacticStructure load(InputStream stream) throws IOException {
         String[] split = PatternUtils.SEMICOLON.split(new String(stream.readAllBytes()), -1);
         String[] dims = PatternUtils.COMMA.split(split[0]);
         GalacticStructure structure = new GalacticStructure(

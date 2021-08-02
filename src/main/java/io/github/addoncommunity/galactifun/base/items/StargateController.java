@@ -82,6 +82,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     };
 
     private static final ComponentPosition[] PORTAL_POSITIONS;
+    private static final int GATEWAY_TICKS = 201;
 
     static {
         List<ComponentPosition> portalPositions = new LinkedList<>(Arrays.asList(
@@ -175,7 +176,7 @@ public final class StargateController extends SlimefunItem implements Listener {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
                 EndGateway gateway = (EndGateway) portal.getState();
-                gateway.setAge(201);
+                gateway.setAge(GATEWAY_TICKS);
                 gateway.update(false, false);
                 BlockStorage.addBlockInfo(portal, "portal", "true");
             }
@@ -263,7 +264,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         return menu;
     }
 
-    private void setDestination(String destination, Block b, Player p) {
+    private static void setDestination(String destination, Block b, Player p) {
         Location dest;
         worldLoop:
         {

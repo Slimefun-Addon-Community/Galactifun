@@ -15,6 +15,9 @@ import org.bukkit.block.Block;
  */
 public final class Sphere {
 
+    public static final int MIN_RADIUS = 3;
+    public static final int MAX_RADIUS = 125;
+
     private final Material[] materials;
     private Block currentMiddle;
     private int currentMaterial;
@@ -24,7 +27,7 @@ public final class Sphere {
     }
 
     public void generate(@Nonnull Block middle, int min, int dev) {
-        Validate.isTrue(min >= 3 && dev >= 0 && min + dev <= 125, "Generation parameters out of bounds!");
+        Validate.isTrue(min >= MIN_RADIUS && dev >= 0 && min + dev <= MAX_RADIUS, "Generation parameters out of bounds!");
 
         this.currentMiddle = middle;
 

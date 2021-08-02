@@ -31,6 +31,7 @@ public class CircuitPress extends AContainer {
 
     public CircuitPress(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);
+        RECIPES.forEach(this::registerRecipe);
     }
 
     @Override

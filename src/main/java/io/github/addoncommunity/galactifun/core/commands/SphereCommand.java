@@ -21,7 +21,7 @@ public final class SphereCommand extends AbstractCommand {
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender commandSender, String[] strings) {
+    public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) {
             return;
         }
@@ -40,7 +40,7 @@ public final class SphereCommand extends AbstractCommand {
             return;
         }
 
-        if (radius < 3 || radius > 125) {
+        if (radius < Sphere.MIN_RADIUS || radius > Sphere.MAX_RADIUS) {
             p.sendMessage(ChatColor.RED + "Radius must be within [3 - 125]");
             return;
         }

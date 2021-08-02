@@ -47,12 +47,14 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class Rocket extends SlimefunItem {
 
     // todo Move static to some sort of RocketManager
     private static final List<String> LAUNCH_MESSAGES = Galactifun.instance().getConfig().getStringList("rockets.launch-msgs");
+    private static final int DISTANCE_PER_FUEL = 2_000_000;
 
     @Getter
     private final int fuelCapacity;
@@ -109,7 +111,7 @@ public final class Rocket extends SlimefunItem {
         Integer eff = LaunchPadCore.FUELS.get(string);
         if (eff == null) return;
 
-        long maxDistance = Math.round(2_000_000 * eff * fuel);
+        long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
         for (PlanetaryWorld planetaryWorld : worldManager.SpaceWorlds()) {
@@ -131,20 +133,20 @@ public final class Rocket extends SlimefunItem {
             double distance = planetaryWorld.DistanceTo(world);
             ItemStack item = planetaryWorld.item().clone();
             ItemMeta meta = item.getItemMeta();
-            List<String> lore = meta.getLore();
+            List<Component> lore = meta.lore();
             if (lore != null) {
                 lore.remove(lore.size() - 1);
 
                 if (distance > 0) {
-                    lore.add(ChatColors.color("&7Distance: " + (distance < 1
+                    lore.add(Component.text("Distance: " + (distance < 1
                             ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
                             : distance + " Light Years")
-                    ));
+                    ).color(NamedTextColor.GRAY));
                 } else {
-                    lore.add(ChatColors.color("&7You are here!"));
+                    lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
                 }
 
-                meta.setLore(lore);
+                meta.lore(lore);
                 item = item.clone();
                 item.setItemMeta(meta);
             }
@@ -152,7 +154,7 @@ public final class Rocket extends SlimefunItem {
             String fuelType = string;
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
-                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / 2_000_000);
+                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
                 p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
                         usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {

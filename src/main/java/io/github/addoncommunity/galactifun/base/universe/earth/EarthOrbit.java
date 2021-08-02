@@ -21,7 +21,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.util.Sphere;
-import io.github.addoncommunity.galactifun.util.Util;
 
 public final class EarthOrbit extends AlienWorld {
 
@@ -36,9 +35,9 @@ public final class EarthOrbit extends AlienWorld {
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0 ; x < 16 ; x++) {
+        for (int x = 0 ; x < CHUNK_WIDTH ; x++) {
             for (int y = world.getMinHeight() ; y < world.getMaxHeight() ; y++) {
-                for (int z = 0 ; z < 16 ; z++) {
+                for (int z = 0 ; z < CHUNK_WIDTH ; z++) {
                     grid.setBiome(x, y, z, Biome.THE_VOID);
                 }
             }
@@ -50,17 +49,14 @@ public final class EarthOrbit extends AlienWorld {
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-                int rand = random.nextInt(50);
-                if (rand < 5) { // 10 % to gen
+                if (random.nextInt(10) == 0) {
                     int x = random.nextInt(2) + 7;
-                    int y = random.nextInt(228) + 14;
+                    int y = random.nextInt(CHUNK_HEIGHT - CHUNK_WIDTH * 2) + CHUNK_WIDTH;
                     int z = random.nextInt(2) + 7;
-                    if (rand == 0) { // 2 % debris
-                        chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
-                    } else if (rand == 1) { // 2 % comet
-                        EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z), 5, 2);
-                    } else { // 6 % asteroid
-                        EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z), 5, 2);
+                    switch (random.nextInt(3)) {
+                        case 0 -> EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z), 5, 2);
+                        case 1 -> EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z), 5, 2);
+                        case 2 -> chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
                     }
                 }
             }
