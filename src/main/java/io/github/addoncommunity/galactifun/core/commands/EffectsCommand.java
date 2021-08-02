@@ -24,7 +24,7 @@ public final class EffectsCommand extends AbstractCommand {
     public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) return;
 
-        PlanetaryWorld world = Galactifun.worldManager().World(p.getWorld());
+        PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You must be in a Galactifun world to execute this command");
             return;

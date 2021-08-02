@@ -34,14 +34,14 @@ public final class GalacticStructure {
 
     public void paste(Block pos, StructureRotation rotation) {
         StructureRotation dif = this.rotation.rotationTo(rotation);
-        All((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
+        forEach((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
     }
 
-    void setAll(Setter setter) {
+    void setEach(Setter setter) {
         iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
     }
 
-    void All(Getter getter) {
+    void forEach(Getter getter) {
         iterate((x, y, z, ax, ay, az) -> getter.get(this.structure[ax][ay][az], x, y, z));
     }
 

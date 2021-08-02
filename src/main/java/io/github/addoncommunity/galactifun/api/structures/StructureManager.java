@@ -43,7 +43,7 @@ public final class StructureManager {
     /**
      * Get the paths of all loaded structures
      */
-    public Set<String> StructureNames() {
+    public Set<String> getNames() {
         return this.structures.keySet();
     }
 
@@ -51,7 +51,7 @@ public final class StructureManager {
      * Gets a structure that was loaded from a file by name
      */
     @Nullable
-    public GalacticStructure Saved(String name) {
+    public GalacticStructure getSaved(String name) {
         return this.structures.get(name);
     }
 
@@ -59,7 +59,7 @@ public final class StructureManager {
      * Gets a structure or loads from a plugins resources
      */
     @Nonnull
-    public GalacticStructure Structure(JavaPlugin plugin, String name) {
+    public GalacticStructure getOrLoad(JavaPlugin plugin, String name) {
         if (!name.endsWith(".gs")) {
             name = name.concat(".gs");
         }
@@ -87,7 +87,7 @@ public final class StructureManager {
                 pos2.getY() - pos1.getY(),
                 pos2.getZ() - pos1.getZ()
         );
-        structure.setAll((x, y, z) -> {
+        structure.setEach((x, y, z) -> {
             Block block = pos1.getRelative(x, y, z);
             if (block.getType() == Material.AIR) {
                 return StructureBlock.AIR;
@@ -97,7 +97,7 @@ public final class StructureManager {
             if (data instanceof Directional dir) {
                 return new DirectionalStructureBlock(material, dir.getFacing());
             }
-            return StructureBlock.get(material);
+            return StructureBlock.of(material);
         });
         return structure;
     }
@@ -115,7 +115,7 @@ public final class StructureManager {
                 .append(',').append(structure.dz);
 
         // add blocks
-        structure.All((block, x, y, z) -> save.append(';').append(block.save()));
+        structure.forEach((block, x, y, z) -> save.append(';').append(block.save()));
 
         // save
         File file = new File(this.savedFolder, name + ".gs");
@@ -164,7 +164,7 @@ public final class StructureManager {
                 Integer.parseInt(dims[3])
         );
         AtomicInteger i = new AtomicInteger(1);
-        structure.setAll((x, y, z) -> {
+        structure.setEach((x, y, z) -> {
             String block = split[i.getAndIncrement()];
             if (block.length() == 0) {
                 return StructureBlock.AIR;

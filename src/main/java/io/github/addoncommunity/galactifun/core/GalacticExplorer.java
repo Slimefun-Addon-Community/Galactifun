@@ -40,7 +40,7 @@ public final class GalacticExplorer {
 
     private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
-        List<UniversalObject> orbiters = object.Orbiters();
+        List<UniversalObject> orbiters = object.orbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
@@ -68,7 +68,7 @@ public final class GalacticExplorer {
             });
         }
 
-        PlanetaryWorld current = Galactifun.worldManager().World(p.getWorld());
+        PlanetaryWorld current = Galactifun.worldManager().getWorld(p.getWorld());
         boolean known = current != null;
 
         // objects
@@ -77,7 +77,7 @@ public final class GalacticExplorer {
             ItemStack item = orbiter.item();
 
             if (known) {
-                double distance = orbiter.DistanceTo(current);
+                double distance = orbiter.distanceTo(current);
 
                 // add distance from current
                 ItemMeta meta = item.getItemMeta();
@@ -101,7 +101,7 @@ public final class GalacticExplorer {
             }
 
             menu.addItem(i + 1, item);
-            if (orbiter.Orbiters().size() == 0) {
+            if (orbiter.orbiters().size() == 0) {
                 menu.addMenuClickHandler(i + 1, (a, b, c, d, e) -> false);
             } else {
                 menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {

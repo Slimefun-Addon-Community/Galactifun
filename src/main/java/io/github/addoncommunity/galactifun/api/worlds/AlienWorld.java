@@ -46,9 +46,6 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 public abstract class AlienWorld extends PlanetaryWorld {
 
-    public static final int CHUNK_WIDTH = 16;
-    public static final int CHUNK_HEIGHT = 256;
-
     private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
     private final List<Alien<?>> species = new ArrayList<>();
 
@@ -147,7 +144,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
     // TODO improve
     @Nullable
-    SlimefunItemStack MappedItem(Block b) {
+    SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
     }
 

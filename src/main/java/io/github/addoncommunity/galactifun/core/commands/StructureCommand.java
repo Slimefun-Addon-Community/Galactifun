@@ -88,7 +88,7 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
 
-            GalacticStructure loaded = manager.Saved(args[2]);
+            GalacticStructure loaded = manager.getSaved(args[2]);
 
             if (loaded == null) {
                 p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
@@ -109,7 +109,7 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(Galactifun.structureManager().StructureNames());
+            options.addAll(Galactifun.structureManager().getNames());
         }
     }
 

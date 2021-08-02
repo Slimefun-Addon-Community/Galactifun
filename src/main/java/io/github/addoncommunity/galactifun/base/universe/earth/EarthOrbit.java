@@ -35,9 +35,9 @@ public final class EarthOrbit extends AlienWorld {
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0 ; x < CHUNK_WIDTH ; x++) {
+        for (int x = 0 ; x < 16 ; x++) {
             for (int y = world.getMinHeight() ; y < world.getMaxHeight() ; y++) {
-                for (int z = 0 ; z < CHUNK_WIDTH ; z++) {
+                for (int z = 0 ; z < 16 ; z++) {
                     grid.setBiome(x, y, z, Biome.THE_VOID);
                 }
             }
@@ -51,7 +51,7 @@ public final class EarthOrbit extends AlienWorld {
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 if (random.nextInt(10) == 0) {
                     int x = random.nextInt(2) + 7;
-                    int y = random.nextInt(CHUNK_HEIGHT - CHUNK_WIDTH * 2) + CHUNK_WIDTH;
+                    int y = random.nextInt(224) + 16;
                     int z = random.nextInt(2) + 7;
                     switch (random.nextInt(3)) {
                         case 0 -> EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z), 5, 2);

@@ -4,12 +4,12 @@ import java.util.EnumSet;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 
 import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
-import io.github.addoncommunity.galactifun.Galactifun;
 
 public abstract class AbstractGoal<T extends Mob> implements Goal<T> {
 
@@ -22,12 +22,12 @@ public abstract class AbstractGoal<T extends Mob> implements Goal<T> {
     }
 
     @Nonnull
-    public abstract String GoalKey();
+    public abstract NamespacedKey getGoalKey();
 
     @Nonnull
     @Override
     public GoalKey<T> getKey() {
-        return GoalKey.of(this.entityClass, Galactifun.instance().getKey(GoalKey()));
+        return GoalKey.of(this.entityClass, getGoalKey());
     }
 
     @Nonnull

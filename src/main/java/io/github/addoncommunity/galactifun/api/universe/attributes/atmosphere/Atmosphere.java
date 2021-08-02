@@ -64,7 +64,7 @@ public final class Atmosphere {
 
         // calculated values
         this.flammable = composition.getOrDefault(Gas.OXYGEN, 0.0) > 5;
-        this.growthAttempts = (int) (this.AdjustedComposition(Gas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
+        this.growthAttempts = (int) (this.pressurizedCompositionOf(Gas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
     }
 
     public void applyEffects(@Nonnull World world) {
@@ -97,12 +97,12 @@ public final class Atmosphere {
         }
     }
 
-    public double Composition(@Nonnull Gas gas) {
+    public double compositionOf(@Nonnull Gas gas) {
         return this.composition.getOrDefault(gas, 0.0);
     }
 
-    public double AdjustedComposition(@Nonnull Gas gas) {
-        return Composition(gas) * this.pressure;
+    public double pressurizedCompositionOf(@Nonnull Gas gas) {
+        return compositionOf(gas) * this.pressure;
     }
 
 }

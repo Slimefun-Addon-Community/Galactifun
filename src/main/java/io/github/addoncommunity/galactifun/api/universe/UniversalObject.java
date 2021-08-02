@@ -61,21 +61,21 @@ public abstract class UniversalObject {
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double DistanceTo(@Nonnull UniversalObject other) {
+    public final double distanceTo(@Nonnull UniversalObject other) {
         if (this.orbiting == other.orbiting) {
             double thisDist = this.orbit.currentDistance();
             double otherDist = other.orbit.currentDistance();
-            double cosAngle = Math.cos(this.orbit.OrbitPos() - other.orbit.OrbitPos());
+            double cosAngle = Math.cos(this.orbit.position() - other.orbit.position());
             return Math.sqrt(thisDist * thisDist + otherDist * otherDist - (2 * thisDist * otherDist * cosAngle));
         }
         if (this.orbiting == null || this.orbitLevel < other.orbitLevel) {
-            return other.orbit.currentDistance() + DistanceTo(other.orbiting);
+            return other.orbit.currentDistance() + distanceTo(other.orbiting);
         }
-        return this.orbit.currentDistance() + this.orbiting.DistanceTo(other);
+        return this.orbit.currentDistance() + this.orbiting.distanceTo(other);
     }
 
     @Nonnull
-    public List<UniversalObject> Orbiters() {
+    public List<UniversalObject> orbiters() {
         return Collections.unmodifiableList(this.orbiters);
     }
 

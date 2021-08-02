@@ -54,7 +54,7 @@ public final class Orbit {
         return this.distance;
     }
 
-    public double OrbitPos() {
+    public double position() {
         if (this.year == 0) return 0;
         return ((System.currentTimeMillis() % this.year) * Math.PI * 2) / this.year;
     }

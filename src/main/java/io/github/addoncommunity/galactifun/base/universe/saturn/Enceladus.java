@@ -32,7 +32,7 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure cryoVolcano = Galactifun.structureManager().Structure(Galactifun.instance(), "cryovolcano");
+    private final GalacticStructure cryoVolcano = Galactifun.structureManager().getOrLoad(Galactifun.instance(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
     public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,

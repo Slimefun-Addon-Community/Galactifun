@@ -81,7 +81,6 @@ public final class Galactifun extends AbstractAddon {
     }
 
     @Override
-    @SuppressWarnings("MagicNumber")
     protected Metrics setupMetrics() {
         return new Metrics(this, 11613);
     }
@@ -89,8 +88,7 @@ public final class Galactifun extends AbstractAddon {
     @Nonnull
     @Override
     protected String getGithubPath() {
-        // todo change back once i  internet and can fix
-        return "Community/Galactifun/master";
+        return "Slimefun-Addon-Community/Galactifun/master";
     }
 
     @Override

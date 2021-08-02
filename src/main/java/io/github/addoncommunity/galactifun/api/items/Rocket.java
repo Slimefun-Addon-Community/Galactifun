@@ -92,7 +92,7 @@ public final class Rocket extends SlimefunItem {
         }
 
         WorldManager worldManager = Galactifun.worldManager();
-        PlanetaryWorld world = worldManager.World(p.getWorld());
+        PlanetaryWorld world = worldManager.getWorld(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
             return;
@@ -114,8 +114,8 @@ public final class Rocket extends SlimefunItem {
         long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
-        for (PlanetaryWorld planetaryWorld : worldManager.SpaceWorlds()) {
-            if (planetaryWorld.DistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
+        for (PlanetaryWorld planetaryWorld : worldManager.spaceWorlds()) {
+            if (planetaryWorld.distanceTo(world) * Util.KM_PER_LY <= maxDistance) {
                 reachable.add(planetaryWorld);
             }
         }
@@ -130,7 +130,7 @@ public final class Rocket extends SlimefunItem {
 
         int i = 0;
         for (PlanetaryWorld planetaryWorld : reachable) {
-            double distance = planetaryWorld.DistanceTo(world);
+            double distance = planetaryWorld.distanceTo(world);
             ItemStack item = planetaryWorld.item().clone();
             ItemMeta meta = item.getItemMeta();
             List<Component> lore = meta.lore();

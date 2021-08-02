@@ -25,7 +25,7 @@ class StructureBlock {
 
     private static final EnumMap<Material, StructureBlock> CACHE = new EnumMap<>(Material.class);
 
-    static StructureBlock get(Material material) {
+    static StructureBlock of(Material material) {
         return CACHE.computeIfAbsent(material, StructureBlock::new);
     }
 

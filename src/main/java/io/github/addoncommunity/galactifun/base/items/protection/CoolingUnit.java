@@ -17,28 +17,28 @@ public final class CoolingUnit extends ProtectingBlock {
     }
 
     @Override
-    protected int EnergyRequirement() {
+    protected int getEnergyRequirement() {
         return this.tier * 512;
     }
 
     @Override
-    protected AtmosphericEffect Effect() {
+    protected AtmosphericEffect getEffect() {
         return AtmosphericEffect.HEAT;
     }
 
     @Override
-    public int Protection() {
+    public int getProtection() {
         return this.tier * 2;
     }
 
     @Override
-    public int Range() {
+    public int getRange() {
         return (this.tier - 1) * 50 + 100;
     }
 
     @Override
     public int getCapacity() {
-        return EnergyRequirement() * 2;
+        return getEnergyRequirement() * 2;
     }
 
 }

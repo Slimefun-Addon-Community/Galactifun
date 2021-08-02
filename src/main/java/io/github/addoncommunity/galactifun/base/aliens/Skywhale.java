@@ -49,7 +49,7 @@ public final class Skywhale extends Alien<Phantom> {
     }
 
     @Override
-    protected double SpawnHeightOffset() {
+    protected double getSpawnHeightOffset() {
         return 100;
     }
 

@@ -75,7 +75,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                 allBlocks.add(new BlockPosition(b));
 
                 BlockMenu menu = BlockStorage.getInventory(b);
-                int req = EnergyRequirement();
+                int req = getEnergyRequirement();
                 if (getCharge(b.getLocation()) < req) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
@@ -161,13 +161,13 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     /**
      * @return energy per Slimefun tick
      */
-    protected abstract int EnergyRequirement();
+    protected abstract int getEnergyRequirement();
 
-    protected abstract AtmosphericEffect Effect();
+    protected abstract AtmosphericEffect getEffect();
 
-    public abstract int Protection();
+    public abstract int getProtection();
 
-    public abstract int Range();
+    public abstract int getRange();
 
     protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
     }
@@ -188,7 +188,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
-        Optional<Set<BlockPosition>> returned = Util.floodFill(l, Range());
+        Optional<Set<BlockPosition>> returned = Util.floodFill(l, getRange());
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(pos.getBlock(), "&cArea Not Sealed or Too Big");
@@ -197,7 +197,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         for (BlockPosition b : returned.get()) {
             // add a protection to the location
-            Galactifun.protectionManager().addProtection(b, inst.Effect(), inst.Protection());
+            Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
         }
 
         updateHologram(pos.getBlock(), "&aOperational");

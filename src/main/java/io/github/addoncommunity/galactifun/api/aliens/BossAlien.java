@@ -54,7 +54,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
         this.onBossHit(e);
 
         if (!e.isCancelled() && e.getEntity() instanceof LivingEntity entity) {
-            BossBar bossbar = BossBarForEntity(entity);
+            BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
@@ -66,7 +66,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Override
     public void onDamage(@Nonnull EntityDamageEvent e) {
         if (e.getEntity() instanceof LivingEntity entity) {
-            BossBar bossbar = BossBarForEntity(entity);
+            BossBar bossbar = getBossBarForEntity(entity);
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
@@ -86,7 +86,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onDeath(@Nonnull EntityDeathEvent e) {
-        BossBar bossbar = BossBarForEntity(e.getEntity());
+        BossBar bossbar = getBossBarForEntity(e.getEntity());
         bossbar.removeAll();
         Galactifun.alienManager().bossInstances().remove(e.getEntity());
     }
@@ -106,7 +106,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
         if (this.tick == 0) {
             Location l = mob.getLocation();
 
-            BossBar bossbar = BossBarForEntity(mob);
+            BossBar bossbar = getBossBarForEntity(mob);
             List<Player> players = bossbar.getPlayers();
 
             for (Player player : mob.getWorld().getPlayers()) {
@@ -122,7 +122,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     }
 
     @Nonnull
-    protected final BossBar BossBarForEntity(LivingEntity entity) {
+    protected final BossBar getBossBarForEntity(LivingEntity entity) {
         AlienManager manager = Galactifun.alienManager();
         BossBar bossbar = manager.bossInstances().get(entity);
         if (bossbar != null) {

@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,8 +42,8 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> implements Li
 
     @Nonnull
     @Override
-    public String GoalKey() {
-        return "flee";
+    public NamespacedKey getGoalKey() {
+        return Galactifun.instance().getKey("flee");
     }
 
     @Override
