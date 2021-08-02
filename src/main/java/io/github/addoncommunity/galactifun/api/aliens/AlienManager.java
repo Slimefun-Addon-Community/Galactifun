@@ -37,36 +37,35 @@ public final class AlienManager implements Listener, Runnable {
     private final NamespacedKey key;
     @Getter
     private final NamespacedKey bossKey;
-
-    private final Map<String, Alien<?>> aliens = new HashMap<>();
     @Getter(AccessLevel.PACKAGE)
     private final Map<LivingEntity, BossBar> bossInstances = new HashMap<>();
+    private final Map<String, Alien<?>> aliens = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(this, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
 
         this.key = new NamespacedKey(galactifun, "alien");
-        this.bossKey = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
+        this.bossKey = Galactifun.instance().getKey("galactifun_boss");
     }
 
     void register(Alien<?> alien) {
-        this.aliens.put(alien.getId(), alien);
+        this.aliens.put(alien.id(), alien);
     }
 
     @Nullable
-    public Alien<?> getAlien(@Nonnull String id) {
+    public Alien<?> Alien(@Nonnull String id) {
         return this.aliens.get(id);
     }
 
     @Nullable
-    public Alien<?> getAlien(@Nonnull Entity entity) {
+    public Alien<?> Alien(@Nonnull Entity entity) {
         String id = PersistentDataAPI.getString(entity, this.key);
-        return id == null ? null : getAlien(id);
+        return id == null ? null : Alien(id);
     }
 
     @Nonnull
-    public Collection<Alien<?>> getAliens() {
+    public Collection<Alien<?>> Aliens() {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
@@ -78,17 +77,17 @@ public final class AlienManager implements Listener, Runnable {
 
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
-                Alien<?> alien = getAlien(entity);
+                Alien<?> alien = Alien(entity);
                 if (alien != null) {
-                    alien.onMobTick(alien.getClazz().cast(entity));
+                    alien.onMobTick(alien.clazz().cast(entity));
                 }
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienTarget(@Nonnull EntityTargetEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+    public void onAlienTar(@Nonnull EntityTargetEvent e) {
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             alien.onTarget(e);
         }
@@ -96,7 +95,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
-        Alien<?> alien = getAlien(e.getRightClicked());
+        Alien<?> alien = Alien(e.getRightClicked());
         if (alien != null) {
             alien.onInteract(e);
         }
@@ -104,11 +103,11 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             alien.onHit(e);
         }
-        alien = getAlien(e.getDamager());
+        alien = Alien(e.getDamager());
         if (alien != null) {
             alien.onAttack(e);
         }
@@ -116,7 +115,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienDie(@Nonnull EntityDeathEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             alien.onDeath(e);
         }
@@ -124,7 +123,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienCombust(@Nonnull EntityCombustEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             e.setCancelled(true);
         }
@@ -132,7 +131,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             alien.onCastSpell(e);
         }
@@ -140,7 +139,7 @@ public final class AlienManager implements Listener, Runnable {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAlienDamage(@Nonnull EntityDamageEvent e) {
-        Alien<?> alien = getAlien(e.getEntity());
+        Alien<?> alien = Alien(e.getEntity());
         if (alien != null) {
             alien.onDamage(e);
         }

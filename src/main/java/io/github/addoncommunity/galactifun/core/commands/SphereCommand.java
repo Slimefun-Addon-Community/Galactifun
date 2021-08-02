@@ -15,13 +15,13 @@ import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
 public final class SphereCommand extends AbstractCommand {
-    
+
     public SphereCommand() {
         super("sphere", "Generates a sphere in the direction you are facing with specified radius", true);
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
+    public void onExecute(@Nonnull CommandSender commandSender, String[] strings) {
         if (!(commandSender instanceof Player p)) {
             return;
         }
@@ -30,25 +30,25 @@ public final class SphereCommand extends AbstractCommand {
             p.sendMessage(ChatColor.RED + "Usage: /galactifun sphere <radius> <material>...");
             return;
         }
-        
+
         int radius;
-        
+
         try {
             radius = Integer.parseInt(strings[1]);
         } catch (NumberFormatException e) {
             p.sendMessage(ChatColor.RED + "Invalid radius!");
             return;
         }
-        
+
         if (radius < 3 || radius > 125) {
             p.sendMessage(ChatColor.RED + "Radius must be within [3 - 125]");
             return;
         }
-        
-        Block target = p.getLocation().getBlock().getRelative(p.getFacing(), radius + 4);
+
+        Block tar = p.getLocation().getBlock().getRelative(p.getFacing(), radius + 4);
 
         Material[] materials = new Material[strings.length - 2];
-        
+
         for (int i = 0 ; i < materials.length ; i++) {
             try {
                 materials[i] = Material.valueOf(strings[i + 2]);
@@ -57,10 +57,10 @@ public final class SphereCommand extends AbstractCommand {
                 return;
             }
         }
-        
+
         Sphere sphere = new Sphere(materials);
         long nano = System.nanoTime();
-        sphere.generate(target, radius, 0);
+        sphere.generate(tar, radius, 0);
         p.sendMessage(ChatColor.GREEN + "Generated in " + Util.timeSince(nano));
     }
 

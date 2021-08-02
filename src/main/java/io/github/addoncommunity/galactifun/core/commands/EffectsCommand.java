@@ -24,15 +24,15 @@ public final class EffectsCommand extends AbstractCommand {
     public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) return;
 
-        PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
+        PlanetaryWorld world = Galactifun.worldManager().World(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You must be in a Galactifun world to execute this command");
             return;
         }
 
-        Map<AtmosphericEffect, Integer> effects = world.getAtmosphere().getEffects();
+        Map<AtmosphericEffect, Integer> effects = world.atmosphere().effects();
         for (Map.Entry<AtmosphericEffect, Integer> entry : effects.entrySet()) {
-            int level = entry.getValue() - Galactifun.protectionManager().getProtectionFor(p.getLocation(), entry.getKey());
+            int level = entry.getValue() - Galactifun.protectionManager().protectionAt(p.getLocation(), entry.getKey());
             if (level > 0) {
                 p.sendMessage(ChatColor.YELLOW + String.format("Effect: %s, Level: %d",
                         entry.getKey().toString(),

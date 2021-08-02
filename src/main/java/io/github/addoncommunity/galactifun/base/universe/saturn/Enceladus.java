@@ -32,7 +32,7 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure cryoVolcano = Galactifun.structureManager().getStructure(Galactifun.inst(), "cryovolcano");
+    private final GalacticStructure cryoVolcano = Galactifun.structureManager().Structure(Galactifun.instance(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
     public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
@@ -43,8 +43,8 @@ public final class Enceladus extends AlienWorld {
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
+        for (int x = 0 ; x < 16 ; x++) {
+            for (int z = 0 ; z < 16 ; z++) {
 
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
                 grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);

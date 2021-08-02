@@ -13,10 +13,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 
 public abstract class AbstractGoal<T extends Mob> implements Goal<T> {
 
-    @Nonnull
     private final Class<T> entityClass;
-
-    @Nonnull
     protected final T mob;
 
     public AbstractGoal(@Nonnull Class<T> entityClass, @Nonnull T mob) {
@@ -25,15 +22,16 @@ public abstract class AbstractGoal<T extends Mob> implements Goal<T> {
     }
 
     @Nonnull
-    public abstract String getGoalKey();
+    public abstract String GoalKey();
 
     @Nonnull
     @Override
     public GoalKey<T> getKey() {
-        return GoalKey.of(this.entityClass, Galactifun.inst().getKey(getGoalKey()));
+        return GoalKey.of(this.entityClass, Galactifun.instance().getKey(GoalKey()));
     }
 
     @Nonnull
     @Override
     public abstract EnumSet<GoalType> getTypes();
+
 }

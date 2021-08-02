@@ -23,7 +23,7 @@ public final class AlienSpawnCommand extends AbstractCommand {
             return;
         }
 
-        Alien<?> alien = Galactifun.alienManager().getAlien(strings[1]);
+        Alien<?> alien = Galactifun.alienManager().Alien(strings[1]);
 
         if (alien != null) {
             alien.spawn(p.getLocation(), p.getWorld());
@@ -33,10 +33,10 @@ public final class AlienSpawnCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> ids) {
         if (strings.length == 2) {
-            for (Alien<?> alien : Galactifun.alienManager().getAliens()) {
-                ids.add(alien.getId());
+            for (Alien<?> alien : Galactifun.alienManager().Aliens()) {
+                ids.add(alien.id());
             }
         }
     }
-    
+
 }

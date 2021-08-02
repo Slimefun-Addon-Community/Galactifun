@@ -49,12 +49,12 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
 
-    private static final int[] BACKGROUND = new int[]{1, 2, 6, 7, 8};
+    private static final int[] BACKGROUND = new int[] {1, 2, 6, 7, 8};
     private static final int ADDRESS_SLOT = 3;
     private static final int DESTINATION_SLOT = 4;
     private static final int DEACTIVATE_SLOT = 5;
 
-    private static final ComponentPosition[] RING_POSITIONS = new ComponentPosition[]{
+    private static final ComponentPosition[] RING_POSITIONS = new ComponentPosition[] {
             // bottom
             new ComponentPosition(0, 1),
             new ComponentPosition(0, -1),
@@ -89,8 +89,8 @@ public final class StargateController extends SlimefunItem implements Listener {
                 new ComponentPosition(1, 0),
                 new ComponentPosition(1, 1)
         ));
-        for (int y = 2; y <= 4; y++) {
-            for (int z = -2; z <= 2; z++) {
+        for (int y = 2 ; y <= 4 ; y++) {
+            for (int z = -2 ; z <= 2 ; z++) {
                 portalPositions.add(new ComponentPosition(y, z));
             }
         }
@@ -104,7 +104,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     public StargateController(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        Galactifun.inst().registerListener(this);
+        Galactifun.instance().registerListener(this);
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(b -> onUse(e, e.getPlayer(), b)));
 
@@ -131,7 +131,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     }
 
     @Nonnull
-    public static Optional<List<Block>> getRingBlocks(@Nonnull Block b) {
+    public static Optional<List<Block>> RingBlocks(@Nonnull Block b) {
         List<Block> rings = new ArrayList<>();
         for (ComponentPosition position : RING_POSITIONS) {
             if (position.isInSameRing(b)) {
@@ -145,7 +145,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     }
 
     @Nonnull
-    public static Optional<List<Block>> getPortalBlocks(@Nonnull Block b) {
+    public static Optional<List<Block>> PortalBlocks(@Nonnull Block b) {
         List<Block> portals = new ArrayList<>();
         for (ComponentPosition position : PORTAL_POSITIONS) {
             if (position.isPortal(b)) {
@@ -160,8 +160,8 @@ public final class StargateController extends SlimefunItem implements Listener {
 
     public static void lockBlocks(Block controller, boolean lock) {
         String data = Boolean.toString(lock);
-        getRingBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
-        getPortalBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
+        RingBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
+        PortalBlocks(controller).ifPresent(l -> l.forEach(b -> BlockStorage.addBlockInfo(b, "locked", data)));
     }
 
     private void onUse(PlayerRightClickEvent event, Player p, Block b) {
@@ -170,7 +170,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
         event.cancel();
-        if (getPortalBlocks(b).isEmpty()) {
+        if (PortalBlocks(b).isEmpty()) {
             for (ComponentPosition position : PORTAL_POSITIONS) {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
@@ -190,13 +190,13 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
 
-        ChestMenu menu = getMenu(b);
+        ChestMenu menu = Menu(b);
         menu.open(p);
     }
 
     @Nonnull
     @SneakyThrows(NoSuchAlgorithmException.class)
-    private ChestMenu getMenu(@Nonnull Block b) {
+    private ChestMenu Menu(@Nonnull Block b) {
         ChestMenu menu = new ChestMenu(this.getItemName());
         for (int i : BACKGROUND) {
             menu.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
@@ -238,7 +238,7 @@ public final class StargateController extends SlimefunItem implements Listener {
                 Material.BARRIER,
                 "&fClick to Deactivate the Stargate"
         ), (p, i, s, c) -> {
-            getPortalBlocks(b).ifPresent(li -> {
+            PortalBlocks(b).ifPresent(li -> {
                 for (Block block : li) {
                     block.setType(Material.AIR);
                     BlockStorage.clearBlockInfo(block);
@@ -280,13 +280,13 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
 
-        Optional<List<Block>> portalOptional = getPortalBlocks(b);
+        Optional<List<Block>> portalOptional = PortalBlocks(b);
         if (portalOptional.isEmpty()) {
             p.sendMessage(ChatColor.RED + "The Stargate is not lit for some reason...");
             return;
         }
 
-        for (Block portal : portalOptional.get()) {
+        for (Block portal : portalOptional.get()){
             if (portal.getState() instanceof EndGateway gateway) {
                 gateway.setExitLocation(dest);
                 gateway.update(false, false);
@@ -327,7 +327,7 @@ public final class StargateController extends SlimefunItem implements Listener {
 
         Block b = dest.getBlock();
         if (BlockStorage.check(b, BaseItems.STARGATE_CONTROLLER.getItemId()) &&
-                StargateController.getPortalBlocks(b).isEmpty()) {
+                StargateController.PortalBlocks(b).isEmpty()) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(ChatColor.RED + "The destination Stargate is not activated");
         }

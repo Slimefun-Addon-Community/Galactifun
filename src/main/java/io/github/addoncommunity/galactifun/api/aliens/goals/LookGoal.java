@@ -21,7 +21,7 @@ public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
 
     @Nonnull
     @Override
-    public String getGoalKey() {
+    public String GoalKey() {
         return "look";
     }
 

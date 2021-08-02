@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
@@ -27,8 +29,10 @@ import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 
+
 public final class Galactifun extends AbstractAddon {
 
+    @Getter
     private static Galactifun instance;
 
     private StructureManager structureManager;
@@ -84,7 +88,7 @@ public final class Galactifun extends AbstractAddon {
     @Nonnull
     @Override
     protected String getGithubPath() {
-        // todo change back once i get internet and can fix
+        // todo change back once i  internet and can fix
         return "Community/Galactifun/master";
     }
 
@@ -104,10 +108,6 @@ public final class Galactifun extends AbstractAddon {
     @Override
     public String getAutoUpdatePath() {
         return "auto-update";
-    }
-
-    public static Galactifun inst() {
-        return instance;
     }
 
     public static StructureManager structureManager() {

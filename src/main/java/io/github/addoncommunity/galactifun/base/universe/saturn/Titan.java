@@ -34,15 +34,15 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 public final class Titan extends AlienWorld {
 
     private final Set<Biome> forests = EnumSet.of(
-        Biome.FOREST,
-        Biome.BIRCH_FOREST,
-        Biome.TALL_BIRCH_FOREST,
-        Biome.WOODED_HILLS,
-        Biome.BIRCH_FOREST_HILLS,
-        Biome.FLOWER_FOREST,
-        Biome.TALL_BIRCH_FOREST,
-        Biome.WOODED_HILLS,
-        Biome.WOODED_MOUNTAINS
+            Biome.FOREST,
+            Biome.BIRCH_FOREST,
+            Biome.TALL_BIRCH_FOREST,
+            Biome.WOODED_HILLS,
+            Biome.BIRCH_FOREST_HILLS,
+            Biome.FLOWER_FOREST,
+            Biome.TALL_BIRCH_FOREST,
+            Biome.WOODED_HILLS,
+            Biome.WOODED_MOUNTAINS
     );
 
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
@@ -56,8 +56,8 @@ public final class Titan extends AlienWorld {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
         generator.setScale(0.004);
 
-        for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
-            for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
+        for (int x = 0, realX = chunkX << 4 ; x < 16 ; x++, realX++) {
+            for (int z = 0, realZ = chunkZ << 4 ; z < 16 ; z++, realZ++) {
 
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
 
@@ -74,7 +74,7 @@ public final class Titan extends AlienWorld {
                 switch (biome) {
                     case BADLANDS, MODIFIED_BADLANDS_PLATEAU, MODIFIED_WOODED_BADLANDS_PLATEAU, ERODED_BADLANDS, DESERT -> {
                         if (random.nextDouble() < 0.1) {
-                            for (int y = height + random.nextInt(4); y > height; y--) {
+                            for (int y = height + random.nextInt(4) ; y > height ; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                             }
                         }
@@ -83,7 +83,7 @@ public final class Titan extends AlienWorld {
                     }
                     case WOODED_BADLANDS_PLATEAU, BADLANDS_PLATEAU, DESERT_HILLS, DESERT_LAKES -> {
                         if (random.nextDouble() < 0.1) {
-                            for (int y = height + random.nextInt(4); y > height; y--) {
+                            for (int y = height + random.nextInt(4) ; y > height ; y--) {
                                 if (random.nextBoolean()) {
                                     chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                                 } else {
@@ -108,7 +108,7 @@ public final class Titan extends AlienWorld {
                     }
                     case COLD_OCEAN, DEEP_LUKEWARM_OCEAN, DEEP_OCEAN, DEEP_WARM_OCEAN, LUKEWARM_OCEAN, DEEP_COLD_OCEAN, FROZEN_OCEAN, DEEP_FROZEN_OCEAN, WARM_OCEAN, OCEAN, BEACH, SNOWY_BEACH -> {
                         if (height <= 58) {
-                            for (int i = 58; i > height; i--) {
+                            for (int i = 58 ; i > height ; i--) {
                                 chunk.setBlock(x, i, z, Material.WATER);
                             }
                         }
@@ -133,25 +133,25 @@ public final class Titan extends AlienWorld {
         while (dev < 16) {
             if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x - dev, height, z);
-                for (int y = 0; y < 256; y++) {
+                for (int y = 0 ; y < 256 ; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
             } else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x + dev, height, z);
-                for (int y = 0; y < 256; y++) {
+                for (int y = 0 ; y < 256 ; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
             } else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z - dev);
-                for (int y = 0; y < 256; y++) {
+                for (int y = 0 ; y < 256 ; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
             } else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
                 biome = grid.getBiome(x, height, z + dev);
-                for (int y = 0; y < 256; y++) {
+                for (int y = 0 ; y < 256 ; y++) {
                     grid.setBiome(x, y, z, biome);
                 }
                 return biome;
@@ -162,7 +162,7 @@ public final class Titan extends AlienWorld {
     }
 
     private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
-        for (int y = height; y > 0; y--) {
+        for (int y = height ; y > 0 ; y--) {
             if (random.nextBoolean()) {
                 chunk.setBlock(x, y, z, Material.STONE);
             } else {
@@ -173,12 +173,12 @@ public final class Titan extends AlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        // TODO add more vegetation
+        // TODO add more veation
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 int amount = random.nextInt(2) + 1;
-                for (int i = 1; i < amount; i++) {
+                for (int i = 1 ; i < amount ; i++) {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);

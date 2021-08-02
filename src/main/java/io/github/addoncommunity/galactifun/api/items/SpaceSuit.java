@@ -24,7 +24,10 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     @Nonnull
     @Override
     public ProtectionType[] getProtectionTypes() {
-        return new ProtectionType[]{ProtectionType.RADIATION, ProtectionType.BEES};
+        return new ProtectionType[] {
+                ProtectionType.RADIATION,
+                ProtectionType.BEES
+        };
     }
 
     @Override
@@ -35,6 +38,6 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     @Nullable
     @Override
     public NamespacedKey getArmorSetId() {
-        return Galactifun.inst().getKey("galactifun_space_suit");
+        return Galactifun.instance().getKey("galactifun_space_suit");
     }
 }

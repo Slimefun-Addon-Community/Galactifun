@@ -2,8 +2,6 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import javax.annotation.Nonnull;
 
-import lombok.NonNull;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -20,7 +18,7 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  */
 public final class Skywhale extends Alien<Phantom> {
 
-    public Skywhale(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+    public Skywhale(@Nonnull String id, @Nonnull String name, double maxHealth, int spawnChance) {
         super(Phantom.class, id, name, maxHealth, spawnChance);
     }
 
@@ -51,7 +49,7 @@ public final class Skywhale extends Alien<Phantom> {
     }
 
     @Override
-    protected double getSpawnHeightOffset() {
+    protected double SpawnHeightOffset() {
         return 100;
     }
 

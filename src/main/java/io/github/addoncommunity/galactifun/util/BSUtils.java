@@ -52,4 +52,5 @@ public class BSUtils {
     public static boolean getStoredBoolean(@Nonnull Location l, @Nonnull String key) {
         return Boolean.parseBoolean(BlockStorage.getLocationInfo(l, key));
     }
+
 }

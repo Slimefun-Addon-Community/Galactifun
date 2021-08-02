@@ -72,12 +72,12 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     @Override
     protected void tick(@Nonnull BlockMenu menu, @Nonnull Block block) {
         Block b = block.getRelative(BlockFace.UP);
-        
+
         SlimefunItem sfItem = BlockStorage.check(b);
         if (!(sfItem instanceof Rocket rocket)) return;
 
         Location l = b.getLocation();
-        
+
         String string = BlockStorage.getLocationInfo(l, "isLaunching");
         if (Boolean.parseBoolean(string)) return;
 
@@ -89,7 +89,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
 
         string = BlockStorage.getLocationInfo(l, "fuelType");
 
-        if (fuel < rocket.getFuelCapacity()) {
+        if (fuel < rocket.fuelCapacity()) {
             String id = StackUtils.getID(menu.getItemInSlot(FUEL_SLOT));
 
             if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
@@ -139,8 +139,8 @@ public final class LaunchPadCore extends AbstractTickingContainer {
         }
 
         preset.addItem(24, new CustomItem(
-            HeadTexture.FUEL_BUCKET.getAsItemStack(),
-            "&6Insert Fuel Here"
+                HeadTexture.FUEL_BUCKET.getAsItemStack(),
+                "&6Insert Fuel Here"
         ), ChestMenuUtils.getEmptyClickHandler());
     }
 
@@ -148,7 +148,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     @Override
     protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
         if (itemTransportFlow == ItemTransportFlow.INSERT) {
-            return new int[]{FUEL_SLOT};
+            return new int[] {FUEL_SLOT};
         } else {
             return new int[0];
         }
@@ -183,5 +183,5 @@ public final class LaunchPadCore extends AbstractTickingContainer {
 
         return true;
     }
-    
+
 }

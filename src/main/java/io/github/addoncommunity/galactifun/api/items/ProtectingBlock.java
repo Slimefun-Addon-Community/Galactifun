@@ -75,7 +75,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                 allBlocks.add(new BlockPosition(b));
 
                 BlockMenu menu = BlockStorage.getInventory(b);
-                int req = getEnergyRequirement();
+                int req = EnergyRequirement();
                 if (getCharge(b.getLocation()) < req) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
@@ -120,7 +120,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Override
     protected final void setupMenu(@Nonnull BlockMenuPreset preset) {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0 ; i < 9 ; i++) {
             if (i == 4) continue;
             preset.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
         }
@@ -161,13 +161,13 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     /**
      * @return energy per Slimefun tick
      */
-    protected abstract int getEnergyRequirement();
+    protected abstract int EnergyRequirement();
 
-    protected abstract AtmosphericEffect getEffect();
+    protected abstract AtmosphericEffect Effect();
 
-    public abstract int getProtection();
+    public abstract int Protection();
 
-    public abstract int getRange();
+    public abstract int Range();
 
     protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
     }
@@ -188,7 +188,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
-        Optional<Set<BlockPosition>> returned = Util.floodFill(l, getRange());
+        Optional<Set<BlockPosition>> returned = Util.floodFill(l, Range());
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(pos.getBlock(), "&cArea Not Sealed or Too Big");
@@ -197,7 +197,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         for (BlockPosition b : returned.get()) {
             // add a protection to the location
-            Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
+            Galactifun.protectionManager().addProtection(b, inst.Effect(), inst.Protection());
         }
 
         updateHologram(pos.getBlock(), "&aOperational");

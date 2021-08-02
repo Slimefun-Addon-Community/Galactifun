@@ -37,7 +37,7 @@ public final class EarthOrbit extends AlienWorld {
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
         for (int x = 0 ; x < 16 ; x++) {
-            for (int y = world.getMinHeight(); y < world.getMaxHeight() ; y++) {
+            for (int y = world.getMinHeight() ; y < world.getMaxHeight() ; y++) {
                 for (int z = 0 ; z < 16 ; z++) {
                     grid.setBiome(x, y, z, Biome.THE_VOID);
                 }
@@ -58,9 +58,9 @@ public final class EarthOrbit extends AlienWorld {
                     if (rand == 0) { // 2 % debris
                         chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
                     } else if (rand == 1) { // 2 % comet
-                        EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z) , 5, 2);
+                        EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z), 5, 2);
                     } else { // 6 % asteroid
-                        EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z) , 5, 2);
+                        EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z), 5, 2);
                     }
                 }
             }

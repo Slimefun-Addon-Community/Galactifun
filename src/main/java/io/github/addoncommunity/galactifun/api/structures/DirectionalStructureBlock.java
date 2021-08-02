@@ -14,7 +14,7 @@ final class DirectionalStructureBlock extends StructureBlock {
         super(material);
         this.direction = direction;
     }
-    
+
     @Override
     void paste(Block block, StructureRotation rotation) {
         super.paste(block, rotation);

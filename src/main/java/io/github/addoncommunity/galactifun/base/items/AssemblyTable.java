@@ -37,20 +37,21 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
     private static final RecipeMap<ItemStack> RECIPES = new RecipeMap<>(ShapedRecipe::new);
     public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
 
-    public static final RecipeType TYPE = new RecipeType(Galactifun.inst().getKey("assembly_table"), BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
+    public static final RecipeType TYPE = new RecipeType(Galactifun.instance().getKey("assembly_table"),
+            BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
         SlimefunItemStack item = (SlimefunItemStack) stack;
         RECIPES.put(stacks, item);
         ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
     });
-    
+
     private static final int ENERGY = 2048;
     private static final int[] INPUT_SLOTS = {
-        0, 1, 2, 3, 4, 5,
-        9, 10, 11, 12, 13, 14,
-        18, 19, 20, 21, 22, 23,
-        27, 28, 29, 30, 31, 32,
-        36, 37, 38, 39, 40, 41,
-        45, 46, 47, 48, 49, 50
+            0, 1, 2, 3, 4, 5,
+            9, 10, 11, 12, 13, 14,
+            18, 19, 20, 21, 22, 23,
+            27, 28, 29, 30, 31, 32,
+            36, 37, 38, 39, 40, 41,
+            45, 46, 47, 48, 49, 50
     };
     private static final int[] OUTPUT_SLOTS = {MenuPreset.OUTPUT + 27};
     private static final int STATUS_SLOT = MenuPreset.OUTPUT;
@@ -99,12 +100,12 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
         RecipeOutput<ItemStack> output = RECIPES.get(StackUtils.arrayFrom(inv, INPUT_SLOTS));
 
         if (output == null) {
-            p.sendMessage( ChatColor.RED + "Invalid Recipe!");
+            p.sendMessage(ChatColor.RED + "Invalid Recipe!");
             return;
         }
 
         if (!inv.fits(output.getOutput(), OUTPUT_SLOTS)) {
-            p.sendMessage( ChatColor.GOLD + "Not enough room!");
+            p.sendMessage(ChatColor.GOLD + "Not enough room!");
             return;
         }
 

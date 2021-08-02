@@ -14,8 +14,8 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
- * Slimefun item categories 
- * 
+ * Slimefun item categories
+ *
  * @author Mooy1
  */
 // TODO move these categories somewhere not public, addons should use their own
@@ -24,29 +24,29 @@ public final class CoreCategory {
 
     /* cheat categories */
     public static final Category ASSEMBLY = new SubCategory(
-            Galactifun.inst().getKey("assembly"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
+            Galactifun.instance().getKey("assembly"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
     );
-    
+
     /* normal categories */
     public static final Category EQUIPMENT = new SubCategory(
-            Galactifun.inst().getKey("equipment"), new CustomItem(Material.IRON_HELMET, "&fEquipment")
+            Galactifun.instance().getKey("equipment"), new CustomItem(Material.IRON_HELMET, "&fEquipment")
     );
     public static final Category ITEMS = new SubCategory(
-            Galactifun.inst().getKey("items"), new CustomItem(GalactifunHead.ROCKET, "&fGalactifun")
+            Galactifun.instance().getKey("items"), new CustomItem(GalactifunHead.ROCKET, "&fGalactifun")
     );
     public static final Category COMPONENTS = new SubCategory(
-            Galactifun.inst().getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components")
+            Galactifun.instance().getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components")
     );
     public static final Category MACHINES = new SubCategory(
-            Galactifun.inst().getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
+            Galactifun.instance().getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
     );
     public static final Category BLOCKS = new SubCategory(
-            Galactifun.inst().getKey("blocks"), new CustomItem(Material.COBBLESTONE, "&fGalactifun Blocks")
+            Galactifun.instance().getKey("blocks"), new CustomItem(Material.COBBLESTONE, "&fGalactifun Blocks")
     );
 
     public static void setup(Galactifun galactifun) {
         Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
-            new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer()); // TODO explorer could be used in rocket
+                new CustomItem(Material.END_STONE, "&bThe Universe"), new GalacticExplorer()); // TODO explorer could be used in rocket
 
         Category assembly = new AssemblyCategory(galactifun.getKey("assembly_flex"),
                 new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
@@ -56,5 +56,5 @@ public final class CoreCategory {
                 EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, assembly
         ).register(galactifun);
     }
-    
+
 }

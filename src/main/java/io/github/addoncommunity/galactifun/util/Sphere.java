@@ -4,10 +4,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * A class for optimized generation of spheres of blocks
@@ -23,10 +22,10 @@ public final class Sphere {
     public Sphere(@Nonnull Material... materials) {
         Validate.isTrue((this.materials = materials).length != 0);
     }
-    
+
     public void generate(@Nonnull Block middle, int min, int dev) {
         Validate.isTrue(min >= 3 && dev >= 0 && min + dev <= 125, "Generation parameters out of bounds!");
-        
+
         this.currentMiddle = middle;
 
         // radius
@@ -39,31 +38,31 @@ public final class Sphere {
         // outer middle blocks, furthest from middle
         genMiddles(radius);
 
-        for (int x = 1, vector1 = 1; x < radius; vector1 += (x++ << 1) + 1) {
+        for (int x = 1, vector1 = 1 ; x < radius ; vector1 += (x++ << 1) + 1) {
 
             // middle blocks
             genMiddles(x);
 
-            for (int y = x, vector2 = vector1 + y * y; y < radius; vector2 += (y++ << 1) + 1) {
+            for (int y = x, vector2 = vector1 + y * y ; y < radius ; vector2 += (y++ << 1) + 1) {
 
                 // check radius
                 if (vector2 < radiusSquared) {
-                    
+
                     // edges
                     genEdges(x, y);
                     if (x != y) {
                         genEdges(y, x);
                     }
-                    
+
                 } else {
                     break;
                 }
 
-                for (int z = y, vector3 = vector2 + z * z; z < radius; vector3 += (z++ << 1) + 1) {
+                for (int z = y, vector3 = vector2 + z * z ; z < radius ; vector3 += (z++ << 1) + 1) {
 
                     // check within radius
                     if (vector3 < radiusSquared) {
-                        
+
                         // corners
                         genCorners(x, y, z);
                         if (x != y) {
@@ -78,17 +77,17 @@ public final class Sphere {
                             genCorners(z, y, x);
                             genCorners(x, z, y);
                         }
-                        
+
                     } else {
                         break;
                     }
                 }
             }
         }
-        
+
         this.currentMiddle = null;
     }
-    
+
     private void genMiddles(int a) {
         gen(a, 0, 0);
         gen(-a, 0, 0);
@@ -116,7 +115,7 @@ public final class Sphere {
         gen(a, 0, -b);
         gen(-a, 0, -b);
     }
-    
+
     private void genCorners(int a, int b, int c) {
         gen(a, b, c);
         gen(-a, b, c);
@@ -128,14 +127,14 @@ public final class Sphere {
         gen(-a, b, -c);
         gen(-a, -b, -c);
     }
-    
+
     private void gen(int x, int y, int z) {
         this.currentMiddle.getRelative(x, y, z).setType(this.materials[this.currentMaterial++], false);
         if (this.currentMaterial == this.materials.length) {
             this.currentMaterial = 0;
         }
     }
-    
+
     private void randomize() {
         this.currentMaterial = ThreadLocalRandom.current().nextInt(this.materials.length);
     }

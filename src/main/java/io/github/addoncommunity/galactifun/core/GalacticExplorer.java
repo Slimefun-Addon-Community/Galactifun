@@ -24,58 +24,58 @@ import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
 
 /**
  * Class for exploring the universe through ChestMenus
- * 
+ *
  * @author Mooy1
  */
 public final class GalacticExplorer {
 
     private final Map<UUID, UniversalObject> history = new HashMap<>();
-    
+
     public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
         open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), exitHandler, false);
     }
-    
+
     private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
 
-        List<UniversalObject> orbiters = object.getOrbiters();
+        List<UniversalObject> orbiters = object.Orbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
             open(p, BaseUniverse.THE_UNIVERSE, exitHandler, true);
             return;
         }
-        
+
         // add to history
         if (history) {
             this.history.put(p.getUniqueId(), object);
         }
 
         // setup menu
-        ChestMenu menu = new ChestMenu(Galactifun.inst(), object.getName());
+        ChestMenu menu = new ChestMenu(Galactifun.instance(), object.name());
         menu.setEmptySlotsClickable(false);
 
         // back button
         menu.addItem(0, ChestMenuUtils.getBackButton(p));
-        if (object.getOrbiting() == null) {
+        if (object.orbiting() == null) {
             menu.addMenuClickHandler(0, exitHandler);
         } else {
             menu.addMenuClickHandler(0, (p1, slot, item, action, a) -> {
-                open(p1, object.getOrbiting(), exitHandler,true);
+                open(p1, object.orbiting(), exitHandler, true);
                 return false;
             });
         }
-        
-        PlanetaryWorld current = Galactifun.worldManager().getWorld(p.getWorld());
+
+        PlanetaryWorld current = Galactifun.worldManager().World(p.getWorld());
         boolean known = current != null;
 
         // objects
-        for (int i = 0 ; i < Math.min(52, orbiters.size()); i++) {
+        for (int i = 0 ; i < Math.min(52, orbiters.size()) ; i++) {
             UniversalObject orbiter = orbiters.get(i);
-            ItemStack item = orbiter.getItem();
-            
+            ItemStack item = orbiter.item();
+
             if (known) {
-                double distance = orbiter.getDistanceTo(current);
-                
+                double distance = orbiter.DistanceTo(current);
+
                 // add distance from current
                 ItemMeta meta = item.getItemMeta();
                 List<String> lore = meta.getLore();
@@ -90,26 +90,26 @@ public final class GalacticExplorer {
                     } else {
                         lore.add(ChatColors.color("&7You are here!"));
                     }
-                    
+
                     meta.setLore(lore);
                     item = item.clone();
                     item.setItemMeta(meta);
                 }
             }
-            
+
             menu.addItem(i + 1, item);
-            if (orbiter.getOrbiters().size() == 0) {
+            if (orbiter.Orbiters().size() == 0) {
                 menu.addMenuClickHandler(i + 1, (a, b, c, d, e) -> false);
             } else {
                 menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {
-                    open(p1, orbiter,exitHandler, true);
+                    open(p1, orbiter, exitHandler, true);
                     return false;
                 });
             }
         }
-        
+
         menu.open(p);
 
     }
-    
+
 }

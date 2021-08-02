@@ -52,7 +52,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 public final class Rocket extends SlimefunItem {
 
     // todo Move static to some sort of RocketManager
-    private static final List<String> LAUNCH_MESSAGES = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
+    private static final List<String> LAUNCH_MESSAGES = Galactifun.instance().getConfig().getStringList("rockets.launch-msgs");
 
     @Getter
     private final int fuelCapacity;
@@ -61,7 +61,7 @@ public final class Rocket extends SlimefunItem {
 
     public Rocket(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
-        
+
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
 
@@ -90,7 +90,7 @@ public final class Rocket extends SlimefunItem {
         }
 
         WorldManager worldManager = Galactifun.worldManager();
-        PlanetaryWorld world = worldManager.getWorld(p.getWorld());
+        PlanetaryWorld world = worldManager.World(p.getWorld());
         if (world == null) {
             p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
             return;
@@ -112,8 +112,8 @@ public final class Rocket extends SlimefunItem {
         long maxDistance = Math.round(2_000_000 * eff * fuel);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
-        for (PlanetaryWorld planetaryWorld : worldManager.getSpaceWorlds()) {
-            if (planetaryWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
+        for (PlanetaryWorld planetaryWorld : worldManager.SpaceWorlds()) {
+            if (planetaryWorld.DistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
                 reachable.add(planetaryWorld);
             }
         }
@@ -128,8 +128,8 @@ public final class Rocket extends SlimefunItem {
 
         int i = 0;
         for (PlanetaryWorld planetaryWorld : reachable) {
-            double distance = planetaryWorld.getDistanceTo(world);
-            ItemStack item = planetaryWorld.getItem().clone();
+            double distance = planetaryWorld.DistanceTo(world);
+            ItemStack item = planetaryWorld.item().clone();
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
             if (lore != null) {
@@ -137,8 +137,8 @@ public final class Rocket extends SlimefunItem {
 
                 if (distance > 0) {
                     lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                        ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                        : distance + " Light Years")
+                            ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                            : distance + " Light Years")
                     ));
                 } else {
                     lore.add(ChatColors.color("&7You are here!"));
@@ -153,8 +153,8 @@ public final class Rocket extends SlimefunItem {
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
                 int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / 2_000_000);
-                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.getName() + " and will use " +
-                    usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
+                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
+                        usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {
                     if (input.equalsIgnoreCase("yes")) {
                         p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
@@ -177,7 +177,7 @@ public final class Rocket extends SlimefunItem {
 
         menu.open(p);
     }
-    
+
     private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
         BlockStorage.addBlockInfo(b, "isLaunching", "true");
 
@@ -198,9 +198,9 @@ public final class Rocket extends SlimefunItem {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Galactifun.inst(), 0, 10);
+        }.runTaskTimer(Galactifun.instance(), 0, 10);
 
-        World to = worldTo.getWorld();
+        World to = worldTo.world();
 
         Block destBlock = to.getHighestBlockAt(x, z).getRelative(BlockFace.UP);
 
@@ -209,7 +209,7 @@ public final class Rocket extends SlimefunItem {
             destChunk.load(true);
         }
 
-        Galactifun.inst().runSync(() -> {
+        Galactifun.instance().runSync(() -> {
             destBlock.setType(Material.CHEST);
             BlockData data = destBlock.getBlockData();
             if (data instanceof Rotatable) {
@@ -235,10 +235,11 @@ public final class Rocket extends SlimefunItem {
             p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
         }, 40);
 
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
-        Galactifun.inst().runSync(() -> {
+        // TODO store an instance somewhere
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
+        Galactifun.instance().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             for (Entity entity : world.getEntities()) {

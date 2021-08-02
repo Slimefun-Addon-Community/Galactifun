@@ -77,5 +77,5 @@ public final class Venus extends SimpleAlienWorld {
     protected double getFrequency() {
         return .3;
     }
-    
+
 }

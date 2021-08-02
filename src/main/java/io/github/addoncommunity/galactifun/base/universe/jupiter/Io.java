@@ -68,5 +68,5 @@ public final class Io extends SimpleAlienWorld {
     protected double getFrequency() {
         return .3;
     }
-    
+
 }

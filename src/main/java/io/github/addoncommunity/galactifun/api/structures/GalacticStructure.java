@@ -26,25 +26,25 @@ public final class GalacticStructure {
     final int dx;
     final int dy;
     final int dz;
-    
+
     GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
         this.rotation = rotation;
         this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
     }
-    
+
     public void paste(Block pos, StructureRotation rotation) {
         StructureRotation dif = this.rotation.rotationTo(rotation);
-        getAll((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
+        All((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
     }
-    
+
     void setAll(Setter setter) {
         iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
     }
 
-    void getAll(Getter getter) {
+    void All(Getter getter) {
         iterate((x, y, z, ax, ay, az) -> getter.get(this.structure[ax][ay][az], x, y, z));
     }
-    
+
     private void iterate(Iterator iterator) {
         boolean loop = this.structure.length != 0;
         int ax = 0;
@@ -94,7 +94,7 @@ public final class GalacticStructure {
     private interface Iterator {
         void iterate(int x, int y, int z, int ax, int ay, int az);
     }
-    
+
     @FunctionalInterface
     interface Getter {
         void get(StructureBlock block, int x, int y, int z);
@@ -104,5 +104,5 @@ public final class GalacticStructure {
     interface Setter {
         StructureBlock set(int x, int y, int z);
     }
-    
+
 }

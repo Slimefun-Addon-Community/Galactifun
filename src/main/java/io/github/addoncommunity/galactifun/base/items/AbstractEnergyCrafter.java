@@ -41,11 +41,11 @@ public abstract class AbstractEnergyCrafter extends AbstractTickingContainer imp
             int charge = getCharge(block.getLocation());
             if (charge < this.energy) { //not enough energy
                 blockMenu.replaceExistingItem(this.statusSlot, new CustomItem(
-                    Material.RED_STAINED_GLASS_PANE,
-                    "&cNot enough energy!",
-                    "",
-                    "&aCharge: " + charge + "/" + this.energy + " J",
-                    ""
+                        Material.RED_STAINED_GLASS_PANE,
+                        "&cNot enough energy!",
+                        "",
+                        "&aCharge: " + charge + "/" + this.energy + " J",
+                        ""
                 ));
             } else {
                 update(blockMenu);

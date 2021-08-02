@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
-import lombok.NonNull;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -28,7 +28,6 @@ import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
-import org.apache.commons.lang.Validate;
 
 /**
  * Abstract class for an alien
@@ -36,7 +35,6 @@ import org.apache.commons.lang.Validate;
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
- *
  * @see Martian
  */
 @Getter
@@ -50,7 +48,7 @@ public class Alien<T extends Mob> {
     private AlienManager alienManager;
 
     @ParametersAreNonnullByDefault
-    public Alien(@NonNull Class<T> clazz, @NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+    public Alien(@Nonnull Class<T> clazz, @Nonnull String id, @Nonnull String name, double maxHealth, int spawnChance) {
         Validate.isTrue(maxHealth > 0);
         Validate.isTrue(spawnChance > 0 && spawnChance <= 100);
 
@@ -65,7 +63,7 @@ public class Alien<T extends Mob> {
     public final T spawn(@Nonnull Location loc, @Nonnull World world) {
         T mob = world.spawn(loc, this.clazz);
 
-        PersistentDataAPI.setString(mob, this.alienManager.getKey(), this.id);
+        PersistentDataAPI.setString(mob, this.alienManager.key(), this.id);
 
         Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
         mob.setHealth(this.maxHealth);
@@ -91,11 +89,14 @@ public class Alien<T extends Mob> {
         return this.alienManager != null;
     }
 
-    protected void onSpawn(@Nonnull T spawned) { }
+    protected void onSpawn(@Nonnull T spawned) {
+    }
 
-    protected void onUniqueTick() { }
+    protected void onUniqueTick() {
+    }
 
-    protected void onMobTick(@Nonnull Mob mob) { }
+    protected void onMobTick(@Nonnull Mob mob) {
+    }
 
     public final int attemptSpawn(Random rand, World world) {
         int spawned = 0;
@@ -110,26 +111,33 @@ public class Alien<T extends Mob> {
 
             // currently doesn't allow for aquatic aliens
             if (b.getType().isAir() && canSpawnInLightLevel(b.getLightLevel())) {
-                spawn(b.getLocation().add(0, getSpawnHeightOffset(), 0), world);
+                spawn(b.getLocation().add(0, SpawnHeightOffset(), 0), world);
                 spawned++;
             }
         }
         return spawned;
     }
 
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
+    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+    }
 
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    }
 
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
+    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+    }
 
-    protected void onTarget(@Nonnull EntityTargetEvent e) { }
+    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    }
 
-    protected void onDeath(@Nonnull EntityDeathEvent e) { }
+    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    }
 
-    protected void onCastSpell(EntitySpellCastEvent e) { }
+    protected void onCastSpell(EntitySpellCastEvent e) {
+    }
 
-    protected void onDamage(EntityDamageEvent e) { }
+    protected void onDamage(EntityDamageEvent e) {
+    }
 
     /**
      * Edits the AI of the Alien. The map is a map of a mob goal and its priority
@@ -145,13 +153,14 @@ public class Alien<T extends Mob> {
      * the {@link Zombie} light level conditions
      *
      * @param lightLevel the light level of the block the alien is attempting to spawn on
+     *
      * @return {@code true} if the alien can spawn in this light level, {@code false} otherwise
      */
     protected boolean canSpawnInLightLevel(int lightLevel) {
         return lightLevel <= 7;
     }
 
-    protected double getSpawnHeightOffset() {
+    protected double SpawnHeightOffset() {
         return 0;
     }
 

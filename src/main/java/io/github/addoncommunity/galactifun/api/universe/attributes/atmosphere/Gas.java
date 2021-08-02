@@ -24,4 +24,5 @@ public enum Gas {
     public String toString() {
         return ChatUtils.humanize(this.name());
     }
+
 }

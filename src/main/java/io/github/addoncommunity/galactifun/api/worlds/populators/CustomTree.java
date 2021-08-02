@@ -22,6 +22,7 @@ public class CustomTree { // TODO make this into a populator? or move class
 
     /**
      * Generates this tree
+     *
      * @param location the location of the bottom log. <b>This is modified</b>
      */
     public void generate(@Nonnull Location location) {
