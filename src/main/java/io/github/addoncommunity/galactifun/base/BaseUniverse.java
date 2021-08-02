@@ -200,6 +200,7 @@ public final class BaseUniverse {
 
 
     public static void setup(WorldManager worldManager) {
+        VENUS.addSpecies(BaseAlien.FIRESTORM, BaseAlien.SKYWHALE);
         MARS.addSpecies(BaseAlien.MARTIAN);
         THE_MOON.addSpecies(BaseAlien.MUTANT_CREEPER);
         TITAN.addSpecies(BaseAlien.LEECH, BaseAlien.TITAN, BaseAlien.TITAN_KING, BaseAlien.SKYWHALE);

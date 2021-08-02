@@ -17,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,7 +27,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
@@ -142,6 +145,16 @@ public final class AlienManager implements Listener, Runnable {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onDamage(e);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onAlienShoot(@Nonnull ProjectileLaunchEvent e) {
+        ProjectileSource source = e.getEntity().getShooter();
+        if (!(source instanceof Mob mob)) return;
+        Alien<?> alien = getAlien(mob);
+        if (alien != null) {
+            alien.onShoot(e, mob);
         }
     }
 

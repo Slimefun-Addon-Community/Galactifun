@@ -30,20 +30,17 @@ public final class EffectsCommand extends AbstractCommand {
             return;
         }
 
-        Map<AtmosphericEffect, Integer> effects = world.atmosphere().effects();
-        for (Map.Entry<AtmosphericEffect, Integer> entry : effects.entrySet()) {
-            int level = entry.getValue() - Galactifun.protectionManager().protectionAt(p.getLocation(), entry.getKey());
-            if (level > 0) {
-                p.sendMessage(ChatColor.YELLOW + String.format("Effect: %s, Level: %d",
-                        entry.getKey().toString(),
-                        level
-                ));
-            }
+        for (Map.Entry<AtmosphericEffect, Integer> entry : Galactifun.protectionManager().getEffectsAt(p.getLocation()).entrySet()) {
+            p.sendMessage(ChatColor.YELLOW + String.format("Effect: %s, Level: %d",
+                    entry.getKey().toString(),
+                    entry.getValue()
+            ));
         }
     }
 
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> list) {
+
     }
 
 }

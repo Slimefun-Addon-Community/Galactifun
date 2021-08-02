@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
@@ -118,26 +119,25 @@ public class Alien<T extends Mob> {
         return spawned;
     }
 
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
-    }
+    //@formatter:off
 
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
-    }
+    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
-    }
+    protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
 
-    protected void onTarget(@Nonnull EntityTargetEvent e) {
-    }
+    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
 
-    protected void onDeath(@Nonnull EntityDeathEvent e) {
-    }
+    protected void onTarget(@Nonnull EntityTargetEvent e) { }
 
-    protected void onCastSpell(EntitySpellCastEvent e) {
-    }
+    protected void onDeath(@Nonnull EntityDeathEvent e) { }
 
-    protected void onDamage(EntityDamageEvent e) {
-    }
+    protected void onCastSpell(EntitySpellCastEvent e) { }
+
+    protected void onDamage(EntityDamageEvent e) { }
+
+    protected void onShoot(ProjectileLaunchEvent e, Mob entity) { }
+
+    //@formatter:on
 
     /**
      * Edits the AI of the Alien. The map is a map of a mob goal and its priority
