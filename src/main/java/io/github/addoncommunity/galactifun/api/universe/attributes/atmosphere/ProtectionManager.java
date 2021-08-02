@@ -29,4 +29,5 @@ public final class ProtectionManager {
     public void clearProtectedBlocks() {
         this.protectedBlocks.clear();
     }
+
 }

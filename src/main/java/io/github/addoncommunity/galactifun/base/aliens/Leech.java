@@ -67,7 +67,7 @@ public final class Leech extends Alien<Silverfish> {
             arr[eatenItems.length] = item;
             container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, arr);
         } else {
-            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] {item});
+            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] { item });
         }
 
         inv.setItem(slot, null);

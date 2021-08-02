@@ -148,7 +148,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     @Override
     protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
         if (itemTransportFlow == ItemTransportFlow.INSERT) {
-            return new int[] {FUEL_SLOT};
+            return new int[] { FUEL_SLOT };
         } else {
             return new int[0];
         }

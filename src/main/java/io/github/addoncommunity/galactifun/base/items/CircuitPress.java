@@ -26,7 +26,7 @@ public class CircuitPress extends AContainer {
     public static final RecipeType TYPE = new RecipeType(
             new NamespacedKey(Galactifun.instance(), BaseItems.CIRCUIT_PRESS.getItemId().toLowerCase(Locale.ROOT)),
             BaseItems.CIRCUIT_PRESS,
-            (stacks, itemStack) -> RECIPES.add(new MachineRecipe(10, Arrays.copyOf(stacks, 2), new ItemStack[] {itemStack}))
+            (stacks, itemStack) -> RECIPES.add(new MachineRecipe(10, Arrays.copyOf(stacks, 2), new ItemStack[] { itemStack }))
     );
 
     public CircuitPress(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {

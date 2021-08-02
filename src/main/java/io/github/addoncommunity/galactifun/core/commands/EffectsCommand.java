@@ -45,4 +45,5 @@ public final class EffectsCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> list) {
     }
+
 }

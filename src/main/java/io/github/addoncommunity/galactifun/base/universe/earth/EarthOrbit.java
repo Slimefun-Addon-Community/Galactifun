@@ -52,9 +52,9 @@ public final class EarthOrbit extends AlienWorld {
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 int rand = random.nextInt(50);
                 if (rand < 5) { // 10 % to gen
-                    int x = Util.random(7, 8, random);
-                    int y = Util.random(14, 251, random);
-                    int z = Util.random(7, 8, random);
+                    int x = random.nextInt(2) + 7;
+                    int y = random.nextInt(228) + 14;
+                    int z = random.nextInt(2) + 7;
                     if (rand == 0) { // 2 % debris
                         chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
                     } else if (rand == 1) { // 2 % comet

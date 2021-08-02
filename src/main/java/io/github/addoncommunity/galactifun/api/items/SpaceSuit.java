@@ -40,4 +40,5 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     public NamespacedKey getArmorSetId() {
         return Galactifun.instance().getKey("galactifun_space_suit");
     }
+
 }

@@ -49,7 +49,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
 
-    private static final int[] BACKGROUND = new int[] {1, 2, 6, 7, 8};
+    private static final int[] BACKGROUND = new int[] { 1, 2, 6, 7, 8 };
     private static final int ADDRESS_SLOT = 3;
     private static final int DESTINATION_SLOT = 4;
     private static final int DEACTIVATE_SLOT = 5;
@@ -286,7 +286,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
 
-        for (Block portal : portalOptional.get()){
+        for (Block portal : portalOptional.get()) {
             if (portal.getState() instanceof EndGateway gateway) {
                 gateway.setExitLocation(dest);
                 gateway.update(false, false);
@@ -347,5 +347,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         public boolean isPortal(@Nonnull Block b) {
             return b.getRelative(0, this.y, this.z).getType() == Material.END_GATEWAY;
         }
+
     }
+
 }

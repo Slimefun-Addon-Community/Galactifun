@@ -53,9 +53,9 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
             36, 37, 38, 39, 40, 41,
             45, 46, 47, 48, 49, 50
     };
-    private static final int[] OUTPUT_SLOTS = {MenuPreset.OUTPUT + 27};
+    private static final int[] OUTPUT_SLOTS = { MenuPreset.OUTPUT + 27 };
     private static final int STATUS_SLOT = MenuPreset.OUTPUT;
-    private static final int[] STATUS_BORDER = {6, 7, 8, 15, 17, 24, 25, 26};
+    private static final int[] STATUS_BORDER = { 6, 7, 8, 15, 17, 24, 25, 26 };
 
     public AssemblyTable(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe, ENERGY, STATUS_SLOT);

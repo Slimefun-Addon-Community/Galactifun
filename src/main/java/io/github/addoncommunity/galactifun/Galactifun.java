@@ -81,6 +81,7 @@ public final class Galactifun extends AbstractAddon {
     }
 
     @Override
+    @SuppressWarnings("MagicNumber")
     protected Metrics setupMetrics() {
         return new Metrics(this, 11613);
     }

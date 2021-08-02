@@ -42,4 +42,5 @@ public final class GenUtils {
         generateSquare(topLog.subtract(0, 2, 0), leaves, 2);
         generateSquare(topLog.subtract(0, 1, 0), leaves, 2);
     }
+
 }

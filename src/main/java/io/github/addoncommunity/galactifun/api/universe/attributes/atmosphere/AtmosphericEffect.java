@@ -79,4 +79,5 @@ public final class AtmosphericEffect {
     public int hashCode() {
         return this.id.hashCode();
     }
+
 }

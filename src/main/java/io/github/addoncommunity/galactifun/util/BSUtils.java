@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.util;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -35,21 +34,24 @@ public class BSUtils {
         return map.apply(s);
     }
 
-    public static int getStoredInt(@Nonnull Location l, @Nonnull String key) {
+    @ParametersAreNonnullByDefault
+    public static int getStoredInt(Location l, String key) {
         String s = BlockStorage.getLocationInfo(l, key);
         if (s == null || s.isEmpty() || s.isBlank()) return 0;
 
         return Integer.parseInt(s);
     }
 
-    public static double getStoredDouble(@Nonnull Location l, @Nonnull String key) {
+    @ParametersAreNonnullByDefault
+    public static double getStoredDouble(Location l, String key) {
         String s = BlockStorage.getLocationInfo(l, key);
         if (s == null || s.isEmpty() || s.isBlank()) return 0;
 
         return Double.parseDouble(s);
     }
 
-    public static boolean getStoredBoolean(@Nonnull Location l, @Nonnull String key) {
+    @ParametersAreNonnullByDefault
+    public static boolean getStoredBoolean(Location l, String key) {
         return Boolean.parseBoolean(BlockStorage.getLocationInfo(l, key));
     }
 

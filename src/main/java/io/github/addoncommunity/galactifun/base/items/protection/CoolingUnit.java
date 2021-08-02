@@ -40,4 +40,5 @@ public final class CoolingUnit extends ProtectingBlock {
     public int getCapacity() {
         return EnergyRequirement() * 2;
     }
+
 }

@@ -46,4 +46,5 @@ public class VolcanoPopulator extends BlockPopulator {
             highestBlock.getRelative(BlockFace.UP).setType(this.liquid);
         }
     }
+
 }

@@ -92,17 +92,23 @@ public final class GalacticStructure {
 
     @FunctionalInterface
     private interface Iterator {
+
         void iterate(int x, int y, int z, int ax, int ay, int az);
+
     }
 
     @FunctionalInterface
     interface Getter {
+
         void get(StructureBlock block, int x, int y, int z);
+
     }
 
     @FunctionalInterface
     interface Setter {
+
         StructureBlock set(int x, int y, int z);
+
     }
 
 }
