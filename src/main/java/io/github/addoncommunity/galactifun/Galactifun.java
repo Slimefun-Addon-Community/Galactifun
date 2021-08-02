@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 
 import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
 import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
@@ -66,6 +67,7 @@ public final class Galactifun extends AbstractAddon {
     protected void disable() {
         // todo make better
         BossAlien.removeBossBars();
+        SpaceSuitProfile.saveAll();
 
         instance = null; // REMEMBER TO KEEP THIS LAST
     }
