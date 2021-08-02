@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.structures;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,10 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.structures.DirectionalStructureBlock;
+import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.StructureBlock;
+import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 
 /**
@@ -82,12 +86,11 @@ public final class StructureManager {
      */
     @Nonnull
     public GalacticStructure createStructure(StructureRotation rotation, Block pos1, Block pos2) {
-        GalacticStructure structure = new GalacticStructure(rotation,
+        return new GalacticStructure(rotation,
                 pos2.getX() - pos1.getX(),
                 pos2.getY() - pos1.getY(),
                 pos2.getZ() - pos1.getZ()
-        );
-        structure.setEach((x, y, z) -> {
+        ).setEach((x, y, z) -> {
             Block block = pos1.getRelative(x, y, z);
             if (block.getType() == Material.AIR) {
                 return StructureBlock.AIR;
@@ -99,7 +102,6 @@ public final class StructureManager {
             }
             return StructureBlock.of(material);
         });
-        return structure;
     }
 
     /**
@@ -109,10 +111,10 @@ public final class StructureManager {
         StringBuilder save = new StringBuilder();
 
         // add dimensions
-        save.append(structure.rotation)
-                .append(',').append(structure.dx)
-                .append(',').append(structure.dy)
-                .append(',').append(structure.dz);
+        save.append(structure.rotation())
+                .append(',').append(structure.dx())
+                .append(',').append(structure.dy())
+                .append(',').append(structure.dz());
 
         // add blocks
         structure.forEach((block, x, y, z) -> save.append(';').append(block.save()));
@@ -132,7 +134,6 @@ public final class StructureManager {
     /**
      * Loads structures saved in structure folder
      */
-    // TODO find where this was gonna be used
     public void loadStructureFolder(Galactifun galactifun) {
         galactifun.log("Loading structures...");
         if (this.savedFolder.mkdir()) {
@@ -171,7 +172,7 @@ public final class StructureManager {
             }
             String[] blockSplit = PatternUtils.COMMA.split(block);
             return switch (blockSplit.length) {
-                case 1 -> new StructureBlock(Material.valueOf(blockSplit[0]));
+                case 1 -> StructureBlock.of(Material.valueOf(blockSplit[0]));
                 case 2 -> new DirectionalStructureBlock(Material.valueOf(blockSplit[0]), BlockFace.valueOf(blockSplit[1]));
                 default -> throw new IllegalArgumentException("Failed to load structure block from String '" + block + "'");
             };

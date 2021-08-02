@@ -16,6 +16,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.Earth;
+import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 
 /**
  * Any world that can be travelled to by rockets or other means

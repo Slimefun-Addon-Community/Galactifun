@@ -35,7 +35,7 @@ public final class Leech extends Alien<Silverfish> {
     }
 
     @Override
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {
 
         //  random item
         PlayerInventory inv = ((Player) e.getEntity()).getInventory();

@@ -13,10 +13,10 @@ import org.bukkit.block.Block;
  *
  * @author Mooy1
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-class StructureBlock {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class StructureBlock {
 
-    static final StructureBlock AIR = new StructureBlock(Material.AIR) {
+    public static final StructureBlock AIR = new StructureBlock(Material.AIR) {
         @Override
         public String save() {
             return "";
@@ -25,17 +25,17 @@ class StructureBlock {
 
     private static final EnumMap<Material, StructureBlock> CACHE = new EnumMap<>(Material.class);
 
-    static StructureBlock of(Material material) {
+    public static StructureBlock of(Material material) {
         return CACHE.computeIfAbsent(material, StructureBlock::new);
     }
 
     private final Material material;
 
-    void paste(Block block, StructureRotation rotation) {
+    public void paste(Block block, StructureRotation rotation) {
         block.setType(this.material);
     }
 
-    String save() {
+    public String save() {
         return this.material.name();
     }
 

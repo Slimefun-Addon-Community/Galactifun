@@ -9,11 +9,6 @@ import lombok.Getter;
 
 import org.bukkit.Bukkit;
 
-import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
-import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
-import io.github.addoncommunity.galactifun.api.structures.StructureManager;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
-import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -25,6 +20,10 @@ import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SealedCommand;
 import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
+import io.github.addoncommunity.galactifun.core.managers.AlienManager;
+import io.github.addoncommunity.galactifun.core.managers.ProtectionManager;
+import io.github.addoncommunity.galactifun.core.managers.StructureManager;
+import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
@@ -48,6 +47,7 @@ public final class Galactifun extends AbstractAddon {
         this.worldManager = new WorldManager(this);
         this.protectionManager = new ProtectionManager();
 
+        this.structureManager.loadStructureFolder(this);
         BaseAlien.setup(this.alienManager);
         BaseUniverse.setup(this.worldManager);
         CoreCategory.setup(this);
@@ -68,15 +68,15 @@ public final class Galactifun extends AbstractAddon {
 
     @Override
     protected void disable() {
-        // todo make better
-        BossAlien.removeBossBars();
+        this.alienManager.onDisable();
 
-        instance = null; // REMEMBER TO KEEP THIS LAST
+        // Do this last
+        instance = null;
     }
 
     @Override
     public void onLoad() {
-        // default to not logging world settings
+        // Default to not logging world settings
         Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 

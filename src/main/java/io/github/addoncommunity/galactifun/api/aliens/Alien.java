@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
+import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
@@ -90,15 +91,6 @@ public class Alien<T extends Mob> {
         return this.alienManager != null;
     }
 
-    protected void onSpawn(@Nonnull T spawned) {
-    }
-
-    protected void onUniqueTick() {
-    }
-
-    protected void onMobTick(@Nonnull Mob mob) {
-    }
-
     public final int attemptSpawn(Random rand, World world) {
         int spawned = 0;
         for (Chunk chunk : world.getLoadedChunks()) {
@@ -121,21 +113,28 @@ public class Alien<T extends Mob> {
 
     //@formatter:off
 
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) { }
+    public void onSpawn(@Nonnull T spawned) { }
 
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
+    public void onUniqueTick() { }
 
-    protected void onTarget(@Nonnull EntityTargetEvent e) { }
+    public void onMobTick(@Nonnull Mob mob) { }
 
-    protected void onDeath(@Nonnull EntityDeathEvent e) { }
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
-    protected void onCastSpell(EntitySpellCastEvent e) { }
+    public void onHit(@Nonnull EntityDamageByEntityEvent e) { }
 
-    protected void onDamage(EntityDamageEvent e) { }
+    public void onAttack(@Nonnull EntityDamageByEntityEvent e) { }
 
-    protected void onShoot(ProjectileLaunchEvent e, Mob entity) { }
+    public void onTarget(@Nonnull EntityTargetEvent e) { }
+
+    public void onDeath(@Nonnull EntityDeathEvent e) { }
+
+    public void onCastSpell(EntitySpellCastEvent e) { }
+
+    public void onDamage(EntityDamageEvent e) { }
+
+    public void onShoot(ProjectileLaunchEvent e, Mob entity) { }
 
     //@formatter:on
 

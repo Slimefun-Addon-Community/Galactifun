@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
+import io.github.addoncommunity.galactifun.core.managers.StructureManager;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 

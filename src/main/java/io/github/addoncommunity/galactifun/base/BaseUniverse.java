@@ -21,7 +21,6 @@ import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
-import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.universe.Earth;
 import io.github.addoncommunity.galactifun.base.universe.Mars;
 import io.github.addoncommunity.galactifun.base.universe.Venus;
@@ -31,6 +30,7 @@ import io.github.addoncommunity.galactifun.base.universe.jupiter.Europa;
 import io.github.addoncommunity.galactifun.base.universe.jupiter.Io;
 import io.github.addoncommunity.galactifun.base.universe.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.universe.saturn.Titan;
+import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 
 /**
  * Registry of objects, aliens, and worlds in the base universe

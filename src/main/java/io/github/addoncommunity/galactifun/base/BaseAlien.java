@@ -6,7 +6,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 
-import io.github.addoncommunity.galactifun.api.aliens.AlienManager;
 import io.github.addoncommunity.galactifun.api.aliens.BossBarStyle;
 import io.github.addoncommunity.galactifun.base.aliens.Firestorm;
 import io.github.addoncommunity.galactifun.base.aliens.Leech;
@@ -15,6 +14,7 @@ import io.github.addoncommunity.galactifun.base.aliens.MutantCreeper;
 import io.github.addoncommunity.galactifun.base.aliens.Skywhale;
 import io.github.addoncommunity.galactifun.base.aliens.TitanAlien;
 import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 
 @UtilityClass
 public final class BaseAlien {

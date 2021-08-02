@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.worlds;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +44,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -97,7 +98,10 @@ public final class WorldManager implements Listener {
         });
     }
 
-    void register(PlanetaryWorld world) {
+    public void register(PlanetaryWorld world) {
+        if (this.spaceWorlds.contains(world)) {
+            throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
+        }
         this.spaceWorlds.add(world);
         if (world instanceof AlienWorld alienWorld) {
             this.alienWorlds.put(alienWorld.world(), alienWorld);
@@ -105,7 +109,7 @@ public final class WorldManager implements Listener {
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
+    public <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
         path = world.id() + '.' + path;
         this.defaultConfig.set(path, defaultValue);
         if (clazz == String.class) {

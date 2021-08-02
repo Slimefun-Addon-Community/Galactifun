@@ -137,18 +137,17 @@ public abstract class AlienWorld extends PlanetaryWorld {
      * I invented block mappings. Simply pass a {@link Material} and a {@link SlimefunItemStack}, and any
      * generated {@code vanillaItem}s will drop {@code slimefunItem}s
      */
-    // TODO improve
     public final void addBlockMapping(@Nonnull Material vanillaItem, @Nonnull SlimefunItemStack slimefunItem) {
         this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
     // TODO improve
     @Nullable
-    SlimefunItemStack getMappedItem(Block b) {
+    public SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
     }
 
-    protected boolean canSpawnVanillaMobs() {
+    public boolean canSpawnVanillaMobs() {
         return false;
     }
 
@@ -170,12 +169,12 @@ public abstract class AlienWorld extends PlanetaryWorld {
      */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
-    final void applyEffects(@Nonnull Player p) {
+    public final void applyEffects(@Nonnull Player p) {
         gravity().applyGravity(p);
         atmosphere().applyEffects(p);
     }
 
-    final void tickWorld() {
+    public final void tickWorld() {
         World world = world();
 
         // time

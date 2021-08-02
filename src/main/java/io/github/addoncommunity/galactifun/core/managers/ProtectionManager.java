@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import org.bukkit.Location;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 

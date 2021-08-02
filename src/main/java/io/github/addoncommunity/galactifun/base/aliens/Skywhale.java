@@ -23,23 +23,23 @@ public final class Skywhale extends Alien<Phantom> {
     }
 
     @Override
-    protected void onSpawn(@Nonnull Phantom spawned) {
+    public void onSpawn(@Nonnull Phantom spawned) {
         spawned.setSize(100);
     }
 
     @Override
-    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
     }
 
     @Override
-    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.PHANTOM_MEMBRANE, 20));
     }
 
     @Override
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         e.getRightClicked().addPassenger(e.getPlayer());
     }
 

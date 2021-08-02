@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.api.structures;
 
+import lombok.Getter;
+
 import org.bukkit.block.Block;
 
 /**
@@ -18,16 +20,20 @@ public final class GalacticStructure {
     /**
      * The default rotation of this structure
      */
-    final StructureRotation rotation;
+    @Getter
+    private final StructureRotation rotation;
 
     /**
      * The dimensions of this structure
      */
-    final int dx;
-    final int dy;
-    final int dz;
+    @Getter
+    private final int dx;
+    @Getter
+    private final int dy;
+    @Getter
+    private final int dz;
 
-    GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
+    public GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
         this.rotation = rotation;
         this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
     }
@@ -37,11 +43,12 @@ public final class GalacticStructure {
         forEach((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
     }
 
-    void setEach(Setter setter) {
+    public GalacticStructure setEach(Setter setter) {
         iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
+        return this;
     }
 
-    void forEach(Getter getter) {
+    public void forEach(Accessor getter) {
         iterate((x, y, z, ax, ay, az) -> getter.get(this.structure[ax][ay][az], x, y, z));
     }
 
@@ -98,14 +105,14 @@ public final class GalacticStructure {
     }
 
     @FunctionalInterface
-    interface Getter {
+    public interface Accessor {
 
         void get(StructureBlock block, int x, int y, int z);
 
     }
 
     @FunctionalInterface
-    interface Setter {
+    public interface Setter {
 
         StructureBlock set(int x, int y, int z);
 
