@@ -49,12 +49,12 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
 
-    private static final int[] BACKGROUND = new int[]{1, 2, 6, 7, 8};
+    private static final int[] BACKGROUND = new int[] { 1, 2, 6, 7, 8 };
     private static final int ADDRESS_SLOT = 3;
     private static final int DESTINATION_SLOT = 4;
     private static final int DEACTIVATE_SLOT = 5;
 
-    private static final ComponentPosition[] RING_POSITIONS = new ComponentPosition[]{
+    private static final ComponentPosition[] RING_POSITIONS = new ComponentPosition[] {
             // bottom
             new ComponentPosition(0, 1),
             new ComponentPosition(0, -1),
@@ -82,6 +82,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     };
 
     private static final ComponentPosition[] PORTAL_POSITIONS;
+    private static final int GATEWAY_TICKS = 201;
 
     static {
         List<ComponentPosition> portalPositions = new LinkedList<>(Arrays.asList(
@@ -104,7 +105,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     public StargateController(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        Galactifun.inst().registerListener(this);
+        Galactifun.instance().registerListener(this);
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(b -> onUse(e, e.getPlayer(), b)));
 
@@ -175,7 +176,7 @@ public final class StargateController extends SlimefunItem implements Listener {
                 Block portal = position.getBlock(b);
                 portal.setType(Material.END_GATEWAY);
                 EndGateway gateway = (EndGateway) portal.getState();
-                gateway.setAge(201);
+                gateway.setAge(GATEWAY_TICKS);
                 gateway.update(false, false);
                 BlockStorage.addBlockInfo(portal, "portal", "true");
             }
@@ -195,6 +196,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     }
 
     @Nonnull
+    // TODO cache algorithm
     @SneakyThrows(NoSuchAlgorithmException.class)
     private ChestMenu getMenu(@Nonnull Block b) {
         ChestMenu menu = new ChestMenu(this.getItemName());
@@ -263,7 +265,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         return menu;
     }
 
-    private void setDestination(String destination, Block b, Player p) {
+    private static void setDestination(String destination, Block b, Player p) {
         Location dest;
         worldLoop:
         {
@@ -347,5 +349,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         public boolean isPortal(@Nonnull Block b) {
             return b.getRelative(0, this.y, this.z).getType() == Material.END_GATEWAY;
         }
+
     }
+
 }

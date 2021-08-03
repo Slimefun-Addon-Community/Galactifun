@@ -6,7 +6,7 @@ import org.bukkit.block.BlockFace;
 
 /**
  * Directions that a structure can be rotated in
- * 
+ *
  * @author Mooy1
  */
 public enum StructureRotation {

@@ -32,8 +32,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
-import io.github.addoncommunity.galactifun.api.worlds.WorldManager;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
+import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
@@ -47,12 +47,14 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public final class Rocket extends SlimefunItem {
 
     // todo Move static to some sort of RocketManager
-    private static final List<String> LAUNCH_MESSAGES = Galactifun.inst().getConfig().getStringList("rockets.launch-msgs");
+    private static final List<String> LAUNCH_MESSAGES = Galactifun.instance().getConfig().getStringList("rockets.launch-msgs");
+    private static final int DISTANCE_PER_FUEL = 2_000_000;
 
     @Getter
     private final int fuelCapacity;
@@ -61,7 +63,7 @@ public final class Rocket extends SlimefunItem {
 
     public Rocket(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
-        
+
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
 
@@ -109,11 +111,11 @@ public final class Rocket extends SlimefunItem {
         Integer eff = LaunchPadCore.FUELS.get(string);
         if (eff == null) return;
 
-        long maxDistance = Math.round(2_000_000 * eff * fuel);
+        long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
 
         List<PlanetaryWorld> reachable = new ArrayList<>();
-        for (PlanetaryWorld planetaryWorld : worldManager.getSpaceWorlds()) {
-            if (planetaryWorld.getDistanceTo(world) * Util.KM_PER_LY <= maxDistance) {
+        for (PlanetaryWorld planetaryWorld : worldManager.spaceWorlds()) {
+            if (planetaryWorld.distanceTo(world) * Util.KM_PER_LY <= maxDistance) {
                 reachable.add(planetaryWorld);
             }
         }
@@ -128,23 +130,23 @@ public final class Rocket extends SlimefunItem {
 
         int i = 0;
         for (PlanetaryWorld planetaryWorld : reachable) {
-            double distance = planetaryWorld.getDistanceTo(world);
-            ItemStack item = planetaryWorld.getItem().clone();
+            double distance = planetaryWorld.distanceTo(world);
+            ItemStack item = planetaryWorld.item().clone();
             ItemMeta meta = item.getItemMeta();
-            List<String> lore = meta.getLore();
+            List<Component> lore = meta.lore();
             if (lore != null) {
                 lore.remove(lore.size() - 1);
 
                 if (distance > 0) {
-                    lore.add(ChatColors.color("&7Distance: " + (distance < 1
-                        ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                        : distance + " Light Years")
-                    ));
+                    lore.add(Component.text("Distance: " + (distance < 1
+                            ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                            : distance + " Light Years")
+                    ).color(NamedTextColor.GRAY));
                 } else {
-                    lore.add(ChatColors.color("&7You are here!"));
+                    lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
                 }
 
-                meta.setLore(lore);
+                meta.lore(lore);
                 item = item.clone();
                 item.setItemMeta(meta);
             }
@@ -152,9 +154,9 @@ public final class Rocket extends SlimefunItem {
             String fuelType = string;
             menu.addItem(i++, item, (p1, slot, it, action) -> {
                 p1.closeInventory();
-                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / 2_000_000);
-                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.getName() + " and will use " +
-                    usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
+                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
+                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
+                        usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
                 ChatUtils.awaitInput(p1, (input) -> {
                     if (input.equalsIgnoreCase("yes")) {
                         p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
@@ -177,7 +179,7 @@ public final class Rocket extends SlimefunItem {
 
         menu.open(p);
     }
-    
+
     private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
         BlockStorage.addBlockInfo(b, "isLaunching", "true");
 
@@ -198,9 +200,9 @@ public final class Rocket extends SlimefunItem {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Galactifun.inst(), 0, 10);
+        }.runTaskTimer(Galactifun.instance(), 0, 10);
 
-        World to = worldTo.getWorld();
+        World to = worldTo.world();
 
         Block destBlock = to.getHighestBlockAt(x, z).getRelative(BlockFace.UP);
 
@@ -209,7 +211,7 @@ public final class Rocket extends SlimefunItem {
             destChunk.load(true);
         }
 
-        Galactifun.inst().runSync(() -> {
+        Galactifun.instance().runSync(() -> {
             destBlock.setType(Material.CHEST);
             BlockData data = destBlock.getBlockData();
             if (data instanceof Rotatable) {
@@ -235,10 +237,11 @@ public final class Rocket extends SlimefunItem {
             p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
         }, 40);
 
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
-        Galactifun.inst().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
-        Galactifun.inst().runSync(() -> {
+        // TODO store an instance somewhere
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
+        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
+        Galactifun.instance().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             for (Entity entity : world.getEntities()) {
@@ -253,4 +256,5 @@ public final class Rocket extends SlimefunItem {
             BlockStorage.clearBlockInfo(b);
         }, 200);
     }
+
 }

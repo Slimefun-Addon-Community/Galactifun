@@ -4,28 +4,26 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 
-import org.apache.commons.lang.Validate;
-
 /**
- * Represents the amount of sunlight a celestial object gets
+ * Represents the amount of sunlight a celestial object s
  *
  * @author Mooy1
- *
  */
 public final class DayCycle {
-    
+
     public static final DayCycle ETERNAL_DAY = DayCycle.eternal(6000L);
     public static final DayCycle ETERNAL_NIGHT = DayCycle.eternal(18000L);
     public static final DayCycle EARTH_LIKE = DayCycle.hours(24);
-    
+
     @Nonnull
     public static DayCycle eternal(long time) {
         return new DayCycle(time);
     }
-    
+
     @Nonnull
     public static DayCycle relativeToEarth(double ratio) {
         return hours((int) (24 * ratio));
@@ -35,12 +33,12 @@ public final class DayCycle {
     public static DayCycle days(int days) {
         return new DayCycle(days, 0);
     }
-    
+
     @Nonnull
     public static DayCycle hours(int hours) {
         return new DayCycle(hours / 24, hours % 24);
     }
-    
+
     @Nonnull
     public static DayCycle of(int days, int hours) {
         return new DayCycle(days + hours / 24, hours % 24);
@@ -54,7 +52,7 @@ public final class DayCycle {
 
     private DayCycle(int days, int hours) {
         Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "Day cycles must last at least 1 hour!");
-        
+
         StringBuilder builder = new StringBuilder();
         if (days > 0) {
             builder.append(days);
@@ -71,7 +69,7 @@ public final class DayCycle {
                 builder.append('s');
             }
         }
-        
+
         this.description = builder.toString();
         this.startTime = -1;
         this.perFiveSeconds = days * 100L + hours * 4L;
@@ -87,7 +85,7 @@ public final class DayCycle {
         this.startTime = time;
         this.perFiveSeconds = 0;
     }
-    
+
     public void applyEffects(@Nonnull World world) {
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         if (this.startTime != -1) {
@@ -103,5 +101,5 @@ public final class DayCycle {
             world.setTime(world.getTime() + this.perFiveSeconds);
         }
     }
-    
+
 }

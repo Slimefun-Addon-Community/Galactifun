@@ -33,10 +33,10 @@ public final class AlienSpawnCommand extends AbstractCommand {
     @Override
     public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> ids) {
         if (strings.length == 2) {
-            for (Alien<?> alien : Galactifun.alienManager().getAliens()) {
-                ids.add(alien.getId());
+            for (Alien<?> alien : Galactifun.alienManager().aliens()) {
+                ids.add(alien.id());
             }
         }
     }
-    
+
 }

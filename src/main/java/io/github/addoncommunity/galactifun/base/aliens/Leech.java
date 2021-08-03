@@ -28,37 +28,37 @@ import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
  */
 public final class Leech extends Alien<Silverfish> {
 
-    private final NamespacedKey eatenKey = Galactifun.inst().getKey("eaten");
+    private final NamespacedKey eatenKey = Galactifun.instance().getKey("eaten");
 
     public Leech(String id, String name, double maxHealth, int spawnChance) {
         super(Silverfish.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
-    protected void onAttack(@Nonnull EntityDamageByEntityEvent e) {
-        
-        // get random item
+    public void onAttack(@Nonnull EntityDamageByEntityEvent e) {
+
+        //  random item
         PlayerInventory inv = ((Player) e.getEntity()).getInventory();
         List<Integer> slots = new ArrayList<>();
-        
+
         ItemStack[] contents = inv.getContents();
-        for (int i = 0 ; i < contents.length ; i++) {
+        for (int i = 0; i < contents.length; i++) {
             if (contents[i] != null) {
                 slots.add(i);
             }
         }
-        
+
         if (slots.isEmpty()) {
             return;
         }
-        
+
         int slot = slots.get(ThreadLocalRandom.current().nextInt(slots.size()));
-        
+
         ItemStack item = contents[slot];
-        
+
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
-        
+
         ItemStack[] eatenItems = container.get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
             // add on to the array
@@ -67,14 +67,14 @@ public final class Leech extends Alien<Silverfish> {
             arr[eatenItems.length] = item;
             container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, arr);
         } else {
-            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] {item});
+            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] { item });
         }
-        
+
         inv.setItem(slot, null);
-        
+
         // heal
         LivingEntity attacker = (LivingEntity) e.getDamager();
-        attacker.setHealth(Math.min(getMaxHealth(), attacker.getHealth() + 2));
+        attacker.setHealth(Math.min(maxHealth(), attacker.getHealth() + 2));
     }
 
     @Override
@@ -87,5 +87,5 @@ public final class Leech extends Alien<Silverfish> {
             }
         }
     }
-    
+
 }

@@ -32,6 +32,7 @@ public final class GenUtils {
 
     /**
      * Generates an oak tree top
+     *
      * @param topLog the location of the last long. <b>This is modified</b>
      * @param leaves the material of the leaves
      */
@@ -41,4 +42,5 @@ public final class GenUtils {
         generateSquare(topLog.subtract(0, 2, 0), leaves, 2);
         generateSquare(topLog.subtract(0, 1, 0), leaves, 2);
     }
+
 }

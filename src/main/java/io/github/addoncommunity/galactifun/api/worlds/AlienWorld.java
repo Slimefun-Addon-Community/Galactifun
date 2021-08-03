@@ -12,8 +12,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import lombok.NonNull;
-
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,14 +36,12 @@ import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.apache.commons.lang.Validate;
 
 /**
  * Any alien world
  *
  * @author Seggan
  * @author Mooy1
- *
  * @see EarthOrbit
  */
 public abstract class AlienWorld extends PlanetaryWorld {
@@ -69,7 +66,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
             return null;
         }
 
-        Galactifun.inst().log(Level.INFO, "Loading planet " + getName());
+        Galactifun.instance().log(Level.INFO, "Loading planet " + name());
 
         String worldName = "world_galactifun_" + this.id;
 
@@ -99,7 +96,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
                         return b.getLocation();
                     }
                 })
-                .environment(getAtmosphere().getEnvironment())
+                .environment(atmosphere().environment())
                 .createWorld();
 
         Validate.notNull(world, "There was an error loading the world for " + worldName);
@@ -115,13 +112,13 @@ public abstract class AlienWorld extends PlanetaryWorld {
         }
 
         // load effects
-        getDayCycle().applyEffects(world);
-        getAtmosphere().applyEffects(world);
+        dayCycle().applyEffects(world);
+        atmosphere().applyEffects(world);
 
         return world;
     }
 
-    public final void addSpecies(@NonNull Alien<?>... aliens) {
+    public final void addSpecies(@Nonnull Alien<?>... aliens) {
         for (Alien<?> alien : aliens) {
             if (alien.isRegistered()) {
                 this.species.add(alien);
@@ -132,30 +129,25 @@ public abstract class AlienWorld extends PlanetaryWorld {
     }
 
     protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
-        return getWorldManager().getSetting(this, path, clazz, defaultValue);
+        return worldManager().getSetting(this, path, clazz, defaultValue);
     }
 
     /**
      * To allow worlds to be made of {@link SlimefunItem}s without using huge amounts of {@link BlockStorage},
      * I invented block mappings. Simply pass a {@link Material} and a {@link SlimefunItemStack}, and any
      * generated {@code vanillaItem}s will drop {@code slimefunItem}s
-     *
-     * @implNote they work by not adding block data to <i>generated</i> blocks, but to <i>placed</i>
-     * blocks in that world. Therefore, any block that doesn't have data is the Slimefun one, and
-     * those that do are vanilla
      */
-    // TODO improve
     public final void addBlockMapping(@Nonnull Material vanillaItem, @Nonnull SlimefunItemStack slimefunItem) {
         this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
     // TODO improve
     @Nullable
-    SlimefunItemStack getMappedItem(Block b) {
+    public SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
     }
 
-    protected boolean canSpawnVanillaMobs() {
+    public boolean canSpawnVanillaMobs() {
         return false;
     }
 
@@ -177,16 +169,16 @@ public abstract class AlienWorld extends PlanetaryWorld {
      */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
-    final void applyEffects(@Nonnull Player p) {
-        getGravity().applyGravity(p);
-        getAtmosphere().applyEffects(p);
+    public final void applyEffects(@Nonnull Player p) {
+        gravity().applyGravity(p);
+        atmosphere().applyEffects(p);
     }
 
-    final void tickWorld() {
-        World world = getWorld();
+    public final void tickWorld() {
+        World world = world();
 
         // time
-        getDayCycle().tick(world);
+        dayCycle().tick(world);
 
         // player effects
         for (Player p : world.getPlayers()) {
@@ -194,7 +186,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
         }
 
         // time
-        getDayCycle().tick(getWorld());
+        dayCycle().tick(world);
 
         // mob spawns
         if (!this.species.isEmpty() && !world.getPlayers().isEmpty()) {
@@ -205,7 +197,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
             int players = world.getPlayers().size();
             int mobs = world.getLivingEntities().size() - players;
-            int max = players * getWorldManager().getMaxAliensPerPlayer();
+            int max = players * worldManager().maxAliensPerPlayer();
 
             for (Alien<?> alien : this.species) {
                 if ((mobs += alien.attemptSpawn(rand, world)) > max) {

@@ -33,7 +33,7 @@ public final class TitanKing extends BossAlien<Evoker> {
     public void onCastSpell(@Nonnull EntitySpellCastEvent e) {
         Mob entity = e.getEntity();
         if (e.getSpell() == Spellcaster.Spell.SUMMON_VEX) {
-            for (int i = 0 ; i < 3 ; i++) {
+            for (int i = 0; i < 3; i++) {
                 this.leech.spawn(entity.getLocation(), entity.getWorld()).setTarget(entity.getTarget());
             }
         } else if (e.getSpell() == Spellcaster.Spell.FANGS) {

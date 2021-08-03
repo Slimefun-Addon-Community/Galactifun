@@ -13,7 +13,8 @@ public final class Charger extends Alien<Goat> {
     }
 
     @Override
-    protected void onSpawn(@Nonnull Goat spawned) {
+    public void onSpawn(@Nonnull Goat spawned) {
         spawned.setScreaming(true);
     }
+
 }

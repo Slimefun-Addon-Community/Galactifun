@@ -202,4 +202,5 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         updateHologram(pos.getBlock(), "&aOperational");
     }
+
 }

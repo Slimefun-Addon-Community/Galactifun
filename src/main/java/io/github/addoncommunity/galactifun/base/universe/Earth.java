@@ -32,7 +32,7 @@ public final class Earth extends PlanetaryWorld {
     @Nonnull
     @Override
     public World loadWorld() {
-        String name = Galactifun.inst().getConfig().getString("worlds.earth-name");
+        String name = Galactifun.instance().getConfig().getString("worlds.earth-name");
         World world = new WorldCreator(Objects.requireNonNull(name)).createWorld(); // this will load the world as only the default world loads on startup
         if (world == null) {
             throw new IllegalStateException("Failed to read earth world name from config; no default world found!");

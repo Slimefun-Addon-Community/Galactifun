@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.api.structures;
 
+import lombok.Getter;
+
 import org.bukkit.block.Block;
 
 /**
@@ -18,33 +20,38 @@ public final class GalacticStructure {
     /**
      * The default rotation of this structure
      */
-    final StructureRotation rotation;
+    @Getter
+    private final StructureRotation rotation;
 
     /**
      * The dimensions of this structure
      */
-    final int dx;
-    final int dy;
-    final int dz;
-    
-    GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
+    @Getter
+    private final int dx;
+    @Getter
+    private final int dy;
+    @Getter
+    private final int dz;
+
+    public GalacticStructure(StructureRotation rotation, int dx, int dy, int dz) {
         this.rotation = rotation;
         this.structure = new StructureBlock[Math.abs(this.dx = dx) + 1][Math.abs(this.dy = dy) + 1][Math.abs(this.dz = dz) + 1];
     }
-    
+
     public void paste(Block pos, StructureRotation rotation) {
         StructureRotation dif = this.rotation.rotationTo(rotation);
-        getAll((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
-    }
-    
-    void setAll(Setter setter) {
-        iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
+        forEach((block, x, y, z) -> block.paste(pos.getRelative(x, y, z), dif));
     }
 
-    void getAll(Getter getter) {
+    public GalacticStructure setEach(Setter setter) {
+        iterate((x, y, z, ax, ay, az) -> this.structure[ax][ay][az] = setter.set(x, y, z));
+        return this;
+    }
+
+    public void forEach(Accessor getter) {
         iterate((x, y, z, ax, ay, az) -> getter.get(this.structure[ax][ay][az], x, y, z));
     }
-    
+
     private void iterate(Iterator iterator) {
         boolean loop = this.structure.length != 0;
         int ax = 0;
@@ -92,17 +99,23 @@ public final class GalacticStructure {
 
     @FunctionalInterface
     private interface Iterator {
+
         void iterate(int x, int y, int z, int ax, int ay, int az);
-    }
-    
-    @FunctionalInterface
-    interface Getter {
-        void get(StructureBlock block, int x, int y, int z);
+
     }
 
     @FunctionalInterface
-    interface Setter {
-        StructureBlock set(int x, int y, int z);
+    public interface Accessor {
+
+        void get(StructureBlock block, int x, int y, int z);
+
     }
-    
+
+    @FunctionalInterface
+    public interface Setter {
+
+        StructureBlock set(int x, int y, int z);
+
+    }
+
 }

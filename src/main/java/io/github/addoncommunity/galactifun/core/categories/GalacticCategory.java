@@ -14,13 +14,13 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 
 /**
  * Category for exploring the universe
- * 
+ *
  * @author Mooy1
  */
 public final class GalacticCategory extends FlexCategory {
 
     private final GalacticExplorer explorer;
-    
+
     public GalacticCategory(NamespacedKey key, ItemStack item, GalacticExplorer explorer) {
         super(key, item);
         this.explorer = explorer;

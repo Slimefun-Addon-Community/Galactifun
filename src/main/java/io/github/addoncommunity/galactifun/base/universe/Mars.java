@@ -24,7 +24,6 @@ import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.GenUtils;
-import io.github.addoncommunity.galactifun.util.Util;
 
 /**
  * Class for Mars
@@ -58,7 +57,7 @@ public final class Mars extends SimpleAlienWorld {
     protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull SimplexOctaveGenerator generator,
                                 @Nonnull Random random, int realX, int realZ, int x, int z, int height) {
         // generate caves
-        for (int y = 1 ; y <= height - 16 ; y++) {
+        for (int y = 1; y <= height - 16; y++) {
             double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
             // Choose a narrow selection of blocks
@@ -81,11 +80,11 @@ public final class Mars extends SimpleAlienWorld {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
                 if (random.nextDouble() < 0.5) {
-                    int dist = Util.random(1, 4, random);
+                    int dist = random.nextInt(4) + 1;
 
-                    int x = Util.random(dist, 16 - dist, random);
-                    int z = Util.random(dist, 16 - dist, random);
-                    int y = Util.random(1, world.getHighestBlockAt(x, z).getY(), random);
+                    int x = random.nextInt(16 - dist * 2) + dist;
+                    int z = random.nextInt(16 - dist * 2) + dist;
+                    int y = random.nextInt(world.getHighestBlockAt(x, z).getY()) + 1;
 
                     GenUtils.generateSquare(
                             source.getBlock(x, y, z).getLocation(),

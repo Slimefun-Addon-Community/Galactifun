@@ -14,7 +14,6 @@ import org.bukkit.potion.PotionEffectType;
  * @author GallowsDove
  * @author Mooy1
  * @author Seggan
- *
  */
 public final class Gravity {
 
@@ -25,7 +24,7 @@ public final class Gravity {
     public static final Gravity MOON_LIKE = Gravity.metersPerSec(1.62);
     public static final Gravity EARTH_LIKE = Gravity.relativeToEarth(1);
     public static final Gravity ZERO = new Gravity();
-    
+
     @Nonnull
     public static Gravity relativeToEarth(double ratio) {
         return new Gravity(ratio);
@@ -36,7 +35,6 @@ public final class Gravity {
         return new Gravity(metersPerSec / EARTH_GRAVITY);
     }
 
-
     @Nonnull
     public static Gravity jumpHeightOf(double blocks) {
         return new Gravity(DEFAULT_JUMP / blocks);
@@ -44,9 +42,8 @@ public final class Gravity {
 
     @Getter
     private final int percent;
-    @Nonnull
     private final PotionEffect effect;
-    
+
     private Gravity(double ratio) {
         this.percent = (int) (100 * ratio);
         if (ratio > 0) {
@@ -66,13 +63,13 @@ public final class Gravity {
         this.effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false, false);
         this.percent = 0;
     }
-    
+
     public void applyGravity(@Nonnull Player p) {
         p.addPotionEffect(this.effect);
     }
-    
+
     public void removeGravity(@Nonnull Player p) {
         p.removePotionEffect(this.effect.getType());
     }
-    
+
 }

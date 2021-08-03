@@ -1,7 +1,8 @@
 package io.github.addoncommunity.galactifun.api.universe;
 
+import javax.annotation.Nonnull;
+
 import lombok.Getter;
-import lombok.NonNull;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +14,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 
 /**
  * A celestial object
- * 
+ *
  * @author Mooy1
  */
 @Getter
@@ -24,7 +25,7 @@ public class PlanetaryObject extends UniversalObject {
     private final Gravity gravity;
 
     public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
-                           @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
+                           @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
@@ -32,7 +33,7 @@ public class PlanetaryObject extends UniversalObject {
     }
 
     public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
-                           @NonNull DayCycle dayCycle, @NonNull Atmosphere atmosphere, @NonNull Gravity gravity) {
+                           @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;

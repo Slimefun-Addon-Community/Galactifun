@@ -6,11 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import lombok.NonNull;
-
-import org.bukkit.World;
-
 import org.apache.commons.lang.Validate;
+import org.bukkit.World;
 
 /**
  * Utility class for making atmospheres
@@ -38,12 +35,12 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addEffect(@NonNull AtmosphericEffect effect, int level) {
+    public AtmosphereBuilder addEffect(@Nonnull AtmosphericEffect effect, int level) {
         this.effects.put(effect, level);
         return this;
     }
 
-    public AtmosphereBuilder add(@NonNull Gas gas, double percentage) {
+    public AtmosphereBuilder add(@Nonnull Gas gas, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
         this.composition.put(gas, percentage);
         return this;

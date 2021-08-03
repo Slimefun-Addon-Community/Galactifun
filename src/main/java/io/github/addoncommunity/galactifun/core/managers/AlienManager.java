@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.aliens;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,13 +8,11 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -32,6 +30,8 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 public final class AlienManager implements Listener, Runnable {
@@ -40,21 +40,21 @@ public final class AlienManager implements Listener, Runnable {
     private final NamespacedKey key;
     @Getter
     private final NamespacedKey bossKey;
-
     private final Map<String, Alien<?>> aliens = new HashMap<>();
-    @Getter(AccessLevel.PACKAGE)
-    private final Map<LivingEntity, BossBar> bossInstances = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(this, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
 
-        this.key = new NamespacedKey(galactifun, "alien");
-        this.bossKey = new NamespacedKey(Galactifun.inst(), "galactifun_boss");
+        this.key = Galactifun.instance().getKey("alien");
+        this.bossKey = Galactifun.instance().getKey("boss_alien");
     }
 
-    void register(Alien<?> alien) {
-        this.aliens.put(alien.getId(), alien);
+    public void register(Alien<?> alien) {
+        if (this.aliens.containsKey(alien.id())) {
+            throw new IllegalArgumentException("Alien " + alien.id() + " has already been registered!");
+        }
+        this.aliens.put(alien.id(), alien);
     }
 
     @Nullable
@@ -69,7 +69,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @Nonnull
-    public Collection<Alien<?>> getAliens() {
+    public Collection<Alien<?>> aliens() {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
@@ -83,14 +83,14 @@ public final class AlienManager implements Listener, Runnable {
             for (LivingEntity entity : world.getLivingEntities()) {
                 Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onMobTick(alien.getClazz().cast(entity));
+                    alien.onMobTick(alien.clazz().cast(entity));
                 }
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienTarget(@Nonnull EntityTargetEvent e) {
+    private void onAlienTarget(@Nonnull EntityTargetEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onTarget(e);
@@ -98,7 +98,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
+    private void onAlienInteract(@Nonnull PlayerInteractEntityEvent e) {
         Alien<?> alien = getAlien(e.getRightClicked());
         if (alien != null) {
             alien.onInteract(e);
@@ -106,7 +106,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
+    private void onAlienHit(@Nonnull EntityDamageByEntityEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onHit(e);
@@ -118,7 +118,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienDie(@Nonnull EntityDeathEvent e) {
+    private void onAlienDie(@Nonnull EntityDeathEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onDeath(e);
@@ -126,7 +126,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienCombust(@Nonnull EntityCombustEvent e) {
+    private void onAlienCombust(@Nonnull EntityCombustEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             e.setCancelled(true);
@@ -134,7 +134,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
+    private void onAlienCastSpell(@Nonnull EntitySpellCastEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onCastSpell(e);
@@ -142,7 +142,7 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienDamage(@Nonnull EntityDamageEvent e) {
+    private void onAlienDamage(@Nonnull EntityDamageEvent e) {
         Alien<?> alien = getAlien(e.getEntity());
         if (alien != null) {
             alien.onDamage(e);
@@ -150,13 +150,21 @@ public final class AlienManager implements Listener, Runnable {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onAlienShoot(@Nonnull ProjectileLaunchEvent e) {
+    private void onAlienShoot(@Nonnull ProjectileLaunchEvent e) {
         ProjectileSource source = e.getEntity().getShooter();
         if (!(source instanceof Mob mob)) return;
         Alien<?> alien = getAlien(mob);
         if (alien != null) {
             alien.onShoot(e, mob);
         }
+    }
+
+    public void onDisable() {
+        this.aliens().forEach(a -> {
+            if (a instanceof BossAlien<?> b) {
+                b.removeBossBars();
+            }
+        });
     }
 
 }

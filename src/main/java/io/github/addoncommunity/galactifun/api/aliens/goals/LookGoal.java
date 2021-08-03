@@ -6,10 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import com.destroystokyo.paper.entity.ai.GoalType;
+import io.github.addoncommunity.galactifun.Galactifun;
 
 public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
 
@@ -21,8 +23,8 @@ public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
 
     @Nonnull
     @Override
-    public String getGoalKey() {
-        return "look";
+    public NamespacedKey getGoalKey() {
+        return Galactifun.instance().getKey("look");
     }
 
     @Override
