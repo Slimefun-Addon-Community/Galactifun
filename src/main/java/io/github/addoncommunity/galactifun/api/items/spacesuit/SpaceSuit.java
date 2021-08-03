@@ -1,7 +1,9 @@
-package io.github.addoncommunity.galactifun.api.items;
+package io.github.addoncommunity.galactifun.api.items.spacesuit;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import lombok.Getter;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +19,12 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 // TODO implement
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
-    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    @Getter
+    private final boolean chestPlate;
+
+    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, boolean chestPlate) {
         super(category, item, recipeType, recipe);
+        this.chestPlate = chestPlate;
     }
 
     @Nonnull

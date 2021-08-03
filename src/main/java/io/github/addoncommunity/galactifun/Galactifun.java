@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import org.bukkit.Bukkit;
 
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -69,6 +70,7 @@ public final class Galactifun extends AbstractAddon {
     @Override
     protected void disable() {
         this.alienManager.onDisable();
+        SpaceSuitProfile.saveAll();
 
         // Do this last
         instance = null;
