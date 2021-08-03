@@ -120,7 +120,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Override
     protected final void setupMenu(@Nonnull BlockMenuPreset preset) {
-        for (int i = 0 ; i < 9 ; i++) {
+        for (int i = 0; i < 9; i++) {
             if (i == 4) continue;
             preset.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
         }
