@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import lombok.NonNull;
+
 import org.bukkit.Location;
 
 import io.github.addoncommunity.galactifun.Galactifun;
@@ -35,20 +37,23 @@ public final class ProtectionManager {
 
     @Nonnull
     public Map<AtmosphericEffect, Integer> getEffectsAt(@Nonnull Location l) {
-        Map<AtmosphericEffect, Integer> ret = new HashMap<>();
         AlienWorld world = Galactifun.worldManager().getAlienWorld(l.getWorld());
-        if (world != null) {
-            Atmosphere atmosphere = world.getAtmosphere();
-            for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.getEffects().entrySet()) {
-                int val = eff.getValue() - getProtectionFor(l, eff.getKey());
-                if (val > 0) ret.put(eff.getKey(), val);
-            }
-        }
-
-        return ret;
+        if (world == null) return new HashMap<>();
+        return subtractProtections(world.getAtmosphere(), getProtectionsFor(l));
     }
 
     public int getEffectAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
         return getEffectsAt(l).getOrDefault(effect, 0);
+    }
+
+    @Nonnull
+    public Map<AtmosphericEffect, Integer> subtractProtections(@NonNull Atmosphere atmosphere, @NonNull Map<AtmosphericEffect, Integer> protections) {
+        Map<AtmosphericEffect, Integer> ret = new HashMap<>();
+        for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.getEffects().entrySet()) {
+            int val = eff.getValue() - protections.getOrDefault(eff.getKey(), 0);
+            if (val > 0) ret.put(eff.getKey(), val);
+        }
+
+        return ret;
     }
 }

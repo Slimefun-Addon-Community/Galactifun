@@ -75,7 +75,11 @@ public final class SpaceSuitProfile {
     private static Optional<SpaceSuitProfile> load(ItemStack stack, UUID uuid) {
         if (SlimefunItem.getByItem(stack) instanceof SpaceSuit suit && suit.isChestPlate()) {
             return Optional.of(new SpaceSuitProfile(
-                    stack.getItemMeta().getPersistentDataContainer().get(KEY, PersistentInventory.INSTANCE),
+                    stack.getItemMeta().getPersistentDataContainer().getOrDefault(
+                            KEY,
+                            PersistentInventory.INSTANCE,
+                            Bukkit.createInventory(Bukkit.getPlayer(uuid), suit.getInvSize())
+                    ),
                     uuid
             ));
         }
