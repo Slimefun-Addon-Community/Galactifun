@@ -13,7 +13,6 @@ import io.github.addoncommunity.galactifun.util.GenUtils;
  * Class for a custom tree. Left subclassable
  */
 @AllArgsConstructor
-@SuppressWarnings("ClassCanBeRecord")
 public class CustomTree { // TODO make this into a populator? or move class
 
     protected final Material log;

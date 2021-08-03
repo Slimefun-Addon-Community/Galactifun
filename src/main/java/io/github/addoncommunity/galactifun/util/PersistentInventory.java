@@ -9,6 +9,8 @@ import java.io.UncheckedIOException;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,9 +21,10 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 public final class PersistentInventory implements PersistentDataType<byte[], Inventory> {
 
-    public static final PersistentInventory INSTANCE = new PersistentInventory();
+    @Getter
+    private static final PersistentInventory instance = new PersistentInventory();
 
-    private PersistentInventory() {}
+    private PersistentInventory() { }
 
     @Nonnull
     @Override
@@ -54,22 +57,21 @@ public final class PersistentInventory implements PersistentDataType<byte[], Inv
     @Nonnull
     @Override
     public Inventory fromPrimitive(@Nonnull byte[] primitive, @Nonnull PersistentDataAdapterContext context) {
-        Inventory inventory;
         ByteArrayInputStream barrIn = new ByteArrayInputStream(primitive);
         try (ObjectInputStream in = new BukkitObjectInputStream(barrIn)) {
-            inventory = Bukkit.createInventory(null, in.readInt());
+            Inventory inventory = Bukkit.createInventory(null, in.readInt());
             for (int i = 0; i < inventory.getSize(); i++) {
                 Object o = in.readObject();
                 if (o != null) {
                     inventory.setItem(i, (ItemStack) o);
                 }
             }
+            return inventory;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException(e);
         }
-
-        return inventory;
     }
+
 }
