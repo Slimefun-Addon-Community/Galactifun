@@ -42,7 +42,7 @@ public final class Leech extends Alien<Silverfish> {
         List<Integer> slots = new ArrayList<>();
 
         ItemStack[] contents = inv.getContents();
-        for (int i = 0 ; i < contents.length ; i++) {
+        for (int i = 0; i < contents.length; i++) {
             if (contents[i] != null) {
                 slots.add(i);
             }

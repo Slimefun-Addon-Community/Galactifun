@@ -53,7 +53,7 @@ public final class AssemblyCategory extends FlexCategory {
         ChestMenu menu = new ChestMenu("Assembly Table Recipes");
         menu.setEmptySlotsClickable(false);
 
-        for (int i = 0 ; i < 9 ; ++i) {
+        for (int i = 0; i < 9; ++i) {
             menu.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
 
@@ -92,7 +92,7 @@ public final class AssemblyCategory extends FlexCategory {
             return false;
         });
 
-        for (int i = 0 ; i < item.getSecondValue().length ; i++) {
+        for (int i = 0; i < item.getSecondValue().length; i++) {
             ItemStack stack = item.getSecondValue()[i];
             if (stack != null) {
                 menu.addItem(SLOTS[i], stack, (p1, slot, item1, action) -> {

@@ -90,8 +90,8 @@ public final class StargateController extends SlimefunItem implements Listener {
                 new ComponentPosition(1, 0),
                 new ComponentPosition(1, 1)
         ));
-        for (int y = 2 ; y <= 4 ; y++) {
-            for (int z = -2 ; z <= 2 ; z++) {
+        for (int y = 2; y <= 4; y++) {
+            for (int z = -2; z <= 2; z++) {
                 portalPositions.add(new ComponentPosition(y, z));
             }
         }

@@ -35,9 +35,9 @@ public final class EarthOrbit extends AlienWorld {
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0 ; x < 16 ; x++) {
-            for (int y = world.getMinHeight() ; y < world.getMaxHeight() ; y++) {
-                for (int z = 0 ; z < 16 ; z++) {
+        for (int x = 0; x < 16; x++) {
+            for (int y = world.getMinHeight(); y < world.getMaxHeight(); y++) {
+                for (int z = 0; z < 16; z++) {
                     grid.setBiome(x, y, z, Biome.THE_VOID);
                 }
             }

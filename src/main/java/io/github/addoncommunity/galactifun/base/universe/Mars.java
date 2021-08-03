@@ -57,7 +57,7 @@ public final class Mars extends SimpleAlienWorld {
     protected void generateMore(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull SimplexOctaveGenerator generator,
                                 @Nonnull Random random, int realX, int realZ, int x, int z, int height) {
         // generate caves
-        for (int y = 1 ; y <= height - 16 ; y++) {
+        for (int y = 1; y <= height - 16; y++) {
             double density = generator.noise(realX, y, realZ, getFrequency(), getAmplitude(), true);
 
             // Choose a narrow selection of blocks

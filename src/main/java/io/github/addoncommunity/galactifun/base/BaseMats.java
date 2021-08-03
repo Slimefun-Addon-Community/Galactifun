@@ -332,7 +332,7 @@ public final class BaseMats {
 
     private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {
         ItemStack[] recipe = new ItemStack[worlds.length];
-        for (int i = 0 ; i < worlds.length ; i++) {
+        for (int i = 0; i < worlds.length; i++) {
             AlienWorld world = worlds[i];
             recipe[i] = world.item();
             world.addBlockMapping(item.getType(), item);

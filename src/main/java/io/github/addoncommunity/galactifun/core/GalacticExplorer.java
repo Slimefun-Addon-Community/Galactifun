@@ -72,7 +72,7 @@ public final class GalacticExplorer {
         boolean known = current != null;
 
         // objects
-        for (int i = 0 ; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()) ; i++) {
+        for (int i = 0; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()); i++) {
             UniversalObject orbiter = orbiters.get(i);
             ItemStack item = orbiter.item();
 

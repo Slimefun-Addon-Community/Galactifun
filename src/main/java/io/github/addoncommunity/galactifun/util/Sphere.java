@@ -41,12 +41,12 @@ public final class Sphere {
         // outer middle blocks, furthest from middle
         genMiddles(radius);
 
-        for (int x = 1, vector1 = 1 ; x < radius ; vector1 += (x++ << 1) + 1) {
+        for (int x = 1, vector1 = 1; x < radius; vector1 += (x++ << 1) + 1) {
 
             // middle blocks
             genMiddles(x);
 
-            for (int y = x, vector2 = vector1 + y * y ; y < radius ; vector2 += (y++ << 1) + 1) {
+            for (int y = x, vector2 = vector1 + y * y; y < radius; vector2 += (y++ << 1) + 1) {
 
                 // check radius
                 if (vector2 < radiusSquared) {
@@ -61,7 +61,7 @@ public final class Sphere {
                     break;
                 }
 
-                for (int z = y, vector3 = vector2 + z * z ; z < radius ; vector3 += (z++ << 1) + 1) {
+                for (int z = y, vector3 = vector2 + z * z; z < radius; vector3 += (z++ << 1) + 1) {
 
                     // check within radius
                     if (vector3 < radiusSquared) {

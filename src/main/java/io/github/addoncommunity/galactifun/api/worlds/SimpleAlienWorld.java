@@ -45,8 +45,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, getOctaves());
         generator.setScale(getScale());
 
-        for (int x = 0, realX = chunkX << 4 ; x < 16 ; x++, realX++) {
-            for (int z = 0, realZ = chunkZ << 4 ; z < 16 ; z++, realZ++) {
+        for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 double noise = generator.noise(realX, realZ, getFrequency(), getAmplitude(), true);
 

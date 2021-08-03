@@ -28,7 +28,7 @@ public class CustomTree { // TODO make this into a populator? or move class
     public void generate(@Nonnull Location location) {
         GenUtils.generateOakTop(location.clone(), this.leaves);
 
-        for (int y = 0 ; y < this.trunkHeight ; y++) {
+        for (int y = 0; y < this.trunkHeight; y++) {
             location.add(0, 1, 0);
             location.getBlock().setType(this.log, false);
         }

@@ -51,7 +51,7 @@ public class BoulderPopulator extends BlockPopulator {
 
     @Override
     public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        for (int i = 0 ; i < this.attempts ; i++) {
+        for (int i = 0; i < this.attempts; i++) {
             if (random.nextInt(100) < this.chance) {
 
                 int x = random.nextInt(16);

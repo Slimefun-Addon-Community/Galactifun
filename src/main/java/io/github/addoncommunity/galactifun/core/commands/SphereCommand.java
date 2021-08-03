@@ -49,7 +49,7 @@ public final class SphereCommand extends AbstractCommand {
 
         Material[] materials = new Material[strings.length - 2];
 
-        for (int i = 0 ; i < materials.length ; i++) {
+        for (int i = 0; i < materials.length; i++) {
             try {
                 materials[i] = Material.valueOf(strings[i + 2]);
             } catch (IllegalArgumentException e) {

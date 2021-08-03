@@ -68,7 +68,7 @@ public final class FleeGoal<T extends Mob> extends AbstractGoal<T> implements Li
         if (!pathfinder.hasPath()) {
             Location mobLoc = this.mob.getLocation();
             Location l = null;
-            for (int tries = 0 ; tries < 100 ; tries++) {
+            for (int tries = 0; tries < 100; tries++) {
                 l = new Location(
                         this.mob.getWorld(),
                         mobLoc.getBlockX() + ThreadLocalRandom.current().nextInt(10) - 5,

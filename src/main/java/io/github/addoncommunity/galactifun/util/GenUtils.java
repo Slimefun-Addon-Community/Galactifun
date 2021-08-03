@@ -14,8 +14,8 @@ public final class GenUtils {
     public static void generateSquare(@Nonnull Location center, @Nonnull Material material, int radius) {
         int startX = center.getBlockX();
         int startZ = center.getBlockZ();
-        for (int x = startX - radius ; x <= startX + radius ; x++) {
-            for (int z = startZ - radius ; z <= startZ + radius ; z++) {
+        for (int x = startX - radius; x <= startX + radius; x++) {
+            for (int z = startZ - radius; z <= startZ + radius; z++) {
                 center.getWorld().getBlockAt(x, center.getBlockY(), z).setType(material, false);
             }
         }
