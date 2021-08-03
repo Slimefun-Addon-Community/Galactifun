@@ -22,7 +22,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Category for displaying Assembly recipes
- * 
+ *
  * @author Seggan
  * @author Mooy1
  */
@@ -49,16 +49,16 @@ public final class AssemblyCategory extends FlexCategory {
     @Override
     public void open(Player p, PlayerProfile profile, SlimefunGuideMode layout) {
         profile.getGuideHistory().add(this, 1);
-        
+
         ChestMenu menu = new ChestMenu("Assembly Table Recipes");
         menu.setEmptySlotsClickable(false);
 
-        for (int i = 0 ; i < 9 ; ++i) {
+        for (int i = 0; i < 9; ++i) {
             menu.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        menu.addItem(1,
-                new CustomItem(ChestMenuUtils.getBackButton(p, "", ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
+        menu.addItem(1, new CustomItem(ChestMenuUtils.getBackButton(p, "",
+                ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
         );
         menu.addMenuClickHandler(1, (p12, slot, item, action) -> {
             profile.getGuideHistory().goBack(SlimefunPlugin.getRegistry().getSlimefunGuide(layout));
@@ -84,15 +84,15 @@ public final class AssemblyCategory extends FlexCategory {
         ChestMenu menu = new ChestMenu("Recipe for " + item.getFirstValue().getDisplayName());
         menu.setEmptySlotsClickable(false);
 
-        menu.addItem(0,
-                new CustomItem(ChestMenuUtils.getBackButton(p, "", ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
+        menu.addItem(0, new CustomItem(ChestMenuUtils.getBackButton(p, "",
+                ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
         );
         menu.addMenuClickHandler(0, (p12, slot, it, action) -> {
             this.open(p, profile, SlimefunGuideMode.SURVIVAL_MODE);
             return false;
         });
 
-        for (int i = 0 ; i < item.getSecondValue().length ; i++) {
+        for (int i = 0; i < item.getSecondValue().length; i++) {
             ItemStack stack = item.getSecondValue()[i];
             if (stack != null) {
                 menu.addItem(SLOTS[i], stack, (p1, slot, item1, action) -> {

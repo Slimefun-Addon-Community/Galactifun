@@ -1,12 +1,12 @@
 package io.github.addoncommunity.galactifun.api.aliens;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import lombok.NonNull;
 
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
@@ -19,45 +19,37 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.aliens.TitanKing;
+import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 
 /**
  * Abstract class for an alien boss
  *
- * @see TitanKing
- *
  * @author Seggan
  * @author GallowsDove
- *
+ * @see TitanKing
  */
-// TODO cleanup bossbar stuff
 public abstract class BossAlien<T extends Mob> extends Alien<T> {
-    
+
+    private static final int BOSS_BAR_DISTANCE_SQUARED = 400;
+
+    private final Map<LivingEntity, BossBar> bossBars = new HashMap<>();
     private final BossBarStyle style;
     private int tick = 0;
 
     @ParametersAreNonnullByDefault
-    public BossAlien(Class<T> clazz, String id, String name, double maxHealth, int spawnChance, @NonNull BossBarStyle style) {
+    public BossAlien(Class<T> clazz, String id, String name, double maxHealth, int spawnChance, @Nonnull BossBarStyle style) {
         super(clazz, id, name, maxHealth, spawnChance);
         this.style = style;
-    }
-
-    /**
-     * Returns the max distance from the boss that you can see its {@link BossBar}
-     *
-     * @return the max distance to see the bossbar
-     */
-    protected int getBossBarDistance() {
-        return 20;
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onSpawn(@Nonnull T spawned) {
-        BossBar bossbar = this.style.create(Galactifun.alienManager().getBossKey(), getName());
+        BossBar bossbar = this.style.create(Galactifun.alienManager().bossKey(), name());
         bossbar.setVisible(true);
         bossbar.setProgress(1.0);
         spawned.setRemoveWhenFarAway(false);
-        Galactifun.alienManager().getBossInstances().put(spawned, bossbar);
+        this.bossBars.put(spawned, bossbar);
     }
 
     @Override
@@ -69,7 +61,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / getMaxHealth());
+                bossbar.setProgress(finalHealth / maxHealth());
             }
         }
     }
@@ -81,7 +73,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
             double finalHealth = entity.getHealth() - e.getFinalDamage();
             if (finalHealth > 0) {
-                bossbar.setProgress(finalHealth / getMaxHealth());
+                bossbar.setProgress(finalHealth / maxHealth());
             }
         }
     }
@@ -91,19 +83,20 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
      *
      * @param e the event
      */
-    protected void onBossHit(@Nonnull EntityDamageByEntityEvent e) {}
+    protected void onBossHit(@Nonnull EntityDamageByEntityEvent e) {
+    }
 
     @Override
     @OverridingMethodsMustInvokeSuper
     public void onDeath(@Nonnull EntityDeathEvent e) {
         BossBar bossbar = getBossBarForEntity(e.getEntity());
         bossbar.removeAll();
-        Galactifun.alienManager().getBossInstances().remove(e.getEntity());
+        this.bossBars.remove(e.getEntity());
     }
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    protected void onUniqueTick() {
+    public void onUniqueTick() {
         this.tick++;
         if (this.tick >= 10) {
             this.tick = 0;
@@ -115,7 +108,6 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     public void onMobTick(@Nonnull Mob mob) {
         if (this.tick == 0) {
             Location l = mob.getLocation();
-            long dist = (long) getBossBarDistance() * getBossBarDistance();
 
             BossBar bossbar = getBossBarForEntity(mob);
             List<Player> players = bossbar.getPlayers();
@@ -123,9 +115,9 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             for (Player player : mob.getWorld().getPlayers()) {
                 double distSquared = l.distanceSquared(player.getLocation());
 
-                if (distSquared <= dist && !players.contains(player)) {
+                if (distSquared <= BOSS_BAR_DISTANCE_SQUARED && !players.contains(player)) {
                     bossbar.addPlayer(player);
-                } else if (distSquared > dist && players.contains(player)) {
+                } else {
                     bossbar.removePlayer(player);
                 }
             }
@@ -135,19 +127,20 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
     @Nonnull
     protected final BossBar getBossBarForEntity(LivingEntity entity) {
         AlienManager manager = Galactifun.alienManager();
-        if (manager.getBossInstances().containsKey(entity)) {
-            return manager.getBossInstances().get(entity);
+        BossBar bossbar = this.bossBars.get(entity);
+        if (bossbar != null) {
+            return bossbar;
         }
 
-        BossBar bossbar = this.style.create(manager.getBossKey(), getName());
+        bossbar = this.style.create(manager.bossKey(), name());
         bossbar.setVisible(true);
-        bossbar.setProgress(entity.getHealth() / getMaxHealth());
-        manager.getBossInstances().put(entity, bossbar);
+        bossbar.setProgress(entity.getHealth() / maxHealth());
+        this.bossBars.put(entity, bossbar);
         return bossbar;
     }
 
-    public static void removeBossBars() {
-        for (BossBar bossbar: Galactifun.alienManager().getBossInstances().values()) {
+    public void removeBossBars() {
+        for (BossBar bossbar : this.bossBars.values()) {
             bossbar.setVisible(false);
             bossbar.removeAll();
         }

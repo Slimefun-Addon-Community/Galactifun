@@ -10,32 +10,33 @@ import org.bukkit.block.Block;
 
 /**
  * A structure block with just a material, cached for each material
- * 
+ *
  * @author Mooy1
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-class StructureBlock {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class StructureBlock {
 
-    static final StructureBlock AIR = new StructureBlock(Material.AIR) {
-        @Override public String save() {
+    public static final StructureBlock AIR = new StructureBlock(Material.AIR) {
+        @Override
+        public String save() {
             return "";
         }
     };
-    
+
     private static final EnumMap<Material, StructureBlock> CACHE = new EnumMap<>(Material.class);
 
-    static StructureBlock get(Material material) {
+    public static StructureBlock of(Material material) {
         return CACHE.computeIfAbsent(material, StructureBlock::new);
     }
-    
+
     private final Material material;
-    
-    void paste(Block block, StructureRotation rotation) {
+
+    public void paste(Block block, StructureRotation rotation) {
         block.setType(this.material);
     }
-    
-    String save() {
+
+    public String save() {
         return this.material.name();
     }
-    
+
 }

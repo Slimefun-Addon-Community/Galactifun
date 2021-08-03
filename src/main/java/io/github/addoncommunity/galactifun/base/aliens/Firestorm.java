@@ -24,19 +24,19 @@ public final class Firestorm extends Alien<Blaze> implements Listener {
     public Firestorm(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         super(Blaze.class, id, name, maxHealth, spawnChance);
 
-        Galactifun.inst().registerListener(this);
+        Galactifun.instance().registerListener(this);
     }
 
     @Override
-    protected void onShoot(ProjectileLaunchEvent e, Mob entity) {
+    public void onShoot(ProjectileLaunchEvent e, Mob entity) {
         e.getEntity().setMetadata("electrified", new FixedMetadataValue(
-                Galactifun.inst(),
+                Galactifun.instance(),
                 true
         ));
     }
 
     @Override
-    protected void onDamage(EntityDamageEvent e) {
+    public void onDamage(EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING) {
             e.setCancelled(true);
         }
@@ -65,4 +65,5 @@ public final class Firestorm extends Alien<Blaze> implements Listener {
     protected boolean canSpawnInLightLevel(int lightLevel) {
         return true;
     }
+
 }

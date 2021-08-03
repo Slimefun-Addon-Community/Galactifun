@@ -2,8 +2,6 @@ package io.github.addoncommunity.galactifun.base.aliens;
 
 import javax.annotation.Nonnull;
 
-import lombok.NonNull;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Phantom;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -20,28 +18,28 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
  */
 public final class Skywhale extends Alien<Phantom> {
 
-    public Skywhale(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+    public Skywhale(@Nonnull String id, @Nonnull String name, double maxHealth, int spawnChance) {
         super(Phantom.class, id, name, maxHealth, spawnChance);
     }
 
     @Override
-    protected void onSpawn(@Nonnull Phantom spawned) {
+    public void onSpawn(@Nonnull Phantom spawned) {
         spawned.setSize(100);
     }
 
     @Override
-    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
     }
 
     @Override
-    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new ItemStack(Material.PHANTOM_MEMBRANE, 20));
     }
 
     @Override
-    protected void onInteract(@Nonnull PlayerInteractEntityEvent e) {
+    public void onInteract(@Nonnull PlayerInteractEntityEvent e) {
         e.getRightClicked().addPassenger(e.getPlayer());
     }
 

@@ -2,7 +2,7 @@ package io.github.addoncommunity.galactifun.api.universe.types;
 
 /**
  * Star system types
- * 
+ *
  * @author Mooy1
  */
 public final class StarSystemType extends UniversalType {

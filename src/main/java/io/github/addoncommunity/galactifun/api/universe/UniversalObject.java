@@ -8,7 +8,6 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
-import lombok.NonNull;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -19,7 +18,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Any object in the universe
- * 
+ *
  * @author Mooy1
  */
 public abstract class UniversalObject {
@@ -31,15 +30,15 @@ public abstract class UniversalObject {
     protected final String id;
     @Getter
     private final ItemStack item;
-    private final Orbit orbit;
     @Getter
     private final UniversalObject orbiting;
+    private final Orbit orbit;
     private final int orbitLevel;
 
-    UniversalObject(@NonNull String name, @NonNull UniversalType type, @NonNull Orbit orbit,
-                    @NonNull UniversalObject orbiting, @NonNull ItemStack baseItem) {
+    UniversalObject(@Nonnull String name, @Nonnull UniversalType type, @Nonnull Orbit orbit,
+                    @Nonnull UniversalObject orbiting, @Nonnull ItemStack baseItem) {
         this.name = ChatUtils.removeColorCodes(name);
-        this.item = new CustomItem(baseItem, name, "&7Type: " + type.getDescription());
+        this.item = new CustomItem(baseItem, name, "&7Type: " + type.description());
         this.orbiting = orbiting;
         this.orbit = orbit;
         this.orbitLevel = orbiting.orbitLevel + 1;
@@ -62,21 +61,21 @@ public abstract class UniversalObject {
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double getDistanceTo(@Nonnull UniversalObject other) {
+    public final double distanceTo(@Nonnull UniversalObject other) {
         if (this.orbiting == other.orbiting) {
-            double thisDist = this.orbit.getCurrentDistance();
-            double otherDist = other.orbit.getCurrentDistance();
-            double cosAngle = Math.cos(this.orbit.getOrbitPos() - other.orbit.getOrbitPos());
+            double thisDist = this.orbit.currentDistance();
+            double otherDist = other.orbit.currentDistance();
+            double cosAngle = Math.cos(this.orbit.position() - other.orbit.position());
             return Math.sqrt(thisDist * thisDist + otherDist * otherDist - (2 * thisDist * otherDist * cosAngle));
         }
         if (this.orbiting == null || this.orbitLevel < other.orbitLevel) {
-            return other.orbit.getCurrentDistance() + getDistanceTo(other.orbiting);
+            return other.orbit.currentDistance() + distanceTo(other.orbiting);
         }
-        return this.orbit.getCurrentDistance() + this.orbiting.getDistanceTo(other);
+        return this.orbit.currentDistance() + this.orbiting.distanceTo(other);
     }
 
     @Nonnull
-    public List<UniversalObject> getOrbiters() {
+    public List<UniversalObject> orbiters() {
         return Collections.unmodifiableList(this.orbiters);
     }
 
@@ -84,4 +83,5 @@ public abstract class UniversalObject {
     public int hashCode() {
         return this.id.hashCode();
     }
+
 }

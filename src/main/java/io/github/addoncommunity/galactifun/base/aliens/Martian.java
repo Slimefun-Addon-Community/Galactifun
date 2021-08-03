@@ -53,7 +53,7 @@ public final class Martian extends Alien<ZombieVillager> {
             spawned.setCustomName(ChatColor.RED + "The Zerix");
             spawned.setCustomNameVisible(true);
         }
-        
+
         Objects.requireNonNull(spawned.getEquipment());
 
         spawned.getEquipment().setArmorContents(new ItemStack[] {
@@ -85,18 +85,18 @@ public final class Martian extends Alien<ZombieVillager> {
             LivingEntity entity = (LivingEntity) e.getRightClicked();
             Objects.requireNonNull(entity.getEquipment()).setItemInOffHand(item);
             entity.addPotionEffect(new PotionEffect(
-                PotionEffectType.SLOW,
-                Integer.MAX_VALUE,
-                100,
-                false,
-                false
+                    PotionEffectType.SLOW,
+                    Integer.MAX_VALUE,
+                    100,
+                    false,
+                    false
             ));
 
             if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
                 ItemUtils.consumeItem(item, trade.getAmount(), true);
             }
 
-            Galactifun.inst().runSync(() -> {
+            Galactifun.instance().runSync(() -> {
                 if (entity.isValid()) {
                     entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
 
@@ -111,4 +111,5 @@ public final class Martian extends Alien<ZombieVillager> {
     protected boolean canSpawnInLightLevel(int lightLevel) {
         return true;
     }
+
 }

@@ -33,7 +33,7 @@ public final class TheMoon extends SimpleAlienWorld {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        
+
     }
 
     @Nonnull

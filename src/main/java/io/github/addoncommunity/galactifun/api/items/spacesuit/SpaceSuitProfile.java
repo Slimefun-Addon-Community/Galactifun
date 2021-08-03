@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.NonNull;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -22,13 +23,11 @@ import org.bukkit.inventory.ItemStack;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.util.PersistentInventory;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import org.apache.commons.lang.Validate;
 
 @Getter
-@SuppressWarnings("ClassCanBeRecord")
 public final class SpaceSuitProfile {
 
-    private static final NamespacedKey KEY = Galactifun.inst().getKey("space_suit");
+    private static final NamespacedKey KEY = Galactifun.instance().getKey("space_suit");
 
     private static final Map<UUID, SpaceSuitProfile> profiles = new HashMap<>();
 
@@ -41,7 +40,7 @@ public final class SpaceSuitProfile {
         this.inventory = inventory;
         this.player = player;
         profiles.put(this.player, this);
-        Galactifun.inst().registerListener(new Listener() {
+        Galactifun.instance().registerListener(new Listener() {
             @EventHandler(ignoreCancelled = true)
             private void onArmorMove(InventoryClickEvent e) {
                 UUID uuid = e.getWhoClicked().getUniqueId();
@@ -75,7 +74,7 @@ public final class SpaceSuitProfile {
     private static Optional<SpaceSuitProfile> load(ItemStack stack, UUID uuid) {
         if (SlimefunItem.getByItem(stack) instanceof SpaceSuit suit && suit.isChestPlate()) {
             return Optional.of(new SpaceSuitProfile(
-                    stack.getItemMeta().getPersistentDataContainer().get(KEY, PersistentInventory.INSTANCE),
+                    stack.getItemMeta().getPersistentDataContainer().get(KEY, PersistentInventory.instance()),
                     uuid
             ));
         }
@@ -84,7 +83,7 @@ public final class SpaceSuitProfile {
     }
 
     private void save(ItemStack stack, boolean delete) {
-        stack.getItemMeta().getPersistentDataContainer().set(KEY, PersistentInventory.INSTANCE, inventory);
+        stack.getItemMeta().getPersistentDataContainer().set(KEY, PersistentInventory.instance(), inventory);
         if (delete) profiles.remove(player);
     }
 
@@ -96,4 +95,5 @@ public final class SpaceSuitProfile {
             }
         }
     }
+
 }

@@ -15,7 +15,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
 /**
  * Command to teleport to world spawns
- * 
+ *
  * @author Seggan
  * @author Mooy1
  */
@@ -32,12 +32,12 @@ public final class GalactiportCommand extends AbstractCommand {
         }
 
         World world = Bukkit.getWorld(strings[1]);
-        
+
         if (world == null) {
             p.sendMessage(ChatColor.RED + "Invalid World!");
             return;
         }
-        
+
         PaperLib.teleportAsync(p, world.getSpawnLocation());
     }
 

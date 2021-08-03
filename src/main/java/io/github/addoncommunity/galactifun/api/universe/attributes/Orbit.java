@@ -2,8 +2,9 @@ package io.github.addoncommunity.galactifun.api.universe.attributes;
 
 import javax.annotation.Nonnull;
 
-import io.github.addoncommunity.galactifun.util.Util;
 import org.apache.commons.lang.Validate;
+
+import io.github.addoncommunity.galactifun.util.Util;
 
 /**
  * Represents the orbit of a celestial object
@@ -32,7 +33,7 @@ public final class Orbit {
      */
     @Nonnull
     public static Orbit kilometers(double kilometers, long days) {
-        return new Orbit(kilometers / Util.KM_PER_LY,  365D / days);
+        return new Orbit(kilometers / Util.KM_PER_LY, 365D / days);
     }
 
     @Nonnull
@@ -49,13 +50,13 @@ public final class Orbit {
         this.year = (long) (EARTH_YEAR * year) * 1200000;
     }
 
-    public double getCurrentDistance() {
+    public double currentDistance() {
         return this.distance;
     }
 
-    public double getOrbitPos() {
+    public double position() {
         if (this.year == 0) return 0;
         return ((System.currentTimeMillis() % this.year) * Math.PI * 2) / this.year;
     }
-    
+
 }

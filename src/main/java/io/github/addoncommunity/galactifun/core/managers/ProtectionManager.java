@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import org.bukkit.Location;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 
@@ -16,21 +18,20 @@ public final class ProtectionManager {
     private final Map<BlockPosition, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
 
     @Nonnull
-    public Map<AtmosphericEffect, Integer> getProtectionsFor(@Nonnull Location l) {
-        return protectedBlocks.getOrDefault(new BlockPosition(l), new HashMap<>());
+    public Map<AtmosphericEffect, Integer> protectionAt(@Nonnull Location l) {
+        return this.protectedBlocks.getOrDefault(new BlockPosition(l), new HashMap<>());
     }
 
-    public int getProtectionFor(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
-        return getProtectionsFor(l).getOrDefault(effect, 0);
+    public int protectionAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
+        return protectionAt(l).getOrDefault(effect, 0);
     }
 
     public void addProtection(@Nonnull BlockPosition pos, @Nonnull AtmosphericEffect effect, int level) {
-        Map<AtmosphericEffect, Integer> prots = protectedBlocks.computeIfAbsent(pos, k -> new HashMap<>());
-        prots.merge(effect, level, Integer::sum);
+        this.protectedBlocks.computeIfAbsent(pos, k -> new HashMap<>()).merge(effect, level, Integer::sum);
     }
 
     public void clearProtectedBlocks() {
-        protectedBlocks.clear();
+        this.protectedBlocks.clear();
     }
 
     @Nonnull
@@ -38,9 +39,9 @@ public final class ProtectionManager {
         Map<AtmosphericEffect, Integer> ret = new HashMap<>();
         AlienWorld world = Galactifun.worldManager().getAlienWorld(l.getWorld());
         if (world != null) {
-            Atmosphere atmosphere = world.getAtmosphere();
-            for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.getEffects().entrySet()) {
-                int val = eff.getValue() - getProtectionFor(l, eff.getKey());
+            Atmosphere atmosphere = world.atmosphere();
+            for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.effects().entrySet()) {
+                int val = eff.getValue() - protectionAt(l, eff.getKey());
                 if (val > 0) ret.put(eff.getKey(), val);
             }
         }
@@ -51,4 +52,5 @@ public final class ProtectionManager {
     public int getEffectAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
         return getEffectsAt(l).getOrDefault(effect, 0);
     }
+
 }

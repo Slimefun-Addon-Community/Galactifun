@@ -20,17 +20,20 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
     @Getter
-    private final boolean chestPlate;
+    private final boolean isChestPlate;
 
-    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, boolean chestPlate) {
+    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, boolean isChestPlate) {
         super(category, item, recipeType, recipe);
-        this.chestPlate = chestPlate;
+        this.isChestPlate = isChestPlate;
     }
 
     @Nonnull
     @Override
     public ProtectionType[] getProtectionTypes() {
-        return new ProtectionType[]{ProtectionType.RADIATION, ProtectionType.BEES};
+        return new ProtectionType[] {
+                ProtectionType.RADIATION,
+                ProtectionType.BEES
+        };
     }
 
     @Override
@@ -41,6 +44,7 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     @Nullable
     @Override
     public NamespacedKey getArmorSetId() {
-        return Galactifun.inst().getKey("galactifun_space_suit");
+        return Galactifun.instance().getKey("space_suit");
     }
+
 }

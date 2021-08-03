@@ -309,35 +309,35 @@ public final class BaseMats {
         component(REDSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.REDSTONE_BLOCK));
         component(LAPIS_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.LAPIS_BLOCK));
         component(GLOWSTONE_CIRCUIT, CircuitPress.TYPE, new ItemStack(Material.GLOWSTONE));
-        
+
         component(MUNPOWDER, CoreRecipeType.ALIEN_DROP,
                 null, null, null,
                 null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.getItem());
+        component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.item());
         component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
     }
 
     private static void component(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe).register(Galactifun.instance());
     }
 
     private static void component(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.instance());
     }
 
     private static void assembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.instance());
     }
 
     private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {
         ItemStack[] recipe = new ItemStack[worlds.length];
-        for (int i = 0 ; i < worlds.length ; i++) {
+        for (int i = 0; i < worlds.length; i++) {
             AlienWorld world = worlds[i];
-            recipe[i] = world.getItem();
+            recipe[i] = world.item();
             world.addBlockMapping(item.getType(), item);
         }
-        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.inst());
+        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.instance());
     }
 
 }

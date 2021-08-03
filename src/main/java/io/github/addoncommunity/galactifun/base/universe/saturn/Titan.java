@@ -34,15 +34,15 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 public final class Titan extends AlienWorld {
 
     private final Set<Biome> forests = EnumSet.of(
-        Biome.FOREST,
-        Biome.BIRCH_FOREST,
-        Biome.TALL_BIRCH_FOREST,
-        Biome.WOODED_HILLS,
-        Biome.BIRCH_FOREST_HILLS,
-        Biome.FLOWER_FOREST,
-        Biome.TALL_BIRCH_FOREST,
-        Biome.WOODED_HILLS,
-        Biome.WOODED_MOUNTAINS
+            Biome.FOREST,
+            Biome.BIRCH_FOREST,
+            Biome.TALL_BIRCH_FOREST,
+            Biome.WOODED_HILLS,
+            Biome.BIRCH_FOREST_HILLS,
+            Biome.FLOWER_FOREST,
+            Biome.TALL_BIRCH_FOREST,
+            Biome.WOODED_HILLS,
+            Biome.WOODED_MOUNTAINS
     );
 
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
@@ -173,7 +173,7 @@ public final class Titan extends AlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        // TODO add more vegetation
+        // TODO add more veation
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {

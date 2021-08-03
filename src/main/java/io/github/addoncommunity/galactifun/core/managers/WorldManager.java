@@ -1,12 +1,13 @@
-package io.github.addoncommunity.galactifun.api.worlds;
+package io.github.addoncommunity.galactifun.core.managers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -42,9 +43,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.ProtectionManager;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -58,7 +59,7 @@ public final class WorldManager implements Listener {
 
     @Getter
     private final int maxAliensPerPlayer;
-    private final List<PlanetaryWorld> spaceWorlds = new ArrayList<>();
+    private final Set<PlanetaryWorld> spaceWorlds = new HashSet<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
     private final YamlConfiguration config;
     private final YamlConfiguration defaultConfig;
@@ -97,16 +98,19 @@ public final class WorldManager implements Listener {
         });
     }
 
-    void register(PlanetaryWorld world) {
+    public void register(PlanetaryWorld world) {
+        if (this.spaceWorlds.contains(world)) {
+            throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
+        }
         this.spaceWorlds.add(world);
         if (world instanceof AlienWorld alienWorld) {
-            this.alienWorlds.put(alienWorld.getWorld(), alienWorld);
+            this.alienWorlds.put(alienWorld.world(), alienWorld);
         }
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
-        path = world.getId() + '.' + path;
+    public <T> T getSetting(AlienWorld world, String path, Class<T> clazz, T defaultValue) {
+        path = world.id() + '.' + path;
         this.defaultConfig.set(path, defaultValue);
         if (clazz == String.class) {
             return (T) this.config.getString(path);
@@ -126,15 +130,15 @@ public final class WorldManager implements Listener {
     }
 
     @Nonnull
-    public List<PlanetaryWorld> getSpaceWorlds() {
-        return Collections.unmodifiableList(this.spaceWorlds);
+    public Collection<PlanetaryWorld> spaceWorlds() {
+        return Collections.unmodifiableCollection(this.spaceWorlds);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {
         AlienWorld object = getAlienWorld(e.getFrom());
         if (object != null) {
-            object.getGravity().removeGravity(e.getPlayer());
+            object.gravity().removeGravity(e.getPlayer());
         }
         object = getAlienWorld(e.getPlayer().getWorld());
         if (object != null) {
@@ -192,15 +196,14 @@ public final class WorldManager implements Listener {
         Block block = e.getBlock();
         AlienWorld world = getAlienWorld(block.getWorld());
         if (world != null) {
-            Atmosphere atmosphere = world.getAtmosphere();
             ProtectionManager manager = Galactifun.protectionManager();
             Location l = block.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
-                Galactifun.inst().runSync(() -> block.setType(Material.ICE));
+                Galactifun.instance().runSync(() -> block.setType(Material.ICE));
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
-                Galactifun.inst().runSync(block::breakNaturally);
+                Galactifun.instance().runSync(block::breakNaturally);
             } else {
-                int attempts = atmosphere.getGrowthAttempts();
+                int attempts = world.atmosphere().growthAttempts();
                 if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
                     BlockData data = block.getBlockData();
                     if (data instanceof Ageable ageable) {
@@ -233,7 +236,7 @@ public final class WorldManager implements Listener {
     private void onSleep(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         PlanetaryWorld world = this.getWorld(p.getWorld());
-        if (world == null || world.getAtmosphere().getEnvironment() == World.Environment.NORMAL) return;
+        if (world == null || world.atmosphere().environment() == World.Environment.NORMAL) return;
         Block b = e.getClickedBlock();
         if (b != null && Tag.BEDS.isTagged(b.getType())) {
             e.setCancelled(true);
@@ -268,7 +271,7 @@ public final class WorldManager implements Listener {
                         );
                         ChatUtils.awaitInput(p, s -> {
                             if (s.equalsIgnoreCase("yes")) {
-                                PaperLib.teleportAsync(p, BaseUniverse.EARTH.getWorld().getSpawnLocation());
+                                PaperLib.teleportAsync(p, BaseUniverse.EARTH.world().getSpawnLocation());
                                 WorldManager.this.respawnTimes.remove(p.getUniqueId());
                             }
                         });

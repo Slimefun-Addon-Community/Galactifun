@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
-import io.github.addoncommunity.galactifun.api.structures.StructureManager;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
+import io.github.addoncommunity.galactifun.core.managers.StructureManager;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
@@ -32,7 +32,7 @@ public final class StructureCommand extends AbstractCommand {
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender sender, @Nonnull String[] args) {
+    public void onExecute(@Nonnull CommandSender sender, String[] args) {
         if (args.length == 1 || !(sender instanceof Player p)) {
             return;
         }
@@ -44,7 +44,7 @@ public final class StructureCommand extends AbstractCommand {
                 p.sendMessage(ChatColor.RED + "Usage: /galactifun save <name>");
                 return;
             }
-            
+
             Location pos1 = p.getPersistentDataContainer().get(this.pos1, PersistenceUtils.LOCATION);
             if (pos1 == null) {
                 p.sendMessage(ChatColor.RED + "pos1 not set!");
@@ -63,10 +63,10 @@ public final class StructureCommand extends AbstractCommand {
             p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
             return;
         }
-        
+
         Block target = p.getTargetBlockExact(32);
         if (target == null || target.getType().isAir()) {
-            p.sendMessage(ChatColor.RED + "You must target a block!");
+            p.sendMessage(ChatColor.RED + "You must tar a block!");
             return;
         }
 
@@ -81,13 +81,13 @@ public final class StructureCommand extends AbstractCommand {
             p.sendMessage(ChatColor.GREEN + "Set pos2 to " + toString(target));
             return;
         }
-        
+
         if (args[1].equals("paste")) {
             if (args.length != 3) {
                 p.sendMessage(ChatColor.RED + "Usage: /galactifun paste <name>");
                 return;
             }
-            
+
             GalacticStructure loaded = manager.getSaved(args[2]);
 
             if (loaded == null) {
@@ -99,18 +99,18 @@ public final class StructureCommand extends AbstractCommand {
             p.sendMessage(ChatColor.GREEN + "Pasted!");
         }
     }
-    
+
     private static String toString(Block l) {
         return l.getX() + "x" + l.getY() + "y" + l.getZ() + "z in " + l.getWorld().getName();
     }
 
     @Override
-    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] args, @Nonnull List<String> options) {
+    public void onTab(@Nonnull CommandSender commandSender, String[] args, @Nonnull List<String> options) {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(Galactifun.structureManager().getStructureNames());
+            options.addAll(Galactifun.structureManager().getNames());
         }
     }
-    
+
 }

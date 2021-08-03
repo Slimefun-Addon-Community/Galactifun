@@ -4,7 +4,7 @@ import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 
 /**
  * Type of an {@link PlanetaryObject}
- * 
+ *
  * @author Mooy1
  */
 public final class PlanetaryType extends UniversalType {
@@ -13,7 +13,7 @@ public final class PlanetaryType extends UniversalType {
      * Orbit, asteroid belts, etc
      */
     public static final PlanetaryType SPACE = new PlanetaryType("Space");
-    
+
     /**
      * Gaseous planets ex: jupiter
      */
@@ -23,12 +23,12 @@ public final class PlanetaryType extends UniversalType {
      * Frozen planets ex: neptune
      */
     public static final PlanetaryType FROZEN = new PlanetaryType("Frozen");
-    
+
     /**
      * Mostly liquid planets
      */
     public static final PlanetaryType OCEANIC = new PlanetaryType("Oceanic");
-    
+
     /**
      * Rocky/Solid planets ex: earth, mars, moon
      */

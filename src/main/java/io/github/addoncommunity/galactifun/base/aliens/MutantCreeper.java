@@ -29,23 +29,23 @@ public final class MutantCreeper extends Alien<Creeper> {
     }
 
     @Override
-    protected void onSpawn(@Nonnull Creeper spawned) {
+    public void onSpawn(@Nonnull Creeper spawned) {
         spawned.setPowered(true);
     }
 
     @Override
-    protected void onDeath(@Nonnull EntityDeathEvent e) {
+    public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
         e.getDrops().add(new SlimefunItemStack(BaseMats.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
     }
 
     @Override
-    protected void onTarget(@Nonnull EntityTargetEvent e) {
+    public void onTarget(@Nonnull EntityTargetEvent e) {
         e.setCancelled(true);
     }
 
     @Override
-    protected void onHit(@Nonnull EntityDamageByEntityEvent e) {
+    public void onHit(@Nonnull EntityDamageByEntityEvent e) {
         Creeper creeper = (Creeper) e.getEntity();
         if (e.getDamager() instanceof Player p) {
             if (p.getGameMode() != GameMode.CREATIVE) {
@@ -60,8 +60,4 @@ public final class MutantCreeper extends Alien<Creeper> {
         }
     }
 
-    @Override
-    protected boolean canSpawnInLightLevel(int lightLevel) {
-        return true;
-    }
 }

@@ -6,7 +6,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,6 +38,7 @@ public final class Util {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
+    // TODO maybe move this to protection manager?
     public static final Set<Material> IMPERMEABLE_BLOCKS = EnumSet.noneOf(Material.class);
     private static final BlockFace[] ALL_SIDES = {
             BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN
@@ -55,14 +55,11 @@ public final class Util {
                 Material.DIAMOND_BLOCK,
                 Material.NETHERITE_BLOCK
         ));
-        IMPERMEABLE_BLOCKS.addAll(Util.getAllMaterialsContaining("WAXED"));
-    }
-
-    /**
-     * From and to are inclusive
-     */
-    public static int random(int from, int to, @Nonnull Random random) {
-        return from + random.nextInt(1 + to - from);
+        for (Material material : Material.values()) {
+            if (material.name().contains("WAXED")) {
+                IMPERMEABLE_BLOCKS.add(material);
+            }
+        }
     }
 
     @Nonnull
@@ -107,17 +104,4 @@ public final class Util {
         return Optional.of(visited.parallelStream().map(BlockPosition::new).collect(Collectors.toSet()));
     }
 
-    @Nonnull
-    public static Set<Material> getAllMaterialsContaining(@Nonnull String s) {
-        Set<Material> materials = EnumSet.noneOf(Material.class);
-
-        for (Material material : Material.values()) {
-            if (material.name().contains(s)) {
-                materials.add(material);
-            }
-        }
-
-        return materials;
-    }
-    
 }

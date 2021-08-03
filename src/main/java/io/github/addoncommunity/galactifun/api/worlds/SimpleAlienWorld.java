@@ -29,7 +29,7 @@ import io.github.addoncommunity.galactifun.base.universe.Mars;
 public abstract class SimpleAlienWorld extends AlienWorld {
 
     public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
-                          DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+                            DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
@@ -49,8 +49,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
             for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 double noise = generator.noise(realX, realZ, getFrequency(), getAmplitude(), true);
-                
-                if (smootherTerrain()) {
+
+                if (smoothenTerrain()) {
                     noise *= noise;
                 }
 
@@ -139,8 +139,8 @@ public abstract class SimpleAlienWorld extends AlienWorld {
     /**
      * Square the noise before calculating height. This makes for smoother terrain.
      */
-    protected boolean smootherTerrain() {
+    protected boolean smoothenTerrain() {
         return false;
     }
-    
+
 }

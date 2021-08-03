@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -24,16 +23,13 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  *
  * @author GallowsDove
  * @author Seggan
- *
  */
 public class BoulderPopulator extends BlockPopulator {
+
     private final int attempts;
     private final int chance;
-    @Nonnull
     private final Material ore;
-    @Nullable
     private final String id;
-    @Nonnull
     private final List<Material> source;
 
 
@@ -55,7 +51,7 @@ public class BoulderPopulator extends BlockPopulator {
 
     @Override
     public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        for (int i = 0 ; i < this.attempts ; i++) {
+        for (int i = 0; i < this.attempts; i++) {
             if (random.nextInt(100) < this.chance) {
 
                 int x = random.nextInt(16);
@@ -73,4 +69,5 @@ public class BoulderPopulator extends BlockPopulator {
             }
         }
     }
+
 }
