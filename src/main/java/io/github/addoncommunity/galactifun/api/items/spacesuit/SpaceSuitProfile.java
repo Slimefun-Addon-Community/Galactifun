@@ -27,7 +27,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 @Getter
 public final class SpaceSuitProfile {
 
-    private static final NamespacedKey KEY = Galactifun.instance().getKey("space_suit");
+    private static final NamespacedKey KEY = Galactifun.instance().getKey("space_suit_inv");
 
     private static final Map<UUID, SpaceSuitProfile> profiles = new HashMap<>();
 
@@ -76,8 +76,8 @@ public final class SpaceSuitProfile {
             return Optional.of(new SpaceSuitProfile(
                     stack.getItemMeta().getPersistentDataContainer().getOrDefault(
                             KEY,
-                            PersistentInventory.INSTANCE,
-                            Bukkit.createInventory(Bukkit.getPlayer(uuid), suit.getInvSize())
+                            PersistentInventory.instance(),
+                            Bukkit.createInventory(Bukkit.getPlayer(uuid), suit.invSize())
                     ),
                     uuid
             ));

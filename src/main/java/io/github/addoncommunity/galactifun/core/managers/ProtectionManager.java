@@ -20,12 +20,12 @@ public final class ProtectionManager {
     private final Map<BlockPosition, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
 
     @Nonnull
-    public Map<AtmosphericEffect, Integer> protectionAt(@Nonnull Location l) {
+    public Map<AtmosphericEffect, Integer> protectionsAt(@Nonnull Location l) {
         return this.protectedBlocks.getOrDefault(new BlockPosition(l), new HashMap<>());
     }
 
     public int protectionAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
-        return protectionAt(l).getOrDefault(effect, 0);
+        return protectionsAt(l).getOrDefault(effect, 0);
     }
 
     public void addProtection(@Nonnull BlockPosition pos, @Nonnull AtmosphericEffect effect, int level) {
@@ -40,7 +40,7 @@ public final class ProtectionManager {
     public Map<AtmosphericEffect, Integer> getEffectsAt(@Nonnull Location l) {
         AlienWorld world = Galactifun.worldManager().getAlienWorld(l.getWorld());
         if (world == null) return new HashMap<>();
-        return subtractProtections(world.getAtmosphere(), getProtectionsFor(l));
+        return subtractProtections(world.atmosphere(), protectionsAt(l));
     }
 
     public int getEffectAt(@Nonnull Location l, @Nonnull AtmosphericEffect effect) {
@@ -50,7 +50,7 @@ public final class ProtectionManager {
     @Nonnull
     public Map<AtmosphericEffect, Integer> subtractProtections(@NonNull Atmosphere atmosphere, @NonNull Map<AtmosphericEffect, Integer> protections) {
         Map<AtmosphericEffect, Integer> ret = new HashMap<>();
-        for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.getEffects().entrySet()) {
+        for (Map.Entry<AtmosphericEffect, Integer> eff : atmosphere.effects().entrySet()) {
             int val = eff.getValue() - protections.getOrDefault(eff.getKey(), 0);
             if (val > 0) ret.put(eff.getKey(), val);
         }

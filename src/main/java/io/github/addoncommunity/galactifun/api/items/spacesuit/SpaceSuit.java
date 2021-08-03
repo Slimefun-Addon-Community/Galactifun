@@ -26,12 +26,12 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 @Getter
 public final class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
-    private final boolean chestPlate;
+    private final boolean isChestPlate;
     private final int invSize;
 
-    public SpaceSuit(SlimefunItemStack item, ItemStack[] recipe, boolean chestPlate, int invSize) {
+    public SpaceSuit(SlimefunItemStack item, ItemStack[] recipe, boolean isChestPlate, int invSize) {
         super(CoreCategory.EQUIPMENT, item, RecipeType.ARMOR_FORGE, recipe);
-        this.chestPlate = chestPlate;
+        this.isChestPlate = isChestPlate;
         this.invSize = invSize;
     }
 
@@ -39,12 +39,12 @@ public final class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     public static Map<AtmosphericEffect, Integer> getProtections(@NonNull Player p) {
         Optional<SpaceSuitProfile> optionalProfile = SpaceSuitProfile.getOrCreate(p);
         if (optionalProfile.isEmpty()) return new HashMap<>();
-        Inventory inventory = optionalProfile.get().getInventory();
+        Inventory inventory = optionalProfile.get().inventory();
 
         Map<AtmosphericEffect, Integer> zeMap = new HashMap<>();
         for (ItemStack stack : inventory.getContents()) {
             if (SlimefunItem.getByItem(stack) instanceof SpaceSuitModule module) {
-                zeMap.merge(module.getEffect(), module.getProtectionLevel(), Integer::sum);
+                zeMap.merge(module.effect(), module.protectionLevel(), Integer::sum);
             }
         }
 
