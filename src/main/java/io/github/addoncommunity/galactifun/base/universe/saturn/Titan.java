@@ -87,7 +87,7 @@ public final class Titan extends AlienWorld {
                                 if (random.nextBoolean()) {
                                     chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                                 } else {
-                                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
                                 }
                             }
                         }

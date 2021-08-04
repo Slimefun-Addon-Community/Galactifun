@@ -9,24 +9,24 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public final class CoolingUnit extends ProtectingBlock {
+public class HeatingUnit extends ProtectingBlock {
 
     private final int tier;
 
-    public CoolingUnit(SlimefunItemStack item, ItemStack[] recipe, int tier) {
+    public HeatingUnit(SlimefunItemStack item, ItemStack[] recipe, int tier) {
         super(item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         this.tier = tier;
     }
 
     @Override
     protected int getEnergyRequirement() {
-        return this.tier * 512;
+        return this.tier * 256;
     }
 
     @Nonnull
     @Override
     protected AtmosphericEffect getEffect() {
-        return AtmosphericEffect.HEAT;
+        return AtmosphericEffect.COLD;
     }
 
     @Override
@@ -41,7 +41,7 @@ public final class CoolingUnit extends ProtectingBlock {
 
     @Override
     public int getCapacity() {
-        return getEnergyRequirement() * 2;
+        return this.getEnergyRequirement() * 2;
     }
 
 }

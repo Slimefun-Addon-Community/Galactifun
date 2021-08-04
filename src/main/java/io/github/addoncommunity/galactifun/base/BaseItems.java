@@ -14,6 +14,7 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
+import io.github.addoncommunity.galactifun.base.items.protection.HeatingUnit;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
@@ -113,6 +114,37 @@ public final class BaseItems {
             LoreBuilder.powerPerSecond(3072),
             LoreBuilder.powerBuffer(6144)
     );
+    public static final SlimefunItemStack HEATING_UNIT_1 = new SlimefunItemStack(
+            "HEATING_UNIT_1",
+            Material.SHROOMLIGHT,
+            "&6Heating Unit I",
+            "",
+            "&7Protection: 2",
+            "&7Range: 100 blocks",
+            LoreBuilder.powerPerSecond(512),
+            LoreBuilder.powerBuffer(1024)
+    );
+    public static final SlimefunItemStack HEATING_UNIT_2 = new SlimefunItemStack(
+            "HEATING_UNIT_2",
+            Material.SHROOMLIGHT,
+            "&bCooling Unit II",
+            "",
+            "&7Protection: 4",
+            "&7Range: 150 blocks",
+            LoreBuilder.powerPerSecond(1024),
+            LoreBuilder.powerBuffer(2048)
+    );
+    public static final SlimefunItemStack HEATING_UNIT_3 = new SlimefunItemStack(
+            "HEATING_UNIT_3",
+            Material.SHROOMLIGHT,
+            "&bCooling Unit III",
+            "",
+            "&7Protection: 6",
+            "&7Range: 200 blocks",
+            LoreBuilder.powerPerSecond(2048),
+            LoreBuilder.powerBuffer(4096)
+    );
+    //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
     private static final int TIER_ONE_STORAGE = 9;
@@ -134,7 +166,6 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_TWO_FUEL,
             "&7Cargo Capacity: " + TIER_TWO_STORAGE
     );
-    //</editor-fold>
     private static final int TIER_THREE_FUEL = 500;
     private static final int TIER_THREE_STORAGE = 36;
     public static final SlimefunItemStack TIER_THREE = new SlimefunItemStack(
@@ -228,6 +259,12 @@ public final class BaseItems {
                 BaseMats.DRY_ICE, COOLING_UNIT_2, BaseMats.DRY_ICE,
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
+
+        new HeatingUnit(HEATING_UNIT_1, new ItemStack[]{
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                SlimefunItems.HEATING_COIL, BaseMats.FAN_BLADE, SlimefunItems.HEATING_COIL,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }, 1).register(galactifun);
 
     }
 
