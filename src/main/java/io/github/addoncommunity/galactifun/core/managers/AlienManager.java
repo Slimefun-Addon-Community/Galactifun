@@ -34,7 +34,7 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
-public final class AlienManager implements Listener, Runnable {
+public final class AlienManager implements Listener {
 
     @Getter
     private final NamespacedKey key;
@@ -44,7 +44,7 @@ public final class AlienManager implements Listener, Runnable {
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(this, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
+        galactifun.scheduleRepeatingSync(this::tick, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
 
         this.key = Galactifun.instance().getKey("alien");
         this.bossKey = Galactifun.instance().getKey("boss_alien");
@@ -73,8 +73,7 @@ public final class AlienManager implements Listener, Runnable {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
-    @Override
-    public void run() {
+    public void tick() {
         for (Alien<?> alien : this.aliens.values()) {
             alien.onUniqueTick();
         }

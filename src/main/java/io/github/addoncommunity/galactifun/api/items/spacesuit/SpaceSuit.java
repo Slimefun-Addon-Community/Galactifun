@@ -16,15 +16,16 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-// TODO implement
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
-    @Getter
-    private final boolean isChestPlate;
+    private static final NamespacedKey SPACE_SUIT_KEY = Galactifun.instance().getKey("space_suit");
 
-    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, boolean isChestPlate) {
+    @Getter
+    private final int maxUpgrades;
+
+    public SpaceSuit(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int maxUpgrades) {
         super(category, item, recipeType, recipe);
-        this.isChestPlate = isChestPlate;
+        this.maxUpgrades = maxUpgrades;
     }
 
     @Nonnull
@@ -44,7 +45,7 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     @Nullable
     @Override
     public NamespacedKey getArmorSetId() {
-        return Galactifun.instance().getKey("space_suit");
+        return SPACE_SUIT_KEY;
     }
 
 }

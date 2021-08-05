@@ -1,10 +1,16 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.codec.Charsets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -13,20 +19,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.Structure;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
-import io.github.addoncommunity.galactifun.core.managers.StructureManager;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 
 public final class StructureCommand extends AbstractCommand {
 
+    private final Map<String, Structure> savedStructures = new HashMap<>();
     private final NamespacedKey pos1;
     private final NamespacedKey pos2;
+    private final File saveFolder;
 
     public StructureCommand(Galactifun galactifun) {
         super("structure", "The command for structures", true);
 
+        this.saveFolder = new File(galactifun.getDataFolder(), "saved_structures");
         this.pos1 = galactifun.getKey("pos1");
         this.pos2 = galactifun.getKey("pos2");
     }
@@ -36,8 +44,6 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 1 || !(sender instanceof Player p)) {
             return;
         }
-
-        StructureManager manager = Galactifun.structureManager();
 
         if (args[1].equals("save")) {
             if (args.length != 3) {
@@ -58,9 +64,20 @@ public final class StructureCommand extends AbstractCommand {
             }
 
             StructureRotation rotation = StructureRotation.fromFace(p.getFacing());
-            GalacticStructure struct = manager.createStructure(rotation, pos1.getBlock(), pos2.getBlock());
-            manager.saveStructure(args[2], struct);
-            p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
+            Structure struct = Structure.create(rotation, pos1.getBlock(), pos2.getBlock());
+
+            File file = new File(this.saveFolder, this.name + ".gs");
+            file.getParentFile().mkdirs();
+            if (file.exists()) {
+                try {
+                    Files.writeString(file.toPath(), struct.saveToString(), Charsets.UTF_8);
+                    this.savedStructures.put(this.name, struct);
+                    p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    p.sendMessage(ChatColor.RED + "Error saving file! Check the console!");
+                }
+            }
             return;
         }
 
@@ -88,14 +105,17 @@ public final class StructureCommand extends AbstractCommand {
                 return;
             }
 
-            GalacticStructure loaded = manager.getSaved(args[2]);
+            Structure saved = this.savedStructures.get(args[2]);
 
-            if (loaded == null) {
-                p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
-                return;
+            if (saved == null) {
+                saved = Structure.getByKey(args[2]);
+                if (saved == null) {
+                    p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
+                    return;
+                }
             }
 
-            loaded.paste(target, StructureRotation.fromFace(p.getFacing()));
+            saved.paste(target, StructureRotation.fromFace(p.getFacing()));
             p.sendMessage(ChatColor.GREEN + "Pasted!");
         }
     }
@@ -109,7 +129,8 @@ public final class StructureCommand extends AbstractCommand {
         if (args.length == 2) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
         } else if (args.length == 3 && args[1].equals("paste")) {
-            options.addAll(Galactifun.structureManager().getNames());
+            options.addAll(this.savedStructures.keySet());
+            options.addAll(Structure.getLoadedKeys());
         }
     }
 

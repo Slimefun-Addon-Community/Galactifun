@@ -2,7 +2,6 @@ package io.github.addoncommunity.galactifun.base.items;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,8 +12,9 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import lombok.SneakyThrows;
+import lombok.AllArgsConstructor;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,6 +49,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
 
+    private static final MessageDigest SHA_256 = DigestUtils.getSha256Digest();
     private static final int[] BACKGROUND = new int[] { 1, 2, 6, 7, 8 };
     private static final int ADDRESS_SLOT = 3;
     private static final int DESTINATION_SLOT = 4;
@@ -196,8 +197,6 @@ public final class StargateController extends SlimefunItem implements Listener {
     }
 
     @Nonnull
-    // TODO cache algorithm
-    @SneakyThrows(NoSuchAlgorithmException.class)
     private ChestMenu getMenu(@Nonnull Block b) {
         ChestMenu menu = new ChestMenu(this.getItemName());
         for (int i : BACKGROUND) {
@@ -209,7 +208,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         String address = BlockStorage.getLocationInfo(l, "gfsgAddress");
         if (address == null) {
             String lString = l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ();
-            byte[] hash = MessageDigest.getInstance("SHA-256").digest(lString.getBytes(StandardCharsets.UTF_8));
+            byte[] hash = SHA_256.digest(lString.getBytes(StandardCharsets.UTF_8));
             address = String.format(
                     "%x%x%x%x%x%x",
                     hash[0],
@@ -335,7 +334,11 @@ public final class StargateController extends SlimefunItem implements Listener {
         }
     }
 
-    private static final record ComponentPosition(int y, int z) {
+    @AllArgsConstructor
+    private static final class ComponentPosition {
+
+        private final int y;
+        private final int z;
 
         public boolean isInSameRing(@Nonnull Block b) {
             return BlockStorage.check(b.getRelative(0, this.y, this.z)) instanceof StargateRing;
