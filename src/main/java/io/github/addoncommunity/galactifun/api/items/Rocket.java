@@ -2,7 +2,10 @@ package io.github.addoncommunity.galactifun.api.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nonnull;
 
@@ -10,6 +13,7 @@ import lombok.Getter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -32,6 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -39,14 +44,17 @@ import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -180,14 +188,14 @@ public final class Rocket extends SlimefunItem {
         menu.open(p);
     }
 
-    private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
-        BlockStorage.addBlockInfo(b, "isLaunching", "true");
+    public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
+        BlockStorage.addBlockInfo(rocket, "isLaunching", "true");
 
         World world = p.getWorld();
 
         new BukkitRunnable() {
             private int times = 0;
-            private final Block pad = b.getRelative(BlockFace.DOWN);
+            private final Block pad = rocket.getRelative(BlockFace.DOWN);
 
             @Override
             public void run() {
@@ -204,25 +212,42 @@ public final class Rocket extends SlimefunItem {
 
         World to = worldTo.world();
 
-        Block destBlock = to.getHighestBlockAt(x, z).getRelative(BlockFace.UP);
+        AtomicReference<Block> destBlock = new AtomicReference<>(to.getHighestBlockAt(x, z).getRelative(BlockFace.UP));
 
-        Chunk destChunk = destBlock.getChunk();
+        Chunk destChunk = destBlock.get().getChunk();
         if (!destChunk.isLoaded()) {
             destChunk.load(true);
         }
 
+        // TODO clean up this lambda
         Galactifun.instance().runSync(() -> {
-            destBlock.setType(Material.CHEST);
-            BlockData data = destBlock.getBlockData();
+            Optional<Block> optional = getLandingBeacon(destChunk);
+            if (optional.isPresent()) {
+                destBlock.set(optional.get());
+
+                BlockMenu menu = BlockStorage.getInventory(destBlock.get());
+                menu.pushItem(this.getItem().clone());
+
+                ItemStack fuel = StackUtils.getItemByID(fuelType);
+                if (fuel != null) {
+                    fuel = fuel.clone();
+                    fuel.setAmount(fuelLeft);
+                    menu.pushItem(fuel);
+                }
+                return;
+            }
+
+            Block destBlockDef = destBlock.get();
+            destBlockDef.setType(Material.CHEST);
+            BlockData data = destBlockDef.getBlockData();
             if (data instanceof Rotatable) {
                 ((Rotatable) data).setRotation(BlockFace.NORTH);
             }
-            destBlock.setBlockData(data, true);
+            destBlockDef.setBlockData(data, true);
 
-            BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+            BlockState state = PaperLib.getBlockState(destBlockDef, false).getState();
             if (state instanceof Chest chest) {
                 Inventory inv = chest.getInventory();
-                inv.clear(); // just in case
                 inv.addItem(this.getItem().clone());
 
                 ItemStack fuel = StackUtils.getItemByID(fuelType);
@@ -234,27 +259,44 @@ public final class Rocket extends SlimefunItem {
             }
             state.update();
 
-            p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
+            sendRandomMessage(p);
         }, 40);
 
-        // TODO store an instance somewhere
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
+        Galactifun.instance().runSync(() -> sendRandomMessage(p), 80);
+        Galactifun.instance().runSync(() -> sendRandomMessage(p), 120);
+        Galactifun.instance().runSync(() -> sendRandomMessage(p), 160);
         Galactifun.instance().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
-                    if (entity.getLocation().distanceSquared(b.getLocation()) <= 25) {
-                        PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                    if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
+                        PaperLib.teleportAsync(entity, destBlock.get().getLocation().add(0, 1, 0));
                     }
                 }
             }
 
-            b.setType(Material.AIR);
-            BlockStorage.clearBlockInfo(b);
+            rocket.setType(Material.AIR);
+            BlockStorage.clearBlockInfo(rocket);
         }, 200);
+    }
+
+    private static Optional<Block> getLandingBeacon(Chunk c) {
+        for (BlockStorage bs : SlimefunPlugin.getRegistry().getWorlds().values()) {
+            for (Map.Entry<Location, Config> entry : bs.getRawStorage().entrySet()) {
+                Location l = entry.getKey();
+                if (entry.getValue().getString("id").equals(BaseItems.LANDING_BEACON.getItemId()) &&
+                        l.getChunk().equals(c)) {
+                    return Optional.of(l.getBlock());
+                }
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private static void sendRandomMessage(Player p) {
+        p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
     }
 
 }

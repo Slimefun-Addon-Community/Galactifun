@@ -9,6 +9,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
+import io.github.addoncommunity.galactifun.base.items.LandingBeacon;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
@@ -176,6 +177,17 @@ public final class BaseItems {
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
     );
+
+    public static final SlimefunItemStack LANDING_BEACON = new SlimefunItemStack(
+            "LANDING_BEACON",
+            Material.REDSTONE_TORCH,
+            "&fLanding Beacon",
+            "",
+            "&7Any rocket that lands in the",
+            "&7chunk that this is placed in will",
+            "&7land on the Landing Beacon and the ",
+            "&7items will go inside it"
+    );
     //</editor-fold>
 
     public static void setup(Galactifun galactifun) {
@@ -229,6 +241,8 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_3, BaseMats.ROCKET_ENGINE_3, null, BaseMats.ULTRA_DUTY_SHEET
         }, TIER_THREE_FUEL, TIER_THREE_STORAGE).register(galactifun);
+
+        new LandingBeacon().register(galactifun);
 
         new LaunchPadFloor(CoreCategory.ITEMS, BaseItems.LAUNCH_PAD_FLOOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 null, null, null,

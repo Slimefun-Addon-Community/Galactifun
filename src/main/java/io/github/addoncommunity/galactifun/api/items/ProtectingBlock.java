@@ -96,6 +96,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                     counter++;
                 } else {
                     counter = 0;
+                    //noinspection deprecation
                     Galactifun.protectionManager().clearProtectedBlocks();
                     for (BlockPosition l : allBlocks) {
                         updateProtections(l);

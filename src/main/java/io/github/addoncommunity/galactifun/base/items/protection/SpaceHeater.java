@@ -9,7 +9,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public class SpaceHeater extends ProtectingBlock {
+public final class SpaceHeater extends ProtectingBlock {
 
     private final int tier;
 

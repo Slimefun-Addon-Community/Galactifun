@@ -32,6 +32,11 @@ public final class ProtectionManager {
         this.protectedBlocks.computeIfAbsent(pos, k -> new HashMap<>()).merge(effect, level, Integer::sum);
     }
 
+    /**
+     * @deprecated for internal use only
+     */
+    @Deprecated
+    @SuppressWarnings("DeprecatedIsStillUsed")
     public void clearProtectedBlocks() {
         this.protectedBlocks.clear();
     }
