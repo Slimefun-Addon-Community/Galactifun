@@ -1,16 +1,17 @@
 package io.github.addoncommunity.galactifun.api.items.spacesuit;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -27,13 +28,13 @@ public class SpaceSuitUpgrade extends UnplaceableBlock {
         }
 
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        String string = container.get(UPGRADES_KEY, PersistentDataType.STRING);
+        List<String> ids = container.get(UPGRADES_KEY, PersistenceUtils.STRING_LIST);
 
-        if (string == null) {
+        if (ids == null) {
             return;
         }
 
-        for (String id : PatternUtils.SEMICOLON.split(string)) {
+        for (String id : ids) {
             SpaceSuitUpgrade upgrade = UPGRADES.get(id);
             if (upgrade != null) {
                 stats.compute(upgrade.stat, (stat, value) -> value == null ? upgrade.value : value + upgrade.value);
@@ -52,22 +53,19 @@ public class SpaceSuitUpgrade extends UnplaceableBlock {
     }
 
     public boolean addTo(PersistentDataContainer container, int maxUpgrades) {
-        String string = container.get(UPGRADES_KEY, PersistentDataType.STRING);
+        List<String> ids = container.get(UPGRADES_KEY, PersistenceUtils.STRING_LIST);
 
-        if (string != null) {
-            int i = 0;
-            int upgrades = 0;
-            while ((i = string.indexOf(';', i)) != -1) {
-                upgrades++;
-                i++;
+        if (ids != null) {
+            if (ids.size() < maxUpgrades) {
+                ids.add(getId());
+                container.set(UPGRADES_KEY, PersistenceUtils.STRING_LIST, ids);
+                return true;
             }
-            if (upgrades > maxUpgrades) {
-                return false;
-            }
+        } else if (maxUpgrades > 0) {
+            container.set(UPGRADES_KEY, PersistenceUtils.STRING_LIST, Collections.singletonList(getId()));
+            return true;
         }
-
-        container.set(UPGRADES_KEY, PersistentDataType.STRING, string + ';' + getId());
-        return true;
+        return false;
     }
 
     @Override

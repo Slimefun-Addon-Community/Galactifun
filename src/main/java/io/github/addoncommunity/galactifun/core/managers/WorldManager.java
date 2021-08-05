@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -41,6 +39,7 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
@@ -59,7 +58,7 @@ public final class WorldManager implements Listener {
 
     @Getter
     private final int maxAliensPerPlayer;
-    private final Set<PlanetaryWorld> spaceWorlds = new HashSet<>();
+    private final Map<World, PlanetaryWorld> spaceWorlds = new HashMap<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
     private final YamlConfiguration config;
     private final YamlConfiguration defaultConfig;
@@ -99,12 +98,12 @@ public final class WorldManager implements Listener {
     }
 
     public void register(PlanetaryWorld world) {
-        if (this.spaceWorlds.contains(world)) {
+        if (this.spaceWorlds.containsKey(world.world())) {
             throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
         }
-        this.spaceWorlds.add(world);
+        this.spaceWorlds.put(world.world(), world);
         if (world instanceof AlienWorld alienWorld) {
-            this.alienWorlds.put(alienWorld.world(), alienWorld);
+            this.alienWorlds.put(world.world(), alienWorld);
         }
     }
 
@@ -121,7 +120,7 @@ public final class WorldManager implements Listener {
 
     @Nullable
     public PlanetaryWorld getWorld(@Nonnull World world) {
-        return this.alienWorlds.get(world);
+        return this.spaceWorlds.get(world);
     }
 
     @Nullable
@@ -131,7 +130,7 @@ public final class WorldManager implements Listener {
 
     @Nonnull
     public Collection<PlanetaryWorld> spaceWorlds() {
-        return Collections.unmodifiableCollection(this.spaceWorlds);
+        return Collections.unmodifiableCollection(this.spaceWorlds.values());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -291,7 +290,10 @@ public final class WorldManager implements Listener {
         if (world != null) {
             e.setCancelled(true);
             if (p.getGameMode() != GameMode.CREATIVE) {
-                ItemUtils.consumeItem(p.getInventory().getItem(e.getHand()), true);
+                ItemStack item = p.getInventory().getItem(e.getHand());
+                if (item != null) {
+                    ItemUtils.consumeItem(item, true);
+                }
             }
             ProtectionManager manager = Galactifun.protectionManager();
             Block toBePlaced = e.getBlockClicked().getRelative(e.getBlockFace());
