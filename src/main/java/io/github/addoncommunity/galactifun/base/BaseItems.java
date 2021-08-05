@@ -266,6 +266,18 @@ public final class BaseItems {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1).register(galactifun);
 
+        new HeatingUnit(HEATING_UNIT_2, new ItemStack[]{
+                BaseMats.SPACE_GRADE_PLATE, new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.VENTSTONE, COOLING_UNIT_1, BaseMats.VENTSTONE,
+                BaseMats.SPACE_GRADE_PLATE, new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE
+        }, 2).register(galactifun);
+
+        new HeatingUnit(HEATING_UNIT_3, new ItemStack[]{
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET,
+                BaseMats.VENTSTONE, COOLING_UNIT_1, BaseMats.VENTSTONE,
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET
+        }, 3).register(galactifun);
+
     }
 
 }
