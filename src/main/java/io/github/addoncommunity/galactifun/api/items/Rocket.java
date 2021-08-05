@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -37,6 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.items.LandingBeacon.Mode;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -221,7 +223,7 @@ public final class Rocket extends SlimefunItem {
 
         // TODO clean up this lambda
         Galactifun.instance().runSync(() -> {
-            Optional<Block> optional = getLandingBeacon(destChunk);
+            Optional<Block> optional = getLandingBeacon(destChunk, p);
             if (optional.isPresent()) {
                 destBlock.set(optional.get());
 
@@ -281,13 +283,22 @@ public final class Rocket extends SlimefunItem {
         }, 200);
     }
 
-    private static Optional<Block> getLandingBeacon(Chunk c) {
+    private static Optional<Block> getLandingBeacon(Chunk c, Player p) {
         for (BlockStorage bs : SlimefunPlugin.getRegistry().getWorlds().values()) {
             for (Map.Entry<Location, Config> entry : bs.getRawStorage().entrySet()) {
                 Location l = entry.getKey();
-                if (entry.getValue().getString("id").equals(BaseItems.LANDING_BEACON.getItemId()) &&
+                Config data = entry.getValue();
+                if (data.getString("id").equals(BaseItems.LANDING_BEACON.getItemId()) &&
                         l.getChunk().equals(c)) {
-                    return Optional.of(l.getBlock());
+                    Mode mode = Mode.valueOf(data.getString("mode"));
+                    if (mode == Mode.ALLOW_ALL) {
+                        return Optional.of(l.getBlock());
+                    } else if (mode == Mode.PLAYER_ONLY) {
+                        UUID uuid = UUID.fromString(data.getString("player"));
+                        if (p.getUniqueId().equals(uuid)) {
+                            return Optional.of(l.getBlock());
+                        }
+                    }
                 }
             }
         }
