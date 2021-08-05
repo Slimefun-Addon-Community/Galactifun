@@ -36,11 +36,13 @@ public final class AtmosphereBuilder {
     }
 
     public AtmosphereBuilder addEffect(@Nonnull AtmosphericEffect effect, int level) {
-        this.effects.put(effect, level);
+        if (level > 0) {
+            this.effects.put(effect, level);
+        }
         return this;
     }
 
-    public AtmosphereBuilder add(@Nonnull Gas gas, double percentage) {
+    public AtmosphereBuilder addGas(@Nonnull Gas gas, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
         this.composition.put(gas, percentage);
         return this;

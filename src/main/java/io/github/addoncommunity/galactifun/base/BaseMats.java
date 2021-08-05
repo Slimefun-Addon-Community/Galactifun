@@ -42,6 +42,16 @@ public final class BaseMats {
             Material.PACKED_ICE,
             "&bDry Ice"
     );
+    public static final SlimefunItemStack SULFUR_BLOCK = new SlimefunItemStack(
+            "SULFUR_BLOCK",
+            Material.YELLOW_TERRACOTTA,
+            "&6Sulfur Block"
+    );
+    public static final SlimefunItemStack SCORCHED_ROCK = new SlimefunItemStack(
+            "SCORCHED_ROCK",
+            Material.MAGMA_BLOCK,
+            "&6Scorched Rock"
+    );
     public static final SlimefunItemStack ALUMINUM_COMPOSITE = new SlimefunItemStack(
             "ALUMINUM_COMPOSITE",
             Material.IRON_INGOT,
@@ -205,6 +215,8 @@ public final class BaseMats {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
+        worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
+        worldItem(SCORCHED_ROCK, BaseUniverse.VENUS, BaseUniverse.IO);
         component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
                 SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST

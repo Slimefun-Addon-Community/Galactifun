@@ -28,15 +28,15 @@ public final class Atmosphere {
     public static final Atmosphere NONE = new AtmosphereBuilder()
             .setEnd()
             .setPressure(0)
-            .addEffect(AtmosphericEffect.COLD, 5)
+            .addEffect(AtmosphericEffect.COLD, 4)
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
-            .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
-            .add(Gas.OXYGEN, 20.946)
-            .add(Gas.WATER, 0.95)
-            .add(Gas.ARGON, 0.934)
-            .add(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
+            .addGas(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
+            .addGas(Gas.OXYGEN, 20.946)
+            .addGas(Gas.WATER, 0.95)
+            .addGas(Gas.ARGON, 0.934)
+            .addGas(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
             .build();
 
     private final boolean weatherEnabled;
@@ -103,6 +103,27 @@ public final class Atmosphere {
 
     public double pressurizedCompositionOf(@Nonnull Gas gas) {
         return compositionOf(gas) * this.pressure;
+    }
+
+    public AtmosphereBuilder toBuilder() {
+        AtmosphereBuilder builder = new AtmosphereBuilder();
+        switch (this.environment) {
+            case NETHER -> builder.setNether();
+            case THE_END -> builder.setEnd();
+        }
+
+        for (Map.Entry<AtmosphericEffect, Integer> effect : this.effects.entrySet()) {
+            builder.addEffect(effect.getKey(), effect.getValue());
+        }
+        for (Map.Entry<Gas, Double> gas : this.composition.entrySet()) {
+            builder.addGas(gas.getKey(), gas.getValue());
+        }
+
+        if (this.storming) builder.addStorm();
+        if (this.thundering) builder.addThunder();
+        if (this.weatherEnabled) builder.enableWeather();
+
+        return builder;
     }
 
 }

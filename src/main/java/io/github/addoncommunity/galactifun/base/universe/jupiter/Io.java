@@ -29,7 +29,7 @@ public final class Io extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new VolcanoPopulator(115, Material.OBSIDIAN, Material.LAVA));
+        populators.add(new VolcanoPopulator(115, Material.MAGMA_BLOCK, Material.LAVA));
         populators.add(new LakePopulator(75, Material.LAVA));
     }
 
