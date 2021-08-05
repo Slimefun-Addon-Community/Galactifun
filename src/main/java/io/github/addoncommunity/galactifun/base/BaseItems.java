@@ -15,6 +15,7 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
+import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
@@ -90,6 +91,7 @@ public final class BaseItems {
             HeadTexture.COOLING_UNIT.getTexture(),
             "&bCooling Unit I",
             "",
+            "&7Effect: Heat",
             "&7Protection: 2",
             "&7Range: 100 blocks",
             LoreBuilder.powerPerSecond(1024),
@@ -100,6 +102,7 @@ public final class BaseItems {
             HeadTexture.COOLING_UNIT.getTexture(),
             "&bCooling Unit II",
             "",
+            "&7Effect: Heat",
             "&7Protection: 4",
             "&7Range: 150 blocks",
             LoreBuilder.powerPerSecond(2048),
@@ -110,6 +113,7 @@ public final class BaseItems {
             HeadTexture.COOLING_UNIT.getTexture(),
             "&bCooling Unit III",
             "",
+            "&7Effect: Heat",
             "&7Protection: 6",
             "&7Range: 200 blocks",
             LoreBuilder.powerPerSecond(3072),
@@ -120,6 +124,7 @@ public final class BaseItems {
             Material.SHROOMLIGHT,
             "&6Space Heater I",
             "",
+            "&7Effect: Cold",
             "&7Protection: 2",
             "&7Range: 100 blocks",
             LoreBuilder.powerPerSecond(512),
@@ -130,6 +135,7 @@ public final class BaseItems {
             Material.SHROOMLIGHT,
             "&6Space Heater II",
             "",
+            "&7Effect: Cold",
             "&7Protection: 4",
             "&7Range: 150 blocks",
             LoreBuilder.powerPerSecond(1024),
@@ -140,10 +146,43 @@ public final class BaseItems {
             Material.SHROOMLIGHT,
             "&6Space Heater III",
             "",
+            "&7Effect: Cold",
             "&7Protection: 6",
             "&7Range: 200 blocks",
             LoreBuilder.powerPerSecond(2048),
             LoreBuilder.powerBuffer(4096)
+    );
+    public static final SlimefunItemStack ION_DISPERSER_1 = new SlimefunItemStack(
+            "ION_DISPERSER_1",
+            Material.SHROOMLIGHT,
+            "&6Space Heater I",
+            "",
+            "&7Effect: Radiation",
+            "&7Protection: 2",
+            "&7Range: 100 blocks",
+            LoreBuilder.powerPerSecond(512),
+            LoreBuilder.powerBuffer(1024)
+    );
+    public static final SlimefunItemStack ION_DISPERSER_2 = new SlimefunItemStack(
+            "ION_DISPERSER_2",
+            Material.SHROOMLIGHT,
+            "&6Space Heater II",
+            "",
+            "&7Effect: Radiation",
+            "&7Protection: 4",
+            "&7Range: 150 blocks",
+            LoreBuilder.powerPerSecond(1024),
+            LoreBuilder.powerBuffer(2048)
+    );
+    public static final SlimefunItemStack LANDING_BEACON = new SlimefunItemStack(
+            "LANDING_BEACON",
+            Material.REDSTONE_TORCH,
+            "&fLanding Beacon",
+            "",
+            "&7Any rocket that lands in the",
+            "&7chunk that this is placed in will",
+            "&7land on the Landing Beacon and the ",
+            "&7items will go inside it"
     );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
@@ -176,17 +215,6 @@ public final class BaseItems {
             "",
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
-    );
-
-    public static final SlimefunItemStack LANDING_BEACON = new SlimefunItemStack(
-            "LANDING_BEACON",
-            Material.REDSTONE_TORCH,
-            "&fLanding Beacon",
-            "",
-            "&7Any rocket that lands in the",
-            "&7chunk that this is placed in will",
-            "&7land on the Landing Beacon and the ",
-            "&7items will go inside it"
     );
     //</editor-fold>
 
@@ -274,24 +302,35 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 
-        new SpaceHeater(SPACE_HEATER_1, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_1, new ItemStack[] {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 SlimefunItems.HEATING_COIL, BaseMats.FAN_BLADE, SlimefunItems.HEATING_COIL,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1).register(galactifun);
 
-        new SpaceHeater(SPACE_HEATER_2, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_2, new ItemStack[] {
                 BaseMats.SPACE_GRADE_PLATE, new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.VENTSTONE, SPACE_HEATER_1, BaseMats.VENTSTONE,
                 BaseMats.SPACE_GRADE_PLATE, SlimefunItems.HEATING_COIL, BaseMats.SPACE_GRADE_PLATE
         }, 2).register(galactifun);
 
-        new SpaceHeater(SPACE_HEATER_3, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_3, new ItemStack[] {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.VENTSTONE, SPACE_HEATER_2, BaseMats.VENTSTONE,
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 
+        new IonDisperser(ION_DISPERSER_1, new ItemStack[] {
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                new ItemStack(Material.PRISMARINE_CRYSTALS), BaseMats.SULFUR_BLOCK, new ItemStack(Material.PRISMARINE_CRYSTALS),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }, 1).register(galactifun);
+
+        new IonDisperser(ION_DISPERSER_2, new ItemStack[] {
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.SULFUR_BLOCK, ION_DISPERSER_1, BaseMats.SULFUR_BLOCK,
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.VENTSTONE, BaseMats.SPACE_GRADE_PLATE
+        }, 1).register(galactifun);
     }
 
 }
