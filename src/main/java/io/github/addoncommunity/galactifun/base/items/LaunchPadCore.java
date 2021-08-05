@@ -90,7 +90,9 @@ public final class LaunchPadCore extends AbstractTickingContainer {
         string = BlockStorage.getLocationInfo(l, "fuelType");
 
         if (fuel < rocket.fuelCapacity()) {
-            String id = StackUtils.getID(menu.getItemInSlot(FUEL_SLOT));
+            ItemStack fuelItem = menu.getItemInSlot(FUEL_SLOT);
+            if (fuelItem == null) return;
+            String id = StackUtils.getID(fuelItem);
 
             if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
                 menu.consumeItem(FUEL_SLOT);

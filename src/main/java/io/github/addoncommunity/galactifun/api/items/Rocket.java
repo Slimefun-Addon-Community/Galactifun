@@ -38,6 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.items.LandingBeacon;
 import io.github.addoncommunity.galactifun.base.items.LandingBeacon.Mode;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
@@ -227,39 +228,38 @@ public final class Rocket extends SlimefunItem {
             if (optional.isPresent()) {
                 destBlock.set(optional.get());
 
-                BlockMenu menu = BlockStorage.getInventory(destBlock.get());
-                menu.pushItem(this.getItem().clone());
+                BlockMenu menu = BlockStorage.getInventory(optional.get());
+                menu.pushItem(this.getItem().clone(), LandingBeacon.INPUT_SLOTS);
 
                 ItemStack fuel = StackUtils.getItemByID(fuelType);
                 if (fuel != null) {
                     fuel = fuel.clone();
                     fuel.setAmount(fuelLeft);
-                    menu.pushItem(fuel);
+                    menu.pushItem(fuel, LandingBeacon.INPUT_SLOTS);
                 }
-                return;
-            }
-
-            Block destBlockDef = destBlock.get();
-            destBlockDef.setType(Material.CHEST);
-            BlockData data = destBlockDef.getBlockData();
-            if (data instanceof Rotatable) {
-                ((Rotatable) data).setRotation(BlockFace.NORTH);
-            }
-            destBlockDef.setBlockData(data, true);
-
-            BlockState state = PaperLib.getBlockState(destBlockDef, false).getState();
-            if (state instanceof Chest chest) {
-                Inventory inv = chest.getInventory();
-                inv.addItem(this.getItem().clone());
-
-                ItemStack fuel = StackUtils.getItemByID(fuelType);
-                if (fuel != null) {
-                    fuel = fuel.clone();
-                    fuel.setAmount(fuelLeft);
-                    inv.addItem(fuel);
+            } else {
+                Block destBlockDef = destBlock.get();
+                destBlockDef.setType(Material.CHEST);
+                BlockData data = destBlockDef.getBlockData();
+                if (data instanceof Rotatable) {
+                    ((Rotatable) data).setRotation(BlockFace.NORTH);
                 }
+                destBlockDef.setBlockData(data, true);
+
+                BlockState state = PaperLib.getBlockState(destBlockDef, false).getState();
+                if (state instanceof Chest chest) {
+                    Inventory inv = chest.getInventory();
+                    inv.addItem(this.getItem().clone());
+
+                    ItemStack fuel = StackUtils.getItemByID(fuelType);
+                    if (fuel != null) {
+                        fuel = fuel.clone();
+                        fuel.setAmount(fuelLeft);
+                        inv.addItem(fuel);
+                    }
+                }
+                state.update();
             }
-            state.update();
 
             sendRandomMessage(p);
         }, 40);

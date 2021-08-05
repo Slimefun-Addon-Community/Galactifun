@@ -31,7 +31,7 @@ public final class LandingBeacon extends AbstractContainer {
     private static final int[] BORDER = new int[] { 0, 1, 2, 3, 4, 13, 22, 31, 36, 37, 38, 39, 40 };
     private static final int MODE_SLOT = 24;
 
-    private static final int[] INPUT_SLOTS = new int[] { 9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30 };
+    public static final int[] INPUT_SLOTS = new int[] { 9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30 };
 
     public LandingBeacon() {
         super(CoreCategory.EQUIPMENT, BaseItems.LANDING_BEACON, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
