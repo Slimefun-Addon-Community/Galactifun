@@ -8,11 +8,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 public final class ChunkVerCommand extends AbstractCommand {
 
@@ -25,17 +25,16 @@ public final class ChunkVerCommand extends AbstractCommand {
         if (!(sender instanceof Player p)) return;
 
         Chunk chunk = p.getChunk();
-        if (Galactifun.worldManager().getWorld(chunk.getWorld()) == null) {
+        if (Galactifun.worldManager().getAlienWorld(chunk.getWorld()) == null) {
             p.sendMessage(ChatColor.RED + "You are not in a Galactifun planet!");
             return;
         }
 
-        p.sendMessage(ChatColor.GOLD + "Current chunk version: " + chunk.getPersistentDataContainer()
-                .getOrDefault(
-                        AlienWorld.CHUNK_VER_KEY,
-                        PersistentDataType.INTEGER,
-                        1
-                ));
+        p.sendMessage(ChatColor.GOLD + "Current chunk version: " + PersistentDataAPI.getInt(
+                chunk,
+                AlienWorld.CHUNK_VER_KEY,
+                1
+        ));
     }
 
     @Override

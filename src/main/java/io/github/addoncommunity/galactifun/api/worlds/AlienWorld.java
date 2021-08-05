@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
@@ -39,6 +38,7 @@ import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 /**
  * Any alien world
@@ -94,7 +94,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
                         list.add(new BlockPopulator() {
                             @Override
                             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
-                                source.getPersistentDataContainer().set(CHUNK_VER_KEY, PersistentDataType.INTEGER, getChunkVersion());
+                                PersistentDataAPI.setInt(source, CHUNK_VER_KEY, getChunkVersion());
                             }
                         });
                         getPopulators(list);
