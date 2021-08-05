@@ -14,7 +14,7 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
-import io.github.addoncommunity.galactifun.base.items.protection.HeatingUnit;
+import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
@@ -114,30 +114,30 @@ public final class BaseItems {
             LoreBuilder.powerPerSecond(3072),
             LoreBuilder.powerBuffer(6144)
     );
-    public static final SlimefunItemStack HEATING_UNIT_1 = new SlimefunItemStack(
-            "HEATING_UNIT_1",
+    public static final SlimefunItemStack SPACE_HEATER_1 = new SlimefunItemStack(
+            "SPACE_HEATER_1",
             Material.SHROOMLIGHT,
-            "&6Heating Unit I",
+            "&6Space Heater I",
             "",
             "&7Protection: 2",
             "&7Range: 100 blocks",
             LoreBuilder.powerPerSecond(512),
             LoreBuilder.powerBuffer(1024)
     );
-    public static final SlimefunItemStack HEATING_UNIT_2 = new SlimefunItemStack(
-            "HEATING_UNIT_2",
+    public static final SlimefunItemStack SPACE_HEATER_2 = new SlimefunItemStack(
+            "SPACE_HEATER_2",
             Material.SHROOMLIGHT,
-            "&bCooling Unit II",
+            "&6Space Heater II",
             "",
             "&7Protection: 4",
             "&7Range: 150 blocks",
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
-    public static final SlimefunItemStack HEATING_UNIT_3 = new SlimefunItemStack(
-            "HEATING_UNIT_3",
+    public static final SlimefunItemStack SPACE_HEATER_3 = new SlimefunItemStack(
+            "SPACE_HEATER_3",
             Material.SHROOMLIGHT,
-            "&bCooling Unit III",
+            "&6Space Heater III",
             "",
             "&7Protection: 6",
             "&7Range: 200 blocks",
@@ -260,21 +260,21 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 
-        new HeatingUnit(HEATING_UNIT_1, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_1, new ItemStack[]{
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 SlimefunItems.HEATING_COIL, BaseMats.FAN_BLADE, SlimefunItems.HEATING_COIL,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1).register(galactifun);
 
-        new HeatingUnit(HEATING_UNIT_2, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_2, new ItemStack[]{
                 BaseMats.SPACE_GRADE_PLATE, new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.VENTSTONE, HEATING_UNIT_1, BaseMats.VENTSTONE,
+                BaseMats.VENTSTONE, SPACE_HEATER_1, BaseMats.VENTSTONE,
                 BaseMats.SPACE_GRADE_PLATE, SlimefunItems.HEATING_COIL, BaseMats.SPACE_GRADE_PLATE
         }, 2).register(galactifun);
 
-        new HeatingUnit(HEATING_UNIT_3, new ItemStack[]{
+        new SpaceHeater(SPACE_HEATER_3, new ItemStack[]{
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.VENTSTONE, HEATING_UNIT_2, BaseMats.VENTSTONE,
+                BaseMats.VENTSTONE, SPACE_HEATER_2, BaseMats.VENTSTONE,
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 

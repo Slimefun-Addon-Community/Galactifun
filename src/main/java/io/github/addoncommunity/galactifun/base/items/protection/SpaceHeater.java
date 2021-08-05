@@ -9,11 +9,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public class HeatingUnit extends ProtectingBlock {
+public class SpaceHeater extends ProtectingBlock {
 
     private final int tier;
 
-    public HeatingUnit(SlimefunItemStack item, ItemStack[] recipe, int tier) {
+    public SpaceHeater(SlimefunItemStack item, ItemStack[] recipe, int tier) {
         super(item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         this.tier = tier;
     }

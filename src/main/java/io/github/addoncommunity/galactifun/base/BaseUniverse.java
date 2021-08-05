@@ -154,7 +154,9 @@ public final class BaseUniverse {
             EARTH,
             new ItemStack(Material.ANDESITE),
             DayCycle.EARTH_LIKE,
-            Atmosphere.NONE,
+            Atmosphere.NONE.toBuilder()
+                    .addEffect(AtmosphericEffect.COLD, 1)
+                    .build(),
             Gravity.MOON_LIKE
     );
     public static final AlienWorld MARS = new Mars(
