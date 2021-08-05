@@ -13,8 +13,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
@@ -22,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
@@ -45,6 +48,8 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  * @see EarthOrbit
  */
 public abstract class AlienWorld extends PlanetaryWorld {
+
+    public static final NamespacedKey CHUNK_VER_KEY = Galactifun.instance().getKey("chunk_version");
 
     private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
     private final List<Alien<?>> species = new ArrayList<>();
@@ -85,7 +90,13 @@ public abstract class AlienWorld extends PlanetaryWorld {
                     @Nonnull
                     @Override
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
-                        List<BlockPopulator> list = new ArrayList<>(0);
+                        List<BlockPopulator> list = new ArrayList<>(1);
+                        list.add(new BlockPopulator() {
+                            @Override
+                            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
+                                source.getPersistentDataContainer().set(CHUNK_VER_KEY, PersistentDataType.INTEGER, getChunkVersion());
+                            }
+                        });
                         getPopulators(list);
                         return list;
                     }
@@ -206,5 +217,13 @@ public abstract class AlienWorld extends PlanetaryWorld {
             }
         }
     }
+
+    /**
+     * Obtains the chunk version of the newest chunks that this world generates. When you change
+     * world gen, bump this up by 1. Abstract to <b>force</b> implementers to remember about this
+     *
+     * @return the chunk version
+     */
+    protected abstract int getChunkVersion();
 
 }

@@ -28,6 +28,8 @@ import io.github.addoncommunity.galactifun.base.universe.Mars;
  */
 public abstract class SimpleAlienWorld extends AlienWorld {
 
+    private SimplexOctaveGenerator generator;
+
     public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                             DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
@@ -42,8 +44,10 @@ public abstract class SimpleAlienWorld extends AlienWorld {
     protected final void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                        @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
 
-        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, getOctaves());
-        generator.setScale(getScale());
+        if (this.generator == null) {
+            this.generator = new SimplexOctaveGenerator(world, getOctaves());
+            this.generator.setScale(getScale());
+        }
 
         for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
             for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
