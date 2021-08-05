@@ -96,7 +96,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onUniqueTick() {
+    public void uniqueTick() {
         this.tick++;
         if (this.tick >= 10) {
             this.tick = 0;
@@ -105,7 +105,7 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void onMobTick(@Nonnull Mob mob) {
+    public void tick(@Nonnull Mob mob) {
         if (this.tick == 0) {
             Location l = mob.getLocation();
 

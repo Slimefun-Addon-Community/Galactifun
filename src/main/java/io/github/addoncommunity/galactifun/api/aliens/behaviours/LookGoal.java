@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.aliens.goals;
+package io.github.addoncommunity.galactifun.api.aliens.behaviours;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Mob;
 import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.addoncommunity.galactifun.Galactifun;
 
-public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
+public final class LookGoal<T extends Mob> extends AlienBehaviour<T> {
 
     private int time = 0;
 

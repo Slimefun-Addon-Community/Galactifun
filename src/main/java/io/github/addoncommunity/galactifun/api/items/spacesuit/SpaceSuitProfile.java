@@ -44,7 +44,6 @@ public final class SpaceSuitProfile {
         this.stats.clear();
         for (ItemStack item : p.getInventory().getArmorContents()) {
             SpaceSuitUpgrade.getUpgrades(item, this.stats);
-
         }
     }
 

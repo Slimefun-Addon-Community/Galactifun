@@ -15,6 +15,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
+// TODO make machine to add upgrades to stuff
 public class SpaceSuitUpgrade extends UnplaceableBlock {
 
     private static final NamespacedKey UPGRADES_KEY = Galactifun.instance().getKey("upgrades");

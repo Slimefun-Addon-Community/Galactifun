@@ -73,16 +73,16 @@ public final class AlienManager implements Listener {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
-    public void tick() {
+    private void tick() {
         for (Alien<?> alien : this.aliens.values()) {
-            alien.onUniqueTick();
+            alien.uniqueTick();
         }
 
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
                 Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onMobTick(alien.clazz().cast(entity));
+                    alien.onTick(entity);
                 }
             }
         }
@@ -151,10 +151,11 @@ public final class AlienManager implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     private void onAlienShoot(@Nonnull ProjectileLaunchEvent e) {
         ProjectileSource source = e.getEntity().getShooter();
-        if (!(source instanceof Mob mob)) return;
-        Alien<?> alien = getAlien(mob);
-        if (alien != null) {
-            alien.onShoot(e, mob);
+        if (source instanceof Mob mob) {
+            Alien<?> alien = getAlien(mob);
+            if (alien != null) {
+                alien.onShoot(e);
+            }
         }
     }
 
