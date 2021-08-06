@@ -48,7 +48,7 @@ public final class GalacticExplorer {
             return;
         }
 
-        // addGas to history
+        // add to history
         if (history) {
             this.history.put(p.getUniqueId(), object);
         }
@@ -79,7 +79,7 @@ public final class GalacticExplorer {
             if (known) {
                 double distance = orbiter.distanceTo(current);
 
-                // addGas distance from current
+                // add distance from current
                 ItemMeta meta = item.getItemMeta();
                 List<Component> lore = meta.lore();
                 if (lore != null) {

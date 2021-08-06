@@ -61,7 +61,7 @@ public final class Leech extends Alien<Silverfish> {
 
         ItemStack[] eatenItems = container.get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
         if (eatenItems != null) {
-            // addGas on to the array
+            // add on to the array
             ItemStack[] arr = new ItemStack[eatenItems.length + 1];
             System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
             arr[eatenItems.length] = item;

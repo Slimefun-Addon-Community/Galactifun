@@ -62,18 +62,18 @@ public abstract class SimpleAlienWorld extends AlienWorld {
                 double temp = getAverageHeight() + getMaxDeviation() * noise;
                 int height = temp >= 0 ? (int) temp : (int) temp - 1;
 
-                // y = 0, addGas bedrock and biome
+                // y = 0, add bedrock and biome
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
                 grid.setBiome(x, 0, z, getBiome());
 
-                // y = 1 to height, generate and addGas biome
+                // y = 1 to height, generate and add biome
                 int y = 1;
                 while (y <= height) {
                     chunk.setBlock(x, y++, z, generateMaterial(random, x, y, z, height));
                     grid.setBiome(x, y, z, getBiome());
                 }
 
-                // y = height to 256, just addGas biome
+                // y = height to 256, just add biome
                 while (y < 256) {
                     grid.setBiome(x, y++, z, getBiome());
                 }

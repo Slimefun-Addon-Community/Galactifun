@@ -198,7 +198,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         }
 
         for (BlockPosition b : returned.get()) {
-            // addGas a protection to the location
+            // add a protection to the location
             Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
         }
 

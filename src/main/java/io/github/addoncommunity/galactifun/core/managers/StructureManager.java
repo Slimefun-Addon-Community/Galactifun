@@ -110,13 +110,13 @@ public final class StructureManager {
     public void saveStructure(String name, GalacticStructure structure) {
         StringBuilder save = new StringBuilder();
 
-        // addGas dimensions
+        // add dimensions
         save.append(structure.rotation())
                 .append(',').append(structure.dx())
                 .append(',').append(structure.dy())
                 .append(',').append(structure.dz());
 
-        // addGas blocks
+        // add blocks
         structure.forEach((block, x, y, z) -> save.append(';').append(block.save()));
 
         // save

@@ -141,7 +141,7 @@ public class Alien<T extends Mob> {
     /**
      * Edits the AI of the Alien. The map is a map of a mob goal and its priority
      *
-     * @param goals addGas the goals to this or addGas nothing for default AI
+     * @param goals add the goals to this or add nothing for default AI
      * @param mob the mob
      */
     protected void editGoals(@Nonnull MobGoals goals, @Nonnull T mob) {
