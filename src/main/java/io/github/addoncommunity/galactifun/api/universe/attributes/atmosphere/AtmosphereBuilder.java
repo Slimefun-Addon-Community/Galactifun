@@ -42,7 +42,7 @@ public final class AtmosphereBuilder {
         return this;
     }
 
-    public AtmosphereBuilder addGas(@Nonnull Gas gas, double percentage) {
+    public AtmosphereBuilder add(@Nonnull Gas gas, double percentage) {
         Validate.isTrue(percentage > 0 && percentage <= 100);
         this.composition.put(gas, percentage);
         return this;

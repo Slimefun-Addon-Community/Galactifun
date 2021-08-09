@@ -32,11 +32,11 @@ public final class Atmosphere {
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
-            .addGas(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
-            .addGas(Gas.OXYGEN, 20.946)
-            .addGas(Gas.WATER, 0.95)
-            .addGas(Gas.ARGON, 0.934)
-            .addGas(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
+            .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
+            .add(Gas.OXYGEN, 20.946)
+            .add(Gas.WATER, 0.95)
+            .add(Gas.ARGON, 0.934)
+            .add(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
             .build();
 
     private final boolean weatherEnabled;
@@ -116,7 +116,7 @@ public final class Atmosphere {
             builder.addEffect(effect.getKey(), effect.getValue());
         }
         for (Map.Entry<Gas, Double> gas : this.composition.entrySet()) {
-            builder.addGas(gas.getKey(), gas.getValue());
+            builder.add(gas.getKey(), gas.getValue());
         }
 
         if (this.storming) builder.addStorm();

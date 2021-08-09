@@ -67,8 +67,8 @@ public final class BaseUniverse {
                     .addStorm()
                     .addThunder()
                     .enableWeather()
-                    .addGas(Gas.HYDROGEN, 90)
-                    .addGas(Gas.HELIUM, 10)
+                    .add(Gas.HYDROGEN, 90)
+                    .add(Gas.HELIUM, 10)
                     .build(),
             Gravity.metersPerSec(24.79)
     );
@@ -105,9 +105,9 @@ public final class BaseUniverse {
             DayCycle.hours(10),
             new AtmosphereBuilder()
                     .enableWeather()
-                    .addGas(Gas.HYDROGEN, 96.3)
-                    .addGas(Gas.HELIUM, 3.25)
-                    .addGas(Gas.METHANE, 0.45)
+                    .add(Gas.HYDROGEN, 96.3)
+                    .add(Gas.HELIUM, 3.25)
+                    .add(Gas.METHANE, 0.45)
                     .build(),
             Gravity.relativeToEarth(1.06)
     );
@@ -141,8 +141,8 @@ public final class BaseUniverse {
                     .addStorm()
                     .addThunder()
                     .addEffect(AtmosphericEffect.HEAT, 10)
-                    .addGas(Gas.CARBON_DIOXIDE, 96.5)
-                    .addGas(Gas.NITROGEN, 3.5)
+                    .add(Gas.CARBON_DIOXIDE, 96.5)
+                    .add(Gas.NITROGEN, 3.5)
                     .setPressure(93)
                     .build(),
             Gravity.metersPerSec(8.87)
@@ -167,9 +167,9 @@ public final class BaseUniverse {
             new ItemStack(Material.RED_SAND),
             DayCycle.of(1, 1),
             new AtmosphereBuilder()
-                    .addGas(Gas.CARBON_DIOXIDE, 94.9)
-                    .addGas(Gas.NITROGEN, 2.6)
-                    .addGas(Gas.ARGON, 1.9)
+                    .add(Gas.CARBON_DIOXIDE, 94.9)
+                    .add(Gas.NITROGEN, 2.6)
+                    .add(Gas.ARGON, 1.9)
                     .addEffect(AtmosphericEffect.COLD, 2)
                     .setPressure(0.006)
                     .build(),
@@ -184,10 +184,10 @@ public final class BaseUniverse {
             DayCycle.EARTH_LIKE,
             new AtmosphereBuilder()
                     .enableWeather()
-                    .addGas(Gas.NITROGEN, 97)
-                    .addGas(Gas.METHANE, 2.7)
-                    .addGas(Gas.HYDROCARBONS, 0.2)
-                    .addGas(Gas.HYDROGEN, 0.1)
+                    .add(Gas.NITROGEN, 97)
+                    .add(Gas.METHANE, 2.7)
+                    .add(Gas.HYDROCARBONS, 0.2)
+                    .add(Gas.HYDROGEN, 0.1)
                     .addEffect(AtmosphericEffect.COLD, 6)
                     .setPressure(1.5)
                     .build(),
