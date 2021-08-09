@@ -2,11 +2,7 @@ package io.github.addoncommunity.galactifun.api.items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nonnull;
 
@@ -38,8 +34,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.base.items.LandingBeacon;
-import io.github.addoncommunity.galactifun.base.items.LandingBeacon.Mode;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -47,17 +41,14 @@ import io.github.mooy1.infinitylib.items.StackUtils;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -197,8 +188,8 @@ public final class Rocket extends SlimefunItem {
         World world = p.getWorld();
 
         new BukkitRunnable() {
-            private int times = 0;
             private final Block pad = rocket.getRelative(BlockFace.DOWN);
+            private int times = 0;
 
             @Override
             public void run() {
@@ -215,38 +206,29 @@ public final class Rocket extends SlimefunItem {
 
         World to = worldTo.world();
 
-        AtomicReference<Block> destBlock = new AtomicReference<>(to.getHighestBlockAt(x, z).getRelative(BlockFace.UP));
-
-        Chunk destChunk = destBlock.get().getChunk();
+        Chunk destChunk = to.getChunkAt(x >> 4, z >> 4);
         if (!destChunk.isLoaded()) {
             destChunk.load(true);
         }
 
-        // TODO clean up this lambda
+        Galactifun.instance().runSync(sendRandomMessage(p), 40);
+        Galactifun.instance().runSync(sendRandomMessage(p), 80);
+        Galactifun.instance().runSync(sendRandomMessage(p), 120);
+        Galactifun.instance().runSync(sendRandomMessage(p), 160);
         Galactifun.instance().runSync(() -> {
-            Optional<Block> optional = getLandingBeacon(destChunk, p);
-            if (optional.isPresent()) {
-                destBlock.set(optional.get());
+            p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
-                BlockMenu menu = BlockStorage.getInventory(optional.get());
-                menu.pushItem(this.getItem().clone(), LandingBeacon.INPUT_SLOTS);
-
-                ItemStack fuel = StackUtils.getItemByID(fuelType);
-                if (fuel != null) {
-                    fuel = fuel.clone();
-                    fuel.setAmount(fuelLeft);
-                    menu.pushItem(fuel, LandingBeacon.INPUT_SLOTS);
+            Block destBlock = null;
+            for (int y = to.getMaxHeight(); y >= to.getMinHeight(); y--) {
+                Block b = to.getBlockAt(x, y, z);
+                if (b.isSolid() && !BlockStorage.check(b, BaseItems.LANDING_HATCH.getItemId())) {
+                    destBlock = b.getRelative(BlockFace.UP);
+                    break;
                 }
-            } else {
-                Block destBlockDef = destBlock.get();
-                destBlockDef.setType(Material.CHEST);
-                BlockData data = destBlockDef.getBlockData();
-                if (data instanceof Rotatable) {
-                    ((Rotatable) data).setRotation(BlockFace.NORTH);
-                }
-                destBlockDef.setBlockData(data, true);
+            }
 
-                BlockState state = PaperLib.getBlockState(destBlockDef, false).getState();
+            if (destBlock != null) {
+                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
                 if (state instanceof Chest chest) {
                     Inventory inv = chest.getInventory();
                     inv.addItem(this.getItem().clone());
@@ -261,19 +243,16 @@ public final class Rocket extends SlimefunItem {
                 state.update();
             }
 
-            sendRandomMessage(p);
-        }, 40);
-
-        Galactifun.instance().runSync(() -> sendRandomMessage(p), 80);
-        Galactifun.instance().runSync(() -> sendRandomMessage(p), 120);
-        Galactifun.instance().runSync(() -> sendRandomMessage(p), 160);
-        Galactifun.instance().runSync(() -> {
-            p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
-
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
                     if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
-                        PaperLib.teleportAsync(entity, destBlock.get().getLocation().add(0, 1, 0));
+                        Location loc;
+                        if (destBlock == null) {
+                            loc = new Location(to, x, to.getMinHeight() - 3, z);
+                        } else {
+                            loc = destBlock.getLocation().add(0, 1, 0);
+                        }
+                        PaperLib.teleportAsync(entity, loc);
                     }
                 }
             }
@@ -283,31 +262,8 @@ public final class Rocket extends SlimefunItem {
         }, 200);
     }
 
-    private static Optional<Block> getLandingBeacon(Chunk c, Player p) {
-        for (BlockStorage bs : SlimefunPlugin.getRegistry().getWorlds().values()) {
-            for (Map.Entry<Location, Config> entry : bs.getRawStorage().entrySet()) {
-                Location l = entry.getKey();
-                Config data = entry.getValue();
-                if (data.getString("id").equals(BaseItems.LANDING_BEACON.getItemId()) &&
-                        l.getChunk().equals(c)) {
-                    Mode mode = Mode.valueOf(data.getString("mode"));
-                    if (mode == Mode.ALLOW_ALL) {
-                        return Optional.of(l.getBlock());
-                    } else if (mode == Mode.PLAYER_ONLY) {
-                        UUID uuid = UUID.fromString(data.getString("player"));
-                        if (p.getUniqueId().equals(uuid)) {
-                            return Optional.of(l.getBlock());
-                        }
-                    }
-                }
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    private static void sendRandomMessage(Player p) {
-        p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
+    private static Runnable sendRandomMessage(Player p) {
+        return () -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
     }
 
 }
