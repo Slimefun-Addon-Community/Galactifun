@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.primitives.Ints;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 
 /**
@@ -25,7 +26,7 @@ public final class AtmosphericEffect {
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", PotionEffectType.WITHER);
     public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", (player, level) -> {
-        player.setFireTicks(240 * level);
+        player.setFireTicks(Ints.constrainToRange(240 * level, 0, player.getMaxFireTicks()));
         if (level > 3) {
             player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
         }
@@ -40,7 +41,7 @@ public final class AtmosphericEffect {
                 false,
                 false
         ));
-        player.setFreezeTicks(150 * level);
+        player.setFreezeTicks(Ints.constrainToRange(150 * level, 0, player.getMaxFreezeTicks()));
     });
 
     @Nonnull
