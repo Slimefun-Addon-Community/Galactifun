@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -45,6 +46,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -59,6 +61,7 @@ public final class WorldManager implements Listener {
     private final int maxAliensPerPlayer;
     private final Map<World, PlanetaryWorld> spaceWorlds = new HashMap<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
+    private final Map<PlanetaryWorld, SlimefunAddon> addons = new HashMap<>();
     private final YamlConfiguration config;
     private final YamlConfiguration defaultConfig;
 
@@ -96,7 +99,7 @@ public final class WorldManager implements Listener {
         });
     }
 
-    public void register(PlanetaryWorld world) {
+    public void register(PlanetaryWorld world, SlimefunAddon addon) {
         if (this.spaceWorlds.containsValue(world)) {
             throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
         }
@@ -125,6 +128,13 @@ public final class WorldManager implements Listener {
     @Nullable
     public AlienWorld getAlienWorld(@Nonnull World world) {
         return this.alienWorlds.get(world);
+    }
+
+    @Nonnull
+    public SlimefunAddon getAddon(@Nonnull PlanetaryWorld world) {
+        SlimefunAddon addon = this.addons.get(world);
+        Validate.notNull(addon, "A PlanetaryWorld: " + world + ", has no addon");
+        return addon;
     }
 
     @Nonnull

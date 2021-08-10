@@ -14,9 +14,9 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
-public final class ChunkVerCommand extends AbstractCommand {
+public final class ChunkverCommand extends AbstractCommand {
 
-    public ChunkVerCommand() {
+    public ChunkverCommand() {
         super("chunkver", "Gets the chunk version of the current chunk", false);
     }
 
@@ -30,10 +30,10 @@ public final class ChunkVerCommand extends AbstractCommand {
             return;
         }
 
-        p.sendMessage(ChatColor.GOLD + "Current chunk version: " + PersistentDataAPI.getInt(
+        p.sendMessage(ChatColor.GOLD + "This chunk was generated using " + PersistentDataAPI.getString(
                 chunk,
                 AlienWorld.CHUNK_VER_KEY,
-                1
+                "Galactifun vALPHA"
         ));
     }
 

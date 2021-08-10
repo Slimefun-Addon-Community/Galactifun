@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.Galaxy;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
@@ -30,7 +31,6 @@ import io.github.addoncommunity.galactifun.base.universe.jupiter.Europa;
 import io.github.addoncommunity.galactifun.base.universe.jupiter.Io;
 import io.github.addoncommunity.galactifun.base.universe.saturn.Enceladus;
 import io.github.addoncommunity.galactifun.base.universe.saturn.Titan;
-import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 
 /**
  * Registry of objects, aliens, and worlds in the base universe
@@ -205,21 +205,21 @@ public final class BaseUniverse {
     );
 
 
-    public static void setup(WorldManager worldManager) {
+    public static void setup(Galactifun galactifun) {
         VENUS.addSpecies(BaseAlien.FIRESTORM, BaseAlien.SKYWHALE);
         MARS.addSpecies(BaseAlien.MARTIAN);
         THE_MOON.addSpecies(BaseAlien.MUTANT_CREEPER);
         TITAN.addSpecies(BaseAlien.LEECH, BaseAlien.TITAN, BaseAlien.TITAN_KING, BaseAlien.SKYWHALE);
 
-        VENUS.register(worldManager);
-        IO.register(worldManager);
-        EUROPA.register(worldManager);
-        EARTH.register(worldManager);
-        EARTH_ORBIT.register(worldManager);
-        ENCALADUS.register(worldManager);
-        TITAN.register(worldManager);
-        MARS.register(worldManager);
-        THE_MOON.register(worldManager);
+        VENUS.register(galactifun);
+        IO.register(galactifun);
+        EUROPA.register(galactifun);
+        EARTH.register(galactifun);
+        EARTH_ORBIT.register(galactifun);
+        ENCALADUS.register(galactifun);
+        TITAN.register(galactifun);
+        MARS.register(galactifun);
+        THE_MOON.register(galactifun);
     }
 
 }

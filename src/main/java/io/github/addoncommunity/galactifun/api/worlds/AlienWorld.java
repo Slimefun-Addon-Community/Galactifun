@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
@@ -75,7 +76,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         String worldName = "world_galactifun_" + this.id;
 
-        // fetch or create world
+        // Load or create world
         World world = new WorldCreator(worldName)
                 .generator(new ChunkGenerator() {
 
@@ -91,13 +92,19 @@ public abstract class AlienWorld extends PlanetaryWorld {
                     @Override
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
                         List<BlockPopulator> list = new ArrayList<>(1);
+                        getPopulators(list);
                         list.add(new BlockPopulator() {
                             @Override
                             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
-                                PersistentDataAPI.setInt(source, CHUNK_VER_KEY, getChunkVersion());
+                                JavaPlugin addon = Galactifun.worldManager().getAddon(AlienWorld.this).getJavaPlugin();
+                                PersistentDataAPI.setString(source, CHUNK_VER_KEY,
+                                        String.format("%s v%s",
+                                                addon.getName(),
+                                                addon.getDescription().getVersion()
+                                        )
+                                );
                             }
                         });
-                        getPopulators(list);
                         return list;
                     }
 
