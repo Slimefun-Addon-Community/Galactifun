@@ -20,7 +20,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecip
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 // TODO improve recipes
-public class CircuitPress extends AContainer {
+public final class CircuitPress extends AContainer {
 
     private static final List<MachineRecipe> RECIPES = new ArrayList<>();
     public static final RecipeType TYPE = new RecipeType(

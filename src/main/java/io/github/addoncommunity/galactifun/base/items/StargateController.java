@@ -1,8 +1,5 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,8 +9,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import lombok.SneakyThrows;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -196,8 +191,6 @@ public final class StargateController extends SlimefunItem implements Listener {
     }
 
     @Nonnull
-    // TODO cache algorithm
-    @SneakyThrows(NoSuchAlgorithmException.class)
     private ChestMenu getMenu(@Nonnull Block b) {
         ChestMenu menu = new ChestMenu(this.getItemName());
         for (int i : BACKGROUND) {
@@ -208,17 +201,14 @@ public final class StargateController extends SlimefunItem implements Listener {
 
         String address = BlockStorage.getLocationInfo(l, "gfsgAddress");
         if (address == null) {
-            String lString = l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ();
-            byte[] hash = MessageDigest.getInstance("SHA-256").digest(lString.getBytes(StandardCharsets.UTF_8));
-            address = String.format(
-                    "%x%x%x%x%x%x",
-                    hash[0],
-                    hash[1],
-                    hash[2],
-                    hash[3],
-                    hash[4],
-                    hash[5]
+            String lString = String.format(
+                    "%s-%d-%d-%d",
+                    b.getWorld().getName(),
+                    l.getBlockX(),
+                    l.getBlockY(),
+                    l.getBlockZ()
             );
+            address = Integer.toHexString(lString.hashCode());
             BlockStorage.addBlockInfo(b, "gfsgAddress", address);
         }
 

@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -32,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -180,14 +182,14 @@ public final class Rocket extends SlimefunItem {
         menu.open(p);
     }
 
-    private void launch(@Nonnull Player p, @Nonnull Block b, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
-        BlockStorage.addBlockInfo(b, "isLaunching", "true");
+    public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
+        BlockStorage.addBlockInfo(rocket, "isLaunching", "true");
 
         World world = p.getWorld();
 
         new BukkitRunnable() {
+            private final Block pad = rocket.getRelative(BlockFace.DOWN);
             private int times = 0;
-            private final Block pad = b.getRelative(BlockFace.DOWN);
 
             @Override
             public void run() {
@@ -204,57 +206,64 @@ public final class Rocket extends SlimefunItem {
 
         World to = worldTo.world();
 
-        Block destBlock = to.getHighestBlockAt(x, z).getRelative(BlockFace.UP);
-
-        Chunk destChunk = destBlock.getChunk();
+        Chunk destChunk = to.getChunkAt(x >> 4, z >> 4);
         if (!destChunk.isLoaded()) {
             destChunk.load(true);
         }
 
-        Galactifun.instance().runSync(() -> {
-            destBlock.setType(Material.CHEST);
-            BlockData data = destBlock.getBlockData();
-            if (data instanceof Rotatable) {
-                ((Rotatable) data).setRotation(BlockFace.NORTH);
-            }
-            destBlock.setBlockData(data, true);
-
-            BlockState state = PaperLib.getBlockState(destBlock, false).getState();
-            if (state instanceof Chest chest) {
-                Inventory inv = chest.getInventory();
-                inv.clear(); // just in case
-                inv.addItem(this.getItem().clone());
-
-                ItemStack fuel = StackUtils.getItemByID(fuelType);
-                if (fuel != null) {
-                    fuel = fuel.clone();
-                    fuel.setAmount(fuelLeft);
-                    inv.addItem(fuel);
-                }
-            }
-            state.update();
-
-            p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
-        }, 40);
-
-        // TODO store an instance somewhere
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 80);
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 120);
-        Galactifun.instance().runSync(() -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "..."), 160);
+        Galactifun.instance().runSync(sendRandomMessage(p), 40);
+        Galactifun.instance().runSync(sendRandomMessage(p), 80);
+        Galactifun.instance().runSync(sendRandomMessage(p), 120);
+        Galactifun.instance().runSync(sendRandomMessage(p), 160);
         Galactifun.instance().runSync(() -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
+            Block destBlock = null;
+            for (int y = to.getMaxHeight(); y >= to.getMinHeight(); y--) {
+                Block b = to.getBlockAt(x, y, z);
+                if (b.isSolid() && !BlockStorage.check(b, BaseItems.LANDING_HATCH.getItemId())) {
+                    destBlock = b.getRelative(BlockFace.UP);
+                    break;
+                }
+            }
+
+            if (destBlock != null) {
+                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+                if (state instanceof Chest chest) {
+                    Inventory inv = chest.getInventory();
+                    inv.addItem(this.getItem().clone());
+
+                    ItemStack fuel = StackUtils.getItemByID(fuelType);
+                    if (fuel != null) {
+                        fuel = fuel.clone();
+                        fuel.setAmount(fuelLeft);
+                        inv.addItem(fuel);
+                    }
+                }
+                state.update();
+            }
+
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
-                    if (entity.getLocation().distanceSquared(b.getLocation()) <= 25) {
-                        PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                    if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
+                        Location loc;
+                        if (destBlock == null) {
+                            loc = new Location(to, x, to.getMinHeight() - 3, z);
+                        } else {
+                            loc = destBlock.getLocation().add(0, 1, 0);
+                        }
+                        PaperLib.teleportAsync(entity, loc);
                     }
                 }
             }
 
-            b.setType(Material.AIR);
-            BlockStorage.clearBlockInfo(b);
+            rocket.setType(Material.AIR);
+            BlockStorage.clearBlockInfo(rocket);
         }, 200);
+    }
+
+    private static Runnable sendRandomMessage(Player p) {
+        return () -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
     }
 
 }

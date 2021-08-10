@@ -36,7 +36,9 @@ public final class AtmosphereBuilder {
     }
 
     public AtmosphereBuilder addEffect(@Nonnull AtmosphericEffect effect, int level) {
-        this.effects.put(effect, level);
+        if (level > 0) {
+            this.effects.put(effect, level);
+        }
         return this;
     }
 

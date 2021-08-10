@@ -18,7 +18,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-public class LaunchPadFloor extends SlimefunItem {
+public final class LaunchPadFloor extends SlimefunItem {
 
     public LaunchPadFloor(Category category, SlimefunItemStack itemStack, RecipeType type, ItemStack[] recipe) {
         super(category, itemStack, type, recipe);

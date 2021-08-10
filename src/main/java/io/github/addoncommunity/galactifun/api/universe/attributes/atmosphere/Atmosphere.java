@@ -28,7 +28,7 @@ public final class Atmosphere {
     public static final Atmosphere NONE = new AtmosphereBuilder()
             .setEnd()
             .setPressure(0)
-            .addEffect(AtmosphericEffect.COLD, 5)
+            .addEffect(AtmosphericEffect.COLD, 4)
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
@@ -103,6 +103,27 @@ public final class Atmosphere {
 
     public double pressurizedCompositionOf(@Nonnull Gas gas) {
         return compositionOf(gas) * this.pressure;
+    }
+
+    public AtmosphereBuilder toBuilder() {
+        AtmosphereBuilder builder = new AtmosphereBuilder();
+        switch (this.environment) {
+            case NETHER -> builder.setNether();
+            case THE_END -> builder.setEnd();
+        }
+
+        for (Map.Entry<AtmosphericEffect, Integer> effect : this.effects.entrySet()) {
+            builder.addEffect(effect.getKey(), effect.getValue());
+        }
+        for (Map.Entry<Gas, Double> gas : this.composition.entrySet()) {
+            builder.add(gas.getKey(), gas.getValue());
+        }
+
+        if (this.storming) builder.addStorm();
+        if (this.thundering) builder.addThunder();
+        if (this.weatherEnabled) builder.enableWeather();
+
+        return builder;
     }
 
 }

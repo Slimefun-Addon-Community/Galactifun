@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -15,6 +13,7 @@ import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -47,6 +46,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -59,8 +59,9 @@ public final class WorldManager implements Listener {
 
     @Getter
     private final int maxAliensPerPlayer;
-    private final Set<PlanetaryWorld> spaceWorlds = new HashSet<>();
+    private final Map<World, PlanetaryWorld> spaceWorlds = new HashMap<>();
     private final Map<World, AlienWorld> alienWorlds = new HashMap<>();
+    private final Map<PlanetaryWorld, SlimefunAddon> addons = new HashMap<>();
     private final YamlConfiguration config;
     private final YamlConfiguration defaultConfig;
 
@@ -98,11 +99,11 @@ public final class WorldManager implements Listener {
         });
     }
 
-    public void register(PlanetaryWorld world) {
-        if (this.spaceWorlds.contains(world)) {
+    public void register(PlanetaryWorld world, SlimefunAddon addon) {
+        if (this.spaceWorlds.containsValue(world)) {
             throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
         }
-        this.spaceWorlds.add(world);
+        this.spaceWorlds.put(world.world(), world);
         if (world instanceof AlienWorld alienWorld) {
             this.alienWorlds.put(alienWorld.world(), alienWorld);
         }
@@ -121,7 +122,7 @@ public final class WorldManager implements Listener {
 
     @Nullable
     public PlanetaryWorld getWorld(@Nonnull World world) {
-        return this.alienWorlds.get(world);
+        return this.spaceWorlds.get(world);
     }
 
     @Nullable
@@ -130,8 +131,15 @@ public final class WorldManager implements Listener {
     }
 
     @Nonnull
+    public SlimefunAddon getAddon(@Nonnull PlanetaryWorld world) {
+        SlimefunAddon addon = this.addons.get(world);
+        Validate.notNull(addon, "A PlanetaryWorld: " + world + ", has no addon");
+        return addon;
+    }
+
+    @Nonnull
     public Collection<PlanetaryWorld> spaceWorlds() {
-        return Collections.unmodifiableCollection(this.spaceWorlds);
+        return Collections.unmodifiableCollection(this.spaceWorlds.values());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

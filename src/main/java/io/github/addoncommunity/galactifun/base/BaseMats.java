@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base;
 
+import java.util.Arrays;
+
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -41,6 +43,16 @@ public final class BaseMats {
             "DRY_ICE",
             Material.PACKED_ICE,
             "&bDry Ice"
+    );
+    public static final SlimefunItemStack SULFUR_BLOCK = new SlimefunItemStack(
+            "SULFUR_BLOCK",
+            Material.YELLOW_TERRACOTTA,
+            "&6Sulfur Block"
+    );
+    public static final SlimefunItemStack VENTSTONE = new SlimefunItemStack(
+            "VENTSTONE",
+            Material.MAGMA_BLOCK,
+            "&6Ventstone"
     );
     public static final SlimefunItemStack ALUMINUM_COMPOSITE = new SlimefunItemStack(
             "ALUMINUM_COMPOSITE",
@@ -205,6 +217,8 @@ public final class BaseMats {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
+        worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
+        worldItem(VENTSTONE, BaseUniverse.VENUS, BaseUniverse.IO);
         component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
                 SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST
@@ -316,6 +330,16 @@ public final class BaseMats {
         );
         component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.item());
         component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
+
+        RecipeType.ENHANCED_CRAFTING_TABLE.register(new ItemStack[]{
+                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE,
+                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE,
+                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE
+        }, SULFUR_BLOCK);
+        RecipeType.GRIND_STONE.register(
+                Arrays.copyOf(new ItemStack[]{SULFUR_BLOCK}, 9),
+                new SlimefunItemStack(SlimefunItems.SULFATE, 9)
+        );
     }
 
     private static void component(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
