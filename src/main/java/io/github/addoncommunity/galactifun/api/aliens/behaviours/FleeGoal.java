@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +25,7 @@ public final class FleeGoal<T extends Mob> extends AlienBehaviour<T> implements 
     private int ticks = 0;
 
     public FleeGoal(@Nonnull Class<T> entityClass, @Nonnull T mob, int fleeTicks) {
-        super(entityClass, mob);
+        super(entityClass, Galactifun.instance().getKey("flee"), mob);
         this.fleeTicks = fleeTicks;
 
         // Todo dont register a new listener for every alien, move to alien manager
@@ -38,12 +37,6 @@ public final class FleeGoal<T extends Mob> extends AlienBehaviour<T> implements 
         if (e.getEntity().getUniqueId().equals(this.mob.getUniqueId())) {
             this.ticks = this.fleeTicks;
         }
-    }
-
-    @Nonnull
-    @Override
-    public NamespacedKey getGoalKey() {
-        return Galactifun.instance().getKey("flee");
     }
 
     @Override

@@ -1,10 +1,6 @@
 package io.github.addoncommunity.galactifun.api.aliens.behaviours;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -17,16 +13,14 @@ import com.destroystokyo.paper.entity.ai.GoalType;
 
 public abstract class AlienBehaviour<T extends Mob> implements Goal<T> {
 
-    private final List<T> mobs = new ArrayList<>();
     private final Class<T> mobClass;
     private final GoalKey<T> key;
+    protected final Mob mob;
 
-    protected AlienBehaviour(Class<T> mobClass, NamespacedKey key) {
+    protected AlienBehaviour(Class<T> mobClass, NamespacedKey key, Mob mob) {
         this.key = GoalKey.of(mobClass, key);
-    }
-
-    public Collection<T> mobs() {
-        return Collections.unmodifiableCollection(this.mobs);
+        this.mobClass = mobClass;
+        this.mob = mob;
     }
 
     @Nonnull

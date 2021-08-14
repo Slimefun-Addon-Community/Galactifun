@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
@@ -18,13 +17,7 @@ public final class LookGoal<T extends Mob> extends AlienBehaviour<T> {
     private int time = 0;
 
     public LookGoal(@Nonnull Class<T> entityClass, @Nonnull T mob) {
-        super(entityClass, mob);
-    }
-
-    @Nonnull
-    @Override
-    public NamespacedKey getGoalKey() {
-        return Galactifun.instance().getKey("look");
+        super(entityClass, Galactifun.instance().getKey("look"), mob);
     }
 
     @Override
