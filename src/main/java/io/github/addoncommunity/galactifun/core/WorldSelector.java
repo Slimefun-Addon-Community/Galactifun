@@ -24,27 +24,49 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 /**
- * Class for exploring the universe through ChestMenus
+ * Class for exploring the universe through {@link ChestMenu}s
  *
  * @author Mooy1
+ * @author Seggan
  */
-public final class GalacticExplorer {
+public final class WorldSelector {
 
     private static final int MAX_OBJECTS_PER_PAGE = 52;
 
     private final Map<UUID, UniversalObject> history = new HashMap<>();
 
-    public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
-        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), exitHandler, false);
+    @Nonnull
+    private final MenuClickHandler exitHandler;
+    @Nonnull
+    private final SelectHandler selectHandler;
+    @Nonnull
+    private final ItemModifier modifier;
+
+    public WorldSelector(@Nonnull MenuClickHandler exitHandler, @Nonnull SelectHandler selectHandler, @Nonnull ItemModifier modifier) {
+        this.exitHandler = exitHandler;
+        this.selectHandler = selectHandler;
+        this.modifier = modifier;
     }
 
-    private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
+    public WorldSelector(@Nonnull MenuClickHandler exitHandler) {
+        this(exitHandler, (p, world) -> false, (p, world, lore) -> true);
+    }
+
+    public WorldSelector(@Nonnull SelectHandler selectHandler, @Nonnull ItemModifier modifier) {
+        this((p, i, s, s1, a) -> false, selectHandler, modifier);
+    }
+
+    public void explore(@Nonnull Player p) {
+        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), false);
+    }
+
+    private void open(@Nonnull Player p, @Nonnull UniversalObject object, boolean history) {
 
         List<UniversalObject> orbiters = object.orbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
-            open(p, BaseUniverse.THE_UNIVERSE, exitHandler, true);
+            open(p, BaseUniverse.THE_UNIVERSE, true);
             return;
         }
 
@@ -63,7 +85,7 @@ public final class GalacticExplorer {
             menu.addMenuClickHandler(0, exitHandler);
         } else {
             menu.addMenuClickHandler(0, (p1, slot, item, action, a) -> {
-                open(p1, object.orbiting(), exitHandler, true);
+                open(p1, object.orbiting(), true);
                 return false;
             });
         }
@@ -94,6 +116,10 @@ public final class GalacticExplorer {
                         lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
                     }
 
+                    if (!modifier.modifyItem(p, orbiter, lore)) {
+                        continue;
+                    }
+
                     meta.lore(lore);
                     item = item.clone();
                     item.setItemMeta(meta);
@@ -102,16 +128,52 @@ public final class GalacticExplorer {
 
             menu.addItem(i + 1, item);
             if (orbiter.orbiters().size() == 0) {
-                menu.addMenuClickHandler(i + 1, (a, b, c, d, e) -> false);
+                menu.addMenuClickHandler(i + 1, (clicker, i1, s, s1, a) -> {
+                    if (selectHandler.onSelect(clicker, orbiter)) {
+                        clicker.closeInventory();
+                    }
+                    return false;
+                });
             } else {
                 menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {
-                    open(p1, orbiter, exitHandler, true);
+                    open(p1, orbiter, true);
                     return false;
                 });
             }
         }
 
         menu.open(p);
+
+    }
+
+    @FunctionalInterface
+    public interface SelectHandler {
+
+        /**
+         * Called when a player selects a world
+         *
+         * @param p the {@link Player} selecting the world
+         * @param world the {@link UniversalObject} selected
+         *
+         * @return whether the menu should close after selection
+         */
+        boolean onSelect(@Nonnull Player p, @Nonnull UniversalObject world);
+
+    }
+
+    @FunctionalInterface
+    public interface ItemModifier {
+
+        /**
+         * Called when the {@link WorldSelector} decides to display a {@link UniversalObject}
+         *
+         * @param p the {@link Player} that the {@link WorldSelector} is open to
+         * @param world the {@link UniversalObject} that the item represents
+         * @param lore the lore of the item, fresh for modification
+         *
+         * @return whether the item should be displayed
+         */
+        boolean modifyItem(@Nonnull Player p, @Nonnull UniversalObject world, @Nonnull List<Component> lore);
 
     }
 
