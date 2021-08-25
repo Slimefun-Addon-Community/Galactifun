@@ -38,22 +38,22 @@ public final class WorldSelector {
     @Nonnull
     private final MenuClickHandler exitHandler;
     @Nonnull
-    private final SelectHandler selectHandler;
-    @Nonnull
     private final ItemModifier modifier;
+    @Nonnull
+    private final SelectHandler selectHandler;
 
-    public WorldSelector(@Nonnull MenuClickHandler exitHandler, @Nonnull SelectHandler selectHandler, @Nonnull ItemModifier modifier) {
+    public WorldSelector(@Nonnull MenuClickHandler exitHandler, @Nonnull ItemModifier modifier,@Nonnull SelectHandler selectHandler) {
         this.exitHandler = exitHandler;
         this.selectHandler = selectHandler;
         this.modifier = modifier;
     }
 
     public WorldSelector(@Nonnull MenuClickHandler exitHandler) {
-        this(exitHandler, (p, world) -> false, (p, world, lore) -> true);
+        this(exitHandler, (p, world, lore) -> true, (p, world) -> {});
     }
 
-    public WorldSelector(@Nonnull SelectHandler selectHandler, @Nonnull ItemModifier modifier) {
-        this((p, i, s, s1, a) -> false, selectHandler, modifier);
+    public WorldSelector(@Nonnull ItemModifier modifier, @Nonnull SelectHandler selectHandler) {
+        this((p, i, s, s1, a) -> false, modifier, selectHandler);
     }
 
     public void explore(@Nonnull Player p) {
@@ -129,9 +129,7 @@ public final class WorldSelector {
             menu.addItem(i + 1, item);
             if (orbiter.orbiters().size() == 0) {
                 menu.addMenuClickHandler(i + 1, (clicker, i1, s, s1, a) -> {
-                    if (selectHandler.onSelect(clicker, orbiter)) {
-                        clicker.closeInventory();
-                    }
+                    selectHandler.onSelect(clicker, orbiter);
                     return false;
                 });
             } else {
@@ -153,11 +151,9 @@ public final class WorldSelector {
          * Called when a player selects a world
          *
          * @param p the {@link Player} selecting the world
-         * @param world the {@link UniversalObject} selected
-         *
-         * @return whether the menu should close after selection
+         * @param object the {@link UniversalObject} selected
          */
-        boolean onSelect(@Nonnull Player p, @Nonnull UniversalObject world);
+        void onSelect(@Nonnull Player p, @Nonnull UniversalObject object);
 
     }
 
@@ -168,12 +164,12 @@ public final class WorldSelector {
          * Called when the {@link WorldSelector} decides to display a {@link UniversalObject}
          *
          * @param p the {@link Player} that the {@link WorldSelector} is open to
-         * @param world the {@link UniversalObject} that the item represents
+         * @param object the {@link UniversalObject} that the item represents
          * @param lore the lore of the item, fresh for modification
          *
          * @return whether the item should be displayed
          */
-        boolean modifyItem(@Nonnull Player p, @Nonnull UniversalObject world, @Nonnull List<Component> lore);
+        boolean modifyItem(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull List<Component> lore);
 
     }
 
