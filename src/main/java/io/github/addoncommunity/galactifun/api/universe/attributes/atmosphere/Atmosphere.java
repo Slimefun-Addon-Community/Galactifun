@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 
@@ -14,6 +15,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -21,6 +24,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
  * @author Mooy1
  */
 @Getter
+@ParametersAreNonnullByDefault
 public final class Atmosphere {
 
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
@@ -85,8 +89,11 @@ public final class Atmosphere {
             for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
                 AtmosphericEffect effect = entry.getKey();
 
-                int protection = 0; // TODO replace with space suit protection
-                protection += Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
+                int protection = Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
+                SpaceSuitStat stat = effect.stat();
+                if (stat != null) {
+                    protection += SpaceSuitProfile.get(player).getStat(stat);
+                }
 
                 int level = Math.max(0, entry.getValue() - protection);
                 if (level > 0) {
@@ -103,6 +110,10 @@ public final class Atmosphere {
 
     public double pressurizedCompositionOf(@Nonnull Gas gas) {
         return compositionOf(gas) * this.pressure;
+    }
+
+    public boolean requiresOxygenTank() {
+        return compositionOf(Gas.OXYGEN) < 20.0;
     }
 
 }

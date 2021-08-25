@@ -13,18 +13,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -141,7 +144,6 @@ public abstract class AlienWorld extends PlanetaryWorld {
         this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
-    // TODO improve
     @Nullable
     public SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
@@ -181,8 +183,19 @@ public abstract class AlienWorld extends PlanetaryWorld {
         dayCycle().tick(world);
 
         // player effects
+        boolean oxygen = atmosphere().requiresOxygenTank();
         for (Player p : world.getPlayers()) {
-            applyEffects(p);
+            if (!p.isDead() && p.isValid()) {
+                applyEffects(p);
+
+                if (oxygen && !SpaceSuitProfile.get(p).consumeOxygen(100)) {
+                    EntityDamageEvent e = new EntityDamageEvent(p, EntityDamageEvent.DamageCause.SUFFOCATION, 1);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        p.setHealth(Math.max(0.0, p.getHealth() - 1));
+                    }
+                }
+            }
         }
 
         // time

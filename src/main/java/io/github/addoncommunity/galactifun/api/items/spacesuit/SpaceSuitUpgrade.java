@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import io.github.addoncommunity.galactifun.Galactifun;
@@ -17,30 +20,11 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 // TODO make machine to add upgrades to stuff
-public class SpaceSuitUpgrade extends UnplaceableBlock {
+@ParametersAreNonnullByDefault
+public final class SpaceSuitUpgrade extends UnplaceableBlock {
 
     private static final NamespacedKey UPGRADES_KEY = Galactifun.instance().getKey("upgrades");
     private static final Map<String, SpaceSuitUpgrade> UPGRADES = new HashMap<>();
-
-    public static void getUpgrades(ItemStack item, Map<SpaceSuitStat, Integer> stats) {
-        if (item.getType().isAir() || !item.hasItemMeta()) {
-            return;
-        }
-
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        List<String> ids = container.get(UPGRADES_KEY, PersistenceUtils.STRING_LIST);
-
-        if (ids == null) {
-            return;
-        }
-
-        for (String id : ids) {
-            SpaceSuitUpgrade upgrade = UPGRADES.get(id);
-            if (upgrade != null) {
-                stats.compute(upgrade.stat, (stat, value) -> value == null ? upgrade.value : value + upgrade.value);
-            }
-        }
-    }
 
     private final SpaceSuitStat stat;
     private final int value;
@@ -72,6 +56,21 @@ public class SpaceSuitUpgrade extends UnplaceableBlock {
     public void preRegister() {
         super.preRegister();
         UPGRADES.put(getId(), this);
+    }
+
+    public static void getUpgrades(ItemMeta meta, Map<SpaceSuitStat, Integer> stats) {
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+
+        List<String> ids = container.get(UPGRADES_KEY, PersistenceUtils.STRING_LIST);
+
+        if (ids != null) {
+            for (String id : ids) {
+                SpaceSuitUpgrade upgrade = UPGRADES.get(id);
+                if (upgrade != null) {
+                    stats.compute(upgrade.stat, (stat, value) -> value == null ? upgrade.value : value + upgrade.value);
+                }
+            }
+        }
     }
 
 }
