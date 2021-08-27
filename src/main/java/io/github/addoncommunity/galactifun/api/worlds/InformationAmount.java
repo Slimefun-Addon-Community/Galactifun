@@ -1,10 +1,11 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -35,14 +36,16 @@ public enum InformationAmount {
     BASIC {
         @Override
         public void addLore(@Nonnull List<Component> lore, @Nonnull PlanetaryWorld world) {
-            lore.add(Component.empty());
-            lore.add(Component.text("Effects:").color(NamedTextColor.GRAY));
-            for (Map.Entry<AtmosphericEffect, Integer> effect : world.atmosphere().effects().entrySet()) {
-                lore.add(Component.text(effect.getKey().toString())
-                        .color(NamedTextColor.RED)
-                        .append(Component.text(": "))
-                        .append(Component.text(effect.getValue()))
-                );
+            if (!world.atmosphere().effects().isEmpty()) {
+                lore.add(Component.empty());
+                lore.add(Component.text("Effects:").color(NamedTextColor.GRAY));
+                for (Map.Entry<AtmosphericEffect, Integer> effect : world.atmosphere().effects().entrySet()) {
+                    lore.add(Component.text(effect.getKey().toString())
+                            .color(NamedTextColor.RED)
+                            .append(Component.text(": "))
+                            .append(Component.text(effect.getValue()))
+                    );
+                }
             }
 
             lore.add(Component.empty());
@@ -74,10 +77,8 @@ public enum InformationAmount {
                 lore.add(Component.text("Atmospheric Composition:").color(NamedTextColor.GRAY));
 
                 // sort them by amount
-                LinkedHashMap<Gas, Double> gases = world.atmosphere().composition().entrySet().stream()
-                        .sorted(Map.Entry.comparingByValue())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+                LinkedHashMap<Gas, Double> gases = new LinkedHashMap<>(world.atmosphere().composition());
+                InformationAmount.orderByValue(gases, Comparator.reverseOrder());
                 for (Map.Entry<Gas, Double> gas : gases.entrySet()) {
                     lore.add(Component.text(ChatUtils.humanize(gas.getKey().name()))
                             .color(NamedTextColor.GREEN)
@@ -100,4 +101,15 @@ public enum InformationAmount {
     private static final DecimalFormat formatter = new DecimalFormat("0.###");
 
     public abstract void addLore(@Nonnull List<Component> lore, @Nonnull PlanetaryWorld world);
+
+    private static <K, V> void orderByValue(LinkedHashMap<K, V> m, final Comparator<? super V> c) {
+        List<Map.Entry<K, V>> entries = new ArrayList<>(m.entrySet());
+
+        entries.sort((lhs, rhs) -> c.compare(lhs.getValue(), rhs.getValue()));
+
+        m.clear();
+        for(Map.Entry<K, V> e : entries) {
+            m.put(e.getKey(), e.getValue());
+        }
+    }
 }

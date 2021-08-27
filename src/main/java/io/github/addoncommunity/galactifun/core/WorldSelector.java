@@ -99,6 +99,10 @@ public final class WorldSelector {
         // objects
         for (int i = 0; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()); i++) {
             UniversalObject orbiter = orbiters.get(i);
+            if (orbiter instanceof PlanetaryWorld planetaryWorld) {
+                if (planetaryWorld.world() == null) continue;
+            }
+            
             ItemStack item = orbiter.item();
 
             if (known) {
@@ -129,9 +133,7 @@ public final class WorldSelector {
                         amount.addLore(lore, planetaryWorld);
                     }
 
-                    if (!modifier.modifyItem(p, orbiter, lore)) {
-                        continue;
-                    }
+                    if (!modifier.modifyItem(p, orbiter, lore)) continue;
 
                     meta.lore(lore);
                     item = item.clone();
