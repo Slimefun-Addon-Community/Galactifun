@@ -109,17 +109,17 @@ public class Alien<T extends Mob> {
         return spawned;
     }
 
-    public final void onTick(@Nonnull LivingEntity mob) {
-        tick(this.clazz.cast(mob));
+    public final void onEntityTick(@Nonnull LivingEntity mob) {
+        onTick(this.clazz.cast(mob));
     }
 
     //@formatter:off
 
     public void onSpawn(@Nonnull T spawned) { }
 
-    public void uniqueTick() { }
+    public void onUniqueTick() { }
 
-    public void tick(@Nonnull T mob) { }
+    public void onTick(@Nonnull T mob) { }
 
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 

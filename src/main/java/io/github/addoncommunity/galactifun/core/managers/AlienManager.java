@@ -75,14 +75,14 @@ public final class AlienManager implements Listener {
 
     private void tick() {
         for (Alien<?> alien : this.aliens.values()) {
-            alien.uniqueTick();
+            alien.onUniqueTick();
         }
 
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
                 Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onTick(entity);
+                    alien.onEntityTick(entity);
                 }
             }
         }
