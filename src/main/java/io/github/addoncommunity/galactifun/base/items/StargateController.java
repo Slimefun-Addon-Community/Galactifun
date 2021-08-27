@@ -10,6 +10,8 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import lombok.AllArgsConstructor;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -325,7 +327,11 @@ public final class StargateController extends SlimefunItem implements Listener {
         }
     }
 
-    private static final record ComponentPosition(int y, int z) {
+    @AllArgsConstructor
+    private static final class ComponentPosition {
+
+        private final int y;
+        private final int z;
 
         public boolean isInSameRing(@Nonnull Block b) {
             return BlockStorage.check(b.getRelative(0, this.y, this.z)) instanceof StargateRing;
