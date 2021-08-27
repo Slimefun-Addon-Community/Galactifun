@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Tag;
 import org.bukkit.World;
@@ -40,10 +41,13 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.persistence.PersistentDataHolder;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.events.PlayerVisitWorldEvent;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.InformationAmount;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -53,6 +57,7 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public final class WorldManager implements Listener {
@@ -313,6 +318,26 @@ public final class WorldManager implements Listener {
                 toBePlaced.setType(Material.WATER);
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onTravel(PlayerVisitWorldEvent e) {
+        PersistentDataHolder holder = e.world().worldStorage();
+        NamespacedKey key = Galactifun.instance().getKey("player_info_" + e.getPlayer().getUniqueId());
+        InformationAmount amount = InformationAmount.valueOf(PersistentDataAPI.getString(
+                holder,
+                key,
+                InformationAmount.NONE.name()
+        ));
+        if (amount == InformationAmount.NONE) {
+            PersistentDataAPI.setString(holder, key, InformationAmount.BASIC.name());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerJoinGame(PlayerJoinEvent e) {
+        NamespacedKey key = Galactifun.instance().getKey("player_info_" + e.getPlayer().getUniqueId());
+        PersistentDataAPI.setString(BaseUniverse.EARTH.worldStorage(), key, InformationAmount.ADVANCED.name());
     }
 
 }

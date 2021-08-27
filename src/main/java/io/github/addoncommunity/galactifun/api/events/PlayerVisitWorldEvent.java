@@ -25,6 +25,10 @@ public class PlayerVisitWorldEvent extends PlayerEvent implements Cancellable {
         this.world = world;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -38,7 +42,7 @@ public class PlayerVisitWorldEvent extends PlayerEvent implements Cancellable {
     @Nonnull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return getHandlerList();
     }
 
 }
