@@ -10,6 +10,9 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.events.PlayerVisitWorldEvent;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
@@ -38,7 +41,17 @@ public final class GalactiportCommand extends AbstractCommand {
             return;
         }
 
-        PaperLib.teleportAsync(p, world.getSpawnLocation());
+        boolean cancelled = false;
+        PlanetaryWorld planetaryWorld = Galactifun.worldManager().getWorld(world);
+        if (planetaryWorld != null) {
+            PlayerVisitWorldEvent event = new PlayerVisitWorldEvent(p, planetaryWorld);
+            Bukkit.getPluginManager().callEvent(event);
+            cancelled = event.isCancelled();
+        }
+
+        if (!cancelled) {
+            PaperLib.teleportAsync(p, world.getSpawnLocation());
+        }
     }
 
     @Override

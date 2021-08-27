@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -30,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.events.PlayerVisitWorldEvent;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
@@ -236,7 +238,17 @@ public final class Rocket extends SlimefunItem {
                         } else {
                             loc = destBlock.getLocation().add(0, 1, 0);
                         }
-                        PaperLib.teleportAsync(entity, loc);
+
+                        boolean cancelled = false;
+                        if (entity instanceof Player aPlayer) {
+                            PlayerVisitWorldEvent event = new PlayerVisitWorldEvent(aPlayer, worldTo);
+                            Bukkit.getPluginManager().callEvent(event);
+                            cancelled = event.isCancelled();
+                        }
+
+                        if (!cancelled) {
+                            PaperLib.teleportAsync(entity, loc);
+                        }
                     }
                 }
             }
