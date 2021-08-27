@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.aliens.behaviours;
+package io.github.addoncommunity.galactifun.api.aliens.behaviors;
 
 import java.util.EnumSet;
 
@@ -11,13 +11,13 @@ import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
 
-public abstract class AlienBehaviour<T extends Mob> implements Goal<T> {
+public abstract class AlienBehavior<T extends Mob> implements Goal<T> {
 
     private final Class<T> mobClass;
     private final GoalKey<T> key;
     protected final Mob mob;
 
-    protected AlienBehaviour(Class<T> mobClass, NamespacedKey key, Mob mob) {
+    protected AlienBehavior(Class<T> mobClass, NamespacedKey key, Mob mob) {
         this.key = GoalKey.of(mobClass, key);
         this.mobClass = mobClass;
         this.mob = mob;

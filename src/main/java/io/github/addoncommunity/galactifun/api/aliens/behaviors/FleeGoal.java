@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.aliens.behaviours;
+package io.github.addoncommunity.galactifun.api.aliens.behaviors;
 
 import java.util.EnumSet;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +19,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 /**
  * Flees if attacked in the last {@code fleeTicks} ticks
  */
-public final class FleeGoal<T extends Mob> extends AlienBehaviour<T> implements Listener {
+public final class FleeGoal<T extends Mob> extends AlienBehavior<T> implements Listener {
 
     private final int fleeTicks;
     private int ticks = 0;
