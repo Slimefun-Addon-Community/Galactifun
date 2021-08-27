@@ -45,6 +45,8 @@ public final class Titan extends AlienWorld {
             Biome.WOODED_MOUNTAINS
     );
 
+    private SimplexOctaveGenerator generator;
+
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
@@ -53,8 +55,10 @@ public final class Titan extends AlienWorld {
     @Override
     protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
                                  @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(world, 8);
-        generator.setScale(0.004);
+        if (this.generator == null) {
+            this.generator = new SimplexOctaveGenerator(world, 8);
+            this.generator.setScale(0.004);
+        }
 
         for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
             for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
@@ -87,7 +91,7 @@ public final class Titan extends AlienWorld {
                                 if (random.nextBoolean()) {
                                     chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                                 } else {
-                                    chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
                                 }
                             }
                         }
@@ -206,6 +210,11 @@ public final class Titan extends AlienWorld {
                 }
             }
         });
+    }
+
+    @Override
+    protected int getChunkVersion() {
+        return 1;
     }
 
 }

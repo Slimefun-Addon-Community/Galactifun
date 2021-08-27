@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -14,7 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.AllArgsConstructor;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,7 +46,6 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
 
-    private static final MessageDigest SHA_256 = DigestUtils.getSha256Digest();
     private static final int[] BACKGROUND = new int[] { 1, 2, 6, 7, 8 };
     private static final int ADDRESS_SLOT = 3;
     private static final int DESTINATION_SLOT = 4;
@@ -207,17 +203,14 @@ public final class StargateController extends SlimefunItem implements Listener {
 
         String address = BlockStorage.getLocationInfo(l, "gfsgAddress");
         if (address == null) {
-            String lString = l.getWorld().getName() + l.getBlockX() + l.getBlockY() + l.getBlockZ();
-            byte[] hash = SHA_256.digest(lString.getBytes(StandardCharsets.UTF_8));
-            address = String.format(
-                    "%x%x%x%x%x%x",
-                    hash[0],
-                    hash[1],
-                    hash[2],
-                    hash[3],
-                    hash[4],
-                    hash[5]
+            String lString = String.format(
+                    "%s-%d-%d-%d",
+                    b.getWorld().getName(),
+                    l.getBlockX(),
+                    l.getBlockY(),
+                    l.getBlockZ()
             );
+            address = Integer.toHexString(lString.hashCode());
             BlockStorage.addBlockInfo(b, "gfsgAddress", address);
         }
 

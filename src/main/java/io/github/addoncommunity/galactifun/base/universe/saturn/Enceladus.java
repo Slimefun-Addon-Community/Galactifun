@@ -86,6 +86,11 @@ public final class Enceladus extends AlienWorld {
     }
 
     @Override
+    protected int getChunkVersion() {
+        return 1;
+    }
+
+    @Override
     public boolean canSpawnVanillaMobs() {
         return true;
     }

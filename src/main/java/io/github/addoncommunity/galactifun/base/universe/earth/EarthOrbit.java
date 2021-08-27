@@ -63,4 +63,9 @@ public final class EarthOrbit extends AlienWorld {
         });
     }
 
+    @Override
+    protected int getChunkVersion() {
+        return 1;
+    }
+
 }

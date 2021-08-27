@@ -87,13 +87,18 @@ public final class Mars extends SimpleAlienWorld {
                     int y = random.nextInt(world.getHighestBlockAt(x, z).getY()) + 1;
 
                     GenUtils.generateSquare(
-                            world.getBlockAt(x, y, z).getLocation(),
+                            source.getBlock(x, y, z).getLocation(),
                             Material.PACKED_ICE,
                             dist
                     );
                 }
             }
         });
+    }
+
+    @Override
+    protected int getChunkVersion() {
+        return 1;
     }
 
 }

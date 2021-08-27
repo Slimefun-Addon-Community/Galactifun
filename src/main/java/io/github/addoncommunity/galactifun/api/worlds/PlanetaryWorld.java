@@ -8,6 +8,7 @@ import lombok.Getter;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.StarSystem;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -17,6 +18,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.Earth;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 
 /**
  * Any world that can be travelled to by rockets or other means
@@ -43,14 +45,14 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public final void register(@Nonnull WorldManager worldManager) {
+    public final void register(@Nonnull SlimefunAddon addon) {
         if (isRegistered()) {
             throw new IllegalStateException("World already registered!");
         }
-        this.worldManager = worldManager;
+        this.worldManager = Galactifun.worldManager();
         this.world = loadWorld();
         if (this.world != null) {
-            worldManager.register(this);
+            this.worldManager.register(this, addon);
         }
     }
 

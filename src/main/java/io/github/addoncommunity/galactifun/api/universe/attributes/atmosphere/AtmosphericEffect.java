@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.primitives.Ints;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 
@@ -27,27 +28,28 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 @ParametersAreNonnullByDefault
 public final class AtmosphericEffect {
 
-    public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", SpaceSuitStat.RADIATION_RESISTANCE, PotionEffectType.WITHER);
-    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", SpaceSuitStat.HEAT_RESISTANCE,
-            (player, level) -> {
-                player.setFireTicks(240 * level);
-                if (level > 3) {
-                    player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-                }
-            });
-    public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD", SpaceSuitStat.COLD_RESISTANCE,
-            (player, level) -> {
-                player.damage(level * 2);
-                player.addPotionEffect(new PotionEffect(
-                        PotionEffectType.SLOW,
-                        200,
-                        Math.min(200, level),
-                        false,
-                        false,
-                        false
-                ));
-                player.setFreezeTicks(Math.min(150 * level, player.getMaxFreezeTicks()));
-            });
+    public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION",
+            SpaceSuitStat.RADIATION_RESISTANCE, PotionEffectType.WITHER);
+    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT",
+            SpaceSuitStat.HEAT_RESISTANCE, (player, level) -> {
+        player.setFireTicks(Ints.constrainToRange(240 * level, 0, player.getMaxFireTicks()));
+        if (level > 3) {
+            player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+        }
+    });
+    public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD",
+            SpaceSuitStat.COLD_RESISTANCE, (player, level) -> {
+        player.damage(level * 2);
+        player.addPotionEffect(new PotionEffect(
+                PotionEffectType.SLOW,
+                200,
+                Math.min(200, level),
+                false,
+                false,
+                false
+        ));
+        player.setFreezeTicks(Ints.constrainToRange(150 * level, 0, player.getMaxFreezeTicks()));
+    });
 
     @Getter
     private final String id;

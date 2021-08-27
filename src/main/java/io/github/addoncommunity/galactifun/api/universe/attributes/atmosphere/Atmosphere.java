@@ -108,4 +108,25 @@ public final class Atmosphere {
         return compositionOf(Gas.OXYGEN) < 16.0;
     }
 
+    public AtmosphereBuilder toBuilder() {
+        AtmosphereBuilder builder = new AtmosphereBuilder();
+        switch (this.environment) {
+            case NETHER -> builder.setNether();
+            case THE_END -> builder.setEnd();
+        }
+
+        for (Map.Entry<AtmosphericEffect, Integer> effect : this.effects.entrySet()) {
+            builder.addEffect(effect.getKey(), effect.getValue());
+        }
+        for (Map.Entry<Gas, Double> gas : this.composition.entrySet()) {
+            builder.add(gas.getKey(), gas.getValue());
+        }
+
+        if (this.storming) builder.addStorm();
+        if (this.thundering) builder.addThunder();
+        if (this.weatherEnabled) builder.enableWeather();
+
+        return builder;
+    }
+
 }
