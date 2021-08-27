@@ -105,7 +105,7 @@ public final class Atmosphere {
     }
 
     public boolean requiresOxygenTank() {
-        return compositionOf(Gas.OXYGEN) < 20.0;
+        return compositionOf(Gas.OXYGEN) < 16.0;
     }
 
 }

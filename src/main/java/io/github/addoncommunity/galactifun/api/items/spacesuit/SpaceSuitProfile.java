@@ -52,7 +52,7 @@ public final class SpaceSuitProfile {
     /**
      * Consumes 1 oxygen per second
      *
-     * @return Whether a full breath was taken
+     * @return whether a full breath was taken
      */
     public boolean consumeOxygen(int ticksSinceLastBreath) {
         int consume = (int) (ticksSinceLastBreath * OXYGEN_PER_TICK);
