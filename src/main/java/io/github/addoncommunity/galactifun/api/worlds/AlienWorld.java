@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
@@ -96,13 +96,8 @@ public abstract class AlienWorld extends PlanetaryWorld {
                         list.add(new BlockPopulator() {
                             @Override
                             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
-                                JavaPlugin addon = Galactifun.worldManager().getAddon(AlienWorld.this).getJavaPlugin();
                                 PersistentDataAPI.setString(source, CHUNK_VER_KEY,
-                                        String.format("%s v%s",
-                                                addon.getName(),
-                                                addon.getDescription().getVersion()
-                                        )
-                                );
+                                        String.format("%s v%s", addon().getName(), addon().getPluginVersion()));
                             }
                         });
                         return list;
@@ -147,7 +142,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
     }
 
     protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
-        return worldManager().getSetting(this, path, clazz, defaultValue);
+        return Galactifun.worldManager().getSetting(this, path, clazz, defaultValue);
     }
 
     /**
@@ -159,7 +154,6 @@ public abstract class AlienWorld extends PlanetaryWorld {
         this.blockMappings.put(vanillaItem, slimefunItem);
     }
 
-    // TODO improve
     @Nullable
     public SlimefunItemStack getMappedItem(Block b) {
         return this.blockMappings.get(b.getType());
@@ -200,7 +194,9 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         // player effects
         for (Player p : world.getPlayers()) {
-            applyEffects(p);
+            if (p.getGameMode() == GameMode.SURVIVAL) {
+                applyEffects(p);
+            }
         }
 
         // time
@@ -215,7 +211,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
             int players = world.getPlayers().size();
             int mobs = world.getLivingEntities().size() - players;
-            int max = players * worldManager().maxAliensPerPlayer();
+            int max = players * Galactifun.worldManager().maxAliensPerPlayer();
 
             for (Alien<?> alien : this.species) {
                 if ((mobs += alien.attemptSpawn(rand, world)) > max) {

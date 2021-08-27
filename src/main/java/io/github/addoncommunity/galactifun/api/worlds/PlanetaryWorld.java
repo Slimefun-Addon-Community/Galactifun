@@ -44,8 +44,9 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
 
     @Getter
     private World world;
-    @Getter
     private WorldManager worldManager;
+    @Getter
+    private SlimefunAddon addon;
     private Marker worldStorage;
 
     public PlanetaryWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
@@ -63,9 +64,10 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
             throw new IllegalStateException("World already registered!");
         }
         this.worldManager = Galactifun.worldManager();
+        this.addon = addon;
         this.world = loadWorld();
         if (this.world != null) {
-            this.worldManager.register(this, addon);
+            this.worldManager.register(this);
 
             Collection<Marker> markers = this.world.getNearbyEntitiesByType(
                     Marker.class,

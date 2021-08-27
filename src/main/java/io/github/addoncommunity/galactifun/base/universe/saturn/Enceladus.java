@@ -14,7 +14,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.structures.GalacticStructure;
+import io.github.addoncommunity.galactifun.api.structures.Structure;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
@@ -32,7 +32,7 @@ import io.github.addoncommunity.galactifun.util.Sphere;
  */
 public final class Enceladus extends AlienWorld {
 
-    private final GalacticStructure cryoVolcano = Galactifun.structureManager().getOrLoad(Galactifun.instance(), "cryovolcano");
+    private final Structure cryoVolcano = Structure.get(Galactifun.instance(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
     public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,

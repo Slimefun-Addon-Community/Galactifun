@@ -34,7 +34,7 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
-public final class AlienManager implements Listener, Runnable {
+public final class AlienManager implements Listener {
 
     @Getter
     private final NamespacedKey key;
@@ -44,7 +44,7 @@ public final class AlienManager implements Listener, Runnable {
 
     public AlienManager(Galactifun galactifun) {
         galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(this, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
+        galactifun.scheduleRepeatingSync(this::tick, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
 
         this.key = Galactifun.instance().getKey("alien");
         this.bossKey = Galactifun.instance().getKey("boss_alien");
@@ -73,8 +73,7 @@ public final class AlienManager implements Listener, Runnable {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
-    @Override
-    public void run() {
+    private void tick() {
         for (Alien<?> alien : this.aliens.values()) {
             alien.onUniqueTick();
         }
@@ -83,7 +82,7 @@ public final class AlienManager implements Listener, Runnable {
             for (LivingEntity entity : world.getLivingEntities()) {
                 Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onMobTick(alien.clazz().cast(entity));
+                    alien.onEntityTick(entity);
                 }
             }
         }
@@ -152,10 +151,11 @@ public final class AlienManager implements Listener, Runnable {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     private void onAlienShoot(@Nonnull ProjectileLaunchEvent e) {
         ProjectileSource source = e.getEntity().getShooter();
-        if (!(source instanceof Mob mob)) return;
-        Alien<?> alien = getAlien(mob);
-        if (alien != null) {
-            alien.onShoot(e, mob);
+        if (source instanceof Mob mob) {
+            Alien<?> alien = getAlien(mob);
+            if (alien != null) {
+                alien.onShoot(e);
+            }
         }
     }
 

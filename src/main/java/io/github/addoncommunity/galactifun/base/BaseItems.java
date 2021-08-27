@@ -7,10 +7,15 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
+import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
+import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
@@ -32,6 +37,76 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
  */
 @UtilityClass
 public final class BaseItems {
+
+    //<editor-fold desc="Space Suits, Oxygen, Upgrades" defaultstate="collapsed">
+    public static final SlimefunItemStack OXYGEN_FILLER = new SlimefunItemStack(
+            "OXYGEN_FILLER",
+            new ItemStack(Material.QUARTZ_BLOCK),
+            "&fOxygen Filler",
+            "&7Fills space suits with oxygen",
+            "",
+            LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
+            LorePreset.energyPerSecond(100),
+            LorePreset.speed(1)
+    );
+    public static final SlimefunItemStack SPACE_SUIT_UPGRADER = new SlimefunItemStack(
+            "SPACE_SUIT_UPGRADER",
+            new ItemStack(Material.IRON_BLOCK),
+            "&fSpace Suit Upgrader",
+            "&7Adds upgrades to your space suit",
+            "",
+            LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
+            LorePreset.energyPerSecond(200),
+            LorePreset.speed(1)
+    );
+    public static final SlimefunItemStack HEAT_RESISTANCE_UPGRADE = new SlimefunItemStack(
+            "HEAT_RESISTANCE_UPGRADE",
+            Material.IRON_BLOCK,
+            "&7Heat Resistance Upgrade",
+            "&8Add to your space suit to increase heat resistance"
+    );
+    public static final SlimefunItemStack COLD_RESISTANCE_UPGRADE = new SlimefunItemStack(
+            "COLD_RESISTANCE_UPGRADE",
+            Material.IRON_BLOCK,
+            "&7Cold Resistance Upgrade",
+            "&8Add to your space suit to increase cold resistance"
+    );
+    public static final SlimefunItemStack RADIATION_RESISTANCE_UPGRADE = new SlimefunItemStack(
+            "RADIATION_RESISTANCE_UPGRADE",
+            Material.IRON_BLOCK,
+            "&7Radiation Resistance Upgrade",
+            "&8Add to your space suit to increase radiation resistance"
+    );
+    public static final SlimefunItemStack SPACE_SUIT_HELMET = new SlimefunItemStack(
+            "SPACE_SUIT_HELMET",
+            Material.IRON_HELMET,
+            "&fSpace Suit Helmet",
+            "&7A basic space suit helmet",
+            ""
+    );
+    public static final SlimefunItemStack SPACE_SUIT_CHEST = new SlimefunItemStack(
+            "SPACE_SUIT_CHEST",
+            Material.IRON_CHESTPLATE,
+            "&fSpace Suit Chest",
+            "&7A basic space suit chest",
+            "",
+            SpaceSuit.oxygenLore(0, 3600)
+    );
+    public static final SlimefunItemStack SPACE_SUIT_PANTS = new SlimefunItemStack(
+            "SPACE_SUIT_PANTS",
+            Material.IRON_LEGGINGS,
+            "&fSpace Suit Pants",
+            "&7Basic pair of space suit pants",
+            ""
+    );
+    public static final SlimefunItemStack SPACE_SUIT_BOOTS = new SlimefunItemStack(
+            "SPACE_SUIT_BOOTS",
+            Material.IRON_BOOTS,
+            "&fSpace Suit Boots",
+            "&7Basic pair of space suit boots",
+            ""
+    );
+    //</editor-fold>
 
     //<editor-fold desc="Random Stuff" defaultstate="collapsed">
     public static final SlimefunItemStack LAUNCH_PAD_CORE = new SlimefunItemStack(
@@ -230,6 +305,42 @@ public final class BaseItems {
     //</editor-fold>
 
     public static void setup(Galactifun galactifun) {
+        new OxygenFiller(CoreCategory.MACHINES, OXYGEN_FILLER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }).setCapacity(200).setEnergyConsumption(100).setProcessingSpeed(1).register(galactifun);
+        new SpaceSuitUpgrader(CoreCategory.MACHINES, SPACE_SUIT_UPGRADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }).setCapacity(400).setEnergyConsumption(200).setProcessingSpeed(1).register(galactifun);
+
+        new SpaceSuitUpgrade(CoreCategory.EQUIPMENT, HEAT_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+                SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT,
+                SlimefunItems.COOLING_UNIT, new ItemStack(Material.IRON_BLOCK), SlimefunItems.COOLING_UNIT,
+                SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT
+        }, SpaceSuitStat.HEAT_RESISTANCE, 1).register(galactifun);
+        new SpaceSuitUpgrade(CoreCategory.EQUIPMENT, COLD_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+                SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL,
+                SlimefunItems.HEATING_COIL, new ItemStack(Material.IRON_BLOCK), SlimefunItems.HEATING_COIL,
+                SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL
+        }, SpaceSuitStat.COLD_RESISTANCE, 1).register(galactifun);
+        new SpaceSuitUpgrade(CoreCategory.EQUIPMENT, RADIATION_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+                SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT,
+                SlimefunItems.LEAD_INGOT, new ItemStack(Material.IRON_BLOCK), SlimefunItems.LEAD_INGOT,
+                SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT
+        }, SpaceSuitStat.RADIATION_RESISTANCE, 1).register(galactifun);
+
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }, 1, 0).register(galactifun);
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_CHEST, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }, 1, 3600).register(galactifun);
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_PANTS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }, 2, 0).register(galactifun);
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_BOOTS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+
+        }, 1, 0).register(galactifun);
+
         new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL,
                 SlimefunItems.STEEL_PLATE, null, SlimefunItems.STEEL_PLATE,
