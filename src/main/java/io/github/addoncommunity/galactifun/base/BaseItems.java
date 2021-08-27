@@ -86,7 +86,8 @@ public final class BaseItems {
             Material.IRON_CHESTPLATE,
             "&fSpace Suit Chest",
             "&7A basic space suit chest",
-            ""
+            "",
+            SpaceSuit.oxygenLore(0, 3600)
     );
     public static final SlimefunItemStack SPACE_SUIT_PANTS = new SlimefunItemStack(
             "SPACE_SUIT_PANTS",

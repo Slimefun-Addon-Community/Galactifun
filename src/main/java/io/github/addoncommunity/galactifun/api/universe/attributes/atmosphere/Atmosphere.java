@@ -8,8 +8,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -32,7 +30,7 @@ public final class Atmosphere {
     public static final Atmosphere NONE = new AtmosphereBuilder()
             .setEnd()
             .setPressure(0)
-            .addEffect(AtmosphericEffect.COLD, 5)
+            .addEffect(AtmosphericEffect.COLD, 3)
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
@@ -85,22 +83,16 @@ public final class Atmosphere {
     }
 
     public void applyEffects(@Nonnull Player player) {
-        if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-            for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
-                AtmosphericEffect effect = entry.getKey();
+        for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
+            AtmosphericEffect effect = entry.getKey();
 
-                int protection = Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
-                SpaceSuitStat stat = effect.stat();
-                if (stat != null) {
-                    protection += SpaceSuitProfile.get(player).getStat(stat);
-                }
-
-                int level = Math.max(0, entry.getValue() - protection);
-                if (level > 0) {
-                    player.sendMessage(ChatColor.RED + "You have been exposed to deadly " + effect + "!");
-                    effect.applier().accept(player, level);
-                }
+            int protection = Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
+            SpaceSuitStat stat = effect.stat();
+            if (stat != null) {
+                protection += SpaceSuitProfile.get(player).getStat(stat);
             }
+
+            effect.apply(player, entry.getValue() - protection);
         }
     }
 

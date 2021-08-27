@@ -47,7 +47,7 @@ public final class SpaceSuitUpgrader extends AContainer {
 
                 if (suit != null && upgrade != null) {
                     ItemMeta meta = suitStack.getItemMeta();
-                    if (upgrade.addTo(meta.getPersistentDataContainer(), suit.maxUpgrades())) {
+                    if (upgrade.addTo(meta, suit.maxUpgrades())) {
                         ItemStack newSuit = suitStack.clone();
                         newSuit.setItemMeta(meta);
                         upgradeStack.setAmount(upgradeStack.getAmount() - 1);

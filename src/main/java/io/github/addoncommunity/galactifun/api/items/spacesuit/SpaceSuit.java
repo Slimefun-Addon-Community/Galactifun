@@ -56,7 +56,7 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
     }
 
     @Override
-    public void preRegister() {
+    public void postRegister() {
         SPACE_SUITS.put(getId(), this);
     }
 
@@ -76,28 +76,23 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
         if (suit == null) {
             return 0;
         }
-        int oxygen = meta.getPersistentDataContainer().getOrDefault(OXYGEN_KEY, PersistentDataType.INTEGER, 0);
+        int oxygen = suit.getOxygen(meta);
         int oxygenChanged = Math.max(0, Math.min(suit.maxOxygen, oxygen + change));
-        if (oxygenChanged != oxygen && meta.hasLore()) {
-            List<String> lore = meta.getLore();
-            for (int i = 0; i < lore.size(); i++) {
-                if (lore.get(i).startsWith(OXYGEN_LORE)) {
-                    lore.set(i, oxygenLore(oxygenChanged, suit.maxOxygen));
-                }
-            }
-            meta.setLore(lore);
+        if (oxygenChanged != oxygen) {
+            suit.setOxygen(meta, oxygenChanged);
             item.setItemMeta(meta);
         }
         return oxygenChanged;
     }
 
-    public int getOxygen(ItemMeta meta) {
+    public final int getOxygen(ItemMeta meta) {
         return Math.min(maxOxygen, meta.getPersistentDataContainer()
                 .getOrDefault(OXYGEN_KEY, PersistentDataType.INTEGER, 0));
     }
 
-    public void setOxygen(ItemStack item, ItemMeta meta, int oxygen) {
-        oxygen = Math.max(0, Math.min(maxOxygen, oxygen));
+    public final void setOxygen(ItemMeta meta, int oxygen) {
+        oxygen = Math.max(0, Math.min(oxygen, maxOxygen));
+        meta.getPersistentDataContainer().set(OXYGEN_KEY, PersistentDataType.INTEGER, oxygen);
         if (meta.hasLore()) {
             List<String> lore = meta.getLore();
             for (int i = 0; i < lore.size(); i++) {
@@ -106,7 +101,6 @@ public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
                 }
             }
             meta.setLore(lore);
-            item.setItemMeta(meta);
         }
     }
 

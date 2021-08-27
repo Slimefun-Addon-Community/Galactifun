@@ -26,10 +26,12 @@ public final class OxygenFiller extends AContainer {
 
     @Override
     protected void tick(Block b) {
+        // TODO allow if they have oxygen in the area
         PlanetaryWorld world = Galactifun.worldManager().getWorld(b.getWorld());
         if (world != null && world.atmosphere().requiresOxygenTank()) {
             return;
         }
+
         if (getCharge(b.getLocation()) < getEnergyConsumption()) {
             return;
         }
@@ -53,12 +55,15 @@ public final class OxygenFiller extends AContainer {
 
             if (oxygen < suit.maxOxygen()) {
                 removeCharge(b.getLocation(), getEnergyConsumption());
-                suit.setOxygen(item, meta, oxygen + getSpeed());
+                suit.setOxygen(meta, oxygen + getSpeed());
+                item.setItemMeta(meta);
                 return true;
-            } else if (inv.fits(item, getOutputSlots())) {
-                inv.pushItem(item, getOutputSlots());
-                inv.replaceExistingItem(slot, null);
             }
+        }
+
+        if (inv.fits(item, getOutputSlots())) {
+            inv.pushItem(item, getOutputSlots());
+            inv.replaceExistingItem(slot, null);
         }
         return false;
     }

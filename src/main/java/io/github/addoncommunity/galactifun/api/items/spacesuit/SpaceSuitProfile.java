@@ -7,6 +7,9 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 
-// TODO implement oxygen
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ParametersAreNonnullByDefault
 public final class SpaceSuitProfile {
 
@@ -57,13 +60,13 @@ public final class SpaceSuitProfile {
             int slot = oxygenChanged[i];
             if (slot >= consume) {
                 oxygenChanged[i] -= consume;
-                break;
+                return true;
             } else if (slot != 0) {
                 consume -= slot;
                 oxygenChanged[i] = 0;
             }
         }
-        return consume == 0;
+        return false;
     }
 
     public int getStat(SpaceSuitStat stat) {
@@ -75,7 +78,7 @@ public final class SpaceSuitProfile {
         ItemStack[] armorContents = p.getInventory().getArmorContents();
         for (int i = 0, armorContentsLength = armorContents.length; i < armorContentsLength; i++) {
             ItemStack item = armorContents[i];
-            if (!item.getType().isAir() && item.hasItemMeta()) {
+            if (item != null && !item.getType().isAir() && item.hasItemMeta()) {
                 ItemMeta meta = item.getItemMeta();
                 SpaceSuitUpgrade.getUpgrades(meta, this.stats);
                 oxygenChanged[i] = oxygen[i] = SpaceSuit.getOxygen(item, meta, oxygenChanged[i] - oxygen[i]);

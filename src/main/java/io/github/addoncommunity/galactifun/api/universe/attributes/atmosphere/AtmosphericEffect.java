@@ -9,6 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +23,6 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
  * @author Mooy1
  * @author Seggan
  */
-@Getter
 @AllArgsConstructor
 @ParametersAreNonnullByDefault
 public final class AtmosphericEffect {
@@ -46,10 +46,12 @@ public final class AtmosphericEffect {
                         false,
                         false
                 ));
-                player.setFreezeTicks(150 * level);
+                player.setFreezeTicks(Math.min(150 * level, player.getMaxFreezeTicks()));
             });
 
+    @Getter
     private final String id;
+    @Getter
     @Nullable
     private final SpaceSuitStat stat;
     private final BiConsumer<Player, Integer> applier;
@@ -63,6 +65,13 @@ public final class AtmosphericEffect {
                 false,
                 false
         )));
+    }
+
+    public void apply(Player p, int level) {
+        if (level > 0) {
+            p.sendMessage(ChatColor.RED + "You have been exposed to " + this + "!");
+            this.applier.accept(p, level);
+        }
     }
 
     @Override

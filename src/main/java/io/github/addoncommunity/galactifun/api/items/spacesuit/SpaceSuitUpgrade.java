@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.NamespacedKey;
@@ -18,8 +19,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.Unplaceabl
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 
-// TODO make machine to add upgrades to stuff
 @ParametersAreNonnullByDefault
 public final class SpaceSuitUpgrade extends UnplaceableBlock {
 
@@ -36,25 +37,42 @@ public final class SpaceSuitUpgrade extends UnplaceableBlock {
         this.value = value;
     }
 
-    public boolean addTo(PersistentDataContainer container, int maxUpgrades) {
+    public boolean addTo(ItemMeta meta, int maxUpgrades) {
+        PersistentDataContainer container = meta.getPersistentDataContainer();
         List<String> ids = container.get(UPGRADES_KEY, PersistenceUtils.STRING_LIST);
+        boolean success = false;
 
         if (ids != null) {
             if (ids.size() < maxUpgrades) {
                 ids.add(getId());
                 container.set(UPGRADES_KEY, PersistenceUtils.STRING_LIST, ids);
-                return true;
+                success = true;
             }
         } else if (maxUpgrades > 0) {
             container.set(UPGRADES_KEY, PersistenceUtils.STRING_LIST, Collections.singletonList(getId()));
-            return true;
+            success = true;
         }
-        return false;
+
+        if (success) {
+            if (meta.hasLore()) {
+                List<String> lore = meta.getLore();
+                lore.add(toLore());
+                meta.setLore(lore);
+            } else {
+                meta.setLore(Collections.singletonList(toLore()));
+            }
+        }
+
+        return success;
+    }
+
+    @Nonnull
+    public String toLore() {
+        return ChatColors.color(stat.name() + " " + value);
     }
 
     @Override
-    public void preRegister() {
-        super.preRegister();
+    public void postRegister() {
         UPGRADES.put(getId(), this);
     }
 

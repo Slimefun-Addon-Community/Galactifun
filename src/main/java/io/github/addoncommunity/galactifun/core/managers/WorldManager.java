@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import lombok.Getter;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -42,6 +43,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
@@ -71,6 +73,7 @@ public final class WorldManager implements Listener {
 
         galactifun.registerListener(this);
         galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
+        galactifun.scheduleRepeatingSync(this::tickOxygen, 20);
 
         File configFile = new File("plugins/Galactifun", "worlds.yml");
         this.config = new YamlConfiguration();
@@ -115,6 +118,19 @@ public final class WorldManager implements Listener {
             return (T) this.config.getString(path);
         } else {
             return this.config.getObject(path, clazz);
+        }
+    }
+
+    private void tickOxygen() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getGameMode() == GameMode.SURVIVAL) {
+                PlanetaryWorld world = spaceWorlds.get(p.getWorld());
+                if (world != null
+                        && world.atmosphere().requiresOxygenTank()
+                        && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
+                    p.damage(8);
+                }
+            }
         }
     }
 
