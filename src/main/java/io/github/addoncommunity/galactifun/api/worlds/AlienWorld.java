@@ -225,12 +225,4 @@ public abstract class AlienWorld extends PlanetaryWorld {
         }
     }
 
-    /**
-     * Obtains the chunk version of the newest chunks that this world generates. When you change
-     * world gen, bump this up by 1. Abstract to <b>force</b> implementers to remember about this
-     *
-     * @return the chunk version
-     */
-    protected abstract int getChunkVersion();
-
 }

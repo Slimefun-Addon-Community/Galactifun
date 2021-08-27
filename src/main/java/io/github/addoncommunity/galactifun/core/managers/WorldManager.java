@@ -104,6 +104,7 @@ public final class WorldManager implements Listener {
             throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
         }
         this.spaceWorlds.put(world.world(), world);
+        this.addons.put(world, addon);
         if (world instanceof AlienWorld alienWorld) {
             this.alienWorlds.put(alienWorld.world(), alienWorld);
         }

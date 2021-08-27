@@ -38,11 +38,6 @@ public final class Venus extends SimpleAlienWorld {
         populators.add(new LakePopulator(80, Material.LAVA));
     }
 
-    @Override
-    protected int getChunkVersion() {
-        return 1;
-    }
-
     @Nonnull
     @Override
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
