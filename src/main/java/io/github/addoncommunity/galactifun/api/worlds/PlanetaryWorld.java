@@ -99,4 +99,8 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
         return this.worldStorage;
     }
 
+    public final boolean enabled() {
+        return this.world != null;
+    }
+
 }

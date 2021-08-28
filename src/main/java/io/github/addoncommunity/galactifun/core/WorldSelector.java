@@ -100,9 +100,9 @@ public final class WorldSelector {
         for (int i = 0; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()); i++) {
             UniversalObject orbiter = orbiters.get(i);
             if (orbiter instanceof PlanetaryWorld planetaryWorld) {
-                if (planetaryWorld.world() == null) continue;
+                if (!planetaryWorld.enabled()) continue;
             }
-            
+
             ItemStack item = orbiter.item();
 
             if (known) {
