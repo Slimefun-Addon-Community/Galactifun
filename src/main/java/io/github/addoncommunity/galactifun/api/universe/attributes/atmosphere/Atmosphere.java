@@ -4,16 +4,17 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -21,6 +22,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
  * @author Mooy1
  */
 @Getter
+@ParametersAreNonnullByDefault
 public final class Atmosphere {
 
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
@@ -28,7 +30,7 @@ public final class Atmosphere {
     public static final Atmosphere NONE = new AtmosphereBuilder()
             .setEnd()
             .setPressure(0)
-            .addEffect(AtmosphericEffect.COLD, 4)
+            .addEffect(AtmosphericEffect.COLD, 3)
             .build();
 
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
@@ -81,19 +83,16 @@ public final class Atmosphere {
     }
 
     public void applyEffects(@Nonnull Player player) {
-        if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-            for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
-                AtmosphericEffect effect = entry.getKey();
+        for (Map.Entry<AtmosphericEffect, Integer> entry : this.effects.entrySet()) {
+            AtmosphericEffect effect = entry.getKey();
 
-                int protection = 0; // TODO replace with space suit protection
-                protection += Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
-
-                int level = Math.max(0, entry.getValue() - protection);
-                if (level > 0) {
-                    player.sendMessage(ChatColor.RED + "You have been exposed to deadly " + effect + "!");
-                    effect.applier().accept(player, level);
-                }
+            int protection = Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
+            SpaceSuitStat stat = effect.stat();
+            if (stat != null) {
+                protection += SpaceSuitProfile.get(player).getStat(stat);
             }
+
+            effect.apply(player, entry.getValue() - protection);
         }
     }
 
@@ -103,6 +102,10 @@ public final class Atmosphere {
 
     public double pressurizedCompositionOf(@Nonnull Gas gas) {
         return compositionOf(gas) * this.pressure;
+    }
+
+    public boolean requiresOxygenTank() {
+        return compositionOf(Gas.OXYGEN) < 16.0;
     }
 
     public AtmosphereBuilder toBuilder() {

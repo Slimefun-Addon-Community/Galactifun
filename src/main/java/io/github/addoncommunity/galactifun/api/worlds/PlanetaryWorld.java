@@ -28,12 +28,12 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
  * @author Mooy1
  * @see Earth
  */
+@Getter
 public abstract class PlanetaryWorld extends PlanetaryObject {
 
-    @Getter
     private World world;
-    @Getter
     private WorldManager worldManager;
+    private SlimefunAddon addon;
 
     public PlanetaryWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                           DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
@@ -50,9 +50,10 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
             throw new IllegalStateException("World already registered!");
         }
         this.worldManager = Galactifun.worldManager();
+        this.addon = addon;
         this.world = loadWorld();
         if (this.world != null) {
-            this.worldManager.register(this, addon);
+            this.worldManager.register(this);
         }
     }
 

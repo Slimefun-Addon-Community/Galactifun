@@ -6,17 +6,17 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 
-public final class DirectionalStructureBlock extends StructureBlock {
+final class RotatableBlock extends StructureBlock {
 
     private final BlockFace direction;
 
-    public DirectionalStructureBlock(Material material, BlockFace direction) {
+    RotatableBlock(Material material, BlockFace direction) {
         super(material);
         this.direction = direction;
     }
 
     @Override
-    public void paste(Block block, StructureRotation rotation) {
+    void paste(Block block, StructureRotation rotation) {
         super.paste(block, rotation);
         BlockData data = block.getBlockData();
         ((Directional) data).setFacing(rotation.rotateFace(this.direction));
@@ -24,7 +24,7 @@ public final class DirectionalStructureBlock extends StructureBlock {
     }
 
     @Override
-    public String save() {
+    String save() {
         return super.save() + ',' + this.direction.name();
     }
 

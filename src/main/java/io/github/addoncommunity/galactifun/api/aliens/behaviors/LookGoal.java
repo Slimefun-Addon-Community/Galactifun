@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.aliens.goals;
+package io.github.addoncommunity.galactifun.api.aliens.behaviors;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -6,25 +6,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.addoncommunity.galactifun.Galactifun;
 
-public final class LookGoal<T extends Mob> extends AbstractGoal<T> {
+public final class LookGoal<T extends Mob> extends AlienBehavior<T> {
 
     private int time = 0;
 
     public LookGoal(@Nonnull Class<T> entityClass, @Nonnull T mob) {
-        super(entityClass, mob);
-    }
-
-    @Nonnull
-    @Override
-    public NamespacedKey getGoalKey() {
-        return Galactifun.instance().getKey("look");
+        super(entityClass, Galactifun.instance().getKey("look"), mob);
     }
 
     @Override

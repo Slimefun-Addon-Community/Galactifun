@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -58,16 +59,12 @@ public final class Leech extends Alien<Silverfish> {
 
         // eat it
         PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
-
-        ItemStack[] eatenItems = container.get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
+        List<ItemStack> eatenItems = container.get(this.eatenKey, PersistenceUtils.ITEM_STACK_LIST);
         if (eatenItems != null) {
-            // add on to the array
-            ItemStack[] arr = new ItemStack[eatenItems.length + 1];
-            System.arraycopy(eatenItems, 0, arr, 0, eatenItems.length);
-            arr[eatenItems.length] = item;
-            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, arr);
+            eatenItems.add(item);
+            container.set(this.eatenKey, PersistenceUtils.ITEM_STACK_LIST, eatenItems);
         } else {
-            container.set(this.eatenKey, PersistenceUtils.STACK_ARRAY, new ItemStack[] { item });
+            container.set(this.eatenKey, PersistenceUtils.ITEM_STACK_LIST, Collections.singletonList(item));
         }
 
         inv.setItem(slot, null);
@@ -80,11 +77,9 @@ public final class Leech extends Alien<Silverfish> {
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        ItemStack[] eatenItems = e.getEntity().getPersistentDataContainer().get(this.eatenKey, PersistenceUtils.STACK_ARRAY);
+        List<ItemStack> eatenItems = e.getEntity().getPersistentDataContainer().get(this.eatenKey, PersistenceUtils.ITEM_STACK_LIST);
         if (eatenItems != null) {
-            for (ItemStack itemStack : eatenItems) {
-                e.getDrops().add(itemStack);
-            }
+            e.getDrops().addAll(eatenItems);
         }
     }
 
