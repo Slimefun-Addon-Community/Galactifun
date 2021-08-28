@@ -9,12 +9,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import lombok.Getter;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,7 +25,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-import com.destroystokyo.paper.entity.ai.MobGoals;
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
@@ -37,6 +36,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
+ *
  * @see Martian
  */
 @Getter
@@ -72,8 +72,6 @@ public class Alien<T extends Mob> {
         mob.setCustomName(this.name);
         mob.setCustomNameVisible(true);
         mob.setRemoveWhenFarAway(true);
-
-        this.editGoals(Bukkit.getMobGoals(), mob);
 
         onSpawn(mob);
         return mob;
@@ -111,14 +109,17 @@ public class Alien<T extends Mob> {
         return spawned;
     }
 
-    //@formatter:off
+    public final void onEntityTick(@Nonnull LivingEntity mob) {
+        onTick(this.clazz.cast(mob));
+    }
 
+    //@formatter:off
 
     public void onSpawn(@Nonnull T spawned) { }
 
     public void onUniqueTick() { }
 
-    public void onMobTick(@Nonnull Mob mob) { }
+    public void onTick(@Nonnull T mob) { }
 
     public void onInteract(@Nonnull PlayerInteractEntityEvent e) { }
 
@@ -130,22 +131,13 @@ public class Alien<T extends Mob> {
 
     public void onDeath(@Nonnull EntityDeathEvent e) { }
 
-    public void onCastSpell(EntitySpellCastEvent e) { }
+    public void onCastSpell(@Nonnull EntitySpellCastEvent e) { }
 
-    public void onDamage(EntityDamageEvent e) { }
+    public void onDamage(@Nonnull EntityDamageEvent e) { }
 
-    public void onShoot(ProjectileLaunchEvent e, Mob entity) { }
+    public void onShoot(@Nonnull ProjectileLaunchEvent e) { }
 
     //@formatter:on
-
-    /**
-     * Edits the AI of the Alien. The map is a map of a mob goal and its priority
-     *
-     * @param goals add the goals to this or add nothing for default AI
-     * @param mob the mob
-     */
-    protected void editGoals(@Nonnull MobGoals goals, @Nonnull T mob) {
-    }
 
     /**
      * This method returns whether the alien can spawn in the given light level. By default uses

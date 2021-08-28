@@ -9,7 +9,6 @@ import lombok.Getter;
 
 import org.bukkit.Bukkit;
 
-import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -24,7 +23,6 @@ import io.github.addoncommunity.galactifun.core.commands.SphereCommand;
 import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 import io.github.addoncommunity.galactifun.core.managers.ProtectionManager;
-import io.github.addoncommunity.galactifun.core.managers.StructureManager;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.mooy1.infinitylib.AbstractAddon;
 import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
@@ -36,7 +34,6 @@ public final class Galactifun extends AbstractAddon {
     @Getter
     private static Galactifun instance;
 
-    private StructureManager structureManager;
     private AlienManager alienManager;
     private WorldManager worldManager;
     private ProtectionManager protectionManager;
@@ -44,12 +41,10 @@ public final class Galactifun extends AbstractAddon {
     protected void enable() {
         instance = this;
 
-        this.structureManager = new StructureManager(this);
         this.alienManager = new AlienManager(this);
         this.worldManager = new WorldManager(this);
         this.protectionManager = new ProtectionManager();
 
-        this.structureManager.loadStructureFolder(this);
         BaseAlien.setup(this.alienManager);
         BaseUniverse.setup(this);
         CoreCategory.setup(this);
@@ -71,7 +66,6 @@ public final class Galactifun extends AbstractAddon {
     @Override
     protected void disable() {
         this.alienManager.onDisable();
-        SpaceSuitProfile.saveAll();
 
         // Do this last
         instance = null;
@@ -111,10 +105,6 @@ public final class Galactifun extends AbstractAddon {
     @Override
     public String getAutoUpdatePath() {
         return "auto-update";
-    }
-
-    public static StructureManager structureManager() {
-        return instance.structureManager;
     }
 
     public static AlienManager alienManager() {

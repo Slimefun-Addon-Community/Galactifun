@@ -19,7 +19,6 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
-// TODO improve recipes
 public final class CircuitPress extends AContainer {
 
     private static final List<MachineRecipe> RECIPES = new ArrayList<>();

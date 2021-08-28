@@ -1,9 +1,10 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
+import javax.annotation.Nonnull;
+
 import lombok.NonNull;
 
 import org.bukkit.entity.Blaze;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +29,7 @@ public final class Firestorm extends Alien<Blaze> implements Listener {
     }
 
     @Override
-    public void onShoot(ProjectileLaunchEvent e, Mob entity) {
+    public void onShoot(@Nonnull ProjectileLaunchEvent e) {
         e.getEntity().setMetadata("electrified", new FixedMetadataValue(
                 Galactifun.instance(),
                 true
@@ -36,7 +37,7 @@ public final class Firestorm extends Alien<Blaze> implements Listener {
     }
 
     @Override
-    public void onDamage(EntityDamageEvent e) {
+    public void onDamage(@Nonnull EntityDamageEvent e) {
         if (e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING) {
             e.setCancelled(true);
         }

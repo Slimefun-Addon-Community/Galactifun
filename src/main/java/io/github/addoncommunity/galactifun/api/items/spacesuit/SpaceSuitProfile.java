@@ -2,100 +2,86 @@ package io.github.addoncommunity.galactifun.api.items.spacesuit;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.util.PersistentInventory;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 
-@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ParametersAreNonnullByDefault
 public final class SpaceSuitProfile {
 
-    private static final NamespacedKey KEY = Galactifun.instance().getKey("space_suit_inv");
-
     private static final Map<UUID, SpaceSuitProfile> profiles = new HashMap<>();
+    private static final double OXYGEN_PER_TICK = .05;
 
-    private final Inventory inventory;
-    private final UUID player;
+    private final Map<SpaceSuitStat, Integer> stats = new HashMap<>();
+    private final int[] oxygen = new int[4];
+    private final int[] oxygenChanged = new int[4];
 
-    private SpaceSuitProfile(Inventory inventory, UUID player) {
-        Validate.notNull(inventory);
-        Validate.notNull(player);
-        this.inventory = inventory;
-        this.player = player;
-        profiles.put(this.player, this);
-        Galactifun.instance().registerListener(new Listener() {
-            @EventHandler(ignoreCancelled = true)
-            private void onArmorMove(InventoryClickEvent e) {
-                UUID uuid = e.getWhoClicked().getUniqueId();
-                if (!uuid.equals(player)) return;
-
-                ItemStack curr = e.getCursor();
-
-                // load() optional will only be present if curr isnt null
-                // noinspection ConstantConditions
-                loadIfNotFound(uuid, curr).ifPresent(profile -> profile.save(curr, true));
-
-                loadIfNotFound(uuid, e.getCurrentItem());
-            }
+    @Nonnull
+    public static SpaceSuitProfile get(Player p) {
+        return profiles.computeIfAbsent(p.getUniqueId(), uuid -> {
+            SpaceSuitProfile profile = new SpaceSuitProfile();
+            profile.update(p);
+            return profile;
         });
     }
 
-    @Nonnull
-    public static Optional<SpaceSuitProfile> getOrCreate(@NonNull Player p) {
-        return loadIfNotFound(p.getUniqueId(), p.getInventory().getChestplate());
+    static {
+        Galactifun.instance().scheduleRepeatingSync(SpaceSuitProfile::updateAll, 200);
     }
 
-    @Nonnull
-    private static Optional<SpaceSuitProfile> loadIfNotFound(UUID uuid, ItemStack item) {
-        if (profiles.containsKey(uuid)) {
-            return Optional.of(profiles.get(uuid));
-        } else {
-            return load(item, uuid);
+    private static void updateAll() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.isValid() && !p.isDead()) {
+                get(p).update(p);
+            }
         }
     }
 
-    private static Optional<SpaceSuitProfile> load(ItemStack stack, UUID uuid) {
-        if (SlimefunItem.getByItem(stack) instanceof SpaceSuit suit && suit.isChestPlate()) {
-            return Optional.of(new SpaceSuitProfile(
-                    stack.getItemMeta().getPersistentDataContainer().getOrDefault(
-                            KEY,
-                            PersistentInventory.instance(),
-                            Bukkit.createInventory(Bukkit.getPlayer(uuid), suit.invSize())
-                    ),
-                    uuid
-            ));
+    /**
+     * Consumes 1 oxygen per second
+     *
+     * @return whether a full breath was taken
+     */
+    public boolean consumeOxygen(int ticksSinceLastBreath) {
+        int consume = (int) (ticksSinceLastBreath * OXYGEN_PER_TICK);
+        for (int i = 0; i < 4; i++) {
+            int slot = oxygenChanged[i];
+            if (slot >= consume) {
+                oxygenChanged[i] -= consume;
+                return true;
+            } else if (slot != 0) {
+                consume -= slot;
+                oxygenChanged[i] = 0;
+            }
         }
-
-        return Optional.empty();
+        return false;
     }
 
-    private void save(ItemStack stack, boolean delete) {
-        stack.getItemMeta().getPersistentDataContainer().set(KEY, PersistentInventory.instance(), inventory);
-        if (delete) profiles.remove(player);
+    public int getStat(SpaceSuitStat stat) {
+        return this.stats.getOrDefault(stat, 0);
     }
 
-    public static void saveAll() {
-        for (SpaceSuitProfile profile : profiles.values()) {
-            ItemStack stack = Bukkit.getPlayer(profile.player).getInventory().getChestplate();
-            if (SlimefunItem.getByItem(stack) instanceof SpaceSuit suit && suit.isChestPlate()) {
-                profile.save(stack, false);
+    private void update(Player p) {
+        this.stats.clear();
+        ItemStack[] armorContents = p.getInventory().getArmorContents();
+        for (int i = 0, armorContentsLength = armorContents.length; i < armorContentsLength; i++) {
+            ItemStack item = armorContents[i];
+            if (item != null && !item.getType().isAir() && item.hasItemMeta()) {
+                ItemMeta meta = item.getItemMeta();
+                SpaceSuitUpgrade.getUpgrades(meta, this.stats);
+                oxygenChanged[i] = oxygen[i] = SpaceSuit.getOxygen(item, meta, oxygenChanged[i] - oxygen[i]);
             }
         }
     }
