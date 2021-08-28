@@ -232,7 +232,7 @@ public final class WorldManager implements Listener {
             SlimefunItemStack item = world.getMappedItem(b);
             if (item != null) {
                 Location l = b.getLocation();
-                if (BlockStorage.getLocationInfo(l, "stored") != null) {
+                if (BlockStorage.getLocationInfo(l, "placed") != null) {
                     e.setDropItems(false);
                     w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
                 }
