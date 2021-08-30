@@ -165,7 +165,7 @@ public final class Rocket extends SlimefunItem {
                     }
                 });
             }
-        }).explore(p);
+        }).open(p);
     }
 
     public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {

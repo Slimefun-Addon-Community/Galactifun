@@ -213,12 +213,33 @@ public final class BaseMats {
             "&3Ender Block"
     );
 
+    public static final SlimefunItemStack LUNAR_GLASS = new SlimefunItemStack(
+            "LUNAR_GLASS",
+            Material.GLASS,
+            "&fLunar Glass",
+            "",
+            "&7For some reason adding moon dust to",
+            "&7glass makes it clearer..."
+    );
+
+    public static final SlimefunItemStack VOLCANIC_INGOT = new SlimefunItemStack(
+            "VOLCANIC_INGOT",
+            Material.GOLD_INGOT,
+            "&4Volcanic Ingot",
+            "",
+            "&7Forged in the depths of the closest",
+            "&7thing we know to Hell, Volcanic Ingots",
+            "&7are a valuable commodity"
+    );
+
     public static void setup() {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
-        worldItem(VENTSTONE, BaseUniverse.VENUS, BaseUniverse.IO);
+        worldItem(VENTSTONE, BaseUniverse.VENUS);
+        component(VOLCANIC_INGOT, RecipeType.SMELTERY, VENTSTONE);
+        component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
         component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
                 SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST
@@ -331,13 +352,8 @@ public final class BaseMats {
         component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.item());
         component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
 
-        RecipeType.ENHANCED_CRAFTING_TABLE.register(new ItemStack[]{
-                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE,
-                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE,
-                SlimefunItems.SULFATE, SlimefunItems.SULFATE, SlimefunItems.SULFATE
-        }, SULFUR_BLOCK);
         RecipeType.GRIND_STONE.register(
-                Arrays.copyOf(new ItemStack[]{SULFUR_BLOCK}, 9),
+                Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
                 new SlimefunItemStack(SlimefunItems.SULFATE, 9)
         );
     }

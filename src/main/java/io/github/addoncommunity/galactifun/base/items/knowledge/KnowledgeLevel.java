@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.api.worlds;
+package io.github.addoncommunity.galactifun.base.items.knowledge;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,16 +9,21 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.entity.Player;
+
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 /**
  * The amount of the information about a {@link PlanetaryWorld} known by a player
  */
-public enum InformationAmount {
+public enum KnowledgeLevel {
 
     /**
      * Just the bare minimum: distance
@@ -78,7 +83,7 @@ public enum InformationAmount {
 
                 // sort them by amount
                 LinkedHashMap<Gas, Double> gases = new LinkedHashMap<>(world.atmosphere().composition());
-                InformationAmount.orderByValue(gases, Comparator.reverseOrder());
+                KnowledgeLevel.orderByValue(gases, Comparator.reverseOrder());
                 for (Map.Entry<Gas, Double> gas : gases.entrySet()) {
                     lore.add(Component.text(ChatUtils.humanize(gas.getKey().name()))
                             .color(NamedTextColor.GREEN)
@@ -100,16 +105,32 @@ public enum InformationAmount {
 
     private static final DecimalFormat formatter = new DecimalFormat("0.###");
 
-    public abstract void addLore(@Nonnull List<Component> lore, @Nonnull PlanetaryWorld world);
-
     private static <K, V> void orderByValue(LinkedHashMap<K, V> m, final Comparator<? super V> c) {
         List<Map.Entry<K, V>> entries = new ArrayList<>(m.entrySet());
 
         entries.sort((lhs, rhs) -> c.compare(lhs.getValue(), rhs.getValue()));
 
         m.clear();
-        for(Map.Entry<K, V> e : entries) {
+        for (Map.Entry<K, V> e : entries) {
             m.put(e.getKey(), e.getValue());
         }
+    }
+
+    public static KnowledgeLevel get(@Nonnull Player p, @Nonnull PlanetaryWorld world) {
+        return KnowledgeLevel.valueOf(PersistentDataAPI.getString(
+                world.worldStorage(),
+                Galactifun.instance().getKey("player_knowledge_" + p.getUniqueId()),
+                KnowledgeLevel.NONE.name()
+        ));
+    }
+
+    public abstract void addLore(@Nonnull List<Component> lore, @Nonnull PlanetaryWorld world);
+
+    public void set(@Nonnull Player p, @Nonnull PlanetaryWorld world) {
+        PersistentDataAPI.setString(
+                world.worldStorage(),
+                Galactifun.instance().getKey("player_knowledge_" + p.getUniqueId()),
+                this.name()
+        );
     }
 }

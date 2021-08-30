@@ -18,6 +18,7 @@ import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
+import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
 import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
@@ -158,6 +159,15 @@ public final class BaseItems {
             "&9Stargate Controller",
             "",
             "&7Used to control a stargate"
+    );
+    public static final SlimefunItemStack OBSERVATORY = new SlimefunItemStack(
+            "OBSERVATORY",
+            Material.GLASS,
+            "&fObservatory",
+            "",
+            "&7Allows you to discover basic info about",
+            "&7a world remotely. Only works on worlds",
+            "&7closer than 0.25 ly (2,365,200,000,000 km)"
     );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
@@ -441,9 +451,9 @@ public final class BaseItems {
         }, 2).register(galactifun);
 
         new SpaceHeater(SPACE_HEATER_3, new ItemStack[] {
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.VENTSTONE, SPACE_HEATER_2, BaseMats.VENTSTONE,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VENTSTONE, BaseMats.HEAVY_DUTY_SHEET
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET,
+                BaseMats.VOLCANIC_INGOT, SPACE_HEATER_2, BaseMats.VOLCANIC_INGOT,
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 
         new IonDisperser(ION_DISPERSER_1, new ItemStack[] {
@@ -455,8 +465,14 @@ public final class BaseItems {
         new IonDisperser(ION_DISPERSER_2, new ItemStack[] {
                 BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.SULFUR_BLOCK, ION_DISPERSER_1, BaseMats.SULFUR_BLOCK,
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.VENTSTONE, BaseMats.SPACE_GRADE_PLATE
-        }, 1).register(galactifun);
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.VOLCANIC_INGOT, BaseMats.SPACE_GRADE_PLATE
+        }, 2).register(galactifun);
+
+        new Observatory(OBSERVATORY, new ItemStack[] {
+                new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK),
+                new ItemStack(Material.PISTON), BaseMats.LUNAR_GLASS, new ItemStack(Material.PISTON),
+                new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK)
+        }).register(galactifun);
     }
 
 }

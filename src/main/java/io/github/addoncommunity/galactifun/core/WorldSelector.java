@@ -7,20 +7,18 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
-import io.github.addoncommunity.galactifun.api.worlds.InformationAmount;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
 import net.kyori.adventure.text.Component;
@@ -59,7 +57,11 @@ public final class WorldSelector {
         this((p, i, s, s1, a) -> false, modifier, selectHandler);
     }
 
-    public void explore(@Nonnull Player p) {
+    public WorldSelector(@Nonnull SelectHandler selectHandler) {
+        this((p, world, lore) -> true, selectHandler);
+    }
+
+    public void open(@Nonnull Player p) {
         open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), false);
     }
 
@@ -124,13 +126,7 @@ public final class WorldSelector {
                     }
 
                     if (orbiter instanceof PlanetaryWorld planetaryWorld) {
-                        NamespacedKey key = Galactifun.instance().getKey("player_info_" + p.getUniqueId());
-                        InformationAmount amount = InformationAmount.valueOf(PersistentDataAPI.getString(
-                                planetaryWorld.worldStorage(),
-                                key,
-                                InformationAmount.NONE.name()
-                        ));
-                        amount.addLore(lore, planetaryWorld);
+                        KnowledgeLevel.get(p, planetaryWorld).addLore(lore, planetaryWorld);
                     }
 
                     if (!modifier.modifyItem(p, orbiter, lore)) continue;

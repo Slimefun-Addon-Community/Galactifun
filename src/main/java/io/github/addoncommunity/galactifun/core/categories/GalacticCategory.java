@@ -33,7 +33,7 @@ public final class GalacticCategory extends FlexCategory {
         new WorldSelector((player1, i, itemStack, itemStack1, clickAction) -> {
             playerProfile.getGuideHistory().goBack(SlimefunPlugin.getRegistry().getSlimefunGuide(slimefunGuideMode));
             return false;
-        }).explore(player);
+        }).open(player);
         playerProfile.getGuideHistory().add(this, 1);
     }
 
