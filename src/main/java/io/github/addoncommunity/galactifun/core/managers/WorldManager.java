@@ -48,7 +48,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
-import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -324,11 +323,6 @@ public final class WorldManager implements Listener {
                 toBePlaced.setType(Material.WATER);
             }
         }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoinGame(PlayerJoinEvent e) {
-        KnowledgeLevel.ADVANCED.set(e.getPlayer(), BaseUniverse.EARTH);
     }
 
 }
