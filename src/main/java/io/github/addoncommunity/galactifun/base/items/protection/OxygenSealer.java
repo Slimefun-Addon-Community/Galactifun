@@ -1,7 +1,6 @@
 package io.github.addoncommunity.galactifun.base.items.protection;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +14,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -43,9 +41,6 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
     private static final String PROTECTING = "oxygenating";
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
     private static final String ENABLED = "enabled";
-    private static int counter = 0;
-
-
     private static final ItemStack ENABLED_ITEM = new CustomItem(
             Material.STRUCTURE_VOID,
             "&aEnabled",
@@ -58,7 +53,7 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
             "",
             "&7Click to enable"
     );
-
+    private static int counter = 0;
     private final int range;
 
     public OxygenSealer(SlimefunItemStack item, ItemStack[] recipe, int range) {
@@ -94,15 +89,20 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
                     counter++;
                 } else {
                     counter = 0;
-                    //noinspection deprecation
-                    Galactifun.protectionManager().clearOxygenBlocks();
-                    for (BlockPosition l : allBlocks) {
-                        updateProtections(l);
-                    }
+                    OxygenSealer.this.uniqueTick();
                 }
             }
         });
     }
+
+    private void uniqueTick() {
+        //noinspection deprecation
+        Galactifun.protectionManager().clearOxygenBlocks();
+        for (BlockPosition l : allBlocks) {
+            updateProtections(l);
+        }
+    }
+
 
     @Override
     protected void onPlace(@Nonnull BlockPlaceEvent e, @Nonnull Block b) {
@@ -113,6 +113,8 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
     @Override
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
         removeHologram(e.getBlock());
+        allBlocks.remove(new BlockPosition(e.getBlock()));
+        uniqueTick();
     }
 
     @Override
@@ -170,9 +172,6 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
             updateHologram(pos.getBlock(), "&cNot Enough Energy");
             return;
         }
-
-        // removed all non-instances before, so safe cast
-        ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
         // check if sealed using flood fill
         Optional<Set<BlockPosition>> returned = Util.floodFill(l, range);

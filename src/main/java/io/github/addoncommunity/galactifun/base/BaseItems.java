@@ -249,8 +249,8 @@ public final class BaseItems {
     );
     public static final SlimefunItemStack ION_DISPERSER_1 = new SlimefunItemStack(
             "ION_DISPERSER_1",
-            Material.SHROOMLIGHT,
-            "&6Space Heater I",
+            Material.PRISMARINE,
+            "&fIon Disperser I",
             "",
             "&7Effect: Radiation",
             "&7Protection: 2",
@@ -260,8 +260,8 @@ public final class BaseItems {
     );
     public static final SlimefunItemStack ION_DISPERSER_2 = new SlimefunItemStack(
             "ION_DISPERSER_2",
-            Material.SHROOMLIGHT,
-            "&6Space Heater II",
+            Material.PRISMARINE,
+            "&fIon Disperser II",
             "",
             "&7Effect: Radiation",
             "&7Protection: 4",

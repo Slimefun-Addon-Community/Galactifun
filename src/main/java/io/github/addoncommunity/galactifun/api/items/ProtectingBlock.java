@@ -96,14 +96,18 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
                     counter++;
                 } else {
                     counter = 0;
-                    //noinspection deprecation
-                    Galactifun.protectionManager().clearProtectedBlocks();
-                    for (BlockPosition l : allBlocks) {
-                        updateProtections(l);
-                    }
+                    ProtectingBlock.this.uniqueTick();
                 }
             }
         });
+    }
+
+    private void uniqueTick() {
+        //noinspection deprecation
+        Galactifun.protectionManager().clearProtectedBlocks();
+        for (BlockPosition l : allBlocks) {
+            updateProtections(l);
+        }
     }
 
     @Override
@@ -117,6 +121,8 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
     @OverridingMethodsMustInvokeSuper
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
         removeHologram(e.getBlock());
+        allBlocks.remove(new BlockPosition(e.getBlock()));
+        uniqueTick();
     }
 
     @Override
