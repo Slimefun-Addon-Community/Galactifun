@@ -1,7 +1,9 @@
 package io.github.addoncommunity.galactifun.core.managers;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -18,6 +20,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 public final class ProtectionManager {
 
     private final Map<BlockPosition, Map<AtmosphericEffect, Integer>> protectedBlocks = new HashMap<>();
+
+    private final Set<BlockPosition> oxygen = new HashSet<>();
 
     @Nonnull
     public Map<AtmosphericEffect, Integer> protectionsAt(@Nonnull Location l) {
@@ -61,5 +65,22 @@ public final class ProtectionManager {
         }
 
         return ret;
+    }
+
+    public void addOxygenBlock(@Nonnull BlockPosition l) {
+        this.oxygen.add(l);
+    }
+
+    public boolean isOxygenBlock(@Nonnull Location l) {
+        return this.oxygen.contains(new BlockPosition(l));
+    }
+
+    /**
+     * @deprecated for internal use only
+     */
+    @Deprecated
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    public void clearOxygenBlocks() {
+        this.oxygen.clear();
     }
 }
