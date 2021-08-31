@@ -22,6 +22,7 @@ import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
 import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
+import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.mooy1.infinitylib.presets.LorePreset;
@@ -113,7 +114,7 @@ public final class BaseItems {
     //<editor-fold desc="Random Stuff" defaultstate="collapsed">
     public static final SlimefunItemStack LAUNCH_PAD_CORE = new SlimefunItemStack(
             "LAUNCH_PAD_CORE",
-            Material.SEA_LANTERN,
+            Material.STONE,
             "&fLaunch Pad Core",
             "",
             "&7Surround with 8 &fLaunch Pad Floor&7s",
@@ -268,15 +269,12 @@ public final class BaseItems {
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
-    public static final SlimefunItemStack LANDING_BEACON = new SlimefunItemStack(
-            "LANDING_BEACON",
-            Material.REDSTONE_TORCH,
-            "&fLanding Beacon",
+    public static final SlimefunItemStack OXYGEN_SEALER = new SlimefunItemStack(
+            "OXYGEN_SEALER",
+            Material.FURNACE,
+            "&fOxygen Sealer",
             "",
-            "&7Any rocket that lands in the",
-            "&7chunk that this is placed in will",
-            "&7land on the Landing Beacon and the ",
-            "&7items will go inside it"
+            "&7Fills a sealed area with oxygen. Range 200 blocks"
     );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
@@ -487,6 +485,10 @@ public final class BaseItems {
                 BaseMats.SPACE_GRADE_PLATE, SlimefunItems.ENERGIZED_CAPACITOR, BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.TUNGSTEN, BaseMats.VOLCANIC_INGOT, BaseMats.TUNGSTEN
         }).register(galactifun);
+
+        new OxygenSealer(OXYGEN_SEALER, new ItemStack[] {
+
+        }, 200).register(galactifun);
     }
 
 }
