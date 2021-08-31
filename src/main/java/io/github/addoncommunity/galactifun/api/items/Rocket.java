@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -31,10 +30,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.events.PlayerVisitWorldEvent;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
+import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -239,15 +238,10 @@ public final class Rocket extends SlimefunItem {
                             loc = destBlock.getLocation().add(0, 1, 0);
                         }
 
-                        boolean cancelled = false;
-                        if (entity instanceof Player aPlayer) {
-                            PlayerVisitWorldEvent event = new PlayerVisitWorldEvent(aPlayer, worldTo);
-                            Bukkit.getPluginManager().callEvent(event);
-                            cancelled = event.isCancelled();
-                        }
+                        PaperLib.teleportAsync(entity, loc);
 
-                        if (!cancelled) {
-                            PaperLib.teleportAsync(entity, loc);
+                        if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
+                            KnowledgeLevel.BASIC.set(p, worldTo);
                         }
                     }
                 }

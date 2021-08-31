@@ -43,7 +43,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.events.PlayerVisitWorldEvent;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
@@ -323,13 +322,6 @@ public final class WorldManager implements Listener {
             } else {
                 toBePlaced.setType(Material.WATER);
             }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onTravel(PlayerVisitWorldEvent e) {
-        if (KnowledgeLevel.get(e.getPlayer(), e.world()) == KnowledgeLevel.NONE) {
-            KnowledgeLevel.BASIC.set(e.getPlayer(), e.world());
         }
     }
 
