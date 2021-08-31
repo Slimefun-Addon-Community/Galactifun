@@ -36,12 +36,17 @@ public final class Observatory extends MultiBlockMachine {
             return;
         }
 
-        new WorldSelector((pl, w, l) -> world.distanceTo(w) <= 0.25 && w instanceof PlanetaryWorld pw && KnowledgeLevel.get(pl, pw) == KnowledgeLevel.NONE, (pl, w) -> {
+        new WorldSelector((pl, w, l) -> {
+            if (w instanceof PlanetaryWorld pw) {
+                if (KnowledgeLevel.get(pl, pw) != KnowledgeLevel.NONE) return false;
+            }
+            return world.distanceTo(w) <= 0.25;
+        }, (pl, w) -> {
             pl.sendMessage(ChatColor.GREEN + "Discovering planet " + w.name());
             PlanetaryWorld pw = (PlanetaryWorld) w;
-            PersistentDataAPI.setBoolean(pw.worldStorage(), key, true);
+            PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
             Galactifun.instance().runSync(() -> {
-                PersistentDataAPI.setBoolean(pw.worldStorage(), key, false);
+                PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
                 KnowledgeLevel.BASIC.set(pl, pw);
             }, 30 * 60 * 20);
         }).open(p);

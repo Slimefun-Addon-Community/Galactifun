@@ -19,6 +19,7 @@ import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
+import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
 import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
@@ -168,6 +169,14 @@ public final class BaseItems {
             "&7Allows you to discover basic info about",
             "&7a world remotely. Only works on worlds",
             "&7closer than 0.25 ly (2,365,200,000,000 km)"
+    );
+    public static final SlimefunItemStack PLANETARY_ANALYZER = new SlimefunItemStack(
+            "PLANETARY_ANALYZER",
+            Material.SEA_LANTERN,
+            "&fPlanetary Analyzer",
+            "",
+            "&7Allows you to discover advanced info",
+            "&7about the current planet"
     );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
@@ -472,6 +481,11 @@ public final class BaseItems {
                 new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK),
                 new ItemStack(Material.PISTON), BaseMats.LUNAR_GLASS, new ItemStack(Material.PISTON),
                 new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK)
+        }).register(galactifun);
+        new PlanetaryAnalyzer(PLANETARY_ANALYZER, new ItemStack[]{
+                BaseMats.TUNGSTEN, SlimefunItems.GPS_TRANSMITTER_4, BaseMats.TUNGSTEN,
+                BaseMats.SPACE_GRADE_PLATE, SlimefunItems.ENERGIZED_CAPACITOR, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.TUNGSTEN, BaseMats.VOLCANIC_INGOT, BaseMats.TUNGSTEN
         }).register(galactifun);
     }
 

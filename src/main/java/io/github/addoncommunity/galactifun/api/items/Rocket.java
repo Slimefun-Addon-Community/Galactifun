@@ -121,9 +121,9 @@ public final class Rocket extends SlimefunItem {
         long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
 
         new WorldSelector((player, obj, lore) -> {
+            double dist = obj.distanceTo(world) * Util.KM_PER_LY;
             if (obj instanceof PlanetaryWorld) {
                 // km
-                double dist = obj.distanceTo(world) * Util.KM_PER_LY;
                 if (dist > maxDistance) return false;
 
                 lore.add(Component.empty());
