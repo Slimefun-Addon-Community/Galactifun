@@ -15,6 +15,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.UniversalObject;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -24,27 +25,53 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 /**
- * Class for exploring the universe through ChestMenus
+ * Class for exploring the universe through {@link ChestMenu}s
  *
  * @author Mooy1
+ * @author Seggan
  */
-public final class GalacticExplorer {
+public final class WorldSelector {
 
     private static final int MAX_OBJECTS_PER_PAGE = 52;
 
     private final Map<UUID, UniversalObject> history = new HashMap<>();
 
-    public void explore(@Nonnull Player p, @Nonnull MenuClickHandler exitHandler) {
-        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), exitHandler, false);
+    @Nonnull
+    private final MenuClickHandler exitHandler;
+    @Nonnull
+    private final ItemModifier modifier;
+    @Nonnull
+    private final SelectHandler selectHandler;
+
+    public WorldSelector(@Nonnull MenuClickHandler exitHandler, @Nonnull ItemModifier modifier,@Nonnull SelectHandler selectHandler) {
+        this.exitHandler = exitHandler;
+        this.selectHandler = selectHandler;
+        this.modifier = modifier;
     }
 
-    private void open(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull MenuClickHandler exitHandler, boolean history) {
+    public WorldSelector(@Nonnull MenuClickHandler exitHandler) {
+        this(exitHandler, (p, world, lore) -> true, (p, world) -> {});
+    }
+
+    public WorldSelector(@Nonnull ItemModifier modifier, @Nonnull SelectHandler selectHandler) {
+        this((p, i, s, s1, a) -> false, modifier, selectHandler);
+    }
+
+    public WorldSelector(@Nonnull SelectHandler selectHandler) {
+        this((p, world, lore) -> true, selectHandler);
+    }
+
+    public void open(@Nonnull Player p) {
+        open(p, this.history.computeIfAbsent(p.getUniqueId(), k -> BaseUniverse.THE_UNIVERSE), false);
+    }
+
+    private void open(@Nonnull Player p, @Nonnull UniversalObject object, boolean history) {
 
         List<UniversalObject> orbiters = object.orbiters();
 
         // this shouldn't happen
         if (orbiters.size() == 0) {
-            open(p, BaseUniverse.THE_UNIVERSE, exitHandler, true);
+            open(p, BaseUniverse.THE_UNIVERSE, true);
             return;
         }
 
@@ -63,7 +90,7 @@ public final class GalacticExplorer {
             menu.addMenuClickHandler(0, exitHandler);
         } else {
             menu.addMenuClickHandler(0, (p1, slot, item, action, a) -> {
-                open(p1, object.orbiting(), exitHandler, true);
+                open(p1, object.orbiting(), true);
                 return false;
             });
         }
@@ -74,6 +101,10 @@ public final class GalacticExplorer {
         // objects
         for (int i = 0; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()); i++) {
             UniversalObject orbiter = orbiters.get(i);
+            if (orbiter instanceof PlanetaryWorld planetaryWorld) {
+                if (!planetaryWorld.enabled()) continue;
+            }
+
             ItemStack item = orbiter.item();
 
             if (known) {
@@ -94,6 +125,12 @@ public final class GalacticExplorer {
                         lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
                     }
 
+                    if (orbiter instanceof PlanetaryWorld planetaryWorld) {
+                        KnowledgeLevel.get(p, planetaryWorld).addLore(lore, planetaryWorld);
+                    }
+
+                    if (!modifier.modifyItem(p, orbiter, lore)) continue;
+
                     meta.lore(lore);
                     item = item.clone();
                     item.setItemMeta(meta);
@@ -102,16 +139,48 @@ public final class GalacticExplorer {
 
             menu.addItem(i + 1, item);
             if (orbiter.orbiters().size() == 0) {
-                menu.addMenuClickHandler(i + 1, (a, b, c, d, e) -> false);
+                menu.addMenuClickHandler(i + 1, (clicker, i1, s, s1, a) -> {
+                    selectHandler.onSelect(clicker, orbiter);
+                    return false;
+                });
             } else {
                 menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {
-                    open(p1, orbiter, exitHandler, true);
+                    open(p1, orbiter, true);
                     return false;
                 });
             }
         }
 
         menu.open(p);
+
+    }
+
+    @FunctionalInterface
+    public interface SelectHandler {
+
+        /**
+         * Called when a player selects a world
+         *
+         * @param p the {@link Player} selecting the world
+         * @param object the {@link UniversalObject} selected
+         */
+        void onSelect(@Nonnull Player p, @Nonnull UniversalObject object);
+
+    }
+
+    @FunctionalInterface
+    public interface ItemModifier {
+
+        /**
+         * Called when the {@link WorldSelector} decides to display a {@link UniversalObject}
+         *
+         * @param p the {@link Player} that the {@link WorldSelector} is open to
+         * @param object the {@link UniversalObject} that the item represents
+         * @param lore the lore of the item, fresh for modification
+         *
+         * @return whether the item should be displayed
+         */
+        boolean modifyItem(@Nonnull Player p, @Nonnull UniversalObject object, @Nonnull List<Component> lore);
 
     }
 

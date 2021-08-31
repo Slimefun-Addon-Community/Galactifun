@@ -26,9 +26,8 @@ public final class OxygenFiller extends AContainer {
 
     @Override
     protected void tick(Block b) {
-        // TODO allow if they have oxygen in the area
         PlanetaryWorld world = Galactifun.worldManager().getWorld(b.getWorld());
-        if (world != null && world.atmosphere().requiresOxygenTank()) {
+        if (!Galactifun.protectionManager().isOxygenBlock(b.getLocation()) && world != null && world.atmosphere().requiresOxygenTank()) {
             return;
         }
 

@@ -212,9 +212,4 @@ public final class Titan extends AlienWorld {
         });
     }
 
-    @Override
-    protected int getChunkVersion() {
-        return 1;
-    }
-
 }

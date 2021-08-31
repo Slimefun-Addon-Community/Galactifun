@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.items;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,22 +27,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
+import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
+import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.items.StackUtils;
-import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -84,6 +82,10 @@ public final class Rocket extends SlimefunItem {
         });
     }
 
+    private static Runnable sendRandomMessage(Player p) {
+        return () -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
+    }
+
     private void openGUI(@Nonnull Player p, @Nonnull Block b) {
         if (!BlockStorage.check(b, this.getId())) return;
 
@@ -110,56 +112,42 @@ public final class Rocket extends SlimefunItem {
 
         string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
         if (string == null) return;
+        String fuelType = string;
         Integer eff = LaunchPadCore.FUELS.get(string);
         if (eff == null) return;
 
+        // km
         long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
 
-        List<PlanetaryWorld> reachable = new ArrayList<>();
-        for (PlanetaryWorld planetaryWorld : worldManager.spaceWorlds()) {
-            if (planetaryWorld.distanceTo(world) * Util.KM_PER_LY <= maxDistance) {
-                reachable.add(planetaryWorld);
-            }
-        }
+        new WorldSelector((player, obj, lore) -> {
+            if (obj instanceof PlanetaryWorld) {
+                // km
+                double dist = obj.distanceTo(world) * Util.KM_PER_LY;
+                if (dist > maxDistance) return false;
 
-        if (reachable.isEmpty()) {
-            p.sendMessage(ChatColor.RED + "No known destinations within range!");
-            return;
-        }
-
-        ChestMenu menu = new ChestMenu("Choose a destination");
-        menu.setEmptySlotsClickable(false);
-
-        int i = 0;
-        for (PlanetaryWorld planetaryWorld : reachable) {
-            double distance = planetaryWorld.distanceTo(world);
-            ItemStack item = planetaryWorld.item().clone();
-            ItemMeta meta = item.getItemMeta();
-            List<Component> lore = meta.lore();
-            if (lore != null) {
-                lore.remove(lore.size() - 1);
-
-                if (distance > 0) {
-                    lore.add(Component.text("Distance: " + (distance < 1
-                            ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
-                            : distance + " Light Years")
-                    ).color(NamedTextColor.GRAY));
-                } else {
-                    lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
-                }
-
-                meta.lore(lore);
-                item = item.clone();
-                item.setItemMeta(meta);
+                lore.add(Component.empty());
+                lore.add(Component.text()
+                        .color(NamedTextColor.YELLOW)
+                        .append(Component.text("Distance: "))
+                        .append(Component.text((long) dist))
+                        .build()
+                );
+                lore.add(Component.text()
+                        .color(NamedTextColor.YELLOW)
+                        .append(Component.text("Fuel: "))
+                        .append(Component.text((long) Math.ceil(dist / DISTANCE_PER_FUEL)))
+                        .build()
+                );
             }
 
-            String fuelType = string;
-            menu.addItem(i++, item, (p1, slot, it, action) -> {
-                p1.closeInventory();
-                int usedFuel = (int) Math.ceil((distance * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
-                p1.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
+            return true;
+        }, (player, obj) -> {
+            if (obj instanceof PlanetaryWorld planetaryWorld) {
+                player.closeInventory();
+                int usedFuel = (int) Math.ceil((planetaryWorld.distanceTo(world) * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
+                player.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
                         usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
-                ChatUtils.awaitInput(p1, (input) -> {
+                ChatUtils.awaitInput(player, (input) -> {
                     if (input.equalsIgnoreCase("yes")) {
                         p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
                         ChatUtils.awaitInput(p, (response) -> {
@@ -168,18 +156,15 @@ public final class Rocket extends SlimefunItem {
                                 String[] split = Util.SPACE_PATTERN.split(trimmed);
                                 int x = Integer.parseInt(split[0]);
                                 int z = Integer.parseInt(split[1]);
-                                launch(p1, b, planetaryWorld, fuel - usedFuel, fuelType, x, z);
+                                launch(player, b, planetaryWorld, fuel - usedFuel, fuelType, x, z);
                             } else {
                                 p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
                             }
                         });
                     }
                 });
-                return false;
-            });
-        }
-
-        menu.open(p);
+            }
+        }).open(p);
     }
 
     public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
@@ -252,7 +237,12 @@ public final class Rocket extends SlimefunItem {
                         } else {
                             loc = destBlock.getLocation().add(0, 1, 0);
                         }
+
                         PaperLib.teleportAsync(entity, loc);
+
+                        if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
+                            KnowledgeLevel.BASIC.set(p, worldTo);
+                        }
                     }
                 }
             }
@@ -260,10 +250,6 @@ public final class Rocket extends SlimefunItem {
             rocket.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocket);
         }, 200);
-    }
-
-    private static Runnable sendRandomMessage(Player p) {
-        return () -> p.sendMessage(ChatColor.GOLD + LAUNCH_MESSAGES.get(ThreadLocalRandom.current().nextInt(LAUNCH_MESSAGES.size())) + "...");
     }
 
 }

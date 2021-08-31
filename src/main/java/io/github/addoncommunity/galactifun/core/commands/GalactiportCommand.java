@@ -10,6 +10,9 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.mooy1.infinitylib.commands.AbstractCommand;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
@@ -39,6 +42,11 @@ public final class GalactiportCommand extends AbstractCommand {
         }
 
         PaperLib.teleportAsync(p, world.getSpawnLocation());
+
+        PlanetaryWorld planetaryWorld = Galactifun.worldManager().getWorld(world);
+        if (planetaryWorld != null && KnowledgeLevel.get(p, planetaryWorld) == KnowledgeLevel.NONE) {
+            KnowledgeLevel.BASIC.set(p, planetaryWorld);
+        }
     }
 
     @Override

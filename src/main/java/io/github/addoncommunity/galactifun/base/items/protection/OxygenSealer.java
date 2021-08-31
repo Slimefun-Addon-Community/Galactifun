@@ -1,13 +1,10 @@
-package io.github.addoncommunity.galactifun.api.items;
+package io.github.addoncommunity.galactifun.base.items.protection;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,7 +14,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -40,12 +36,11 @@ import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public abstract class ProtectingBlock extends AbstractContainer implements EnergyNetComponent, HologramOwner {
+public final class OxygenSealer extends AbstractContainer implements EnergyNetComponent, HologramOwner {
 
-    protected static final String PROTECTING = "protecting";
-    protected static final String ENABLED = "enabled";
-
+    private static final String PROTECTING = "oxygenating";
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
+    private static final String ENABLED = "enabled";
     private static final ItemStack ENABLED_ITEM = new CustomItem(
             Material.STRUCTURE_VOID,
             "&aEnabled",
@@ -59,10 +54,11 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             "&7Click to enable"
     );
     private static int counter = 0;
+    private final int range;
 
-    @ParametersAreNonnullByDefault
-    public ProtectingBlock(SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, recipeType, recipe);
+    public OxygenSealer(SlimefunItemStack item, ItemStack[] recipe, int range) {
+        super(CoreCategory.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        this.range = range;
 
         addItemHandler(new BlockTicker() {
             @Override
@@ -74,29 +70,26 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             public void tick(Block b, SlimefunItem item, Config data) {
                 allBlocks.add(new BlockPosition(b));
 
-                BlockMenu menu = BlockStorage.getInventory(b);
-                int req = getEnergyRequirement();
+                int req = 64;
                 if (getCharge(b.getLocation()) < req) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
                     BlockStorage.addBlockInfo(b, PROTECTING, "true");
                     removeCharge(b.getLocation(), req);
                 }
-
-                ProtectingBlock.this.tick(b, menu);
             }
 
             @Override
             public void uniqueTick() {
                 // to prevent memory leaks if something happens (block breaks aren't the only thing that can)
-                allBlocks.removeIf(pos -> !(BlockStorage.check(pos.toLocation()) instanceof ProtectingBlock));
+                allBlocks.removeIf(pos -> !(BlockStorage.check(pos.toLocation()) instanceof OxygenSealer));
 
                 // every 6 slimefun ticks (every 3 seconds)
                 if (counter < 6) {
                     counter++;
                 } else {
                     counter = 0;
-                    ProtectingBlock.this.uniqueTick();
+                    OxygenSealer.this.uniqueTick();
                 }
             }
         });
@@ -104,21 +97,20 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     private void uniqueTick() {
         //noinspection deprecation
-        Galactifun.protectionManager().clearProtectedBlocks();
+        Galactifun.protectionManager().clearOxygenBlocks();
         for (BlockPosition l : allBlocks) {
             updateProtections(l);
         }
     }
 
+
     @Override
-    @OverridingMethodsMustInvokeSuper
     protected void onPlace(@Nonnull BlockPlaceEvent e, @Nonnull Block b) {
         BlockStorage.addBlockInfo(b, ENABLED, "true");
         updateProtections(new BlockPosition(b));
     }
 
     @Override
-    @OverridingMethodsMustInvokeSuper
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
         removeHologram(e.getBlock());
         allBlocks.remove(new BlockPosition(e.getBlock()));
@@ -133,8 +125,13 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
         }
     }
 
+    @Nonnull
     @Override
-    @OverridingMethodsMustInvokeSuper
+    protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
+        return new int[0];
+    }
+
+    @Override
     protected void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
         if (BSUtils.getStoredBoolean(b.getLocation(), ENABLED)) {
             menu.replaceExistingItem(4, ENABLED_ITEM);
@@ -155,32 +152,16 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     @Nonnull
     @Override
-    protected final int[] getTransportSlots(@Nonnull DirtyChestMenu menu, @Nonnull ItemTransportFlow flow, ItemStack item) {
-        return new int[0];
-    }
-
-    @Nonnull
-    @Override
-    public final EnergyNetComponentType getEnergyComponentType() {
+    public EnergyNetComponentType getEnergyComponentType() {
         return EnergyNetComponentType.CONSUMER;
     }
 
-    /**
-     * @return energy per Slimefun tick
-     */
-    protected abstract int getEnergyRequirement();
-
-    @Nonnull
-    protected abstract AtmosphericEffect getEffect();
-
-    public abstract int getProtection();
-
-    public abstract int getRange();
-
-    protected void tick(@Nonnull Block b, @Nonnull BlockMenu menu) {
+    @Override
+    public int getCapacity() {
+        return 256;
     }
 
-    private void updateProtections(@Nonnull BlockPosition pos) {
+    private void updateProtections(BlockPosition pos) {
         Location l = pos.toLocation();
         if (!BSUtils.getStoredBoolean(l, ENABLED)) {
             updateHologram(pos.getBlock(), "&cNot Enabled");
@@ -192,11 +173,8 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
             return;
         }
 
-        // removed all non-instances before, so safe cast
-        ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
-
         // check if sealed using flood fill
-        Optional<Set<BlockPosition>> returned = Util.floodFill(l, getRange());
+        Optional<Set<BlockPosition>> returned = Util.floodFill(l, range);
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(pos.getBlock(), "&cArea Not Sealed or Too Big");
@@ -205,7 +183,7 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
         for (BlockPosition b : returned.get()) {
             // add a protection to the location
-            Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
+            Galactifun.protectionManager().addOxygenBlock(b);
         }
 
         updateHologram(pos.getBlock(), "&aOperational");

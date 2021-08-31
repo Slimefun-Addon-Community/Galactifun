@@ -96,9 +96,4 @@ public final class Mars extends SimpleAlienWorld {
         });
     }
 
-    @Override
-    protected int getChunkVersion() {
-        return 1;
-    }
-
 }

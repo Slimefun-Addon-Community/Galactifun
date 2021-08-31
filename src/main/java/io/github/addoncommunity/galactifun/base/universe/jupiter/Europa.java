@@ -64,9 +64,4 @@ public final class Europa extends AlienWorld {
 
     }
 
-    @Override
-    protected int getChunkVersion() {
-        return 1;
-    }
-
 }

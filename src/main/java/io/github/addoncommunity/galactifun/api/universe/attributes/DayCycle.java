@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import lombok.Getter;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.apache.commons.lang.Validate;
 
 /**
  * Represents the amount of sunlight a celestial object s
@@ -81,7 +81,7 @@ public final class DayCycle {
     private DayCycle(long time) {
         Validate.isTrue(time >= 0 && time < 24000, "Eternal time must be between 0 and 24000!");
 
-        this.description = time < 12000 ? "Eternal" : "Never";
+        this.description = "Eternal " + (time < 12000 ? "Day" : "Night");
         this.startTime = time;
         this.perFiveSeconds = 0;
     }

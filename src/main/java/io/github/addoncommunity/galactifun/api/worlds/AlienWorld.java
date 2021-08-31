@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.GameMode;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
@@ -37,7 +36,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -144,7 +142,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
     }
 
     protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
-        return worldManager().getSetting(this, path, clazz, defaultValue);
+        return Galactifun.worldManager().getSetting(this, path, clazz, defaultValue);
     }
 
     /**
@@ -213,7 +211,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
             int players = world.getPlayers().size();
             int mobs = world.getLivingEntities().size() - players;
-            int max = players * worldManager().maxAliensPerPlayer();
+            int max = players * Galactifun.worldManager().maxAliensPerPlayer();
 
             for (Alien<?> alien : this.species) {
                 if ((mobs += alien.attemptSpawn(rand, world)) > max) {
@@ -222,13 +220,5 @@ public abstract class AlienWorld extends PlanetaryWorld {
             }
         }
     }
-
-    /**
-     * Obtains the chunk version of the newest chunks that this world generates. When you change
-     * world gen, bump this up by 1. Abstract to <b>force</b> implementers to remember about this
-     *
-     * @return the chunk version
-     */
-    protected abstract int getChunkVersion();
 
 }

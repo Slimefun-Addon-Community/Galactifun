@@ -48,7 +48,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -128,7 +127,8 @@ public final class WorldManager implements Listener {
                 PlanetaryWorld world = spaceWorlds.get(p.getWorld());
                 if (world != null
                         && world.atmosphere().requiresOxygenTank()
-                        && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
+                        && !SpaceSuitProfile.get(p).consumeOxygen(20)
+                        && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())) {
                     p.damage(8);
                 }
             }
@@ -240,7 +240,7 @@ public final class WorldManager implements Listener {
             SlimefunItemStack item = world.getMappedItem(b);
             if (item != null) {
                 Location l = b.getLocation();
-                if (BlockStorage.getLocationInfo(l, "placed") != null) {
+                if (!BlockStorage.hasBlockInfo(l)) {
                     e.setDropItems(false);
                     w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
                 }
