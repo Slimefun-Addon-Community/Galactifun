@@ -201,7 +201,7 @@ public final class BaseItems {
             "",
             "&7Effect: Heat",
             "&7Protection: 2",
-            "&7Range: 100 blocks",
+            "&7Range: 200 blocks",
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
@@ -212,7 +212,7 @@ public final class BaseItems {
             "",
             "&7Effect: Heat",
             "&7Protection: 4",
-            "&7Range: 150 blocks",
+            "&7Range: 300 blocks",
             LoreBuilder.powerPerSecond(2048),
             LoreBuilder.powerBuffer(4096)
     );
@@ -223,7 +223,7 @@ public final class BaseItems {
             "",
             "&7Effect: Heat",
             "&7Protection: 6",
-            "&7Range: 200 blocks",
+            "&7Range: 400 blocks",
             LoreBuilder.powerPerSecond(3072),
             LoreBuilder.powerBuffer(6144)
     );
@@ -234,7 +234,7 @@ public final class BaseItems {
             "",
             "&7Effect: Cold",
             "&7Protection: 2",
-            "&7Range: 100 blocks",
+            "&7Range: 200 blocks",
             LoreBuilder.powerPerSecond(512),
             LoreBuilder.powerBuffer(1024)
     );
@@ -245,7 +245,7 @@ public final class BaseItems {
             "",
             "&7Effect: Cold",
             "&7Protection: 4",
-            "&7Range: 150 blocks",
+            "&7Range: 300 blocks",
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
@@ -256,7 +256,7 @@ public final class BaseItems {
             "",
             "&7Effect: Cold",
             "&7Protection: 6",
-            "&7Range: 200 blocks",
+            "&7Range: 400 blocks",
             LoreBuilder.powerPerSecond(2048),
             LoreBuilder.powerBuffer(4096)
     );
@@ -267,7 +267,7 @@ public final class BaseItems {
             "",
             "&7Effect: Radiation",
             "&7Protection: 2",
-            "&7Range: 100 blocks",
+            "&7Range: 200 blocks",
             LoreBuilder.powerPerSecond(512),
             LoreBuilder.powerBuffer(1024)
     );
@@ -278,7 +278,7 @@ public final class BaseItems {
             "",
             "&7Effect: Radiation",
             "&7Protection: 4",
-            "&7Range: 150 blocks",
+            "&7Range: 300 blocks",
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
@@ -287,7 +287,7 @@ public final class BaseItems {
             Material.FURNACE,
             "&fOxygen Sealer",
             "",
-            "&7Fills a sealed area with oxygen. Range 200 blocks"
+            "&7Fills a sealed area with oxygen. Range 300 blocks"
     );
     public static final SlimefunItemStack LANDING_HATCH = new SlimefunItemStack(
             "LANDING_HATCH",
@@ -299,6 +299,14 @@ public final class BaseItems {
             "&7highest block below it. It is",
             "&7considered impassable by air",
             "&7so it can be used to seal spaces"
+    );
+    public static final SlimefunItemStack SUPER_FAN = new SlimefunItemStack(
+            "SUPER_FAN",
+            Material.WHITE_WOOL,
+            "&7Super Fan",
+            "",
+            "&7Place this next to a block that needs",
+            "7a sealed area to extend the range by 20%"
     );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
@@ -506,7 +514,13 @@ public final class BaseItems {
 
         new OxygenSealer(OXYGEN_SEALER, new ItemStack[] {
 
-        }, 200).register(galactifun);
+        }, 300).register(galactifun);
+
+        new SlimefunItem(CoreCategory.ITEMS, SUPER_FAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }).register(galactifun);
     }
 
 }

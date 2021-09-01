@@ -12,12 +12,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
+import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
@@ -182,33 +184,41 @@ public abstract class ProtectingBlock extends AbstractContainer implements Energ
 
     private void updateProtections(@Nonnull BlockPosition pos) {
         Location l = pos.toLocation();
+        Block b = pos.getBlock();
         if (!BSUtils.getStoredBoolean(l, ENABLED)) {
-            updateHologram(pos.getBlock(), "&cNot Enabled");
+            updateHologram(b, "&cNot Enabled");
             return;
         }
 
         if (!BSUtils.getStoredBoolean(l, PROTECTING)) {
-            updateHologram(pos.getBlock(), "&cNot Enough Energy");
+            updateHologram(b, "&cNot Enough Energy");
             return;
         }
 
         // removed all non-instances before, so safe cast
         ProtectingBlock inst = Objects.requireNonNull((ProtectingBlock) BlockStorage.check(l));
 
+        int range = getRange();
+        for (BlockFace face : Util.ALL_TOUCHING) {
+            if (BlockStorage.check(b.getRelative(face), BaseItems.SUPER_FAN.getItemId())) {
+                range += range * .20;
+            }
+        }
+
         // check if sealed using flood fill
-        Optional<Set<BlockPosition>> returned = Util.floodFill(l, getRange());
+        Optional<Set<BlockPosition>> returned = Util.floodFill(l, range);
         // not sealed; continue on to the next block
         if (returned.isEmpty()) {
             updateHologram(pos.getBlock(), "&cArea Not Sealed or Too Big");
             return;
         }
 
-        for (BlockPosition b : returned.get()) {
+        for (BlockPosition bp : returned.get()) {
             // add a protection to the location
-            Galactifun.protectionManager().addProtection(b, inst.getEffect(), inst.getProtection());
+            Galactifun.protectionManager().addProtection(bp, inst.getEffect(), inst.getProtection());
         }
 
-        updateHologram(pos.getBlock(), "&aOperational");
+        updateHologram(b, "&aOperational");
     }
 
 }

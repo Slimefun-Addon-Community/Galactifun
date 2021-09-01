@@ -34,9 +34,14 @@ public final class Util {
     public static final double KM_PER_LY = 9_700_000_000D;
     public static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
     public static final Pattern SPACE_PATTERN = Pattern.compile(" ");
-    public static final BlockFace[] SURROUNDING_FACES = {
+    public static final BlockFace[] SURROUNDING_FACES = new BlockFace[] {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
+    };
+    public static final BlockFace[] ALL_TOUCHING = new BlockFace[] {
+            BlockFace.NORTH, BlockFace.SOUTH,
+            BlockFace.EAST, BlockFace.WEST,
+            BlockFace.UP, BlockFace.DOWN
     };
     // TODO maybe move this to protection manager?
     public static final Set<Material> IMPERMEABLE_BLOCKS = EnumSet.noneOf(Material.class);
