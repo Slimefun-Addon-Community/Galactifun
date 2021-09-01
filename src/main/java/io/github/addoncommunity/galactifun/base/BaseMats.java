@@ -28,7 +28,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 @UtilityClass
 public final class BaseMats {
 
-
+    //<editor-fold desc="Generated Blocks" defaultstate="collapsed">
     public static final SlimefunItemStack MOON_DUST = new SlimefunItemStack(
             "MOON_DUST",
             Material.LIGHT_GRAY_CONCRETE_POWDER,
@@ -54,6 +54,8 @@ public final class BaseMats {
             Material.MAGMA_BLOCK,
             "&6Ventstone"
     );
+    //</editor-fold>
+    //<editor-fold desc="Ultra Duty" defaultstate="collapsed">
     public static final SlimefunItemStack ALUMINUM_COMPOSITE = new SlimefunItemStack(
             "ALUMINUM_COMPOSITE",
             Material.IRON_INGOT,
@@ -62,7 +64,7 @@ public final class BaseMats {
             "&7You'll never guess how long it took us",
             "&7to name this material"
     );
-    public static final SlimefunItemStack TUNGSTEN = new SlimefunItemStack(
+    public static final SlimefunItemStack TUNGSTEN_INGOT = new SlimefunItemStack(
             "TUNGSTEN_INGOT",
             Material.NETHERITE_INGOT,
             "&bTungsten Ingot",
@@ -91,6 +93,8 @@ public final class BaseMats {
             Material.PAPER,
             "&fUltra Duty Sheet"
     );
+    //</editor-fold>
+    //<editor-fold desc="Rocket Stuff" defaultstate="collapsed">
     public static final SlimefunItemStack GOLD_FOIL = new SlimefunItemStack(
             "GOLD_FOIL",
             Material.PAPER,
@@ -191,6 +195,8 @@ public final class BaseMats {
             Material.POWERED_RAIL,
             "&7Glowstone Circuit"
     );
+    //</editor-fold>
+    //<editor-fold desc="Misc" defaultstate="collapsed">
     public static final SlimefunItemStack MUNPOWDER = new SlimefunItemStack(
             "MUNPOWDER",
             Material.GUNPOWDER,
@@ -198,7 +204,6 @@ public final class BaseMats {
             "",
             "&7The gunpowder of the moon"
     );
-
     public static final SlimefunItemStack FALLEN_METEOR = new SlimefunItemStack(
             "FALLEN_METEOR",
             Material.ANCIENT_DEBRIS,
@@ -206,13 +211,11 @@ public final class BaseMats {
             "",
             "&7These meteors contain Tungsten"
     );
-
     public static final SlimefunItemStack ENDER_BLOCK = new SlimefunItemStack(
             "ENDER_BLOCK",
             Material.PRISMARINE_BRICKS,
             "&3Ender Block"
     );
-
     public static final SlimefunItemStack LUNAR_GLASS = new SlimefunItemStack(
             "LUNAR_GLASS",
             Material.GLASS,
@@ -221,7 +224,6 @@ public final class BaseMats {
             "&7For some reason adding moon dust to",
             "&7glass makes it clearer..."
     );
-
     public static final SlimefunItemStack VOLCANIC_INGOT = new SlimefunItemStack(
             "VOLCANIC_INGOT",
             Material.GOLD_INGOT,
@@ -231,23 +233,34 @@ public final class BaseMats {
             "&7thing we know to Hell, Volcanic Ingots",
             "&7are a valuable commodity"
     );
+    public static final SlimefunItemStack TUNGSTEN_CARBIDE = new SlimefunItemStack(
+            "TUNGSTEN_CARBIDE",
+            Material.IRON_INGOT,
+            "&7Tungsten Carbide"
+    );
+    public static final SlimefunItemStack DIAMOND_ANVIL_CELL = new SlimefunItemStack(
+            "DIAMOND_ANVIL_CELL",
+            Material.DIAMOND,
+            "&bDiamond Anvil Cell"
+    );
+    //</editor-fold>
 
     public static void setup() {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
+        worldItem(FALLEN_METEOR, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
         worldItem(VENTSTONE, BaseUniverse.VENUS);
         component(VOLCANIC_INGOT, RecipeType.SMELTERY, VENTSTONE);
-        component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
         component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
                 SlimefunItems.TIN_DUST, SlimefunItems.ALUMINUM_DUST
         );
-        component(TUNGSTEN, RecipeType.SMELTERY, FALLEN_METEOR);
+        component(TUNGSTEN_INGOT, RecipeType.SMELTERY, FALLEN_METEOR);
         component(ALUMINUM_COMPOSITE_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE, 8));
         component(HEAVY_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE_SHEET, 8));
-        component(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN);
+        component(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN_INGOT);
         component(ULTRA_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(SPACE_GRADE_PLATE, 4));
         component(GOLD_FOIL, RecipeType.COMPRESSOR, 4, SlimefunItems.GOLD_24K_BLOCK);
         component(REINFORCED_CHANNEL, RecipeType.ENHANCED_CRAFTING_TABLE, 8,
@@ -282,7 +295,7 @@ public final class BaseMats {
         );
         component(SPARK_PLUG_2, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
-                TUNGSTEN, null, MUNPOWDER,
+                TUNGSTEN_INGOT, null, MUNPOWDER,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
         );
         assembly(ROCKET_ENGINE,
@@ -349,8 +362,18 @@ public final class BaseMats {
                 null, null, null,
                 null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        component(FALLEN_METEOR, CoreRecipeType.WORLD_GEN, BaseUniverse.MARS.item());
         component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
+        component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
+        component(TUNGSTEN_CARBIDE, RecipeType.SMELTERY, TUNGSTEN_INGOT, SlimefunItems.COMPRESSED_CARBON);
+        assembly(DIAMOND_ANVIL_CELL,
+                TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE,
+                SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.SYNTHETIC_DIAMOND,
+                null, SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.SYNTHETIC_DIAMOND, null,
+                null, null, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, null, null,
+                null, SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.SYNTHETIC_DIAMOND, null,
+                SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.SYNTHETIC_DIAMOND,
+                TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE
+        );
 
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),

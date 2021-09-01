@@ -21,8 +21,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
-import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.GenUtils;
 
 /**
@@ -75,7 +73,6 @@ public final class Mars extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BoulderPopulator(1, 2, BaseMats.FALLEN_METEOR, Material.RED_SAND));
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
@@ -84,7 +81,7 @@ public final class Mars extends SimpleAlienWorld {
 
                     int x = random.nextInt(16 - dist * 2) + dist;
                     int z = random.nextInt(16 - dist * 2) + dist;
-                    int y = random.nextInt(world.getHighestBlockAt(x, z).getY()) + 1;
+                    int y = random.nextInt(world.getHighestBlockAt(x, z).getY() + 1);
 
                     GenUtils.generateSquare(
                             source.getBlock(x, y, z).getLocation(),
