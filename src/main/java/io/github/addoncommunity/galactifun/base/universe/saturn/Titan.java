@@ -33,7 +33,7 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
  */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
-    private final Set<Biome> forests = EnumSet.of(
+    private static final Set<Biome> forests = EnumSet.of(
             Biome.FOREST,
             Biome.BIRCH_FOREST,
             Biome.TALL_BIRCH_FOREST,
@@ -182,15 +182,15 @@ public final class Titan extends AlienWorld {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 int amount = random.nextInt(2) + 1;
-                for (int i = 1; i < amount; i++) {
+                for (int i = 0; i < amount; i++) {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    if (Titan.this.forests.contains(b.getBiome())) {
+                    if (forests.contains(b.getBiome())) {
                         if (random.nextBoolean()) {
-                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                         } else {
-                            world.generateTree(b.getLocation(), TreeType.CRIMSON_FUNGUS);
+                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.CRIMSON_FUNGUS);
                         }
                     }
                 }
@@ -205,7 +205,7 @@ public final class Titan extends AlienWorld {
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
-                        world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                        world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                     }
                 }
             }
