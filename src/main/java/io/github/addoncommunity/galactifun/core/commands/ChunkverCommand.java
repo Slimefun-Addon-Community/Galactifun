@@ -26,7 +26,7 @@ public final class ChunkverCommand extends AbstractCommand {
 
         Chunk chunk = p.getChunk();
         if (Galactifun.worldManager().getAlienWorld(chunk.getWorld()) == null) {
-            p.sendMessage(ChatColor.RED + "You are not in a Galactifun planet!");
+            p.sendMessage(ChatColor.RED + "You are not on a Galactifun planet!");
             return;
         }
 
