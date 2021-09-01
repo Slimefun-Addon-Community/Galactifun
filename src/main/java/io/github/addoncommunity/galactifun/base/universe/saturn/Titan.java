@@ -187,7 +187,7 @@ public final class Titan extends AlienWorld {
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     if (forests.contains(b.getBiome())) {
-                        if (random.nextBoolean()) {
+                        if (b.getType() == Material.WARPED_NYLIUM) {
                             world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                         } else {
                             world.generateTree(b.getLocation().add(0, 1, 0), TreeType.CRIMSON_FUNGUS);

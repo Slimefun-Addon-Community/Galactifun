@@ -128,8 +128,11 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
                 }
             }
 
-            // fixes bossbars that persist after tping to diff world
-            players.removeIf(player -> !player.getWorld().equals(mob.getWorld()));
+            for (Player player : players) {
+                if (!player.getWorld().equals(mob.getWorld())) {
+                    bossbar.removePlayer(player);
+                }
+            }
         }
     }
 
