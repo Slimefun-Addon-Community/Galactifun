@@ -38,9 +38,10 @@ public final class Observatory extends MultiBlockMachine {
 
         new WorldSelector((pl, w, l) -> {
             if (w instanceof PlanetaryWorld pw) {
-                if (KnowledgeLevel.get(pl, pw) != KnowledgeLevel.NONE) return false;
+                if (KnowledgeLevel.get(pl, pw) == KnowledgeLevel.ADVANCED) return false;
+                return world.distanceTo(w) <= 0.25;
             }
-            return world.distanceTo(w) <= 0.25;
+            return true;
         }, (pl, w) -> {
             pl.sendMessage(ChatColor.GREEN + "Discovering planet " + w.name());
             PlanetaryWorld pw = (PlanetaryWorld) w;

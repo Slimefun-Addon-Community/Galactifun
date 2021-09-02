@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -41,20 +40,12 @@ public final class PlanetaryAnalyzer extends SimpleSlimefunItem<BlockUseHandler>
                 return;
             }
 
-            new WorldSelector((pl, w, l) -> {
-                if (w instanceof PlanetaryWorld pw) {
-                    if (KnowledgeLevel.get(pl, pw) == KnowledgeLevel.ADVANCED) return false;
-                }
-                return world.distanceTo(w) <= 0.25;
-            }, (pl, w) -> {
-                pl.sendMessage(ChatColor.GREEN + "Analyzing planet " + w.name());
-                PlanetaryWorld pw = (PlanetaryWorld) w;
-                PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
-                Galactifun.instance().runSync(() -> {
-                    PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
-                    KnowledgeLevel.BASIC.set(pl, pw);
-                }, 30 * 60 * 20);
-            }).open(p);
+            p.sendMessage(ChatColor.GREEN + "Analyzing planet " + world.name());
+            PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
+            Galactifun.instance().runSync(() -> {
+                PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
+                KnowledgeLevel.BASIC.set(p, world);
+            }, 30 * 60 * 20);
         };
     }
 

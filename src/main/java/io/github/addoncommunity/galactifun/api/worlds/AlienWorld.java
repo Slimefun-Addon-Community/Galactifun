@@ -182,7 +182,6 @@ public abstract class AlienWorld extends PlanetaryWorld {
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
 
     public final void applyEffects(@Nonnull Player p) {
-        gravity().applyGravity(p);
         atmosphere().applyEffects(p);
     }
 
@@ -194,6 +193,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         // player effects
         for (Player p : world.getPlayers()) {
+            gravity().applyGravity(p);
             if (p.getGameMode() == GameMode.SURVIVAL) {
                 applyEffects(p);
             }
