@@ -46,6 +46,8 @@ public final class Util {
 
     static {
         IMPERMEABLE_BLOCKS.addAll(SlimefunTag.GLASS_BLOCKS.getValues());
+        IMPERMEABLE_BLOCKS.addAll(SlimefunTag.TERRACOTTA.getValues());
+        IMPERMEABLE_BLOCKS.addAll(SlimefunTag.UNBREAKABLE_MATERIALS.getValues());
         IMPERMEABLE_BLOCKS.addAll(Arrays.asList(
                 Material.IRON_DOOR,
                 Material.IRON_TRAPDOOR,
@@ -53,10 +55,13 @@ public final class Util {
                 Material.IRON_BLOCK,
                 Material.GOLD_BLOCK,
                 Material.DIAMOND_BLOCK,
-                Material.NETHERITE_BLOCK
+                Material.NETHERITE_BLOCK,
+                Material.SEA_LANTERN,
+                Material.QUARTZ_BLOCK,
+                Material.SMOOTH_QUARTZ
         ));
         for (Material material : Material.values()) {
-            if (material.name().contains("WAXED")) {
+            if (material.name().startsWith("WAXED") || material.name().endsWith("CONCRETE")) {
                 IMPERMEABLE_BLOCKS.add(material);
             }
         }
