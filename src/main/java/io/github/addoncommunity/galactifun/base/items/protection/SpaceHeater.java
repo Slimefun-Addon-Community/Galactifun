@@ -36,7 +36,7 @@ public final class SpaceHeater extends ProtectingBlock {
 
     @Override
     public int getRange() {
-        return this.tier * 100 + 100;
+        return (this.tier - 1) * 500 + 1000;
     }
 
     @Override

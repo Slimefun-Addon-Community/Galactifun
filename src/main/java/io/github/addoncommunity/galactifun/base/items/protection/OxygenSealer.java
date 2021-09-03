@@ -177,7 +177,7 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
         }
 
         int range = this.range;
-        for (BlockFace face : Util.ALL_TOUCHING) {
+        for (BlockFace face : Util.SURROUNDING_FACES) {
             if (BlockStorage.check(b.getRelative(face), BaseItems.SUPER_FAN.getItemId())) {
                 range += range * .20;
             }

@@ -38,11 +38,6 @@ public final class Util {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
-    public static final BlockFace[] ALL_TOUCHING = new BlockFace[] {
-            BlockFace.NORTH, BlockFace.SOUTH,
-            BlockFace.EAST, BlockFace.WEST,
-            BlockFace.UP, BlockFace.DOWN
-    };
     // TODO maybe move this to protection manager?
     public static final Set<Material> IMPERMEABLE_BLOCKS = EnumSet.noneOf(Material.class);
     private static final BlockFace[] ALL_SIDES = {
