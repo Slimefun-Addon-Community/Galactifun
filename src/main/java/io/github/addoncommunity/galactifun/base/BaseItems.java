@@ -11,6 +11,7 @@ import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
+import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
@@ -308,6 +309,14 @@ public final class BaseItems {
             "&7Place this next to a block that needs",
             "7a sealed area to extend the range by 20%"
     );
+    public static final SlimefunItemStack AUTOMATIC_DOOR = new SlimefunItemStack(
+            "AUTOMATIC_DOOR",
+            Material.OBSERVER,
+            "&fAutomatic Door",
+            "",
+            "&7Automatically places/removes the blocks inside",
+            "&7when you go close/away from it"
+    );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
@@ -520,6 +529,12 @@ public final class BaseItems {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }).register(galactifun);
+
+        new AutomaticDoor(AUTOMATIC_DOOR, new ItemStack[]{
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, new ItemStack(Material.OBSERVER), BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.PROGRAMMABLE_ANDROID_MINER, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }).register(galactifun);
     }
 

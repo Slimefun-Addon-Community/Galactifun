@@ -27,3 +27,7 @@ rockets:
     - Thanking TheBusyBiscuit
     - Faking Moon landings
     - Taking one small step
+
+other:
+  # The range that the automatic door checks for players
+  auto-door-range: 3
