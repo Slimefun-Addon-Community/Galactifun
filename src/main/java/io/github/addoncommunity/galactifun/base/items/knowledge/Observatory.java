@@ -11,9 +11,11 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 public final class Observatory extends MultiBlockMachine {
 
@@ -23,7 +25,7 @@ public final class Observatory extends MultiBlockMachine {
 
     @Override
     public void onInteract(Player p, Block b) {
-        NamespacedKey key = Galactifun.instance().getKey("discovering_" + p.getUniqueId());
+        NamespacedKey key = AbstractAddon.createKey("discovering_" + p.getUniqueId());
 
         PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
         if (world == null) {
@@ -46,10 +48,10 @@ public final class Observatory extends MultiBlockMachine {
             pl.sendMessage(ChatColor.GREEN + "Discovering planet " + w.name());
             PlanetaryWorld pw = (PlanetaryWorld) w;
             PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
-            Galactifun.instance().runSync(() -> {
+            Scheduler.run(30 * 60 * 20, () -> {
                 PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
                 KnowledgeLevel.BASIC.set(pl, pw);
-            }, 30 * 60 * 20);
+            });
         }).open(p);
     }
 

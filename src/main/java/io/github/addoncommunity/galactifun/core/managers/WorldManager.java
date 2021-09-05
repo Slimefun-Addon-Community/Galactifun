@@ -52,17 +52,20 @@ import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.util.BlockPositionSet;
 import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
+import io.github.mooy1.infinitylib.common.Events;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public final class WorldManager implements Listener {
 
-    private static final NamespacedKey PLACED = Galactifun.instance().getKey("placed");
+    private static final NamespacedKey PLACED = AbstractAddon.createKey("placed");
 
     @Getter
     private final int maxAliensPerPlayer;
@@ -77,9 +80,9 @@ public final class WorldManager implements Listener {
     public WorldManager(Galactifun galactifun) {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
 
-        galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
-        galactifun.scheduleRepeatingSync(this::tickOxygen, 20);
+        Events.registerListener(this);
+        Scheduler.repeat(100, () -> this.alienWorlds.values().forEach(AlienWorld::tickWorld));
+        Scheduler.repeat(20, this::tickOxygen);
 
         File configFile = new File("plugins/Galactifun", "worlds.yml");
         this.config = new YamlConfiguration();
@@ -96,7 +99,7 @@ public final class WorldManager implements Listener {
         }
 
         // Save the config after startup
-        galactifun.runSync(() -> {
+        Scheduler.run(() -> {
             try {
                 this.config.options().copyDefaults(true);
                 this.config.save(configFile);
@@ -221,9 +224,9 @@ public final class WorldManager implements Listener {
             ProtectionManager manager = Galactifun.protectionManager();
             Location l = block.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
-                Galactifun.instance().runSync(() -> block.setType(Material.ICE));
+                Scheduler.run(() -> block.setType(Material.ICE));
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
-                Galactifun.instance().runSync(block::breakNaturally);
+                Scheduler.run(block::breakNaturally);
             } else {
                 int attempts = world.atmosphere().growthAttempts();
                 if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {

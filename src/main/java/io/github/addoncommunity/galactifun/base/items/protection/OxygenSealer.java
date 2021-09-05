@@ -19,37 +19,34 @@ import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.presets.MenuPreset;
-import io.github.mooy1.infinitylib.slimefun.AbstractContainer;
+import io.github.mooy1.infinitylib.machines.MenuBlock;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public final class OxygenSealer extends AbstractContainer implements EnergyNetComponent, HologramOwner {
+public final class OxygenSealer extends MenuBlock implements EnergyNetComponent, HologramOwner {
 
     private static final String PROTECTING = "oxygenating";
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
     private static final String ENABLED = "enabled";
-    private static final ItemStack ENABLED_ITEM = new CustomItem(
+    private static final ItemStack ENABLED_ITEM = new CustomItemStack(
             Material.STRUCTURE_VOID,
             "&aEnabled",
             "",
             "&7Click to disable"
     );
-    private static final ItemStack DISABLED_ITEM = new CustomItem(
+    private static final ItemStack DISABLED_ITEM = new CustomItemStack(
             Material.BARRIER,
             "&cDisabled",
             "",
@@ -113,23 +110,27 @@ public final class OxygenSealer extends AbstractContainer implements EnergyNetCo
     }
 
     @Override
-    protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
+    protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu) {
         removeHologram(e.getBlock());
         allBlocks.remove(new BlockPosition(e.getBlock()));
         uniqueTick();
     }
 
     @Override
-    protected final void setupMenu(@Nonnull BlockMenuPreset preset) {
+    protected final void setup(@Nonnull BlockMenuPreset preset) {
         for (int i = 0; i < 9; i++) {
             if (i == 4) continue;
-            preset.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
+            preset.addItem(i, MenuBlock.BACKGROUND_ITEM, ChestMenuUtils.getEmptyClickHandler());
         }
     }
 
-    @Nonnull
     @Override
-    protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
+    protected int[] getInputSlots() {
+        return new int[0];
+    }
+
+    @Override
+    protected int[] getOutputSlots() {
         return new int[0];
     }
 

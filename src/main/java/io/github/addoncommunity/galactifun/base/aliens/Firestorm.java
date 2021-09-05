@@ -16,6 +16,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
+import io.github.mooy1.infinitylib.common.Events;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
@@ -25,7 +26,7 @@ public final class Firestorm extends Alien<Blaze> implements Listener {
     public Firestorm(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
         super(Blaze.class, id, name, maxHealth, spawnChance);
 
-        Galactifun.instance().registerListener(this);
+        Events.registerListener(this);
     }
 
     @Override

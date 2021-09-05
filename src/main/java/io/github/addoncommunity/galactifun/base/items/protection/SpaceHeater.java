@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 
 public final class SpaceHeater extends ProtectingBlock {
 

@@ -27,8 +27,8 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import io.github.addoncommunity.galactifun.base.aliens.Martian;
 import io.github.addoncommunity.galactifun.core.managers.AlienManager;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 /**
  * Abstract class for an alien
@@ -36,7 +36,6 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
  * @author Seggan
  * @author GallowsDove
  * @author Mooy1
- *
  * @see Martian
  */
 @Getter

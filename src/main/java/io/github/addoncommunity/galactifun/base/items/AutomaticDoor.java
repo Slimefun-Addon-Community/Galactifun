@@ -20,21 +20,19 @@ import org.bukkit.util.Vector;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.util.BSUtils;
-import io.github.mooy1.infinitylib.slimefun.AbstractContainer;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.mooy1.infinitylib.machines.MenuBlock;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 
-public final class AutomaticDoor extends AbstractContainer {
+public final class AutomaticDoor extends MenuBlock {
 
     private static final int[] BACKGROUND = new int[] { 0, 1, 2, 3, 5, 6, 7, 8 };
     private static final int INPUT_SLOT = 4;
@@ -82,7 +80,7 @@ public final class AutomaticDoor extends AbstractContainer {
                 Material mat = startBlock.getType();
                 if (item == null || item.getType().isAir() || item.getType() == mat) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
-                    if (!SlimefunPlugin.getProtectionManager().hasPermission(p, l, ProtectableAction.BREAK_BLOCK)) return;
+                    if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)) return;
 
                     int size = item == null || item.getType().isAir() ?
                             mat.getMaxStackSize() :
@@ -99,40 +97,44 @@ public final class AutomaticDoor extends AbstractContainer {
                 }
             }
         } else {
-             if (players.isEmpty()) {
-                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                 if (stack != null && stack.getType().isBlock()) {
-                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
-                     if (!SlimefunPlugin.getProtectionManager().hasPermission(p, l, ProtectableAction.PLACE_BLOCK)) return;
+            if (players.isEmpty()) {
+                ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
+                if (stack != null && stack.getType().isBlock()) {
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
+                    if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
-                     Location start = l.clone();
-                     Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
-                     // gotta to do this bc im modifying the stack in the loop
-                     int amount = stack.getAmount();
-                     for (int i = 0; i < amount; i++) {
-                         // add() modifies the current Location as well as returns it
-                         Block next = start.add(v).getBlock();
-                         if (!next.isEmpty()) break;
+                    Location start = l.clone();
+                    Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
+                    // gotta to do this bc im modifying the stack in the loop
+                    int amount = stack.getAmount();
+                    for (int i = 0; i < amount; i++) {
+                        // add() modifies the current Location as well as returns it
+                        Block next = start.add(v).getBlock();
+                        if (!next.isEmpty()) break;
 
-                         next.setType(stack.getType());
-                         menu.consumeItem(INPUT_SLOT);
-                     }
+                        next.setType(stack.getType());
+                        menu.consumeItem(INPUT_SLOT);
+                    }
 
-                     BlockStorage.addBlockInfo(l, ACTIVE, "true");
-                 }
-             }
+                    BlockStorage.addBlockInfo(l, ACTIVE, "true");
+                }
+            }
         }
     }
 
     @Override
-    protected void setupMenu(@Nonnull BlockMenuPreset preset) {
+    protected void setup(@Nonnull BlockMenuPreset preset) {
         preset.drawBackground(BACKGROUND);
     }
 
-    @Nonnull
     @Override
-    protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
-        return new int[0];
+    protected int[] getInputSlots() {
+        return new int[] { INPUT_SLOT };
+    }
+
+    @Override
+    protected int[] getOutputSlots() {
+        return new int[] { INPUT_SLOT };
     }
 
 }

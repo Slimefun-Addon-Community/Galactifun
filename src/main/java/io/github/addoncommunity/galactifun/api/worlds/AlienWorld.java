@@ -36,10 +36,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
 
 /**
  * Any alien world
@@ -50,7 +51,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
  */
 public abstract class AlienWorld extends PlanetaryWorld {
 
-    public static final NamespacedKey CHUNK_VER_KEY = Galactifun.instance().getKey("chunk_version");
+    public static final NamespacedKey CHUNK_VER_KEY = AbstractAddon.createKey("chunk_version");
 
     private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
     private final List<Alien<?>> species = new ArrayList<>();

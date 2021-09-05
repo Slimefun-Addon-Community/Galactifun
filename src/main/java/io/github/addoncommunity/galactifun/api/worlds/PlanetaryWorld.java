@@ -27,8 +27,9 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.Earth;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 /**
  * Any world that can be travelled to by rockets or other means
@@ -40,7 +41,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
  */
 public abstract class PlanetaryWorld extends PlanetaryObject {
 
-    private static final NamespacedKey WORLD_STORAGE_KEY = Galactifun.instance().getKey("world_storage");
+    private static final NamespacedKey WORLD_STORAGE_KEY = AbstractAddon.createKey("world_storage");
 
     @Getter
     private World world;

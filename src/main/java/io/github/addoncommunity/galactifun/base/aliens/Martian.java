@@ -18,12 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.mooy1.infinitylib.items.StackUtils;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 
 /**
  * Class for the martian
@@ -79,7 +79,8 @@ public final class Martian extends Alien<ZombieVillager> {
             return;
         }
 
-        ItemStack trade = this.trades.get(StackUtils.getIDorType(item));
+        SlimefunItem sfi = SlimefunItem.getByItem(item);
+        ItemStack trade = this.trades.get(sfi == null ? item.getType().name() : sfi.getId());
 
         if (trade != null && item.getAmount() >= trade.getAmount()) {
             LivingEntity entity = (LivingEntity) e.getRightClicked();
@@ -96,14 +97,14 @@ public final class Martian extends Alien<ZombieVillager> {
                 ItemUtils.consumeItem(item, trade.getAmount(), true);
             }
 
-            Galactifun.instance().runSync(() -> {
+            Scheduler.run(60, () -> {
                 if (entity.isValid()) {
                     entity.getWorld().dropItemNaturally(entity.getLocation(), trade.clone());
 
                     entity.getEquipment().setItemInOffHand(null);
                     entity.removePotionEffect(PotionEffectType.SLOW);
                 }
-            }, 60);
+            });
         }
     }
 

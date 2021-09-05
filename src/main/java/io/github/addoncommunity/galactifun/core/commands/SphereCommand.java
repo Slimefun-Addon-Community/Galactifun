@@ -12,21 +12,21 @@ import org.bukkit.entity.Player;
 
 import io.github.addoncommunity.galactifun.util.Sphere;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.mooy1.infinitylib.commands.SubCommand;
 
-public final class SphereCommand extends AbstractCommand {
+public final class SphereCommand extends SubCommand {
 
     public SphereCommand() {
         super("sphere", "Generates a sphere in the direction you are facing with specified radius", true);
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
+    public void execute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) {
             return;
         }
 
-        if (strings.length < 3) {
+        if (strings.length < 2) {
             p.sendMessage(ChatColor.RED + "Usage: /galactifun sphere <radius> <material>...");
             return;
         }
@@ -34,7 +34,7 @@ public final class SphereCommand extends AbstractCommand {
         int radius;
 
         try {
-            radius = Integer.parseInt(strings[1]);
+            radius = Integer.parseInt(strings[0]);
         } catch (NumberFormatException e) {
             p.sendMessage(ChatColor.RED + "Invalid radius!");
             return;
@@ -47,13 +47,13 @@ public final class SphereCommand extends AbstractCommand {
 
         Block tar = p.getLocation().getBlock().getRelative(p.getFacing(), radius + 4);
 
-        Material[] materials = new Material[strings.length - 2];
+        Material[] materials = new Material[strings.length - 1];
 
         for (int i = 0; i < materials.length; i++) {
             try {
-                materials[i] = Material.valueOf(strings[i + 2]);
+                materials[i] = Material.valueOf(strings[i + 1]);
             } catch (IllegalArgumentException e) {
-                p.sendMessage(ChatColor.RED + "'" + strings[i + 2] + "' is not a material!");
+                p.sendMessage(ChatColor.RED + "'" + strings[i + 1] + "' is not a material!");
                 return;
             }
         }
@@ -65,8 +65,8 @@ public final class SphereCommand extends AbstractCommand {
     }
 
     @Override
-    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> tabs) {
-        if (strings.length == 2) {
+    public void complete(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> tabs) {
+        if (strings.length == 1) {
             tabs.add("16");
             tabs.add("64");
         } else {

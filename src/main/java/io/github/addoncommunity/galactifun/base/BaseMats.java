@@ -9,15 +9,14 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
 /**
  * A class containing commonly used items in recipes
@@ -360,7 +359,7 @@ public final class BaseMats {
 
         component(MUNPOWDER, CoreRecipeType.ALIEN_DROP,
                 null, null, null,
-                null, new CustomItem(Material.CREEPER_HEAD, "&fMutant Creeper")
+                null, new CustomItemStack(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
         component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
         component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
@@ -390,7 +389,7 @@ public final class BaseMats {
     }
 
     private static void assembly(SlimefunItemStack item, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.instance());
+        //new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.instance());
     }
 
     private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {

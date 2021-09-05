@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.types.UniversalType;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Any object in the universe
@@ -38,7 +38,7 @@ public abstract class UniversalObject {
     UniversalObject(@Nonnull String name, @Nonnull UniversalType type, @Nonnull Orbit orbit,
                     @Nonnull UniversalObject orbiting, @Nonnull ItemStack baseItem) {
         this.name = ChatUtils.removeColorCodes(name);
-        this.item = new CustomItem(baseItem, name, "&7Type: " + type.description());
+        this.item = new CustomItemStack(baseItem, name, "&7Type: " + type.description());
         this.orbiting = orbiting;
         this.orbit = orbit;
         this.orbitLevel = orbiting.orbitLevel + 1;

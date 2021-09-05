@@ -21,10 +21,11 @@ import org.bukkit.entity.Player;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.structures.Structure;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
-import io.github.mooy1.infinitylib.persistence.PersistenceUtils;
+import io.github.mooy1.infinitylib.commands.SubCommand;
+import io.github.mooy1.infinitylib.common.PersistentType;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
 
-public final class StructureCommand extends AbstractCommand {
+public final class StructureCommand extends SubCommand {
 
     private final Map<String, Structure> savedStructures = new HashMap<>();
     private final NamespacedKey pos1;
@@ -35,29 +36,29 @@ public final class StructureCommand extends AbstractCommand {
         super("structure", "The command for structures", true);
 
         this.saveFolder = new File(galactifun.getDataFolder(), "saved_structures");
-        this.pos1 = galactifun.getKey("pos1");
-        this.pos2 = galactifun.getKey("pos2");
+        this.pos1 = AbstractAddon.createKey("pos1");
+        this.pos2 = AbstractAddon.createKey("pos2");
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender sender, String[] args) {
+    public void execute(@Nonnull CommandSender sender, String[] args) {
         if (args.length == 1 || !(sender instanceof Player p)) {
             return;
         }
 
-        if (args[1].equals("save")) {
-            if (args.length != 3) {
+        if (args[0].equals("save")) {
+            if (args.length != 2) {
                 p.sendMessage(ChatColor.RED + "Usage: /galactifun save <name>");
                 return;
             }
 
-            Location pos1 = p.getPersistentDataContainer().get(this.pos1, PersistenceUtils.LOCATION);
+            Location pos1 = p.getPersistentDataContainer().get(this.pos1, PersistentType.LOCATION);
             if (pos1 == null) {
                 p.sendMessage(ChatColor.RED + "pos1 not set!");
                 return;
             }
 
-            Location pos2 = p.getPersistentDataContainer().get(this.pos2, PersistenceUtils.LOCATION);
+            Location pos2 = p.getPersistentDataContainer().get(this.pos2, PersistentType.LOCATION);
             if (pos2 == null) {
                 p.sendMessage(ChatColor.RED + "pos2 not set!");
                 return;
@@ -66,13 +67,13 @@ public final class StructureCommand extends AbstractCommand {
             StructureRotation rotation = StructureRotation.fromFace(p.getFacing());
             Structure struct = Structure.create(rotation, pos1.getBlock(), pos2.getBlock());
 
-            File file = new File(this.saveFolder, this.name + ".gs");
+            File file = new File(this.saveFolder, args[1] + ".gs");
             file.getParentFile().mkdirs();
             if (file.exists()) {
                 try {
                     Files.writeString(file.toPath(), struct.saveToString(), Charsets.UTF_8);
-                    this.savedStructures.put(this.name, struct);
-                    p.sendMessage(ChatColor.GREEN + "Saved as '" + args[2] + "'!");
+                    this.savedStructures.put(args[1], struct);
+                    p.sendMessage(ChatColor.GREEN + "Saved as '" + args[1] + "'!");
                 } catch (IOException e) {
                     e.printStackTrace();
                     p.sendMessage(ChatColor.RED + "Error saving file! Check the console!");
@@ -87,30 +88,30 @@ public final class StructureCommand extends AbstractCommand {
             return;
         }
 
-        if (args[1].equals("pos1")) {
-            p.getPersistentDataContainer().set(this.pos1, PersistenceUtils.LOCATION, target.getLocation());
+        if (args[0].equals("pos1")) {
+            p.getPersistentDataContainer().set(this.pos1, PersistentType.LOCATION, target.getLocation());
             p.sendMessage(ChatColor.GREEN + "Set pos1 to " + toString(target));
             return;
         }
 
-        if (args[1].equals("pos2")) {
-            p.getPersistentDataContainer().set(this.pos2, PersistenceUtils.LOCATION, target.getLocation());
+        if (args[0].equals("pos2")) {
+            p.getPersistentDataContainer().set(this.pos2, PersistentType.LOCATION, target.getLocation());
             p.sendMessage(ChatColor.GREEN + "Set pos2 to " + toString(target));
             return;
         }
 
-        if (args[1].equals("paste")) {
-            if (args.length != 3) {
+        if (args[0].equals("paste")) {
+            if (args.length != 2) {
                 p.sendMessage(ChatColor.RED + "Usage: /galactifun paste <name>");
                 return;
             }
 
-            Structure saved = this.savedStructures.get(args[2]);
+            Structure saved = this.savedStructures.get(args[1]);
 
             if (saved == null) {
-                saved = Structure.getByKey(args[2]);
+                saved = Structure.getByKey(args[1]);
                 if (saved == null) {
-                    p.sendMessage(ChatColor.RED + "Unknown structure '" + args[2] + "'!");
+                    p.sendMessage(ChatColor.RED + "Unknown structure '" + args[1] + "'!");
                     return;
                 }
             }
@@ -125,10 +126,10 @@ public final class StructureCommand extends AbstractCommand {
     }
 
     @Override
-    public void onTab(@Nonnull CommandSender commandSender, String[] args, @Nonnull List<String> options) {
-        if (args.length == 2) {
+    public void complete(@Nonnull CommandSender commandSender, String[] args, @Nonnull List<String> options) {
+        if (args.length == 1) {
             options.addAll(Arrays.asList("pos1", "pos2", "save", "paste"));
-        } else if (args.length == 3 && args[1].equals("paste")) {
+        } else if (args.length == 2 && args[0].equals("paste")) {
             options.addAll(this.savedStructures.keySet());
             options.addAll(Structure.getLoadedKeys());
         }

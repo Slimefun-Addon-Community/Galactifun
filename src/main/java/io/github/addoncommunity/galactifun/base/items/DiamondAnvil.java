@@ -10,19 +10,19 @@ import javax.annotation.Nonnull;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public final class DiamondAnvil extends AContainer {
 
     private static final List<MachineRecipe> RECIPES = new ArrayList<>();
     public static final RecipeType TYPE = new RecipeType(
-            Galactifun.instance().getKey(BaseItems.DIAMOND_ANVIL.getItemId().toLowerCase(Locale.ROOT)),
+            AbstractAddon.createKey(BaseItems.DIAMOND_ANVIL.getItemId().toLowerCase(Locale.ROOT)),
             BaseItems.DIAMOND_ANVIL,
             (stacks, itemStack) -> RECIPES.add(new MachineRecipe(30, Arrays.copyOf(stacks, 2), new ItemStack[] { itemStack }))
     );

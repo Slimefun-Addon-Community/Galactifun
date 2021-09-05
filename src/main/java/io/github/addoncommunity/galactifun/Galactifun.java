@@ -1,9 +1,6 @@
 package io.github.addoncommunity.galactifun;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nonnull;
+import java.util.logging.Level;
 
 import lombok.Getter;
 
@@ -24,9 +21,9 @@ import io.github.addoncommunity.galactifun.core.commands.StructureCommand;
 import io.github.addoncommunity.galactifun.core.managers.AlienManager;
 import io.github.addoncommunity.galactifun.core.managers.ProtectionManager;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
-import io.github.mooy1.infinitylib.AbstractAddon;
-import io.github.mooy1.infinitylib.bstats.bukkit.Metrics;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.mooy1.infinitylib.metrics.bukkit.Metrics;
 
 
 public final class Galactifun extends AbstractAddon {
@@ -38,73 +35,8 @@ public final class Galactifun extends AbstractAddon {
     private WorldManager worldManager;
     private ProtectionManager protectionManager;
 
-    protected void enable() {
-        instance = this;
-
-        this.alienManager = new AlienManager(this);
-        this.worldManager = new WorldManager(this);
-        this.protectionManager = new ProtectionManager();
-
-        BaseAlien.setup(this.alienManager);
-        BaseUniverse.setup(this);
-        CoreCategory.setup(this);
-        BaseMats.setup();
-        BaseItems.setup(this);
-
-        // log after startup
-        runSync(() -> log(
-                "################# Galactifun " + getPluginVersion() + " #################",
-                "",
-                "Galactifun is open source, you can contribute or report bugs at: ",
-                getBugTrackerURL(),
-                "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
-                "",
-                "###################################################"
-        ));
-    }
-
-    @Override
-    protected void disable() {
-        this.alienManager.onDisable();
-
-        // Do this last
-        instance = null;
-    }
-
-    @Override
-    public void onLoad() {
-        // Default to not logging world settings
-        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
-    }
-
-    @Override
-    protected Metrics setupMetrics() {
-        return new Metrics(this, 11613);
-    }
-
-    @Nonnull
-    @Override
-    protected String getGithubPath() {
-        return "Slimefun-Addon-Community/Galactifun/master";
-    }
-
-    @Override
-    protected List<AbstractCommand> setupSubCommands() {
-        return Arrays.asList(
-                new GalactiportCommand(),
-                new AlienSpawnCommand(),
-                new SphereCommand(),
-                new StructureCommand(this),
-                new SealedCommand(),
-                new EffectsCommand(),
-                new ChunkverCommand()
-        );
-    }
-
-    @Nonnull
-    @Override
-    public String getAutoUpdatePath() {
-        return "auto-update";
+    public Galactifun() {
+        super("Slimefun-Addon-Community", "Galactifun", "master", "auto-update");
     }
 
     public static AlienManager alienManager() {
@@ -117,6 +49,57 @@ public final class Galactifun extends AbstractAddon {
 
     public static ProtectionManager protectionManager() {
         return instance.protectionManager;
+    }
+
+    @Override
+    protected void enable() {
+        instance = this;
+
+        new Metrics(this, 11613);
+
+        this.alienManager = new AlienManager(this);
+        this.worldManager = new WorldManager(this);
+        this.protectionManager = new ProtectionManager();
+
+        BaseAlien.setup(this.alienManager);
+        BaseUniverse.setup(this);
+        CoreCategory.setup(this);
+        BaseMats.setup();
+        BaseItems.setup(this);
+
+        // log after startup
+        Scheduler.run(() -> log(Level.INFO,
+                "################# Galactifun " + getPluginVersion() + " #################",
+                "",
+                "Galactifun is open source, you can contribute or report bugs at: ",
+                getBugTrackerURL(),
+                "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
+                "",
+                "###################################################"
+        ));
+
+        getAddonCommand()
+                .addSub(new GalactiportCommand())
+                .addSub(new AlienSpawnCommand())
+                .addSub(new SphereCommand())
+                .addSub(new StructureCommand(this))
+                .addSub(new SealedCommand())
+                .addSub(new EffectsCommand())
+                .addSub(new ChunkverCommand());
+    }
+
+    @Override
+    protected void disable() {
+        this.alienManager.onDisable();
+
+        // Do this last
+        instance = null;
+    }
+
+    @Override
+    public void load() {
+        // Default to not logging world settings
+        Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
     }
 
 }

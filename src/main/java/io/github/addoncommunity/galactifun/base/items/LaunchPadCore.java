@@ -20,25 +20,23 @@ import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.items.StackUtils;
-import io.github.mooy1.infinitylib.slimefun.AbstractTickingContainer;
+import io.github.mooy1.infinitylib.common.StackUtils;
+import io.github.mooy1.infinitylib.machines.TickingMenuBlock;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
-public final class LaunchPadCore extends AbstractTickingContainer {
+public final class LaunchPadCore extends TickingMenuBlock {
 
     private static final int[] BACKGROUND = {
             0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -64,13 +62,13 @@ public final class LaunchPadCore extends AbstractTickingContainer {
         FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 2);
     }
 
-    public LaunchPadCore(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
+    public LaunchPadCore(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);
         addItemHandler((BlockUseHandler) LaunchPadCore::onInteract);
     }
 
     @Override
-    protected void tick(@Nonnull BlockMenu menu, @Nonnull Block block) {
+    protected void tick(@Nonnull Block block, @Nonnull BlockMenu menu) {
         Block b = block.getRelative(BlockFace.UP);
 
         SlimefunItem sfItem = BlockStorage.check(b);
@@ -92,7 +90,7 @@ public final class LaunchPadCore extends AbstractTickingContainer {
         if (fuel < rocket.fuelCapacity()) {
             ItemStack fuelItem = menu.getItemInSlot(FUEL_SLOT);
             if (fuelItem == null) return;
-            String id = StackUtils.getID(fuelItem);
+            String id = StackUtils.getId(fuelItem);
 
             if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
                 menu.consumeItem(FUEL_SLOT);
@@ -113,8 +111,9 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     }
 
     @Override
-    protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu, @Nonnull Location l) {
+    protected void onBreak(BlockBreakEvent e, @Nonnull BlockMenu menu) {
         if (canBreak(e.getPlayer(), e.getBlock())) {
+            Location l = e.getBlock().getLocation();
             menu.dropItems(l, INVENTORY_SLOTS);
             menu.dropItems(l, 33);
 
@@ -133,27 +132,27 @@ public final class LaunchPadCore extends AbstractTickingContainer {
     }
 
     @Override
-    protected void setupMenu(@Nonnull BlockMenuPreset preset) {
+    protected void setup(@Nonnull BlockMenuPreset preset) {
         preset.drawBackground(BACKGROUND);
 
         for (int i : BORDER) {
             preset.addItem(i, ChestMenuUtils.getOutputSlotTexture(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        preset.addItem(24, new CustomItem(
+        preset.addItem(24, new CustomItemStack(
                 HeadTexture.FUEL_BUCKET.getAsItemStack(),
                 "&6Insert Fuel Here"
         ), ChestMenuUtils.getEmptyClickHandler());
     }
 
-    @Nonnull
     @Override
-    protected int[] getTransportSlots(@Nonnull DirtyChestMenu dirtyChestMenu, @Nonnull ItemTransportFlow itemTransportFlow, ItemStack itemStack) {
-        if (itemTransportFlow == ItemTransportFlow.INSERT) {
-            return new int[] { FUEL_SLOT };
-        } else {
-            return new int[0];
-        }
+    protected int[] getInputSlots() {
+        return new int[] {FUEL_SLOT};
+    }
+
+    @Override
+    protected int[] getOutputSlots() {
+        return new int[0];
     }
 
     private static void onInteract(@Nonnull PlayerRightClickEvent e) {

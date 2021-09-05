@@ -12,16 +12,16 @@ import org.bukkit.entity.Player;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.mooy1.infinitylib.commands.SubCommand;
 
-public final class EffectsCommand extends AbstractCommand {
+public final class EffectsCommand extends SubCommand {
 
     public EffectsCommand() {
         super("effects", "Gets all the effects of the current block (taking in protections)", false);
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
+    public void execute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) return;
 
         PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
@@ -39,7 +39,7 @@ public final class EffectsCommand extends AbstractCommand {
     }
 
     @Override
-    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> list) {
+    public void complete(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> list) {
 
     }
 

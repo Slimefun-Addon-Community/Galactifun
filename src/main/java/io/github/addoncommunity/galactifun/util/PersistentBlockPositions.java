@@ -8,8 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.CommonPatterns;
 
 public final class PersistentBlockPositions implements PersistentDataType<String, BlockPositionSet> {
 
@@ -50,8 +50,8 @@ public final class PersistentBlockPositions implements PersistentDataType<String
     public BlockPositionSet fromPrimitive(@Nonnull String primitive, @Nonnull PersistentDataAdapterContext context) {
         BlockPositionSet positions = new BlockPositionSet();
         if (!primitive.isEmpty()) {
-            for (String s : PatternUtils.SEMICOLON.split(primitive)) {
-                String[] split = PatternUtils.COMMA.split(s);
+            for (String s : CommonPatterns.SEMICOLON.split(primitive)) {
+                String[] split = CommonPatterns.COMMA.split(s);
                 positions.add(new BlockPosition(
                         Bukkit.getWorld(UUID.fromString(split[0])),
                         Long.parseLong(split[1])

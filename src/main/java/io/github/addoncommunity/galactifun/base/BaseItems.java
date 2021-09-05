@@ -6,11 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
-import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
-import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
@@ -18,8 +16,6 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
-import io.github.addoncommunity.galactifun.base.items.StargateController;
-import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
@@ -27,15 +23,14 @@ import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
-import io.github.mooy1.infinitylib.presets.LorePreset;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 /**
  * Holds the base machines and setup
@@ -51,8 +46,8 @@ public final class BaseItems {
             "&7Fills space suits with oxygen",
             "",
             LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
-            LorePreset.energyPerSecond(100),
-            LorePreset.speed(1)
+            LoreBuilder.powerPerSecond(100),
+            LoreBuilder.speed(1)
     );
     public static final SlimefunItemStack SPACE_SUIT_UPGRADER = new SlimefunItemStack(
             "SPACE_SUIT_UPGRADER",
@@ -61,8 +56,8 @@ public final class BaseItems {
             "&7Adds upgrades to your space suit",
             "",
             LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
-            LorePreset.energyPerSecond(200),
-            LorePreset.speed(1)
+            LoreBuilder.powerPerSecond(200),
+            LoreBuilder.speed(1)
     );
     public static final SlimefunItemStack HEAT_RESISTANCE_UPGRADE = new SlimefunItemStack(
             "HEAT_RESISTANCE_UPGRADE",
@@ -138,8 +133,8 @@ public final class BaseItems {
             "",
             "&7Creates circuits",
             LoreBuilder.machine(MachineTier.ADVANCED, MachineType.MACHINE),
-            LorePreset.energyBuffer(512),
-            LorePreset.energyPerSecond(256)
+            LoreBuilder.powerBuffer(512),
+            LoreBuilder.powerPerSecond(256)
     );
     public static final SlimefunItemStack ASSEMBLY_TABLE = new SlimefunItemStack(
             "ASSEMBLY_TABLE",
@@ -149,7 +144,7 @@ public final class BaseItems {
             "&7Used to construct many things",
             "",
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
-            LorePreset.energy(2048)
+            LoreBuilder.power(2048, "/Craft")
     );
     public static final SlimefunItemStack STARGATE_RING = new SlimefunItemStack(
             "STARGATE_RING",
@@ -190,7 +185,7 @@ public final class BaseItems {
             "&7Compresses material so hard",
             "&7it becomes something else entirely",
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
-            LorePreset.energyPerSecond(1024),
+            LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
     //</editor-fold>
@@ -394,6 +389,7 @@ public final class BaseItems {
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL
         }).setCapacity(512).setEnergyConsumption(128).setProcessingSpeed(1).register(galactifun);
 
+        /*
         new AssemblyTable(CoreCategory.MACHINES, ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
@@ -438,6 +434,7 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_3, BaseMats.ROCKET_ENGINE_3, null, BaseMats.ULTRA_DUTY_SHEET
         }, TIER_THREE_FUEL, TIER_THREE_STORAGE).register(galactifun);
+        */
 
         new SlimefunItem(CoreCategory.ITEMS, LANDING_HATCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 BaseMats.HEAVY_DUTY_SHEET, new ItemStack(Material.IRON_TRAPDOOR), BaseMats.HEAVY_DUTY_SHEET,

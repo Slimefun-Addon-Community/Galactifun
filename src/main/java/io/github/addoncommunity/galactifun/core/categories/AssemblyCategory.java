@@ -8,17 +8,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.groups.FlexItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.core.categories.FlexCategory;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 /**
  * Category for displaying Assembly recipes
@@ -26,7 +25,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
  * @author Seggan
  * @author Mooy1
  */
-public final class AssemblyCategory extends FlexCategory {
+public final class AssemblyCategory extends FlexItemGroup {
 
     private static final int[] SLOTS = new int[] {
             1, 2, 3, 4, 5, 6,
@@ -57,15 +56,16 @@ public final class AssemblyCategory extends FlexCategory {
             menu.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        menu.addItem(1, new CustomItem(ChestMenuUtils.getBackButton(p, "",
-                ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
+        menu.addItem(1, new CustomItemStack(ChestMenuUtils.getBackButton(p, "",
+                ChatColor.GRAY + Slimefun.getLocalization().getMessage(p, "guide.back.guide")))
         );
         menu.addMenuClickHandler(1, (p12, slot, item, action) -> {
-            profile.getGuideHistory().goBack(SlimefunPlugin.getRegistry().getSlimefunGuide(layout));
+            profile.getGuideHistory().goBack(Slimefun.getRegistry().getSlimefunGuide(layout));
             return false;
         });
 
         int i = 9;
+        /*
         for (Pair<SlimefunItemStack, ItemStack[]> item : AssemblyTable.ITEMS.values()) {
             menu.addItem(i++, item.getFirstValue(), (p1, slot, item1, action) -> {
                 if (layout == SlimefunGuideMode.CHEAT_MODE) {
@@ -76,6 +76,7 @@ public final class AssemblyCategory extends FlexCategory {
                 return false;
             });
         }
+         */
 
         menu.open(p);
     }
@@ -84,8 +85,8 @@ public final class AssemblyCategory extends FlexCategory {
         ChestMenu menu = new ChestMenu("Recipe for " + item.getFirstValue().getDisplayName());
         menu.setEmptySlotsClickable(false);
 
-        menu.addItem(0, new CustomItem(ChestMenuUtils.getBackButton(p, "",
-                ChatColor.GRAY + SlimefunPlugin.getLocalization().getMessage(p, "guide.back.guide")))
+        menu.addItem(0, new CustomItemStack(ChestMenuUtils.getBackButton(p, "",
+                ChatColor.GRAY + Slimefun.getLocalization().getMessage(p, "guide.back.guide")))
         );
         menu.addMenuClickHandler(0, (p12, slot, it, action) -> {
             this.open(p, profile, SlimefunGuideMode.SURVIVAL_MODE);

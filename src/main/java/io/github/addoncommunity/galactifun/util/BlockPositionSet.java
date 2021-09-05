@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 
 /**
  * Utility class to avoid parameterized types in the {@link PersistentBlockPositions}

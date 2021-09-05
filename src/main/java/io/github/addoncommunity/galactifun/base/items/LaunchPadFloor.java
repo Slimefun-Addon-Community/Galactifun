@@ -11,16 +11,16 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 
 public final class LaunchPadFloor extends SlimefunItem {
 
-    public LaunchPadFloor(Category category, SlimefunItemStack itemStack, RecipeType type, ItemStack[] recipe) {
+    public LaunchPadFloor(ItemGroup category, SlimefunItemStack itemStack, RecipeType type, ItemStack[] recipe) {
         super(category, itemStack, type, recipe);
 
         addItemHandler(new BlockBreakHandler(false, false) {

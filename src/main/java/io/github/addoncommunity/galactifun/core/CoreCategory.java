@@ -8,10 +8,11 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.core.categories.AssemblyCategory;
 import io.github.addoncommunity.galactifun.core.categories.GalacticCategory;
-import io.github.mooy1.infinitylib.categories.MultiCategory;
-import io.github.mooy1.infinitylib.categories.SubCategory;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.mooy1.infinitylib.groups.MultiGroup;
+import io.github.mooy1.infinitylib.groups.SubGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
 /**
  * Slimefun item categories
@@ -23,36 +24,36 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 public final class CoreCategory {
 
     /* cheat categories */
-    public static final Category ASSEMBLY = new SubCategory(
-            Galactifun.instance().getKey("assembly"), new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
+    public static final ItemGroup ASSEMBLY = new SubGroup(
+            "assembly", new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes")
     );
 
     /* normal categories */
-    public static final Category EQUIPMENT = new SubCategory(
-            Galactifun.instance().getKey("equipment"), new CustomItem(Material.IRON_HELMET, "&fEquipment")
+    public static final ItemGroup EQUIPMENT = new SubGroup(
+            "equipment", new CustomItemStack(Material.IRON_HELMET, "&fEquipment")
     );
-    public static final Category ITEMS = new SubCategory(
-            Galactifun.instance().getKey("items"), new CustomItem(GalactifunHead.ROCKET, "&fGalactifun")
+    public static final ItemGroup ITEMS = new SubGroup(
+            "items", new CustomItemStack(GalactifunHead.ROCKET, "&fGalactifun")
     );
-    public static final Category COMPONENTS = new SubCategory(
-            Galactifun.instance().getKey("components"), new CustomItem(Material.IRON_INGOT, "&fGalactifun Components")
+    public static final ItemGroup COMPONENTS = new SubGroup(
+            "components", new CustomItemStack(Material.IRON_INGOT, "&fGalactifun Components")
     );
-    public static final Category MACHINES = new SubCategory(
-            Galactifun.instance().getKey("machines"), new CustomItem(Material.REDSTONE_LAMP, "&fGalactifun Machines")
+    public static final ItemGroup MACHINES = new SubGroup(
+            "machines", new CustomItemStack(Material.REDSTONE_LAMP, "&fGalactifun Machines")
     );
-    public static final Category BLOCKS = new SubCategory(
-            Galactifun.instance().getKey("blocks"), new CustomItem(Material.COBBLESTONE, "&fGalactifun Blocks")
+    public static final ItemGroup BLOCKS = new SubGroup(
+            "blocks", new CustomItemStack(Material.COBBLESTONE, "&fGalactifun Blocks")
     );
 
     public static void setup(Galactifun galactifun) {
-        Category universe = new GalacticCategory(galactifun.getKey("galactic_flex"),
-                new CustomItem(Material.END_STONE, "&bThe Universe"));
+        ItemGroup universe = new GalacticCategory(AbstractAddon.createKey("galactic_flex"),
+                new CustomItemStack(Material.END_STONE, "&bThe Universe"));
 
-        Category assembly = new AssemblyCategory(galactifun.getKey("assembly_flex"),
-                new CustomItem(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
+        ItemGroup assembly = new AssemblyCategory(AbstractAddon.createKey("assembly_flex"),
+                new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
 
-        new MultiCategory(galactifun.getKey("main"),
-                new CustomItem(Material.BEACON, "&bGalactifun"),
+        new MultiGroup("main",
+                new CustomItemStack(Material.BEACON, "&bGalactifun"),
                 EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, assembly
         ).register(galactifun);
     }

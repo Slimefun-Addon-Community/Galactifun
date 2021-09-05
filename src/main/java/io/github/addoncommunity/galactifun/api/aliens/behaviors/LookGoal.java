@@ -10,14 +10,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import com.destroystokyo.paper.entity.ai.GoalType;
-import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
 
 public final class LookGoal<T extends Mob> extends AlienBehavior<T> {
 
     private int time = 0;
 
     public LookGoal(@Nonnull Class<T> entityClass, @Nonnull T mob) {
-        super(entityClass, Galactifun.instance().getKey("look"), mob);
+        super(entityClass, AbstractAddon.createKey("look"), mob);
     }
 
     @Override

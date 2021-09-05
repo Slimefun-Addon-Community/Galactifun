@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
-import io.github.mooy1.infinitylib.commands.AbstractCommand;
+import io.github.mooy1.infinitylib.commands.SubCommand;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
 /**
@@ -22,19 +22,19 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
  * @author Seggan
  * @author Mooy1
  */
-public final class GalactiportCommand extends AbstractCommand {
+public final class GalactiportCommand extends SubCommand {
 
     public GalactiportCommand() {
         super("world", "Teleports you to the spawn of the specified world", true);
     }
 
     @Override
-    public void onExecute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
-        if (!(commandSender instanceof Player p) || strings.length != 2) {
+    public void execute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
+        if (!(commandSender instanceof Player p) || strings.length != 1) {
             return;
         }
 
-        World world = Bukkit.getWorld(strings[1]);
+        World world = Bukkit.getWorld(strings[0]);
 
         if (world == null) {
             p.sendMessage(ChatColor.RED + "Invalid World!");
@@ -50,8 +50,8 @@ public final class GalactiportCommand extends AbstractCommand {
     }
 
     @Override
-    public void onTab(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> worlds) {
-        if (strings.length == 2) {
+    public void complete(@Nonnull CommandSender commandSender, @Nonnull String[] strings, @Nonnull List<String> worlds) {
+        if (strings.length == 1) {
             for (World world : Bukkit.getWorlds()) {
                 worlds.add(world.getName());
             }

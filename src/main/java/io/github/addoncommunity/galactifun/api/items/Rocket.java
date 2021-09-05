@@ -37,16 +37,16 @@ import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.items.StackUtils;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -61,7 +61,7 @@ public final class Rocket extends SlimefunItem {
     @Getter
     private final int storageCapacity;
 
-    public Rocket(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
+    public Rocket(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
 
         this.fuelCapacity = fuelCapacity;
@@ -196,11 +196,11 @@ public final class Rocket extends SlimefunItem {
             destChunk.load(true);
         }
 
-        Galactifun.instance().runSync(sendRandomMessage(p), 40);
-        Galactifun.instance().runSync(sendRandomMessage(p), 80);
-        Galactifun.instance().runSync(sendRandomMessage(p), 120);
-        Galactifun.instance().runSync(sendRandomMessage(p), 160);
-        Galactifun.instance().runSync(() -> {
+        Scheduler.run(40, sendRandomMessage(p));
+        Scheduler.run(80, sendRandomMessage(p));
+        Scheduler.run(120, sendRandomMessage(p));
+        Scheduler.run(160, sendRandomMessage(p));
+        Scheduler.run(200, () -> {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             Block destBlock = null;
@@ -218,12 +218,11 @@ public final class Rocket extends SlimefunItem {
                     Inventory inv = chest.getInventory();
                     inv.addItem(this.getItem().clone());
 
-                    ItemStack fuel = StackUtils.getItemByID(fuelType);
-                    if (fuel != null) {
-                        fuel = fuel.clone();
-                        fuel.setAmount(fuelLeft);
-                        inv.addItem(fuel);
-                    }
+                    SlimefunItem sfi = SlimefunItem.getById(fuelType);
+                    ItemStack fuel = sfi == null ? new ItemStack(Material.valueOf(fuelType)) : sfi.getItem();
+                    fuel = fuel.clone();
+                    fuel.setAmount(fuelLeft);
+                    inv.addItem(fuel);
                 }
                 state.update();
             }
@@ -249,7 +248,7 @@ public final class Rocket extends SlimefunItem {
 
             rocket.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocket);
-        }, 200);
+        });
     }
 
 }
