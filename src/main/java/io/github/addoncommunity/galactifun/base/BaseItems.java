@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
+import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
@@ -43,6 +44,7 @@ public final class BaseItems {
             "OXYGEN_FILLER",
             new ItemStack(Material.QUARTZ_BLOCK),
             "&fOxygen Filler",
+            "",
             "&7Fills space suits with oxygen",
             "",
             LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
@@ -53,6 +55,7 @@ public final class BaseItems {
             "SPACE_SUIT_UPGRADER",
             new ItemStack(Material.IRON_BLOCK),
             "&fSpace Suit Upgrader",
+            "",
             "&7Adds upgrades to your space suit",
             "",
             LoreBuilder.machine(MachineTier.AVERAGE, MachineType.MACHINE),
@@ -63,31 +66,36 @@ public final class BaseItems {
             "HEAT_RESISTANCE_UPGRADE",
             Material.IRON_BLOCK,
             "&7Heat Resistance Upgrade",
+            "",
             "&8Add to your space suit to increase heat resistance"
     );
     public static final SlimefunItemStack COLD_RESISTANCE_UPGRADE = new SlimefunItemStack(
             "COLD_RESISTANCE_UPGRADE",
             Material.IRON_BLOCK,
             "&7Cold Resistance Upgrade",
+            "",
             "&8Add to your space suit to increase cold resistance"
     );
     public static final SlimefunItemStack RADIATION_RESISTANCE_UPGRADE = new SlimefunItemStack(
             "RADIATION_RESISTANCE_UPGRADE",
             Material.IRON_BLOCK,
             "&7Radiation Resistance Upgrade",
+            "",
             "&8Add to your space suit to increase radiation resistance"
     );
     public static final SlimefunItemStack SPACE_SUIT_HELMET = new SlimefunItemStack(
             "SPACE_SUIT_HELMET",
-            Material.IRON_HELMET,
+            Material.GLASS,
             "&fSpace Suit Helmet",
+            "",
             "&7A basic space suit helmet",
-            ""
+            LoreBuilder.RIGHT_CLICK_TO_USE
     );
     public static final SlimefunItemStack SPACE_SUIT_CHEST = new SlimefunItemStack(
             "SPACE_SUIT_CHEST",
             Material.IRON_CHESTPLATE,
             "&fSpace Suit Chest",
+            "",
             "&7A basic space suit chest",
             "",
             SpaceSuit.oxygenLore(0, 3600)
@@ -96,15 +104,15 @@ public final class BaseItems {
             "SPACE_SUIT_PANTS",
             Material.IRON_LEGGINGS,
             "&fSpace Suit Pants",
-            "&7Basic pair of space suit pants",
-            ""
+            "",
+            "&7Basic pair of space suit pants"
     );
     public static final SlimefunItemStack SPACE_SUIT_BOOTS = new SlimefunItemStack(
             "SPACE_SUIT_BOOTS",
             Material.IRON_BOOTS,
             "&fSpace Suit Boots",
-            "&7Basic pair of space suit boots",
-            ""
+            "",
+            "&7Basic pair of space suit boots"
     );
     //</editor-fold>
 
@@ -374,7 +382,7 @@ public final class BaseItems {
                 SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT
         }, SpaceSuitStat.RADIATION_RESISTANCE, 1).register(galactifun);
 
-        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ARMOR_FORGE, new ItemStack[] {
+        new SpaceSuitHelmet(CoreCategory.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ARMOR_FORGE, new ItemStack[] {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.GOLD_FOIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 SlimefunItems.REINFORCED_CLOTH, SlimefunItems.SCUBA_HELMET, SlimefunItems.REINFORCED_CLOTH,
                 BaseMats.REINFORCED_CHANNEL, BaseMats.OXYGEN_REGENERATOR, BaseMats.FAN_BLADE
