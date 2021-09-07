@@ -196,6 +196,18 @@ public final class BaseItems {
             LoreBuilder.powerPerSecond(1024),
             LoreBuilder.powerBuffer(2048)
     );
+    public static final SlimefunItemStack FUSION_REACTOR = new SlimefunItemStack(
+            "FUSION_REACTOR",
+            HeadTexture.NUCLEAR_REACTOR.getAsItemStack(),
+            "&fFusion Reactor",
+            "",
+            "&7Uses lasers to fuse Helium-3 pellets",
+            "&7and generate a whale a lot of energy",
+            "&7in the process",
+            "",
+            LoreBuilder.powerPerSecond(65_536),
+            LoreBuilder.powerBuffer(65_536)
+    );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
     public static final SlimefunItemStack COOLING_UNIT_1 = new SlimefunItemStack(
@@ -555,6 +567,8 @@ public final class BaseItems {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.PROGRAMMABLE_ANDROID_MINER, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }).register(galactifun);
+
+        // TODO fusion reactor
     }
 
 }

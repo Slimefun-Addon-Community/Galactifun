@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import lombok.experimental.UtilityClass;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +18,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
 /**
@@ -53,6 +55,11 @@ public final class BaseMats {
             "VENTSTONE",
             Material.MAGMA_BLOCK,
             "&6Ventstone"
+    );
+    public static final SlimefunItemStack LASERITE_ORE = new SlimefunItemStack(
+            "LASERITE_ORE",
+            Material.REDSTONE_ORE,
+            "&cLaserite Ore"
     );
     //</editor-fold>
     //<editor-fold desc="Ultra Duty" defaultstate="collapsed">
@@ -248,6 +255,26 @@ public final class BaseMats {
             Material.DIAMOND,
             "&bDiamond Anvil Cell"
     );
+    public static final SlimefunItemStack FUSION_PELLET = new SlimefunItemStack(
+            "FUSION_PELLET",
+            Material.STONE_BUTTON,
+            "&fFusion Pellet"
+    );
+    public static final SlimefunItemStack LASERITE_DUST = new SlimefunItemStack(
+            "LASERITE_DUST",
+            Material.REDSTONE,
+            "&cLaserite Dust",
+            "",
+            "&7I'm running out of names",
+            Bukkit.getPluginManager().isPluginEnabled("SlimefunWarfare") ?
+                    "&7Can be replaced by Laser Diode from Slimefun Warfare" :
+                    ""
+    );
+    public static final SlimefunItemStack LASERITE = new SlimefunItemStack(
+            "LASERITE",
+            Material.RED_DYE,
+            "&cLaserite"
+    );
     //</editor-fold>
 
     public static void setup() {
@@ -257,6 +284,7 @@ public final class BaseMats {
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
         worldItem(VENTSTONE, BaseUniverse.VENUS);
+        worldItem(LASERITE_ORE, BaseUniverse.TITAN);
         component(VOLCANIC_INGOT, RecipeType.SMELTERY, VENTSTONE);
         component(ALUMINUM_COMPOSITE, RecipeType.SMELTERY,
                 SlimefunItems.ALUMINUM_INGOT, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.ZINC_DUST,
@@ -381,6 +409,18 @@ public final class BaseMats {
         );
 
         component(BLISTERING_VOLCANIC_INGOT, DiamondAnvil.TYPE, VOLCANIC_INGOT, SlimefunItems.BLISTERING_INGOT_3);
+        new UnplaceableBlock(CoreCategory.ITEMS, FUSION_PELLET, DiamondAnvil.TYPE, new ItemStack[] {
+                BLISTERING_VOLCANIC_INGOT, new SlimefunItemStack(MOON_DUST, 8)
+        }, new SlimefunItemStack(FUSION_PELLET, 8)).register(Galactifun.instance());
+
+        component(LASERITE_DUST, RecipeType.ORE_CRUSHER, LASERITE_ORE);
+        component(LASERITE, DiamondAnvil.TYPE, new SlimefunItemStack(LASERITE_DUST, 12));
+
+        // SlimefunWarfare integration
+        SlimefunItem diode = SlimefunItem.getById("LASER_DIODE");
+        if (diode != null) {
+            DiamondAnvil.TYPE.register(new ItemStack[]{diode.getItem().asQuantity(12), null}, LASERITE);
+        }
 
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
