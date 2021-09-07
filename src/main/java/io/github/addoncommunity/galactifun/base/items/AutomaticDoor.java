@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.base.items;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -78,6 +79,7 @@ public final class AutomaticDoor extends MenuBlock {
 
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
+                String id = BlockStorage.checkID(startBlock);
                 if (item == null || item.getType().isAir() || item.getType() == mat) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)) return;
@@ -85,11 +87,13 @@ public final class AutomaticDoor extends MenuBlock {
                     int size = item == null || item.getType().isAir() ?
                             mat.getMaxStackSize() :
                             item.getMaxStackSize() - item.getAmount();
+                    ItemStack itemStack = id == null ? new ItemStack(mat) : SlimefunItem.getById(id).getItem();
                     for (int i = 0; i < size; i++) {
-                        if (startBlock.isEmpty() || startBlock.getType() != mat) break;
+                        if (startBlock.isEmpty() || startBlock.getType() != mat ||
+                                !Objects.equals(BlockStorage.checkID(startBlock), id)) break;
 
                         startBlock.setType(Material.AIR);
-                        menu.pushItem(new ItemStack(mat), INPUT_SLOT);
+                        menu.pushItem(itemStack.clone(), INPUT_SLOT);
                         startBlock = startBlock.getRelative(direction);
                     }
 
@@ -107,12 +111,16 @@ public final class AutomaticDoor extends MenuBlock {
                     Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
+                    SlimefunItem item = SlimefunItem.getByItem(stack);
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
 
                         next.setType(stack.getType());
+                        if (item != null) {
+                            BlockStorage.addBlockInfo(next, "id", item.getId());
+                        }
                         menu.consumeItem(INPUT_SLOT);
                     }
 
