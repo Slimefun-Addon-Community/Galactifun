@@ -192,7 +192,7 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
         int range = getRange();
         for (BlockFace face : Util.SURROUNDING_FACES) {
             if (BlockStorage.check(b.getRelative(face), BaseItems.SUPER_FAN.getItemId())) {
-                range += range * .20;
+                range += range * 0.15;
             }
         }
 

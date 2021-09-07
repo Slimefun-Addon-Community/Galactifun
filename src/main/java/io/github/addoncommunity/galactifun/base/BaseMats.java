@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
+import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -232,6 +233,11 @@ public final class BaseMats {
             "&7thing we know to Hell, Volcanic Ingots",
             "&7are a valuable commodity"
     );
+    public static final SlimefunItemStack BLISTERING_VOLCANIC_INGOT = new SlimefunItemStack(
+            "BLISTERING_VOLCANIC_INGOT",
+            Material.GOLD_INGOT,
+            "&6Blistering Volcanic Ingot"
+    );
     public static final SlimefunItemStack TUNGSTEN_CARBIDE = new SlimefunItemStack(
             "TUNGSTEN_CARBIDE",
             Material.IRON_INGOT,
@@ -259,7 +265,7 @@ public final class BaseMats {
         component(TUNGSTEN_INGOT, RecipeType.SMELTERY, FALLEN_METEOR);
         component(ALUMINUM_COMPOSITE_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE, 8));
         component(HEAVY_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(ALUMINUM_COMPOSITE_SHEET, 8));
-        component(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN_INGOT);
+        component(SPACE_GRADE_PLATE, RecipeType.COMPRESSOR, HEAVY_DUTY_SHEET, TUNGSTEN_CARBIDE);
         component(ULTRA_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(SPACE_GRADE_PLATE, 4));
         component(GOLD_FOIL, RecipeType.COMPRESSOR, 4, SlimefunItems.GOLD_24K_BLOCK);
         component(REINFORCED_CHANNEL, RecipeType.ENHANCED_CRAFTING_TABLE, 8,
@@ -361,7 +367,7 @@ public final class BaseMats {
                 null, null, null,
                 null, new CustomItemStack(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        component(ENDER_BLOCK, RecipeType.COMPRESSOR, new ItemStack(Material.ENDER_PEARL, 16));
+        component(ENDER_BLOCK, DiamondAnvil.TYPE, new ItemStack(Material.ENDER_PEARL, 16));
         component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
         component(TUNGSTEN_CARBIDE, RecipeType.SMELTERY, TUNGSTEN_INGOT, SlimefunItems.COMPRESSED_CARBON);
         assembly(DIAMOND_ANVIL_CELL,
@@ -373,6 +379,8 @@ public final class BaseMats {
                 SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.CARBONADO, SlimefunItems.SYNTHETIC_DIAMOND,
                 TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE
         );
+
+        component(BLISTERING_VOLCANIC_INGOT, DiamondAnvil.TYPE, VOLCANIC_INGOT, SULFUR_BLOCK);
 
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
