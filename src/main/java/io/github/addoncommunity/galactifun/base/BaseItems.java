@@ -507,7 +507,7 @@ public final class BaseItems {
         new SpaceHeater(SPACE_HEATER_3, new ItemStack[] {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.VOLCANIC_INGOT, SPACE_HEATER_2, BaseMats.VOLCANIC_INGOT,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET
+                BaseMats.HEAVY_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET
         }, 3).register(galactifun);
 
         new IonDisperser(ION_DISPERSER_1, new ItemStack[] {
@@ -519,7 +519,7 @@ public final class BaseItems {
         new IonDisperser(ION_DISPERSER_2, new ItemStack[] {
                 BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.SULFUR_BLOCK, ION_DISPERSER_1, BaseMats.SULFUR_BLOCK,
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.VOLCANIC_INGOT, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.SPACE_GRADE_PLATE
         }, 2).register(galactifun);
 
         new Observatory(OBSERVATORY, new ItemStack[] {

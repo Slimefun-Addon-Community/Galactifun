@@ -367,7 +367,7 @@ public final class BaseMats {
                 null, null, null,
                 null, new CustomItemStack(Material.CREEPER_HEAD, "&fMutant Creeper")
         );
-        component(ENDER_BLOCK, DiamondAnvil.TYPE, new ItemStack(Material.ENDER_PEARL, 16));
+        component(ENDER_BLOCK, DiamondAnvil.TYPE, new ItemStack(Material.ENDER_PEARL, 16), BLISTERING_VOLCANIC_INGOT);
         component(LUNAR_GLASS, RecipeType.SMELTERY, new ItemStack(Material.SAND), MOON_DUST);
         component(TUNGSTEN_CARBIDE, RecipeType.SMELTERY, TUNGSTEN_INGOT, SlimefunItems.COMPRESSED_CARBON);
         assembly(DIAMOND_ANVIL_CELL,
@@ -380,7 +380,7 @@ public final class BaseMats {
                 TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE, TUNGSTEN_CARBIDE
         );
 
-        component(BLISTERING_VOLCANIC_INGOT, DiamondAnvil.TYPE, VOLCANIC_INGOT, SULFUR_BLOCK);
+        component(BLISTERING_VOLCANIC_INGOT, DiamondAnvil.TYPE, VOLCANIC_INGOT, SlimefunItems.BLISTERING_INGOT_3);
 
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
