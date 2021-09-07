@@ -310,7 +310,7 @@ public final class BaseItems {
             "&fAutomatic Door",
             "",
             "&7Automatically places/removes the blocks inside",
-            "&7when you go close/away from it"
+            "&7when you go to/away from it"
     );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
@@ -348,10 +348,14 @@ public final class BaseItems {
 
     public static void setup(Galactifun galactifun) {
         new OxygenFiller(CoreCategory.MACHINES, OXYGEN_FILLER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+                BaseMats.ALUMINUM_COMPOSITE, BaseMats.REINFORCED_CHANNEL, BaseMats.ALUMINUM_COMPOSITE,
+                BaseMats.ALUMINUM_COMPOSITE, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE,
+                BaseMats.ALUMINUM_COMPOSITE, null, BaseMats.ALUMINUM_COMPOSITE
         }).setCapacity(200).setEnergyConsumption(100).setProcessingSpeed(1).register(galactifun);
         new SpaceSuitUpgrader(CoreCategory.MACHINES, SPACE_SUIT_UPGRADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+                BaseMats.ALUMINUM_COMPOSITE, SlimefunItems.HARDENED_GLASS, BaseMats.ALUMINUM_COMPOSITE,
+                BaseMats.ALUMINUM_COMPOSITE, null, BaseMats.ALUMINUM_COMPOSITE,
+                BaseMats.ALUMINUM_COMPOSITE, SlimefunItems.STEEL_INGOT, BaseMats.ALUMINUM_COMPOSITE
         }).setCapacity(400).setEnergyConsumption(200).setProcessingSpeed(1).register(galactifun);
 
         new SpaceSuitUpgrade(CoreCategory.EQUIPMENT, HEAT_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -370,17 +374,25 @@ public final class BaseItems {
                 SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT
         }, SpaceSuitStat.RADIATION_RESISTANCE, 1).register(galactifun);
 
-        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ARMOR_FORGE, new ItemStack[] {
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.GOLD_FOIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                SlimefunItems.REINFORCED_CLOTH, SlimefunItems.SCUBA_HELMET, SlimefunItems.REINFORCED_CLOTH,
+                BaseMats.REINFORCED_CHANNEL, BaseMats.OXYGEN_REGENERATOR, BaseMats.FAN_BLADE
         }, 1, 0).register(galactifun);
-        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_CHEST, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_CHEST, RecipeType.ARMOR_FORGE, new ItemStack[] {
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.REINFORCED_CLOTH, BaseMats.REINFORCED_CHANNEL,
+                BaseMats.FAN_BLADE, SlimefunItems.HAZMAT_CHESTPLATE, BaseMats.FAN_BLADE,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1, 3600).register(galactifun);
-        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_PANTS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_PANTS, RecipeType.ARMOR_FORGE, new ItemStack[] {
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HAZMAT_LEGGINGS, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 2, 0).register(galactifun);
-        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_BOOTS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-
+        new SpaceSuit(CoreCategory.EQUIPMENT, SPACE_SUIT_BOOTS, RecipeType.ARMOR_FORGE, new ItemStack[] {
+                null, null, null,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HAZMAT_BOOTS, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1, 0).register(galactifun);
 
         new CircuitPress(CoreCategory.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -519,16 +531,18 @@ public final class BaseItems {
         }).setCapacity(2048).setEnergyConsumption(512).setProcessingSpeed(1).register(galactifun);
 
         new OxygenSealer(OXYGEN_SEALER, new ItemStack[] {
-
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.REINFORCED_CHANNEL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.OXYGEN_REGENERATOR, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }, 1000).register(galactifun);
 
-        new SlimefunItem(CoreCategory.ITEMS, SUPER_FAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new SlimefunItem(CoreCategory.ITEMS, SUPER_FAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }).register(galactifun);
 
-        new AutomaticDoor(AUTOMATIC_DOOR, new ItemStack[]{
+        new AutomaticDoor(AUTOMATIC_DOOR, new ItemStack[] {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, new ItemStack(Material.OBSERVER), BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.PROGRAMMABLE_ANDROID_MINER, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
