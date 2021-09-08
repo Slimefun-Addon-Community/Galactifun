@@ -28,7 +28,7 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
  * @author Seggan
  * @author Mooy1
  */
-public final class AssemblyCategory extends FlexItemGroup {
+public final class AssemblyItemGroup extends FlexItemGroup {
 
     private static final int[] SLOTS = new int[] {
             1, 2, 3, 4, 5, 6,
@@ -39,7 +39,7 @@ public final class AssemblyCategory extends FlexItemGroup {
             46, 47, 48, 49, 50, 51
     };
 
-    public AssemblyCategory(NamespacedKey key, ItemStack item) {
+    public AssemblyItemGroup(NamespacedKey key, ItemStack item) {
         super(key, item);
     }
 

@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
@@ -20,7 +20,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.Persis
 public final class Observatory extends MultiBlockMachine {
 
     public Observatory(SlimefunItemStack item, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, recipe, BlockFace.SELF);
+        super(CoreItemGroup.MACHINES, item, recipe, BlockFace.SELF);
     }
 
     @Override

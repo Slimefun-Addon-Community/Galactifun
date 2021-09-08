@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -28,7 +28,7 @@ public final class DiamondAnvil extends AContainer {
     );
 
     public DiamondAnvil(SlimefunItemStack item, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         RECIPES.forEach(this::registerRecipe);
     }
 

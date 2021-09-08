@@ -12,7 +12,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -409,7 +409,7 @@ public final class BaseMats {
         );
 
         component(BLISTERING_VOLCANIC_INGOT, DiamondAnvil.TYPE, VOLCANIC_INGOT, SlimefunItems.BLISTERING_INGOT_3);
-        new UnplaceableBlock(CoreCategory.ITEMS, FUSION_PELLET, DiamondAnvil.TYPE, new ItemStack[] {
+        new UnplaceableBlock(CoreItemGroup.ITEMS, FUSION_PELLET, DiamondAnvil.TYPE, new ItemStack[] {
                 BLISTERING_VOLCANIC_INGOT, new SlimefunItemStack(MOON_DUST, 8)
         }, new SlimefunItemStack(FUSION_PELLET, 8)).register(Galactifun.instance());
 
@@ -429,11 +429,11 @@ public final class BaseMats {
     }
 
     private static void component(SlimefunItemStack item, RecipeType type, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe).register(Galactifun.instance());
+        new SlimefunItem(CoreItemGroup.COMPONENTS, item, type, recipe).register(Galactifun.instance());
     }
 
     private static void component(SlimefunItemStack item, RecipeType type, int output, ItemStack... recipe) {
-        new SlimefunItem(CoreCategory.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.instance());
+        new SlimefunItem(CoreItemGroup.COMPONENTS, item, type, recipe, new SlimefunItemStack(item, output)).register(Galactifun.instance());
     }
 
     private static void assembly(SlimefunItemStack item, ItemStack... recipe) {
@@ -447,7 +447,7 @@ public final class BaseMats {
             recipe[i] = world.item();
             world.addBlockMapping(item.getType(), item);
         }
-        new SlimefunItem(CoreCategory.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.instance());
+        new SlimefunItem(CoreItemGroup.BLOCKS, item, CoreRecipeType.WORLD_GEN, recipe).register(Galactifun.instance());
     }
 
 }

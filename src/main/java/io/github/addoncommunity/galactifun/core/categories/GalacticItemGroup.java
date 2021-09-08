@@ -17,9 +17,9 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
  *
  * @author Mooy1
  */
-public final class GalacticCategory extends FlexItemGroup {
+public final class GalacticItemGroup extends FlexItemGroup {
 
-    public GalacticCategory(NamespacedKey key, ItemStack item) {
+    public GalacticItemGroup(NamespacedKey key, ItemStack item) {
         super(key, item);
     }
 

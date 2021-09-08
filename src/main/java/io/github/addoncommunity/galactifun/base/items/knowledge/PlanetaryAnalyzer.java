@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -21,7 +21,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.Persis
 public final class PlanetaryAnalyzer extends SimpleSlimefunItem<BlockUseHandler> {
 
     public PlanetaryAnalyzer(SlimefunItemStack item, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
     }
 
     @Nonnull

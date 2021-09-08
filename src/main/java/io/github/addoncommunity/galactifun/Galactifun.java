@@ -10,7 +10,7 @@ import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.ChunkverCommand;
 import io.github.addoncommunity.galactifun.core.commands.EffectsCommand;
@@ -63,7 +63,7 @@ public final class Galactifun extends AbstractAddon {
 
         BaseAlien.setup(this.alienManager);
         BaseUniverse.setup(this);
-        CoreCategory.setup(this);
+        CoreItemGroup.setup(this);
         BaseMats.setup();
         BaseItems.setup(this);
 

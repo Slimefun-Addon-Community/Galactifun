@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.reactors.Reactor;
@@ -16,7 +16,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineFuel;
 public final class FusionReactor extends Reactor {
 
     public FusionReactor(SlimefunItemStack item, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, AssemblyTable.TYPE, recipe);
+        super(CoreItemGroup.MACHINES, item, AssemblyTable.TYPE, recipe);
     }
 
     @Override

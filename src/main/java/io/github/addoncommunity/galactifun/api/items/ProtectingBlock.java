@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.machines.MenuBlock;
@@ -61,7 +61,7 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
 
     @ParametersAreNonnullByDefault
     public ProtectingBlock(SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(CoreCategory.MACHINES, item, recipeType, recipe);
+        super(CoreItemGroup.MACHINES, item, recipeType, recipe);
 
         addItemHandler(new BlockTicker() {
             @Override

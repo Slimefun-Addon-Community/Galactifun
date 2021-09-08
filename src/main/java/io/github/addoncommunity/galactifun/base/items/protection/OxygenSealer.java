@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.machines.MenuBlock;
@@ -56,7 +56,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
     private final int range;
 
     public OxygenSealer(SlimefunItemStack item, ItemStack[] recipe, int range) {
-        super(CoreCategory.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         this.range = range;
 
         addItemHandler(new BlockTicker() {

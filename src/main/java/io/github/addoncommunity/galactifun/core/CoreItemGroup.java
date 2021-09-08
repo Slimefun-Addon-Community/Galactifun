@@ -6,8 +6,8 @@ import org.bukkit.Material;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
-import io.github.addoncommunity.galactifun.core.categories.AssemblyCategory;
-import io.github.addoncommunity.galactifun.core.categories.GalacticCategory;
+import io.github.addoncommunity.galactifun.core.categories.AssemblyItemGroup;
+import io.github.addoncommunity.galactifun.core.categories.GalacticItemGroup;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.mooy1.infinitylib.groups.MultiGroup;
 import io.github.mooy1.infinitylib.groups.SubGroup;
@@ -21,7 +21,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
  */
 // TODO move these categories somewhere not public, addons should use their own
 @UtilityClass
-public final class CoreCategory {
+public final class CoreItemGroup {
 
     /* cheat categories */
     public static final ItemGroup ASSEMBLY = new SubGroup(
@@ -45,12 +45,12 @@ public final class CoreCategory {
             "blocks", new CustomItemStack(Material.COBBLESTONE, "&fGalactifun Blocks")
     );
 
-    public static final AssemblyCategory ASSEMBLY_CATEGORY = new AssemblyCategory(
+    public static final AssemblyItemGroup ASSEMBLY_CATEGORY = new AssemblyItemGroup(
             AbstractAddon.createKey("assembly_flex"),
             new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
 
     public static void setup(Galactifun galactifun) {
-        ItemGroup universe = new GalacticCategory(AbstractAddon.createKey("galactic_flex"),
+        ItemGroup universe = new GalacticItemGroup(AbstractAddon.createKey("galactic_flex"),
                 new CustomItemStack(Material.END_STONE, "&bThe Universe"));
 
         new MultiGroup("main",

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.core.CoreCategory;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.mooy1.infinitylib.machines.CraftingBlock;
 import io.github.mooy1.infinitylib.machines.MachineLayout;
 import io.github.mooy1.infinitylib.machines.MachineRecipeType;
@@ -49,7 +49,7 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
     private final int energy;
 
     public AssemblyTable(SlimefunItemStack item, ItemStack[] recipe, int energy) {
-        super(CoreCategory.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         addRecipesFrom(TYPE);
         layout(new MachineLayout()
                 .inputSlots(INPUT_SLOTS)
@@ -82,7 +82,7 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
             if (profile.isEmpty()) {
                 PlayerProfile.request(p);
             }
-            CoreCategory.ASSEMBLY_CATEGORY.open(p, PlayerProfile.find(p).get(), SlimefunGuide.getDefaultMode());
+            CoreItemGroup.ASSEMBLY_CATEGORY.open(p, PlayerProfile.find(p).get(), SlimefunGuide.getDefaultMode());
             return false;
         });
     }
