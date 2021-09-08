@@ -6,17 +6,22 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
+import io.github.addoncommunity.galactifun.base.items.FusionReactor;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
 import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
+import io.github.addoncommunity.galactifun.base.items.StargateController;
+import io.github.addoncommunity.galactifun.base.items.StargateRing;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
@@ -421,12 +426,11 @@ public final class BaseItems {
                 SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL
         }).setCapacity(512).setEnergyConsumption(128).setProcessingSpeed(1).register(galactifun);
 
-        /*
-        new AssemblyTable(CoreCategory.MACHINES, ASSEMBLY_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+        new AssemblyTable(ASSEMBLY_TABLE, new ItemStack[] {
                 SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
                 SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
-        }).register(galactifun);
+        }, 2048).register(galactifun);
 
         new StargateRing(CoreCategory.COMPONENTS, STARGATE_RING, AssemblyTable.TYPE, new ItemStack[] {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
@@ -466,7 +470,6 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_3, BaseMats.ROCKET_ENGINE_3, null, BaseMats.ULTRA_DUTY_SHEET
         }, TIER_THREE_FUEL, TIER_THREE_STORAGE).register(galactifun);
-        */
 
         new SlimefunItem(CoreCategory.ITEMS, LANDING_HATCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 BaseMats.HEAVY_DUTY_SHEET, new ItemStack(Material.IRON_TRAPDOOR), BaseMats.HEAVY_DUTY_SHEET,
@@ -568,7 +571,14 @@ public final class BaseItems {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }).register(galactifun);
 
-        // TODO fusion reactor
+        new FusionReactor(FUSION_REACTOR, new ItemStack[] {
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.LASERITE, BaseMats.LASERITE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.LASERITE, BaseMats.FUSION_PELLET, BaseMats.FUSION_PELLET, BaseMats.LASERITE, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.LASERITE, BaseMats.FUSION_PELLET, BaseMats.FUSION_PELLET, BaseMats.LASERITE, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.LASERITE, BaseMats.LASERITE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
+        }).register(galactifun);
     }
 
 }

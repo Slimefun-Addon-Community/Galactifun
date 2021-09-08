@@ -45,16 +45,17 @@ public final class CoreCategory {
             "blocks", new CustomItemStack(Material.COBBLESTONE, "&fGalactifun Blocks")
     );
 
+    public static final AssemblyCategory ASSEMBLY_CATEGORY = new AssemblyCategory(
+            AbstractAddon.createKey("assembly_flex"),
+            new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
+
     public static void setup(Galactifun galactifun) {
         ItemGroup universe = new GalacticCategory(AbstractAddon.createKey("galactic_flex"),
                 new CustomItemStack(Material.END_STONE, "&bThe Universe"));
 
-        ItemGroup assembly = new AssemblyCategory(AbstractAddon.createKey("assembly_flex"),
-                new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
-
         new MultiGroup("main",
                 new CustomItemStack(Material.BEACON, "&bGalactifun"),
-                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, assembly
+                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, ASSEMBLY_CATEGORY
         ).register(galactifun);
     }
 

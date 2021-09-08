@@ -1,5 +1,8 @@
 package io.github.addoncommunity.galactifun.core.categories;
 
+import java.util.AbstractMap;
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 
 import org.bukkit.ChatColor;
@@ -8,13 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.FlexItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuideMode;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
@@ -65,24 +68,25 @@ public final class AssemblyCategory extends FlexItemGroup {
         });
 
         int i = 9;
-        /*
-        for (Pair<SlimefunItemStack, ItemStack[]> item : AssemblyTable.ITEMS.values()) {
-            menu.addItem(i++, item.getFirstValue(), (p1, slot, item1, action) -> {
-                if (layout == SlimefunGuideMode.CHEAT_MODE) {
-                    p1.getInventory().addItem(item1.clone());
-                } else {
-                    displayItem(p1, profile, item);
-                }
-                return false;
-            });
+        for (Map.Entry<ItemStack, ItemStack[]> item : AssemblyTable.ITEMS.entrySet()) {
+            if (item.getKey() instanceof SlimefunItemStack slimefunItemStack) {
+                Map.Entry<SlimefunItemStack, ItemStack[]> newEntry = new AbstractMap.SimpleImmutableEntry<>(slimefunItemStack, item.getValue());
+                menu.addItem(i++, item.getKey(), (p1, slot, item1, action) -> {
+                    if (layout == SlimefunGuideMode.CHEAT_MODE) {
+                        p1.getInventory().addItem(item1.clone());
+                    } else {
+                        displayItem(p1, profile, newEntry);
+                    }
+                    return false;
+                });
+            }
         }
-         */
 
         menu.open(p);
     }
 
-    private void displayItem(Player p, PlayerProfile profile, Pair<SlimefunItemStack, ItemStack[]> item) {
-        ChestMenu menu = new ChestMenu("Recipe for " + item.getFirstValue().getDisplayName());
+    private void displayItem(Player p, PlayerProfile profile, Map.Entry<SlimefunItemStack, ItemStack[]> item) {
+        ChestMenu menu = new ChestMenu("Recipe for " + item.getKey().getDisplayName());
         menu.setEmptySlotsClickable(false);
 
         menu.addItem(0, new CustomItemStack(ChestMenuUtils.getBackButton(p, "",
@@ -93,8 +97,8 @@ public final class AssemblyCategory extends FlexItemGroup {
             return false;
         });
 
-        for (int i = 0; i < item.getSecondValue().length; i++) {
-            ItemStack stack = item.getSecondValue()[i];
+        for (int i = 0; i < item.getValue().length; i++) {
+            ItemStack stack = item.getValue()[i];
             if (stack != null) {
                 menu.addItem(SLOTS[i], stack, (p1, slot, item1, action) -> {
                     if (item1 != null) {
@@ -106,7 +110,7 @@ public final class AssemblyCategory extends FlexItemGroup {
         }
 
         menu.addItem(18, BaseItems.ASSEMBLY_TABLE, ChestMenuUtils.getEmptyClickHandler());
-        menu.addItem(26, item.getFirstValue(), ChestMenuUtils.getEmptyClickHandler());
+        menu.addItem(26, item.getKey(), ChestMenuUtils.getEmptyClickHandler());
 
         menu.open(p);
     }

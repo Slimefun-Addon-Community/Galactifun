@@ -7,17 +7,16 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.addoncommunity.galactifun.core.CoreCategory;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.reactors.Reactor;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineFuel;
 
-public final class FusionRector extends Reactor {
+public final class FusionReactor extends Reactor {
 
-    protected FusionRector(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack... recipe) {
-        super(category, item, recipeType, recipe);
+    public FusionReactor(SlimefunItemStack item, ItemStack[] recipe) {
+        super(CoreCategory.MACHINES, item, AssemblyTable.TYPE, recipe);
     }
 
     @Override
