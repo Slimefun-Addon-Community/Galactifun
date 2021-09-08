@@ -30,4 +30,4 @@ rockets:
 
 other:
   # The range that the automatic door checks for players
-  auto-door-range: 3
+  auto-door-range: 2

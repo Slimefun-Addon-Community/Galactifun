@@ -65,7 +65,7 @@ public final class AutomaticDoor extends MenuBlock {
         Collection<Player> players = b.getWorld().getNearbyEntitiesByType(
                 Player.class,
                 l,
-                Galactifun.instance().getConfig().getInt("other.auto-door-range", 3)
+                Galactifun.instance().getConfig().getInt("other.auto-door-range", 2)
         );
 
         if (BSUtils.getStoredBoolean(l, ACTIVE)) {
