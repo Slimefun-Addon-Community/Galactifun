@@ -11,7 +11,6 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -29,7 +28,7 @@ public final class PlanetaryAnalyzer extends SimpleSlimefunItem<BlockUseHandler>
     public BlockUseHandler getItemHandler() {
         return e -> {
             Player p = e.getPlayer();
-            NamespacedKey key = AbstractAddon.createKey("analyzing_" + p.getUniqueId());
+            NamespacedKey key = Galactifun.createKey("analyzing_" + p.getUniqueId());
 
             PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
             if (world == null) {

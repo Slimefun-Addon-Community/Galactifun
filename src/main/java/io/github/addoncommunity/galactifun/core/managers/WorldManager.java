@@ -54,7 +54,6 @@ import io.github.addoncommunity.galactifun.util.BlockPositionSet;
 import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
@@ -65,7 +64,7 @@ import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
 public final class WorldManager implements Listener {
 
-    private static final NamespacedKey PLACED = AbstractAddon.createKey("placed");
+    private static final NamespacedKey PLACED = Galactifun.createKey("placed");
 
     @Getter
     private final int maxAliensPerPlayer;

@@ -12,7 +12,6 @@ import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
@@ -25,7 +24,7 @@ public final class Observatory extends MultiBlockMachine {
 
     @Override
     public void onInteract(Player p, Block b) {
-        NamespacedKey key = AbstractAddon.createKey("discovering_" + p.getUniqueId());
+        NamespacedKey key = Galactifun.createKey("discovering_" + p.getUniqueId());
 
         PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
         if (world == null) {

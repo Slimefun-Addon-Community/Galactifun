@@ -27,7 +27,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.Earth;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
@@ -41,7 +40,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.Persis
  */
 public abstract class PlanetaryWorld extends PlanetaryObject {
 
-    private static final NamespacedKey WORLD_STORAGE_KEY = AbstractAddon.createKey("world_storage");
+    private static final NamespacedKey WORLD_STORAGE_KEY = Galactifun.createKey("world_storage");
 
     @Getter
     private World world;

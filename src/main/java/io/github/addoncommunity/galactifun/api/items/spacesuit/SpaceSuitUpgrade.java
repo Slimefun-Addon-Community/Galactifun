@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.mooy1.infinitylib.common.PersistentType;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -24,7 +24,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 @ParametersAreNonnullByDefault
 public final class SpaceSuitUpgrade extends UnplaceableBlock {
 
-    private static final NamespacedKey UPGRADES_KEY = AbstractAddon.createKey("upgrades");
+    private static final NamespacedKey UPGRADES_KEY = Galactifun.createKey("upgrades");
     private static final Map<String, SpaceSuitUpgrade> UPGRADES = new HashMap<>();
 
     private final SpaceSuitStat stat;

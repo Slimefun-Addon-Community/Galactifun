@@ -8,7 +8,6 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.core.categories.AssemblyItemGroup;
 import io.github.addoncommunity.galactifun.core.categories.GalacticItemGroup;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.mooy1.infinitylib.groups.MultiGroup;
 import io.github.mooy1.infinitylib.groups.SubGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -46,11 +45,11 @@ public final class CoreItemGroup {
     );
 
     public static final AssemblyItemGroup ASSEMBLY_CATEGORY = new AssemblyItemGroup(
-            AbstractAddon.createKey("assembly_flex"),
+            Galactifun.createKey("assembly_flex"),
             new CustomItemStack(Material.SMITHING_TABLE, "&fAssembly Table Recipes"));
 
     public static void setup(Galactifun galactifun) {
-        ItemGroup universe = new GalacticItemGroup(AbstractAddon.createKey("galactic_flex"),
+        ItemGroup universe = new GalacticItemGroup(Galactifun.createKey("galactic_flex"),
                 new CustomItemStack(Material.END_STONE, "&bThe Universe"));
 
         new MultiGroup("main",

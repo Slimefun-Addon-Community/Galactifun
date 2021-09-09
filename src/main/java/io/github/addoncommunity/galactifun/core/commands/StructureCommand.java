@@ -23,7 +23,6 @@ import io.github.addoncommunity.galactifun.api.structures.Structure;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.mooy1.infinitylib.commands.SubCommand;
 import io.github.mooy1.infinitylib.common.PersistentType;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 
 public final class StructureCommand extends SubCommand {
 
@@ -36,8 +35,8 @@ public final class StructureCommand extends SubCommand {
         super("structure", "The command for structures", true);
 
         this.saveFolder = new File(galactifun.getDataFolder(), "saved_structures");
-        this.pos1 = AbstractAddon.createKey("pos1");
-        this.pos2 = AbstractAddon.createKey("pos2");
+        this.pos1 = Galactifun.createKey("pos1");
+        this.pos2 = Galactifun.createKey("pos2");
     }
 
     @Override

@@ -34,7 +34,6 @@ import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 public final class AlienManager implements Listener {
@@ -49,8 +48,8 @@ public final class AlienManager implements Listener {
         Events.registerListener(this);
         Scheduler.repeat(galactifun.getConfig().getInt("aliens.tick-interval", 1, 20), this::tick);
 
-        this.key = AbstractAddon.createKey("alien");
-        this.bossKey = AbstractAddon.createKey("boss_alien");
+        this.key = Galactifun.createKey("alien");
+        this.bossKey = Galactifun.createKey("boss_alien");
     }
 
     public void register(Alien<?> alien) {

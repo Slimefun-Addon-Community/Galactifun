@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.mooy1.infinitylib.common.StackUtils;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -28,8 +28,8 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 public class SpaceSuit extends SlimefunItem implements ProtectiveArmor {
 
     private static final Map<String, SpaceSuit> SPACE_SUITS = new HashMap<>();
-    private static final NamespacedKey SPACE_SUIT_KEY = AbstractAddon.createKey("space_suit");
-    private static final NamespacedKey OXYGEN_KEY = AbstractAddon.createKey("oxygen");
+    private static final NamespacedKey SPACE_SUIT_KEY = Galactifun.createKey("space_suit");
+    private static final NamespacedKey OXYGEN_KEY = Galactifun.createKey("oxygen");
     private static final String OXYGEN_LORE = ChatColors.color("&bOxygen: &7");
 
     @Getter

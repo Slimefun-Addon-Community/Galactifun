@@ -17,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.mooy1.infinitylib.common.PersistentType;
-import io.github.mooy1.infinitylib.core.AbstractAddon;
 
 /**
  * Class for the leech, an alien of Titan. They can steal your items when attacking
@@ -29,7 +29,7 @@ import io.github.mooy1.infinitylib.core.AbstractAddon;
  */
 public final class Leech extends Alien<Silverfish> {
 
-    private final NamespacedKey eatenKey = AbstractAddon.createKey("eaten");
+    private final NamespacedKey eatenKey = Galactifun.createKey("eaten");
 
     public Leech(String id, String name, double maxHealth, int spawnChance) {
         super(Silverfish.class, id, name, maxHealth, spawnChance);
