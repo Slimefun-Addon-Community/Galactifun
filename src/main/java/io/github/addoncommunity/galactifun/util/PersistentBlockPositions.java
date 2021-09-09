@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.util;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -11,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.CommonPatterns;
 
-public final class PersistentBlockPositions implements PersistentDataType<String, BlockPositionSet> {
+public final class PersistentBlockPositions implements PersistentDataType<String, Set<BlockPosition>> {
 
     public static final PersistentBlockPositions INSTANCE = new PersistentBlockPositions();
 
@@ -25,13 +27,14 @@ public final class PersistentBlockPositions implements PersistentDataType<String
 
     @Nonnull
     @Override
-    public Class<BlockPositionSet> getComplexType() {
-        return BlockPositionSet.class;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public Class<Set<BlockPosition>> getComplexType() {
+        return (Class) Set.class;
     }
 
     @Nonnull
     @Override
-    public String toPrimitive(@Nonnull BlockPositionSet complex, @Nonnull PersistentDataAdapterContext context) {
+    public String toPrimitive(@Nonnull Set<BlockPosition> complex, @Nonnull PersistentDataAdapterContext context) {
         if (complex.isEmpty()) return "";
 
         StringBuilder builder = new StringBuilder();
@@ -47,8 +50,8 @@ public final class PersistentBlockPositions implements PersistentDataType<String
 
     @Nonnull
     @Override
-    public BlockPositionSet fromPrimitive(@Nonnull String primitive, @Nonnull PersistentDataAdapterContext context) {
-        BlockPositionSet positions = new BlockPositionSet();
+    public Set<BlockPosition> fromPrimitive(@Nonnull String primitive, @Nonnull PersistentDataAdapterContext context) {
+        Set<BlockPosition> positions = new HashSet<>();
         if (!primitive.isEmpty()) {
             for (String s : CommonPatterns.SEMICOLON.split(primitive)) {
                 String[] split = CommonPatterns.COMMA.split(s);

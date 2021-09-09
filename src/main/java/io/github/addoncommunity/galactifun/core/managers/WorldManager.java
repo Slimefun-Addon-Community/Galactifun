@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -50,7 +52,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
-import io.github.addoncommunity.galactifun.util.BlockPositionSet;
 import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
@@ -248,10 +249,10 @@ public final class WorldManager implements Listener {
             SlimefunItemStack item = world.getMappedItem(b);
             if (item != null) {
                 BlockPosition pos = new BlockPosition(b);
-                BlockPositionSet placed = b.getChunk().getPersistentDataContainer().getOrDefault(
+                Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
                         PLACED,
                         PersistentBlockPositions.INSTANCE,
-                        new BlockPositionSet()
+                        new HashSet<>()
                 );
                 if (placed.contains(pos)) {
                     placed.remove(pos);
@@ -288,10 +289,10 @@ public final class WorldManager implements Listener {
         Block b = e.getBlock();
         AlienWorld world = this.alienWorlds.get(b.getWorld());
         if (world != null && world.getMappedItem(b) != null) {
-            BlockPositionSet placed = b.getChunk().getPersistentDataContainer().getOrDefault(
+            Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
                     PLACED,
                     PersistentBlockPositions.INSTANCE,
-                    new BlockPositionSet()
+                    new HashSet<>()
             );
             placed.add(new BlockPosition(b));
             b.getChunk().getPersistentDataContainer().set(
