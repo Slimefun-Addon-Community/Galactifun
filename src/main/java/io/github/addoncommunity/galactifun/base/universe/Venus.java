@@ -43,7 +43,7 @@ public final class Venus extends SimpleAlienWorld {
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
         if (y > 75) {
             return Material.BLACKSTONE;
-        } else if (y > 10) {
+        } else if (y > 9) {
             return Material.BASALT;
         } else if (y > 8) {
             return Material.YELLOW_TERRACOTTA;

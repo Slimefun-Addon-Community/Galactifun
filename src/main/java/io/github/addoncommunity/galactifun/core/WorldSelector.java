@@ -17,10 +17,8 @@ import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.util.Util;
-import io.github.mooy1.infinitylib.presets.LorePreset;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.MenuClickHandler;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -37,24 +35,25 @@ public final class WorldSelector {
     private final Map<UUID, UniversalObject> history = new HashMap<>();
 
     @Nonnull
-    private final MenuClickHandler exitHandler;
+    private final ChestMenu.MenuClickHandler exitHandler;
     @Nonnull
     private final ItemModifier modifier;
     @Nonnull
     private final SelectHandler selectHandler;
 
-    public WorldSelector(@Nonnull MenuClickHandler exitHandler, @Nonnull ItemModifier modifier,@Nonnull SelectHandler selectHandler) {
+    public WorldSelector(@Nonnull ChestMenu.MenuClickHandler exitHandler, @Nonnull ItemModifier modifier, @Nonnull SelectHandler selectHandler) {
         this.exitHandler = exitHandler;
         this.selectHandler = selectHandler;
         this.modifier = modifier;
     }
 
-    public WorldSelector(@Nonnull MenuClickHandler exitHandler) {
-        this(exitHandler, (p, world, lore) -> true, (p, world) -> {});
+    public WorldSelector(@Nonnull ChestMenu.MenuClickHandler exitHandler) {
+        this(exitHandler, (p, world, lore) -> true, (p, world) -> {
+        });
     }
 
     public WorldSelector(@Nonnull ItemModifier modifier, @Nonnull SelectHandler selectHandler) {
-        this((p, i, s, s1, a) -> false, modifier, selectHandler);
+        this((p, i, s, a) -> false, modifier, selectHandler);
     }
 
     public WorldSelector(@Nonnull SelectHandler selectHandler) {
@@ -81,7 +80,7 @@ public final class WorldSelector {
         }
 
         // setup menu
-        ChestMenu menu = new ChestMenu(Galactifun.instance(), object.name());
+        ChestMenu menu = new ChestMenu(object.name());
         menu.setEmptySlotsClickable(false);
 
         // back button
@@ -89,7 +88,7 @@ public final class WorldSelector {
         if (object.orbiting() == null) {
             menu.addMenuClickHandler(0, exitHandler);
         } else {
-            menu.addMenuClickHandler(0, (p1, slot, item, action, a) -> {
+            menu.addMenuClickHandler(0, (p1, slot, item, a) -> {
                 open(p1, object.orbiting(), true);
                 return false;
             });
@@ -118,7 +117,7 @@ public final class WorldSelector {
 
                     if (distance > 0) {
                         lore.add(Component.text("Distance: " + (distance < 1
-                                ? LorePreset.format(distance * Util.KM_PER_LY) + " Kilometers"
+                                ? distance * Util.KM_PER_LY + " Kilometers"
                                 : distance + " Light Years")
                         ).color(NamedTextColor.GRAY));
                     } else {
@@ -139,12 +138,12 @@ public final class WorldSelector {
 
             menu.addItem(i + 1, item);
             if (orbiter.orbiters().size() == 0) {
-                menu.addMenuClickHandler(i + 1, (clicker, i1, s, s1, a) -> {
+                menu.addMenuClickHandler(i + 1, (clicker, i1, s, a) -> {
                     selectHandler.onSelect(clicker, orbiter);
                     return false;
                 });
             } else {
-                menu.addMenuClickHandler(i + 1, (p1, slot, item1, action, a) -> {
+                menu.addMenuClickHandler(i + 1, (p1, slot, item1, a) -> {
                     open(p1, orbiter, true);
                     return false;
                 });

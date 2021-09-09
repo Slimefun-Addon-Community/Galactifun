@@ -32,7 +32,9 @@ import org.bukkit.projectiles.ProjectileSource;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
-import me.mrCookieSlime.Slimefun.cscorelib2.data.PersistentDataAPI;
+import io.github.mooy1.infinitylib.common.Events;
+import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 public final class AlienManager implements Listener {
 
@@ -43,11 +45,11 @@ public final class AlienManager implements Listener {
     private final Map<String, Alien<?>> aliens = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
-        galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(this::tick, galactifun.getConfig().getInt("aliens.tick-interval", 1, 20));
+        Events.registerListener(this);
+        Scheduler.repeat(galactifun.getConfig().getInt("aliens.tick-interval", 1, 20), this::tick);
 
-        this.key = Galactifun.instance().getKey("alien");
-        this.bossKey = Galactifun.instance().getKey("boss_alien");
+        this.key = Galactifun.createKey("alien");
+        this.bossKey = Galactifun.createKey("boss_alien");
     }
 
     public void register(Alien<?> alien) {

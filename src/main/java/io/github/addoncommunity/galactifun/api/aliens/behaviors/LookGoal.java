@@ -17,7 +17,7 @@ public final class LookGoal<T extends Mob> extends AlienBehavior<T> {
     private int time = 0;
 
     public LookGoal(@Nonnull Class<T> entityClass, @Nonnull T mob) {
-        super(entityClass, Galactifun.instance().getKey("look"), mob);
+        super(entityClass, Galactifun.createKey("look"), mob);
     }
 
     @Override

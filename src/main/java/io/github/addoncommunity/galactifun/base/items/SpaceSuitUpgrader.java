@@ -9,17 +9,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 public final class SpaceSuitUpgrader extends AContainer {
 
-    public SpaceSuitUpgrader(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SpaceSuitUpgrader(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 

@@ -19,8 +19,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
 
 /**
  * Utilities
@@ -34,7 +34,7 @@ public final class Util {
     public static final double KM_PER_LY = 9_700_000_000D;
     public static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
     public static final Pattern SPACE_PATTERN = Pattern.compile(" ");
-    public static final BlockFace[] SURROUNDING_FACES = {
+    public static final BlockFace[] SURROUNDING_FACES = new BlockFace[] {
             BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
             BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
@@ -46,6 +46,8 @@ public final class Util {
 
     static {
         IMPERMEABLE_BLOCKS.addAll(SlimefunTag.GLASS_BLOCKS.getValues());
+        IMPERMEABLE_BLOCKS.addAll(SlimefunTag.TERRACOTTA.getValues());
+        IMPERMEABLE_BLOCKS.addAll(SlimefunTag.UNBREAKABLE_MATERIALS.getValues());
         IMPERMEABLE_BLOCKS.addAll(Arrays.asList(
                 Material.IRON_DOOR,
                 Material.IRON_TRAPDOOR,
@@ -53,10 +55,13 @@ public final class Util {
                 Material.IRON_BLOCK,
                 Material.GOLD_BLOCK,
                 Material.DIAMOND_BLOCK,
-                Material.NETHERITE_BLOCK
+                Material.NETHERITE_BLOCK,
+                Material.SEA_LANTERN,
+                Material.QUARTZ_BLOCK,
+                Material.SMOOTH_QUARTZ
         ));
         for (Material material : Material.values()) {
-            if (material.name().contains("WAXED")) {
+            if (material.name().startsWith("WAXED") || material.name().endsWith("CONCRETE")) {
                 IMPERMEABLE_BLOCKS.add(material);
             }
         }

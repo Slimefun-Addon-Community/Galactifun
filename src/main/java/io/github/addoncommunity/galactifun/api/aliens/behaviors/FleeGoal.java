@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.destroystokyo.paper.entity.Pathfinder;
 import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.common.Events;
 
 /**
  * Flees if attacked in the last {@code fleeTicks} ticks
@@ -25,11 +26,11 @@ public final class FleeGoal<T extends Mob> extends AlienBehavior<T> implements L
     private int ticks = 0;
 
     public FleeGoal(@Nonnull Class<T> entityClass, @Nonnull T mob, int fleeTicks) {
-        super(entityClass, Galactifun.instance().getKey("flee"), mob);
+        super(entityClass, Galactifun.createKey("flee"), mob);
         this.fleeTicks = fleeTicks;
 
         // Todo dont register a new listener for every alien, move to alien manager
-        Galactifun.instance().registerListener(this);
+        Events.registerListener(this);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

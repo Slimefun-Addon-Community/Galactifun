@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -18,6 +20,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Tag;
 import org.bukkit.World;
@@ -29,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -48,15 +52,20 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
+import io.github.mooy1.infinitylib.common.Events;
+import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
 
 public final class WorldManager implements Listener {
+
+    private static final NamespacedKey PLACED = Galactifun.createKey("placed");
 
     @Getter
     private final int maxAliensPerPlayer;
@@ -71,9 +80,9 @@ public final class WorldManager implements Listener {
     public WorldManager(Galactifun galactifun) {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
 
-        galactifun.registerListener(this);
-        galactifun.scheduleRepeatingSync(() -> this.alienWorlds.values().forEach(AlienWorld::tickWorld), 100);
-        galactifun.scheduleRepeatingSync(this::tickOxygen, 20);
+        Events.registerListener(this);
+        Scheduler.repeat(100, () -> this.alienWorlds.values().forEach(AlienWorld::tickWorld));
+        Scheduler.repeat(20, this::tickOxygen);
 
         File configFile = new File("plugins/Galactifun", "worlds.yml");
         this.config = new YamlConfiguration();
@@ -90,7 +99,7 @@ public final class WorldManager implements Listener {
         }
 
         // Save the config after startup
-        galactifun.runSync(() -> {
+        Scheduler.run(() -> {
             try {
                 this.config.options().copyDefaults(true);
                 this.config.save(configFile);
@@ -215,9 +224,9 @@ public final class WorldManager implements Listener {
             ProtectionManager manager = Galactifun.protectionManager();
             Location l = block.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
-                Galactifun.instance().runSync(() -> block.setType(Material.ICE));
+                Scheduler.run(() -> block.setType(Material.ICE));
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
-                Galactifun.instance().runSync(block::breakNaturally);
+                Scheduler.run(block::breakNaturally);
             } else {
                 int attempts = world.atmosphere().growthAttempts();
                 if (attempts != 0 && SlimefunTag.CROPS.isTagged(block.getType())) {
@@ -239,8 +248,21 @@ public final class WorldManager implements Listener {
         if (world != null) {
             SlimefunItemStack item = world.getMappedItem(b);
             if (item != null) {
-                Location l = b.getLocation();
-                if (!BlockStorage.hasBlockInfo(l)) {
+                BlockPosition pos = new BlockPosition(b);
+                Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
+                        PLACED,
+                        PersistentBlockPositions.INSTANCE,
+                        new HashSet<>()
+                );
+                if (placed.contains(pos)) {
+                    placed.remove(pos);
+                    b.getChunk().getPersistentDataContainer().set(
+                            PLACED,
+                            PersistentBlockPositions.INSTANCE,
+                            placed
+                    );
+                } else {
+                    Location l = b.getLocation();
                     e.setDropItems(false);
                     w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
                 }
@@ -250,6 +272,7 @@ public final class WorldManager implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private void onSleep(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player p = e.getPlayer();
         PlanetaryWorld world = this.getWorld(p.getWorld());
         if (world == null || world.atmosphere().environment() == World.Environment.NORMAL) return;
@@ -266,7 +289,17 @@ public final class WorldManager implements Listener {
         Block b = e.getBlock();
         AlienWorld world = this.alienWorlds.get(b.getWorld());
         if (world != null && world.getMappedItem(b) != null) {
-            BlockStorage.addBlockInfo(b, "placed", "true");
+            Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
+                    PLACED,
+                    PersistentBlockPositions.INSTANCE,
+                    new HashSet<>()
+            );
+            placed.add(new BlockPosition(b));
+            b.getChunk().getPersistentDataContainer().set(
+                    PLACED,
+                    PersistentBlockPositions.INSTANCE,
+                    placed
+            );
         }
     }
 

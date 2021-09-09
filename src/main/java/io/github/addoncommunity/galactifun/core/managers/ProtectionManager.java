@@ -15,7 +15,7 @@ import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 
 public final class ProtectionManager {
 

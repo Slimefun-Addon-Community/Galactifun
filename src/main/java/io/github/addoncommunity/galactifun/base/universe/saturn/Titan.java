@@ -25,6 +25,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.populators.OrePopulator;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 
 /**
  * Class for the Saturnian moon Titan
@@ -33,7 +35,7 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
  */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
-    private final Set<Biome> forests = EnumSet.of(
+    private static final Set<Biome> forests = EnumSet.of(
             Biome.FOREST,
             Biome.BIRCH_FOREST,
             Biome.TALL_BIRCH_FOREST,
@@ -50,6 +52,53 @@ public final class Titan extends AlienWorld {
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+    }
+
+    /**
+     * Replaces river with the closest biome it finds
+     */
+    private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
+        int dev = 1;
+        Biome biome = grid.getBiome(x, height, z);
+        while (dev < 16) {
+            if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x - dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            } else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x + dev, height, z);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            } else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z - dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            } else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
+                biome = grid.getBiome(x, height, z + dev);
+                for (int y = 0; y < 256; y++) {
+                    grid.setBiome(x, y, z, biome);
+                }
+                return biome;
+            }
+            dev++;
+        }
+        return biome;
+    }
+
+    private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
+        for (int y = height; y > 0; y--) {
+            if (random.nextBoolean()) {
+                chunk.setBlock(x, y, z, Material.STONE);
+            } else {
+                chunk.setBlock(x, y, z, Material.COAL_ORE);
+            }
+        }
     }
 
     @Override
@@ -128,53 +177,6 @@ public final class Titan extends AlienWorld {
         }
     }
 
-    /**
-     * Replaces river with the closest biome it finds
-     */
-    private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
-        int dev = 1;
-        Biome biome = grid.getBiome(x, height, z);
-        while (dev < 16) {
-            if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x - dev, height, z);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x + dev, height, z);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x, height, z - dev);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x, height, z + dev);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            }
-            dev++;
-        }
-        return biome;
-    }
-
-    private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
-        for (int y = height; y > 0; y--) {
-            if (random.nextBoolean()) {
-                chunk.setBlock(x, y, z, Material.STONE);
-            } else {
-                chunk.setBlock(x, y, z, Material.COAL_ORE);
-            }
-        }
-    }
-
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         // TODO add more vegetation
@@ -182,15 +184,15 @@ public final class Titan extends AlienWorld {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
                 int amount = random.nextInt(2) + 1;
-                for (int i = 1; i < amount; i++) {
+                for (int i = 0; i < amount; i++) {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    if (Titan.this.forests.contains(b.getBiome())) {
-                        if (random.nextBoolean()) {
-                            world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                    if (forests.contains(b.getBiome())) {
+                        if (b.getType() == Material.WARPED_NYLIUM) {
+                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                         } else {
-                            world.generateTree(b.getLocation(), TreeType.CRIMSON_FUNGUS);
+                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.CRIMSON_FUNGUS);
                         }
                     }
                 }
@@ -205,11 +207,22 @@ public final class Titan extends AlienWorld {
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
                     if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
-                        world.generateTree(b.getLocation(), TreeType.WARPED_FUNGUS);
+                        world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                     }
                 }
             }
         });
+
+        populators.add(new OrePopulator(
+                1,
+                50,
+                1,
+                40,
+                2,
+                6,
+                BaseMats.LASERITE_ORE,
+                Material.STONE, Material.COAL_ORE
+        ));
     }
 
 }

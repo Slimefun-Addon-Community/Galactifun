@@ -23,23 +23,23 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.mooy1.infinitylib.presets.MenuPreset;
+import io.github.mooy1.infinitylib.common.Events;
+import io.github.mooy1.infinitylib.machines.MenuBlock;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
@@ -97,10 +97,10 @@ public final class StargateController extends SlimefunItem implements Listener {
         PORTAL_POSITIONS = portalPositions.toArray(new ComponentPosition[0]);
     }
 
-    public StargateController(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public StargateController(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        Galactifun.instance().registerListener(this);
+        Events.registerListener(this);
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(b -> onUse(e, e.getPlayer(), b)));
 
@@ -194,7 +194,7 @@ public final class StargateController extends SlimefunItem implements Listener {
     private ChestMenu getMenu(@Nonnull Block b) {
         ChestMenu menu = new ChestMenu(this.getItemName());
         for (int i : BACKGROUND) {
-            menu.addItem(i, MenuPreset.BACKGROUND, ChestMenuUtils.getEmptyClickHandler());
+            menu.addItem(i, MenuBlock.BACKGROUND_ITEM, ChestMenuUtils.getEmptyClickHandler());
         }
 
         Location l = b.getLocation();
@@ -216,7 +216,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         destination = destination == null ? "" : destination;
 
         String temp = address;
-        menu.addItem(ADDRESS_SLOT, new CustomItem(
+        menu.addItem(ADDRESS_SLOT, new CustomItemStack(
                 Material.BOOK,
                 "&fAddress: " + address,
                 "&7Click to send the address to chat"
@@ -226,7 +226,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return false;
         });
 
-        menu.addItem(DEACTIVATE_SLOT, new CustomItem(
+        menu.addItem(DEACTIVATE_SLOT, new CustomItemStack(
                 Material.BARRIER,
                 "&fClick to Deactivate the Stargate"
         ), (p, i, s, c) -> {
@@ -241,7 +241,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return false;
         });
 
-        menu.addItem(DESTINATION_SLOT, new CustomItem(
+        menu.addItem(DESTINATION_SLOT, new CustomItemStack(
                 Material.RAIL,
                 "&fClick to Set Destination",
                 "&7Current Destination: " + destination
@@ -259,7 +259,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         Location dest;
         worldLoop:
         {
-            for (BlockStorage storage : SlimefunPlugin.getRegistry().getWorlds().values()) {
+            for (BlockStorage storage : Slimefun.getRegistry().getWorlds().values()) {
                 for (Map.Entry<Location, Config> configEntry : storage.getRawStorage().entrySet()) {
                     String bAddress = configEntry.getValue().getString("gfsgAddress");
                     if (bAddress != null && bAddress.equals(destination)) {

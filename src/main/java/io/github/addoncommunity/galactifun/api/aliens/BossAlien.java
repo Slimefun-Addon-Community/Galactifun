@@ -115,9 +115,21 @@ public abstract class BossAlien<T extends Mob> extends Alien<T> {
             for (Player player : mob.getWorld().getPlayers()) {
                 double distSquared = l.distanceSquared(player.getLocation());
 
-                if (distSquared <= BOSS_BAR_DISTANCE_SQUARED && !players.contains(player)) {
-                    bossbar.addPlayer(player);
+                if (distSquared <= BOSS_BAR_DISTANCE_SQUARED) {
+                    /*
+                    cannot merge nested if, because if players contains the player,
+                    the player is removed, causing a flickering of the bossbar
+                     */
+                    if (!players.contains(player)) {
+                        bossbar.addPlayer(player);
+                    }
                 } else {
+                    bossbar.removePlayer(player);
+                }
+            }
+
+            for (Player player : players) {
+                if (!player.getWorld().equals(mob.getWorld())) {
                     bossbar.removePlayer(player);
                 }
             }

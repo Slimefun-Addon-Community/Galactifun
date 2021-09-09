@@ -8,40 +8,39 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 
-public final class CircuitPress extends AContainer {
+public final class DiamondAnvil extends AContainer {
 
     private static final List<MachineRecipe> RECIPES = new ArrayList<>();
     public static final RecipeType TYPE = new RecipeType(
-            new NamespacedKey(Galactifun.instance(), BaseItems.CIRCUIT_PRESS.getItemId().toLowerCase(Locale.ROOT)),
-            BaseItems.CIRCUIT_PRESS,
-            (stacks, itemStack) -> RECIPES.add(new MachineRecipe(10, Arrays.copyOf(stacks, 2), new ItemStack[] { itemStack }))
+            Galactifun.createKey(BaseItems.DIAMOND_ANVIL.getItemId().toLowerCase(Locale.ROOT)),
+            BaseItems.DIAMOND_ANVIL,
+            (stacks, itemStack) -> RECIPES.add(new MachineRecipe(30, Arrays.copyOf(stacks, 2), new ItemStack[] { itemStack }))
     );
 
-    public CircuitPress(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
-        super(category, item, type, recipe);
+    public DiamondAnvil(SlimefunItemStack item, ItemStack[] recipe) {
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         RECIPES.forEach(this::registerRecipe);
     }
 
     @Override
     public ItemStack getProgressBar() {
-        return new ItemStack(Material.PISTON);
+        return new ItemStack(Material.ANVIL);
     }
 
     @Nonnull
     @Override
     public String getMachineIdentifier() {
-        return "CIRCUIT_PRESS";
+        return BaseItems.DIAMOND_ANVIL.getItemId().toLowerCase(Locale.ROOT);
     }
 
 }

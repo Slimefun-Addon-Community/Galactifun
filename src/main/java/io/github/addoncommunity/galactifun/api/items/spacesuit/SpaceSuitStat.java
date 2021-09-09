@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @EqualsAndHashCode
 @RequiredArgsConstructor
+@SuppressWarnings("ClassCanBeRecord")
 public final class SpaceSuitStat {
 
     public static final SpaceSuitStat HEAT_RESISTANCE = new SpaceSuitStat("&cHeat Resistance");

@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.mooy1.infinitylib.common.Scheduler;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ParametersAreNonnullByDefault
@@ -38,7 +38,7 @@ public final class SpaceSuitProfile {
     }
 
     static {
-        Galactifun.instance().scheduleRepeatingSync(SpaceSuitProfile::updateAll, 200);
+        Scheduler.repeat(200, SpaceSuitProfile::updateAll);
     }
 
     private static void updateAll() {

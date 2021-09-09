@@ -12,11 +12,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 
 /**
- * Populator utility for simple ore population
+ * Populator utility for simple ore population. To populate Slimefun ores use this +
+ * {@link AlienWorld#addBlockMapping(Material, SlimefunItemStack)}
  *
  * @author GallowsDove
  * @author Mooy1
@@ -30,25 +31,16 @@ public class OrePopulator extends BlockPopulator {
     private final int minSize;
     private final int maxSize;
     private final Material ore;
-    private final String id;
-    private final Set<Material> source;
+    private final Set<Material> replaceable;
 
 
     public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
-                        @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... source) {
-        this.attempts = attempts;
-        this.chance = chance;
-        this.miny = miny;
-        this.maxy = maxy;
-        this.minSize = minSize;
-        this.maxSize = maxSize;
-        this.ore = slimefunItem.getType();
-        this.id = slimefunItem.getItemId();
-        this.source = EnumSet.of(source[0], Arrays.copyOfRange(source, 1, source.length));
+                        @Nonnull SlimefunItemStack slimefunItem, @Nonnull Material... replaceable) {
+        this(attempts, chance, miny, maxy, minSize, maxSize, slimefunItem.getType(), replaceable);
     }
 
     public OrePopulator(int attempts, int chance, int miny, int maxy, int minSize, int maxSize,
-                        @Nonnull Material ore, @Nonnull Material... source) {
+                        @Nonnull Material ore, @Nonnull Material... replaceable) {
         this.attempts = attempts;
         this.chance = chance;
         this.miny = miny;
@@ -56,8 +48,7 @@ public class OrePopulator extends BlockPopulator {
         this.minSize = minSize;
         this.maxSize = maxSize;
         this.ore = ore;
-        this.id = null;
-        this.source = EnumSet.of(source[0], Arrays.copyOfRange(source, 1, source.length));
+        this.replaceable = EnumSet.of(replaceable[0], Arrays.copyOfRange(replaceable, 1, replaceable.length));
     }
 
     @Override
@@ -69,12 +60,8 @@ public class OrePopulator extends BlockPopulator {
                 int z = random.nextInt(16);
 
                 int length = 0;
-                while (length < this.maxSize && this.source.contains(chunk.getBlock(x, y, z).getType())) {
+                while (length < this.maxSize && this.replaceable.contains(chunk.getBlock(x, y, z).getType())) {
                     chunk.getBlock(x, y, z).setType(this.ore, false);
-
-                    if (this.id != null) {
-                        BlockStorage.store(chunk.getBlock(x, y, z), this.id);
-                    }
 
                     if ((length < this.minSize) || (random.nextInt(100) < 50)) {
                         switch (random.nextInt(6)) {

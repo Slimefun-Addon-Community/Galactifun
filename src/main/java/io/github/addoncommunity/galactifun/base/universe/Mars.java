@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
@@ -21,8 +24,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.api.worlds.populators.BoulderPopulator;
-import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.GenUtils;
 
 /**
@@ -75,7 +76,21 @@ public final class Mars extends SimpleAlienWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new BoulderPopulator(1, 2, BaseMats.FALLEN_METEOR, Material.RED_SAND));
+        populators.add(new BlockPopulator() {
+            @Override
+            @ParametersAreNonnullByDefault
+            public void populate(World world, Random random, Chunk source) {
+
+                if (random.nextInt(100) < 1) {
+
+                    int x = random.nextInt(16);
+                    int z = random.nextInt(16);
+
+                    Block b = world.getHighestBlockAt((source.getX() << 4) + x, (source.getZ() << 4) + z);
+                    b.getRelative(BlockFace.UP).setType(Material.ANCIENT_DEBRIS);
+                }
+            }
+        });
         populators.add(new BlockPopulator() {
             @Override
             public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
@@ -84,7 +99,7 @@ public final class Mars extends SimpleAlienWorld {
 
                     int x = random.nextInt(16 - dist * 2) + dist;
                     int z = random.nextInt(16 - dist * 2) + dist;
-                    int y = random.nextInt(world.getHighestBlockAt(x, z).getY()) + 1;
+                    int y = random.nextInt(30);
 
                     GenUtils.generateSquare(
                             source.getBlock(x, y, z).getLocation(),

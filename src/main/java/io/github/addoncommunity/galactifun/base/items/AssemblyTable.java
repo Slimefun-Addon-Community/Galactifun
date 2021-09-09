@@ -1,51 +1,38 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.mooy1.infinitylib.items.StackUtils;
-import io.github.mooy1.infinitylib.presets.MenuPreset;
-import io.github.mooy1.infinitylib.recipes.RecipeMap;
-import io.github.mooy1.infinitylib.recipes.RecipeOutput;
-import io.github.mooy1.infinitylib.recipes.ShapedRecipe;
+import io.github.addoncommunity.galactifun.core.CoreItemGroup;
+import io.github.mooy1.infinitylib.machines.CraftingBlock;
+import io.github.mooy1.infinitylib.machines.MachineLayout;
+import io.github.mooy1.infinitylib.machines.MachineRecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 
-/**
- * Class for the assembly table. Based off of InfinityExpansion's Infinity Workbench
- *
- * @author Mooy1
- * @author Seggan
- */
-public final class AssemblyTable extends AbstractEnergyCrafter {
+@ParametersAreNonnullByDefault
+public final class AssemblyTable extends CraftingBlock implements EnergyNetComponent {
 
-    private static final RecipeMap<ItemStack> RECIPES = new RecipeMap<>(ShapedRecipe::new);
-    public static final LinkedHashMap<String, Pair<SlimefunItemStack, ItemStack[]>> ITEMS = new LinkedHashMap<>();
-
-    public static final RecipeType TYPE = new RecipeType(Galactifun.instance().getKey("assembly_table"),
-            BaseItems.ASSEMBLY_TABLE, (stacks, stack) -> {
-        SlimefunItemStack item = (SlimefunItemStack) stack;
-        RECIPES.put(stacks, item);
-        ITEMS.put(item.getItemId(), new Pair<>(item, stacks));
-    });
-
-    private static final int ENERGY = 2048;
-    private static final int[] INPUT_SLOTS = {
+    public static final int[] INPUT_SLOTS = {
             0, 1, 2, 3, 4, 5,
             9, 10, 11, 12, 13, 14,
             18, 19, 20, 21, 22, 23,
@@ -53,78 +40,81 @@ public final class AssemblyTable extends AbstractEnergyCrafter {
             36, 37, 38, 39, 40, 41,
             45, 46, 47, 48, 49, 50
     };
-    private static final int[] OUTPUT_SLOTS = { MenuPreset.OUTPUT + 27 };
-    private static final int STATUS_SLOT = MenuPreset.OUTPUT;
-    private static final int[] STATUS_BORDER = { 6, 7, 8, 15, 17, 24, 25, 26 };
+    private static final int RECIPE_SLOT = 7;
+    public static final MachineRecipeType TYPE = new MachineRecipeType("assembly_table",
+            new CustomItemStack(BaseItems.ASSEMBLY_TABLE, BaseItems.ASSEMBLY_TABLE.getDisplayName(),
+                    "", "&cUse the assemby recipes category to see the correct recipe!"));
+    public static final Map<ItemStack, ItemStack[]> ITEMS = new HashMap<>();
 
-    public AssemblyTable(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
-        super(category, item, type, recipe, ENERGY, STATUS_SLOT);
+    private final int energy;
+
+    public AssemblyTable(SlimefunItemStack item, ItemStack[] recipe, int energy) {
+        super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        addRecipesFrom(TYPE);
+        layout(new MachineLayout()
+                .inputSlots(INPUT_SLOTS)
+                .outputSlots(new int[] { 43 })
+                .statusSlot(16)
+                .inputBorder(new int[0])
+                .outputBorder(new int[] {
+                        33, 34, 35,
+                        42, 44,
+                        51, 52, 53
+                }).background(new int[] {
+                        6, 8, 15, 17, 24, 25, 26
+                })
+        );
+        this.energy = energy;
+        TYPE.sendRecipesTo((ing, res) -> ITEMS.put(res, ing));
     }
 
     @Override
-    public void setupMenu(@Nonnull BlockMenuPreset blockMenuPreset) {
-        for (int i : MenuPreset.OUTPUT_BORDER) {
-            blockMenuPreset.addItem(i + 27, MenuPreset.OUTPUT_ITEM, ChestMenuUtils.getEmptyClickHandler());
-        }
-        for (int i : STATUS_BORDER) {
-            blockMenuPreset.addItem(i, MenuPreset.STATUS_ITEM, ChestMenuUtils.getEmptyClickHandler());
-        }
-        blockMenuPreset.addItem(STATUS_SLOT, MenuPreset.INVALID_INPUT, ChestMenuUtils.getEmptyClickHandler());
+    protected void setup(BlockMenuPreset preset) {
+        super.setup(preset);
+        preset.addItem(RECIPE_SLOT, new CustomItemStack(Material.BOOK, "&6Recipes"), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override
-    protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu inv, @Nonnull Location l) {
-        inv.dropItems(l, OUTPUT_SLOTS);
-        inv.dropItems(l, INPUT_SLOTS);
-    }
-
-    @Override
-    public void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
-        menu.addMenuClickHandler(STATUS_SLOT, (p, slot, item, action) -> {
-            craft(b, menu, p);
+    protected void onNewInstance(BlockMenu menu, Block b) {
+        super.onNewInstance(menu, b);
+        menu.addMenuClickHandler(RECIPE_SLOT, (p, slot, item, action) -> {
+            Optional<PlayerProfile> profile = PlayerProfile.find(p);
+            if (profile.isEmpty()) {
+                PlayerProfile.request(p);
+            }
+            CoreItemGroup.ASSEMBLY_CATEGORY.open(p, PlayerProfile.find(p).get(), SlimefunGuide.getDefaultMode());
             return false;
         });
     }
 
-    private void craft(@Nonnull Block b, @Nonnull BlockMenu inv, @Nonnull Player p) {
-        int charge = getCharge(b.getLocation());
-
-        if (charge < ENERGY) {
-            p.sendMessage(new String[] {
-                    ChatColor.RED + "Not enough energy!",
-                    ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + ENERGY + " J"
-            });
-            return;
+    @Override
+    protected void craft(Block b, BlockMenu menu, Player p) {
+        int charge = getCharge(menu.getLocation());
+        if (charge < this.energy) {
+            p.sendMessage(
+                    ChatColor.RED + "Not enough energy!\n" +
+                    ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + this.energy + " J"
+            );
         }
-
-        RecipeOutput<ItemStack> output = RECIPES.get(StackUtils.arrayFrom(inv, INPUT_SLOTS));
-
-        if (output == null) {
-            p.sendMessage(ChatColor.RED + "Invalid Recipe!");
-            return;
+        else {
+            super.craft(b, menu, p);
         }
-
-        if (!inv.fits(output.getOutput(), OUTPUT_SLOTS)) {
-            p.sendMessage(ChatColor.GOLD + "Not enough room!");
-            return;
-        }
-
-        output.consumeInput();
-        p.sendMessage(ChatColor.GREEN + "Successfully crafted: " + StackUtils.getDisplayName(output.getOutput()));
-        inv.pushItem(output.getOutput().clone(), OUTPUT_SLOTS);
-        setCharge(b.getLocation(), 0);
     }
 
     @Override
-    public void update(@Nonnull BlockMenu inv) {
-        ItemStack output = RECIPES.getNoConsume(StackUtils.arrayFrom(inv, INPUT_SLOTS));
-        if (output == null) {
-            inv.replaceExistingItem(STATUS_SLOT, MenuPreset.INVALID_RECIPE);
-        } else { //correct recipe
-            output = output.clone();
-            StackUtils.addLore(output, "", "&a-------------------", "&a\u21E8 Click to craft", "&a-------------------");
-            inv.replaceExistingItem(STATUS_SLOT, output);
-        }
+    protected void onSuccessfulCraft(BlockMenu menu, ItemStack toOutput) {
+        setCharge(menu.getLocation(), 0);
+    }
+
+    @Nonnull
+    @Override
+    public EnergyNetComponentType getEnergyComponentType() {
+        return EnergyNetComponentType.CONSUMER;
+    }
+
+    @Override
+    public int getCapacity() {
+        return this.energy;
     }
 
 }

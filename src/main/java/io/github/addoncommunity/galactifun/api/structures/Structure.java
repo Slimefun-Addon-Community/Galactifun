@@ -18,7 +18,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.thebusybiscuit.slimefun4.utils.PatternUtils;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.CommonPatterns;
 
 /**
  * A structure that can be pasted
@@ -79,8 +79,8 @@ public final class Structure {
     @Nonnull
     public static Structure loadFromString(String string) {
         try {
-            String[] split = PatternUtils.SEMICOLON.split(string, -1);
-            String[] dims = PatternUtils.COMMA.split(split[0]);
+            String[] split = CommonPatterns.SEMICOLON.split(string, -1);
+            String[] dims = CommonPatterns.COMMA.split(split[0]);
 
             Structure structure = new Structure(StructureRotation.valueOf(dims[0]),
                     Integer.parseInt(dims[1]),
@@ -94,7 +94,7 @@ public final class Structure {
                 if (block.length() == 0) {
                     return StructureBlock.AIR;
                 }
-                String[] blockSplit = PatternUtils.COMMA.split(block);
+                String[] blockSplit = CommonPatterns.COMMA.split(block);
                 return switch (blockSplit.length) {
                     case 1 -> StructureBlock.of(Material.valueOf(blockSplit[0]));
                     case 2 -> new RotatableBlock(Material.valueOf(blockSplit[0]), BlockFace.valueOf(blockSplit[1]));
