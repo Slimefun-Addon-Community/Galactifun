@@ -42,8 +42,11 @@ public class VolcanoPopulator extends BlockPopulator {
         }
 
         if (highestBlock.getY() >= this.minY) {
-            highestBlock.setType(this.belowLiquid);
             highestBlock.getRelative(BlockFace.UP).setType(this.liquid);
+            for (int i = 0; i < 7; i++) {
+                highestBlock.setType(this.belowLiquid, false);
+                highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+            }
         }
     }
 
