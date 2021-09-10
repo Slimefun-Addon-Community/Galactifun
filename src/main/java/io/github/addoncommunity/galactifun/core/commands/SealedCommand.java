@@ -25,7 +25,7 @@ public final class SealedCommand extends SubCommand {
         if (strings.length != 1) return;
 
         double time = System.nanoTime();
-        Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[1]));
+        Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[0]));
         if (filled.isPresent()) {
             p.sendMessage("Sealed");
         } else {
