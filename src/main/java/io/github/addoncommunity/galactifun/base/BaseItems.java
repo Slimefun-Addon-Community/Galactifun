@@ -327,7 +327,7 @@ public final class BaseItems {
             "&7Super Fan",
             "",
             "&7Place this next to a block that needs",
-            "7a sealed area to extend the range by 15%"
+            "&7a sealed area to extend the range by 15%"
     );
     public static final SlimefunItemStack AUTOMATIC_DOOR = new SlimefunItemStack(
             "AUTOMATIC_DOOR",
