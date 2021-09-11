@@ -204,7 +204,7 @@ public final class Rocket extends SlimefunItem {
             p.sendMessage(ChatColor.GOLD + "Verifying blast awesomeness...");
 
             Block destBlock = null;
-            for (int y = to.getMaxHeight(); y >= to.getMinHeight(); y--) {
+            for (int y = to.getMaxHeight(); y > to.getMinHeight(); y--) {
                 Block b = to.getBlockAt(x, y, z);
                 if (b.isSolid() && !BlockStorage.check(b, BaseItems.LANDING_HATCH.getItemId())) {
                     destBlock = b.getRelative(BlockFace.UP);
@@ -213,6 +213,7 @@ public final class Rocket extends SlimefunItem {
             }
 
             if (destBlock != null) {
+                destBlock.setType(Material.CHEST);
                 BlockState state = PaperLib.getBlockState(destBlock, false).getState();
                 if (state instanceof Chest chest) {
                     Inventory inv = chest.getInventory();
