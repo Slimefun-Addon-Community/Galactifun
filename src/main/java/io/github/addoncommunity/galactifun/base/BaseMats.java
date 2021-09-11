@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
@@ -437,7 +438,7 @@ public final class BaseMats {
     }
 
     private static void assembly(SlimefunItemStack item, ItemStack... recipe) {
-        //new SlimefunItem(CoreCategory.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.instance());
+        new SlimefunItem(CoreItemGroup.ITEMS, item, AssemblyTable.TYPE, recipe).register(Galactifun.instance());
     }
 
     private static void worldItem(SlimefunItemStack item, AlienWorld... worlds) {
