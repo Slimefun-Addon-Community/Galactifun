@@ -99,7 +99,7 @@ public final class Mars extends SimpleAlienWorld {
 
                     int x = random.nextInt(16 - dist * 2) + dist;
                     int z = random.nextInt(16 - dist * 2) + dist;
-                    int y = random.nextInt(30);
+                    int y = random.nextInt(30) + 1;
 
                     GenUtils.generateSquare(
                             source.getBlock(x, y, z).getLocation(),
