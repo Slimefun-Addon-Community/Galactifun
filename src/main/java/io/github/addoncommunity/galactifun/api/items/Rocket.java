@@ -9,7 +9,6 @@ import lombok.Getter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -212,33 +211,29 @@ public final class Rocket extends SlimefunItem {
                 }
             }
 
-            if (destBlock != null) {
-                destBlock.setType(Material.CHEST);
-                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
-                if (state instanceof Chest chest) {
-                    Inventory inv = chest.getInventory();
-                    inv.addItem(this.getItem().clone());
-
-                    SlimefunItem sfi = SlimefunItem.getById(fuelType);
-                    ItemStack fuel = sfi == null ? new ItemStack(Material.valueOf(fuelType)) : sfi.getItem();
-                    fuel = fuel.clone();
-                    fuel.setAmount(fuelLeft);
-                    inv.addItem(fuel);
-                }
-                state.update();
+            if (destBlock == null) {
+                destBlock = to.getBlockAt(x, to.getMaxHeight() - 4, z);
             }
+
+            destBlock.setType(Material.CHEST);
+            BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+            if (state instanceof Chest chest) {
+                Inventory inv = chest.getInventory();
+                inv.addItem(this.getItem().clone());
+
+                SlimefunItem sfi = SlimefunItem.getById(fuelType);
+                ItemStack fuel = sfi == null ? new ItemStack(Material.valueOf(fuelType)) : sfi.getItem();
+                fuel = fuel.clone();
+                fuel.setAmount(fuelLeft);
+                inv.addItem(fuel);
+            }
+            state.update();
 
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
                     if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
-                        Location loc;
-                        if (destBlock == null) {
-                            loc = new Location(to, x, to.getMinHeight() - 3, z);
-                        } else {
-                            loc = destBlock.getLocation().add(0, 1, 0);
-                        }
 
-                        PaperLib.teleportAsync(entity, loc);
+                        PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
 
                         if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
                             KnowledgeLevel.BASIC.set(p, worldTo);
