@@ -27,10 +27,6 @@ public final class CircuitPress extends AContainer {
     }
 
     @Override
-    protected void registerDefaultRecipes() {
-    }
-
-    @Override
     public ItemStack getProgressBar() {
         return new ItemStack(Material.PISTON);
     }
