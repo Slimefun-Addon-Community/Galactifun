@@ -1,4 +1,4 @@
-package io.github.addoncommunity.galactifun.base.universe;
+package io.github.addoncommunity.galactifun.base.universe.earth;
 
 import java.util.Objects;
 

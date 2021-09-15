@@ -12,8 +12,11 @@ aliens:
   # How often aliens tick in Minecraft ticks- there are 20 ticks in 1 second
   tick-interval: 2
 
-  # maximum number of aliens per player per world
+  # Maximum number of aliens per player per world
   max-per-player: 8
+
+  # Chance for a Leech to eat an item
+  leech-eat-chance: 50
 
 rockets:
   

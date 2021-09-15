@@ -25,7 +25,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
-import io.github.addoncommunity.galactifun.base.universe.Earth;
+import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;

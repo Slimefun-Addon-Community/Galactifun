@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.base.aliens;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,6 +19,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.mooy1.infinitylib.common.PersistentType;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
  * Class for the leech, an alien of Titan. They can steal your items when attacking
@@ -38,9 +39,12 @@ public final class Leech extends Alien<Silverfish> {
     @Override
     public void onAttack(@Nonnull EntityDamageByEntityEvent e) {
 
-        //  random item
+        if (ThreadLocalRandom.current().nextDouble(100) <
+                Galactifun.instance().getConfig().getDouble("aliens.leech-eat-chance", 0, 100)) return;
+
+        // random item
         PlayerInventory inv = ((Player) e.getEntity()).getInventory();
-        List<Integer> slots = new ArrayList<>();
+        IntList slots = new IntArrayList();
 
         ItemStack[] contents = inv.getContents();
         for (int i = 0; i < contents.length; i++) {
@@ -53,7 +57,7 @@ public final class Leech extends Alien<Silverfish> {
             return;
         }
 
-        int slot = slots.get(ThreadLocalRandom.current().nextInt(slots.size()));
+        int slot = slots.getInt(ThreadLocalRandom.current().nextInt(slots.size()));
 
         ItemStack item = contents[slot];
 
