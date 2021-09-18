@@ -1,7 +1,5 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -44,7 +42,6 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
     public static final MachineRecipeType TYPE = new MachineRecipeType("assembly_table",
             new CustomItemStack(BaseItems.ASSEMBLY_TABLE, BaseItems.ASSEMBLY_TABLE.getDisplayName(),
                     "", "&cUse the assemby recipes category to see the correct recipe!"));
-    public static final Map<ItemStack, ItemStack[]> ITEMS = new HashMap<>();
 
     private final int energy;
 
@@ -65,7 +62,6 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
                 })
         );
         this.energy = energy;
-        TYPE.sendRecipesTo((ing, res) -> ITEMS.put(res, ing));
     }
 
     @Override

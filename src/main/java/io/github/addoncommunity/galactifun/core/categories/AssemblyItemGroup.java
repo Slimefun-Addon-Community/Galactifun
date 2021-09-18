@@ -68,10 +68,10 @@ public final class AssemblyItemGroup extends FlexItemGroup {
         });
 
         int i = 9;
-        for (Map.Entry<ItemStack, ItemStack[]> item : AssemblyTable.ITEMS.entrySet()) {
-            if (item.getKey() instanceof SlimefunItemStack slimefunItemStack) {
-                Map.Entry<SlimefunItemStack, ItemStack[]> newEntry = new AbstractMap.SimpleImmutableEntry<>(slimefunItemStack, item.getValue());
-                menu.addItem(i++, item.getKey(), (p1, slot, item1, action) -> {
+        for (Map.Entry<ItemStack[], ItemStack> item : AssemblyTable.TYPE.recipes().entrySet()) {
+            if (item.getValue() instanceof SlimefunItemStack slimefunItemStack) {
+                Map.Entry<SlimefunItemStack, ItemStack[]> newEntry = new AbstractMap.SimpleImmutableEntry<>(slimefunItemStack, item.getKey());
+                menu.addItem(i++, item.getValue(), (p1, slot, item1, action) -> {
                     if (layout == SlimefunGuideMode.CHEAT_MODE) {
                         p1.getInventory().addItem(item1.clone());
                     } else {
