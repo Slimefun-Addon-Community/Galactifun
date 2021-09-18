@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ public final class DiamondAnvil extends AContainer {
 
     public DiamondAnvil(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
-        TYPE.sendRecipesTo((ing, res) -> this.registerRecipe(2, ing, new ItemStack[] { res }));
+        TYPE.sendRecipesTo((ing, res) -> this.registerRecipe(10, Arrays.copyOf(ing, 2), new ItemStack[] { res }));
     }
 
     @Override

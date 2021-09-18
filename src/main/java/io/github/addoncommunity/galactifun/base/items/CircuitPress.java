@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ public final class CircuitPress extends AContainer {
 
     public CircuitPress(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
         super(category, item, type, recipe);
-        TYPE.sendRecipesTo((ing, res) -> this.registerRecipe(20, ing, new ItemStack[] { res }));
+        TYPE.sendRecipesTo((ing, res) -> this.registerRecipe(20, Arrays.copyOf(ing, 2), new ItemStack[] { res }));
     }
 
     @Override
