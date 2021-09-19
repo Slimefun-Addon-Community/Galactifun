@@ -123,11 +123,11 @@ public final class WorldSelector {
 
                     KnowledgeLevel.get(p, world).addLore(lore, world);
 
-                    if (!modifier.modifyItem(p, world, lore)) return;
-
-                    meta.lore(lore);
-                    item = item.clone();
-                    item.setItemMeta(meta);
+                    if (modifier.modifyItem(p, world, lore)) {
+                        meta.lore(lore);
+                        item = item.clone();
+                        item.setItemMeta(meta);
+                    }
                 }
             }
 
