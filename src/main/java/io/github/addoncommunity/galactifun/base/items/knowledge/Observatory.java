@@ -45,11 +45,10 @@ public final class Observatory extends MultiBlockMachine {
             return true;
         }, (pl, w) -> {
             pl.sendMessage(ChatColor.GREEN + "Discovering planet " + w.name());
-            PlanetaryWorld pw = (PlanetaryWorld) w;
             PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
             Scheduler.run(30 * 60 * 20, () -> {
                 PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
-                KnowledgeLevel.BASIC.set(pl, pw);
+                KnowledgeLevel.BASIC.set(pl, w);
             });
         }).open(p);
     }

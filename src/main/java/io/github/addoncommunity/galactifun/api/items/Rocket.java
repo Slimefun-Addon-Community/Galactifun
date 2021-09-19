@@ -140,29 +140,27 @@ public final class Rocket extends SlimefunItem {
             }
 
             return true;
-        }, (player, obj) -> {
-            if (obj instanceof PlanetaryWorld planetaryWorld) {
-                player.closeInventory();
-                int usedFuel = (int) Math.ceil((planetaryWorld.distanceTo(world) * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
-                player.sendMessage(ChatColor.YELLOW + "You are going to " + planetaryWorld.name() + " and will use " +
-                        usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
-                ChatUtils.awaitInput(player, (input) -> {
-                    if (input.equalsIgnoreCase("yes")) {
-                        p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
-                        ChatUtils.awaitInput(p, (response) -> {
-                            String trimmed = response.trim();
-                            if (Util.COORD_PATTERN.matcher(trimmed).matches()) {
-                                String[] split = Util.SPACE_PATTERN.split(trimmed);
-                                int x = Integer.parseInt(split[0]);
-                                int z = Integer.parseInt(split[1]);
-                                launch(player, b, planetaryWorld, fuel - usedFuel, fuelType, x, z);
-                            } else {
-                                p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
-                            }
-                        });
-                    }
-                });
-            }
+        }, (player, pw) -> {
+            player.closeInventory();
+            int usedFuel = (int) Math.ceil((pw.distanceTo(world) * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
+            player.sendMessage(ChatColor.YELLOW + "You are going to " + pw.name() + " and will use " +
+                    usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
+            ChatUtils.awaitInput(player, (input) -> {
+                if (input.equalsIgnoreCase("yes")) {
+                    p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456):");
+                    ChatUtils.awaitInput(p, (response) -> {
+                        String trimmed = response.trim();
+                        if (Util.COORD_PATTERN.matcher(trimmed).matches()) {
+                            String[] split = Util.SPACE_PATTERN.split(trimmed);
+                            int x = Integer.parseInt(split[0]);
+                            int z = Integer.parseInt(split[1]);
+                            launch(player, b, pw, fuel - usedFuel, fuelType, x, z);
+                        } else {
+                            p.sendMessage(ChatColor.RED + "Invalid coordinate format! Please use the format <x> <z>");
+                        }
+                    });
+                }
+            });
         }).open(p);
     }
 

@@ -97,11 +97,52 @@ public final class WorldSelector {
         PlanetaryWorld current = Galactifun.worldManager().getWorld(p.getWorld());
         boolean known = current != null;
 
+        int offset = 1;
+
+        if (object instanceof PlanetaryWorld world) {
+            ItemStack item = world.item();
+            offset++;
+
+            if (known) {
+                double distance = world.distanceTo(current);
+
+                // add distance from current
+                ItemMeta meta = item.getItemMeta();
+                List<Component> lore = meta.lore();
+                if (lore != null) {
+                    lore.remove(lore.size() - 1);
+
+                    if (distance > 0) {
+                        lore.add(Component.text("Distance: " + (distance < 1
+                                ? distance * Util.KM_PER_LY + " Kilometers"
+                                : distance + " Light Years")
+                        ).color(NamedTextColor.GRAY));
+                    } else {
+                        lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
+                    }
+
+                    KnowledgeLevel.get(p, world).addLore(lore, world);
+
+                    if (!modifier.modifyItem(p, world, lore)) return;
+
+                    meta.lore(lore);
+                    item = item.clone();
+                    item.setItemMeta(meta);
+                }
+            }
+
+            menu.addItem(1, item, (player, i, itemStack, clickAction) -> {
+                selectHandler.onSelect(player, world);
+                return false;
+            });
+        }
+
         // objects
         for (int i = 0; i < Math.min(MAX_OBJECTS_PER_PAGE, orbiters.size()); i++) {
             UniversalObject orbiter = orbiters.get(i);
-            if (orbiter instanceof PlanetaryWorld planetaryWorld) {
-                if (!planetaryWorld.enabled()) continue;
+            if (orbiter instanceof PlanetaryWorld planetaryWorld && !planetaryWorld.enabled()) {
+                offset--;
+                continue;
             }
 
             ItemStack item = orbiter.item();
@@ -136,14 +177,17 @@ public final class WorldSelector {
                 }
             }
 
-            menu.addItem(i + 1, item);
+            menu.addItem(i + offset, item);
             if (orbiter.orbiters().size() == 0) {
-                menu.addMenuClickHandler(i + 1, (clicker, i1, s, a) -> {
-                    selectHandler.onSelect(clicker, orbiter);
+                menu.addMenuClickHandler(i + offset, (clicker, i1, s, a) -> {
+                    // 99% true
+                    if (orbiter instanceof PlanetaryWorld planetaryWorld) {
+                        selectHandler.onSelect(clicker, planetaryWorld);
+                    }
                     return false;
                 });
             } else {
-                menu.addMenuClickHandler(i + 1, (p1, slot, item1, a) -> {
+                menu.addMenuClickHandler(i + offset, (p1, slot, item1, a) -> {
                     open(p1, orbiter, true);
                     return false;
                 });
@@ -163,7 +207,7 @@ public final class WorldSelector {
          * @param p the {@link Player} selecting the world
          * @param object the {@link UniversalObject} selected
          */
-        void onSelect(@Nonnull Player p, @Nonnull UniversalObject object);
+        void onSelect(@Nonnull Player p, @Nonnull PlanetaryWorld object);
 
     }
 
