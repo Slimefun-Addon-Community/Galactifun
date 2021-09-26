@@ -205,9 +205,9 @@ public final class WorldSelector {
          * Called when a player selects a world
          *
          * @param p the {@link Player} selecting the world
-         * @param object the {@link UniversalObject} selected
+         * @param world the {@link PlanetaryWorld} selected
          */
-        void onSelect(@Nonnull Player p, @Nonnull PlanetaryWorld object);
+        void onSelect(@Nonnull Player p, @Nonnull PlanetaryWorld world);
 
     }
 
