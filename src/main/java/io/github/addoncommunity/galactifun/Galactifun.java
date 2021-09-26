@@ -2,10 +2,17 @@ package io.github.addoncommunity.galactifun;
 
 import java.util.logging.Level;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.generator.ChunkGenerator;
 
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseAlien;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
@@ -100,6 +107,20 @@ public final class Galactifun extends AbstractAddon {
     public void load() {
         // Default to not logging world settings
         Bukkit.spigot().getConfig().set("world-settings.default.verbose", false);
+    }
+
+    @Nullable
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(@Nonnull String worldName, @Nullable String id) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) return null;
+
+        PlanetaryWorld planetaryWorld = this.worldManager.getWorld(world);
+        if (planetaryWorld instanceof AlienWorld) {
+            return planetaryWorld.world().getGenerator();
+        }
+
+        return null;
     }
 
 }
