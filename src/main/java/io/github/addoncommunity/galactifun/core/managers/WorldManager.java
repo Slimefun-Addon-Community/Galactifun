@@ -63,6 +63,8 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
+import org.bukkit.metadata.MetadataValue;
+
 public final class WorldManager implements Listener {
 
     private static final NamespacedKey PLACED = Galactifun.createKey("placed");
@@ -193,7 +195,15 @@ public final class WorldManager implements Listener {
             if (e.getTo().getWorld() != null) {
                 AlienWorld world = getAlienWorld(e.getTo().getWorld());
                 if (world != null) {
-                    e.setCancelled(true);
+                    boolean canTp = false;
+                    for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")){
+                        canTp = value.asBoolean();
+                    }
+                    if (canTp) {
+                        e.getPlayer().removeMetadata("CanTpAlienWorld", Galactifun.instance());
+                    } else {
+                        e.setCancelled(true);
+                    }
                 }
             }
         }
