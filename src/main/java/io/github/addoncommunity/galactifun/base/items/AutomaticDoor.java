@@ -113,7 +113,7 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                if (stack != null && stack.getType().isBlock() && stack.getType() != Material.CAKE) {
+                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
@@ -127,7 +127,6 @@ public final class AutomaticDoor extends MenuBlock {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
-                        if (bannedTypes.contains(next.getType())) break;
                         placedBlockNumber++;
 
                         next.setType(stack.getType());
