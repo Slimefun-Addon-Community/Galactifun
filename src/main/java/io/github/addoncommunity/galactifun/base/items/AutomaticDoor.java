@@ -1,6 +1,8 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -68,6 +70,12 @@ public final class AutomaticDoor extends MenuBlock {
                 Galactifun.instance().getConfig().getInt("other.auto-door-range", 2)
         );
 
+        // banned type
+        List<Material> bannedTypes = new ArrayList<>();
+        for (String s : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
+            bannedTypes.add(Material.valueOf(s));
+        }
+
         if (BSUtils.getStoredBoolean(l, ACTIVE)) {
             if (!players.isEmpty()) {
                 BlockFace direction = ((Directional) b.getBlockData()).getFacing();
@@ -80,7 +88,9 @@ public final class AutomaticDoor extends MenuBlock {
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
                 String id = BlockStorage.checkID(startBlock);
-                if (item == null || item.getType().isAir() || item.getType() == mat) {
+                if (item != null && bannedTypes.contains(item.getType())) {
+                    return;
+                } else if (item == null || item.getType().isAir() || item.getType() == mat) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)) return;
 
@@ -103,7 +113,7 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                if (stack != null && stack.getType().isBlock()) {
+                if (stack != null && stack.getType().isBlock() && stack.getType() != Material.CAKE) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
@@ -112,10 +122,13 @@ public final class AutomaticDoor extends MenuBlock {
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
                     SlimefunItem item = SlimefunItem.getByItem(stack);
+                    int placedBlockNumber = 0;
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
+                        if (bannedTypes.contains(next.getType())) break;
+                        placedBlockNumber++;
 
                         next.setType(stack.getType());
                         if (item != null) {
@@ -123,8 +136,9 @@ public final class AutomaticDoor extends MenuBlock {
                         }
                         menu.consumeItem(INPUT_SLOT);
                     }
-
-                    BlockStorage.addBlockInfo(l, ACTIVE, "true");
+                    if (placedBlockNumber > 0) {
+                        BlockStorage.addBlockInfo(l, ACTIVE, "true");
+                    }
                 }
             }
         }
