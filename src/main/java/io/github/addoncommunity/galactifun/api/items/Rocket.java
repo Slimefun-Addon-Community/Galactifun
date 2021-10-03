@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
@@ -231,6 +232,9 @@ public final class Rocket extends SlimefunItem {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
                     if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
 
+                        if (entity instanceof Player){
+                            entity.setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
+                        }
                         PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
 
                         if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
