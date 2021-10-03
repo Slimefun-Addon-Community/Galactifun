@@ -40,6 +40,9 @@ public final class AutomaticDoor extends MenuBlock {
     private static final int[] BACKGROUND = new int[] { 0, 1, 2, 3, 5, 6, 7, 8 };
     private static final int INPUT_SLOT = 4;
     private static final String ACTIVE = "active";
+    private static boolean canUseSlimefunItem = Galactifun.instance().getConfig().getBoolean("other.allow-auto-door-use-slimefun-block", true);
+    private static List<Material> bannedTypes = new ArrayList<>();
+    private static List<String> bannedSlimefunTypes = new ArrayList<>();
 
     public AutomaticDoor(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
@@ -70,19 +73,7 @@ public final class AutomaticDoor extends MenuBlock {
                 Galactifun.instance().getConfig().getInt("other.auto-door-range", 2)
         );
 
-        // banned type
-        boolean canUseSlimefunItem = Galactifun.instance().getConfig().getBoolean("other.allow-auto-door-use-slimefun-block", true);
-        List<Material> bannedTypes = new ArrayList<>();
-        List<String> bannedSlimefunTypes = new ArrayList<>();
 
-        for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
-            //slimefun items support
-            if (type.startsWith("Slimefun:")){
-                bannedSlimefunTypes.add(type.replace("Slimefun:", ""));
-            } else {
-                bannedTypes.add(Material.valueOf(type));
-            }
-        }
 
         if (BSUtils.getStoredBoolean(l, ACTIVE)) {
             if (!players.isEmpty()) {
@@ -125,7 +116,10 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType()) && !bannedSlimefunTypes.contains(Objects.requireNonNull(SlimefunItem.getByItem(stack)).getId()) && (!canUseSlimefunItem && SlimefunItem.getByItem(stack)!= null)) {
+                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
+                    if (SlimefunItem.getByItem(stack)!=null&&(!canUseSlimefunItem || bannedSlimefunTypes.contains(SlimefunItem.getByItem(stack).getId()))){
+                        return;
+                    }
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
@@ -171,6 +165,22 @@ public final class AutomaticDoor extends MenuBlock {
     @Override
     protected int[] getOutputSlots() {
         return new int[] { INPUT_SLOT };
+    }
+
+    @Override
+    public void preRegister() {
+        LoadFormConfig();
+    }
+
+    public void LoadFormConfig(){
+        for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
+            //slimefun items support
+            if (type.startsWith("Slimefun:")){
+                bannedSlimefunTypes.add(type.replace("Slimefun:", ""));
+            } else {
+                bannedTypes.add(Material.valueOf(type));
+            }
+        }
     }
 
 }
