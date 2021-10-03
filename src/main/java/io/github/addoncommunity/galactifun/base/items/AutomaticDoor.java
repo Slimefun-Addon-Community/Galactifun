@@ -78,7 +78,7 @@ public final class AutomaticDoor extends MenuBlock {
         for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
             //slimefun items support
             if (type.startsWith("Slimefun:")){
-                bannedSlimefunTypes.add(type.replace("Slimefun:", "Slimefun"));
+                bannedSlimefunTypes.add(type.replace("Slimefun:", ""));
             } else {
                 bannedTypes.add(Material.valueOf(type));
             }
