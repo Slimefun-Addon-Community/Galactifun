@@ -125,7 +125,7 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType()) && !bannedSlimefunTypes.contains(Objects.requireNonNull(SlimefunItem.getByItem(stack)).getId()) && (!canUseSlimefunItem) && SlimefunItem.getByItem(stack)!= null) {
+                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType()) && !bannedSlimefunTypes.contains(Objects.requireNonNull(SlimefunItem.getByItem(stack)).getId()) && (!canUseSlimefunItem && SlimefunItem.getByItem(stack)!= null)) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
