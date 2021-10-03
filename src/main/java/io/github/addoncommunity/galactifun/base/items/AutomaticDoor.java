@@ -122,12 +122,12 @@ public final class AutomaticDoor extends MenuBlock {
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
                     SlimefunItem item = SlimefunItem.getByItem(stack);
-                    int placedBlockNumber = 0;
+                    boolean doorIsClose = false;
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
-                        placedBlockNumber++;
+                        doorIsClose = true;
 
                         next.setType(stack.getType());
                         if (item != null) {
@@ -135,7 +135,7 @@ public final class AutomaticDoor extends MenuBlock {
                         }
                         menu.consumeItem(INPUT_SLOT);
                     }
-                    if (placedBlockNumber > 0) {
+                    if (doorIsClose) {
                         BlockStorage.addBlockInfo(l, ACTIVE, "true");
                     }
                 }
