@@ -127,6 +127,7 @@ public final class AutomaticDoor extends MenuBlock {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
+                        if (bannedTypes.contains(next.getType())) break;
                         doorIsClose = true;
 
                         next.setType(stack.getType());
