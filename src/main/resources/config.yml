@@ -32,10 +32,13 @@ rockets:
     - Taking one small step
 
 other:
+  allow-auto-door-use-slimefun-block: true
   # The range that the automatic door checks for players
   auto-door-range: 2
   # Automatic door prohibits placing and recycling blocks
   auto-door-banned-types:
     - BEDROCK
-    - CAKE   #bug
+    - CAKE
+    - BARRIER
+  # - Slimefun:ITEM_ID
 
