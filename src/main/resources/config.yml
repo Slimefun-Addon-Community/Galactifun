@@ -40,5 +40,8 @@ other:
     - BEDROCK
     - CAKE
     - BARRIER
+    - COMMAND_BLOCK
+    - END_PORTAL
+    - STRUCTURE_BLOCK
   # - Slimefun:ITEM_ID
 

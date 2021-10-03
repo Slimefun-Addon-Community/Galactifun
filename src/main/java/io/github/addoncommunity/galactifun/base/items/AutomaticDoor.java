@@ -132,10 +132,18 @@ public final class AutomaticDoor extends MenuBlock {
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
-                        if (!next.isEmpty()) break;
-                        if (!canUseSlimefunItem && BlockStorage.checkID(next) != null)
-                        if (bannedTypes.contains(next.getType())) break;
-                        if (bannedSlimefunTypes.contains(BlockStorage.checkID(next))) break;
+                        if (!next.isEmpty())
+                            break;
+                        // !canUseSlimefunItem  is used to check if the SLIMEFUN block is allowed
+                        // BlockStorage.check(next) != null  is used to detect if this block is a SlimeFun block
+                        if (!canUseSlimefunItem && BlockStorage.check(next) != null)
+                            break;
+                        //bannedTypes.contains(nextType())  XXX is used to detect whether type of this block exists in the banned type
+                        if (bannedTypes.contains(next.getType()))
+                            break;
+                        //bannTypes.contains(BlockStorage.checkID(next))   is used to detect if the ID of this block is present in the blounded ID
+                        if (bannedSlimefunTypes.contains(BlockStorage.checkID(next)))
+                            break;
                         doorIsClose = true;
 
                         next.setType(stack.getType());
