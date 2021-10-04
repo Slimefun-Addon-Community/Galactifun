@@ -138,8 +138,8 @@ public final class AutomaticDoor extends MenuBlock {
                         // no slimefun item
                         if (SlimefunItem.getByItem(stack)!=null)
                             break;
-                        //bannedTypes.contains(nextType())  XXX is used to detect whether type of this block exists in the banned type
-                        if (bannedTypes.contains(next.getType()))
+                        //bannedTypes.contains(stack.getType())  XXX is used to detect whether type of this block exists in the banned type
+                        if (bannedTypes.contains(stack.getType()))
                             break;
 
                         doorIsClose = true;
