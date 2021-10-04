@@ -45,7 +45,7 @@ public final class AutomaticDoor extends MenuBlock {
     private static final String ACTIVE = "active";
     private final boolean canUseSlimefunItem = Galactifun.instance().getConfig().getBoolean("other.allow-auto-door-use-slimefun-block", true);
     private final EnumSet<Material> bannedTypes = EnumSet.noneOf(Material.class);
-    private final Set<String> bannedSlimefunTypes = new HashSet<String>();
+    private final Set<String> bannedSlimefunTypes = new HashSet<>();
 
     public AutomaticDoor(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
