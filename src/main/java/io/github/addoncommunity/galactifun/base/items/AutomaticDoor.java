@@ -182,10 +182,6 @@ public final class AutomaticDoor extends MenuBlock {
 
     @Override
     public void preRegister() {
-        loadFromConfig();
-    }
-
-    public void loadFromConfig(){
         for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
             //slimefun items support
             if (type.startsWith("Slimefun:")){
