@@ -88,12 +88,10 @@ public final class AutomaticDoor extends MenuBlock {
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
                 String id = BlockStorage.checkID(startBlock);
-                if (SlimefunItem.getByItem(item) != null){
-                    return;
-                }
-                if (item != null && bannedTypes.contains(item.getType())) {
-                    return;
-                }
+
+                if (SlimefunItem.getByItem(item) != null) return;
+                if (item != null && bannedTypes.contains(item.getType())) return;
+
                 if (item == null || item.getType().isAir() || item.getType() == mat) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)) return;
@@ -101,10 +99,9 @@ public final class AutomaticDoor extends MenuBlock {
                     int size = item == null || item.getType().isAir() ?
                             mat.getMaxStackSize() :
                             item.getMaxStackSize() - item.getAmount();
-                    ItemStack itemStack = id == null ? new ItemStack(mat) : SlimefunItem.getById(id).getItem();
+                    ItemStack itemStack = new ItemStack(mat);
                     for (int i = 0; i < size; i++) {
-                        if (startBlock.isEmpty() || startBlock.getType() != mat ||
-                                !Objects.equals(BlockStorage.checkID(startBlock), id)) break;
+                        if (startBlock.isEmpty() || startBlock.getType() != mat ) break;
 
                         startBlock.setType(Material.AIR);
                         menu.pushItem(itemStack.clone(), INPUT_SLOT);
@@ -119,9 +116,11 @@ public final class AutomaticDoor extends MenuBlock {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
                 SlimefunItem slimefunItem = SlimefunItem.getByItem(stack);
                 if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
-                    if (slimefunItem != null) {
-                        return;
-                    }
+                    // no slimefun item
+                    if (slimefunItem != null) return;
+                    // banned block
+                    if (bannedTypes.contains(stack.getType())) return;
+
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
@@ -133,14 +132,7 @@ public final class AutomaticDoor extends MenuBlock {
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
-                        if (!next.isEmpty())
-                            break;
-                        // no slimefun item
-                        if (SlimefunItem.getByItem(stack)!=null)
-                            break;
-                        //bannedTypes.contains(stack.getType())  XXX is used to detect whether type of this block exists in the banned type
-                        if (bannedTypes.contains(stack.getType()))
-                            break;
+                        if (!next.isEmpty()) break;
 
                         doorIsClose = true;
 
