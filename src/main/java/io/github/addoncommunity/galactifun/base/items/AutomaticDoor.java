@@ -43,9 +43,7 @@ public final class AutomaticDoor extends MenuBlock {
     private static final int[] BACKGROUND = new int[] { 0, 1, 2, 3, 5, 6, 7, 8 };
     private static final int INPUT_SLOT = 4;
     private static final String ACTIVE = "active";
-    private final boolean canUseSlimefunItem = Galactifun.instance().getConfig().getBoolean("other.allow-auto-door-use-slimefun-block", true);
     private final EnumSet<Material> bannedTypes = EnumSet.noneOf(Material.class);
-    private final Set<String> bannedSlimefunTypes = new HashSet<>();
 
     public AutomaticDoor(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
@@ -90,11 +88,10 @@ public final class AutomaticDoor extends MenuBlock {
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
                 String id = BlockStorage.checkID(startBlock);
-                SlimefunItem slimefunItem = SlimefunItem.getByItem(item);
-                if (!canUseSlimefunItem && slimefunItem != null){
+                if (SlimefunItem.getByItem(item) != null){
                     return;
                 }
-                if (item != null && (bannedTypes.contains(item.getType()) || bannedSlimefunTypes.contains(slimefunItem.getId()))) {
+                if (item != null && bannedTypes.contains(item.getType())) {
                     return;
                 }
                 if (item == null || item.getType().isAir() || item.getType() == mat) {
@@ -122,7 +119,7 @@ public final class AutomaticDoor extends MenuBlock {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
                 SlimefunItem slimefunItem = SlimefunItem.getByItem(stack);
                 if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
-                    if (slimefunItem != null && (!canUseSlimefunItem || bannedSlimefunTypes.contains(slimefunItem.getId()))) {
+                    if (slimefunItem != null) {
                         return;
                     }
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
@@ -132,29 +129,22 @@ public final class AutomaticDoor extends MenuBlock {
                     Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
-                    SlimefunItem item = SlimefunItem.getByItem(stack);
                     boolean doorIsClose = false;
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty())
                             break;
-                        // !canUseSlimefunItem  is used to check if the SLIMEFUN block is allowed
-                        // BlockStorage.check(next) != null  is used to detect if this block is a SlimeFun block
-                        if (!canUseSlimefunItem && BlockStorage.check(next) != null)
+                        // no slimefun item
+                        if (SlimefunItem.getByItem(stack)!=null)
                             break;
                         //bannedTypes.contains(nextType())  XXX is used to detect whether type of this block exists in the banned type
                         if (bannedTypes.contains(next.getType()))
                             break;
-                        //bannTypes.contains(BlockStorage.checkID(next))   is used to detect if the ID of this block is present in the blounded ID
-                        if (bannedSlimefunTypes.contains(BlockStorage.checkID(next)))
-                            break;
+
                         doorIsClose = true;
 
                         next.setType(stack.getType());
-                        if (item != null) {
-                            BlockStorage.addBlockInfo(next, "id", item.getId());
-                        }
                         menu.consumeItem(INPUT_SLOT);
                     }
                     if (doorIsClose) {
@@ -183,12 +173,7 @@ public final class AutomaticDoor extends MenuBlock {
     @Override
     public void preRegister() {
         for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
-            //slimefun items support
-            if (type.startsWith("Slimefun:")){
-                bannedSlimefunTypes.add(type.replace("Slimefun:", ""));
-            } else {
-                bannedTypes.add(Material.valueOf(type));
-            }
+            bannedTypes.add(Material.valueOf(type));
         }
     }
 

@@ -32,7 +32,6 @@ rockets:
     - Taking one small step
 
 other:
-  allow-auto-door-use-slimefun-block: true
   # The range that the automatic door checks for players
   auto-door-range: 2
   # Automatic door prohibits placing and recycling blocks
@@ -43,5 +42,5 @@ other:
     - COMMAND_BLOCK
     - END_PORTAL
     - STRUCTURE_BLOCK
-  # - Slimefun:ITEM_ID
+
 
