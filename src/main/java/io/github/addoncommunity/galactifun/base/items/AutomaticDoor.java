@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.base.items;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 
@@ -32,6 +33,8 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+
+import static io.github.mooy1.infinitylib.core.AbstractAddon.log;
 
 public final class AutomaticDoor extends MenuBlock {
 
@@ -159,7 +162,11 @@ public final class AutomaticDoor extends MenuBlock {
     @Override
     public void preRegister() {
         for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
-            bannedTypes.add(Material.valueOf(type));
+            try {
+                bannedTypes.add(Material.valueOf(type));
+            } catch (IllegalArgumentException ignored) {
+                log(Level.WARNING, "Unknown Type:" + type + ".Please cheak your config.yml!");
+            }
         }
     }
 
