@@ -1,12 +1,7 @@
 package io.github.addoncommunity.galactifun.base.items;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -87,7 +82,6 @@ public final class AutomaticDoor extends MenuBlock {
 
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
-                String id = BlockStorage.checkID(startBlock);
 
                 if (SlimefunItem.getByItem(item) != null) return;
                 if (item != null && bannedTypes.contains(item.getType())) return;
