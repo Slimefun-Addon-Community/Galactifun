@@ -72,8 +72,6 @@ public final class AutomaticDoor extends MenuBlock {
                 Galactifun.instance().getConfig().getInt("other.auto-door-range", 2)
         );
 
-
-
         if (BSUtils.getStoredBoolean(l, ACTIVE)) {
             if (!players.isEmpty()) {
                 BlockFace direction = ((Directional) b.getBlockData()).getFacing();
@@ -98,7 +96,7 @@ public final class AutomaticDoor extends MenuBlock {
                             item.getMaxStackSize() - item.getAmount();
                     ItemStack itemStack = new ItemStack(mat);
                     for (int i = 0; i < size; i++) {
-                        if (startBlock.isEmpty() || startBlock.getType() != mat ) break;
+                        if (startBlock.isEmpty() || startBlock.getType() != mat || BlockStorage.hasBlockInfo(startBlock)) break;
 
                         startBlock.setType(Material.AIR);
                         menu.pushItem(itemStack.clone(), INPUT_SLOT);
@@ -111,10 +109,9 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                SlimefunItem slimefunItem = SlimefunItem.getByItem(stack);
+                if (SlimefunItem.getByItem(stack) != null) return;
                 if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
                     // no slimefun item
-                    if (slimefunItem != null) return;
                     // banned block
                     if (bannedTypes.contains(stack.getType())) return;
 
@@ -125,18 +122,18 @@ public final class AutomaticDoor extends MenuBlock {
                     Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
-                    boolean doorIsClose = false;
+                    boolean closeDoor = false;
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
 
-                        doorIsClose = true;
+                        closeDoor = true;
 
                         next.setType(stack.getType());
                         menu.consumeItem(INPUT_SLOT);
                     }
-                    if (doorIsClose) {
+                    if (closeDoor) {
                         BlockStorage.addBlockInfo(l, ACTIVE, "true");
                     }
                 }
@@ -161,7 +158,7 @@ public final class AutomaticDoor extends MenuBlock {
 
     @Override
     public void preRegister() {
-        for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")){
+        for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")) {
             try {
                 bannedTypes.add(Material.valueOf(type));
             } catch (IllegalArgumentException ignored) {
