@@ -25,11 +25,11 @@ public final class DiamondAnvil extends AContainer {
     public DiamondAnvil(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         TYPE.sendRecipesTo((ing, res) ->{
-            ItemStack[] itemrecipe = Arrays.copyOf(ing, 2);
-            if (itemrecipe[1] == null){
-                itemrecipe = Arrays.copyOf(itemrecipe, 1);
+            ItemStack[] itemRecipe = Arrays.copyOf(ing, 2);
+            if (itemRecipe[1] == null){
+                itemRecipe = Arrays.copyOf(itemRecipe, 1);
             }
-            this.registerRecipe(10, itemrecipe, new ItemStack[] { res });
+            this.registerRecipe(10, itemRecipe, new ItemStack[] { res });
         });
     }
 
