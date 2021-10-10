@@ -162,7 +162,7 @@ public final class AutomaticDoor extends MenuBlock {
             try {
                 bannedTypes.add(Material.valueOf(type));
             } catch (IllegalArgumentException ignored) {
-                log(Level.WARNING, "Unknown Type:" + type + ".Please cheak your config.yml!");
+                log(Level.WARNING, "Unknown Type: " + type + ". Please check your config.yml");
             }
         }
     }
