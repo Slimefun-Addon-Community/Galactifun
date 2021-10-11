@@ -1,32 +1,65 @@
 package io.github.addoncommunity.galactifun.api.items;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nonnull;
+
+import com.destroystokyo.paper.block.TargetBlockInfo;
+import com.destroystokyo.paper.entity.TargetEntityInfo;
+
+import io.github.addoncommunity.galactifun.base.GalactifunHead;
 
 import lombok.Getter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.EntityEffect;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityCategory;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Pose;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.addoncommunity.galactifun.Galactifun;
@@ -49,6 +82,11 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 
 public final class Rocket extends SlimefunItem {
 
@@ -236,6 +274,30 @@ public final class Rocket extends SlimefunItem {
                             entity.setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
                         }
                         PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+
+                        //Launch animation
+                        Location rocketLocation = rocket.getLocation();
+                        ArmorStand armorStand = (ArmorStand) rocketLocation.getWorld().spawnEntity(rocketLocation, EntityType.ARMOR_STAND);
+                        armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
+                        armorStand.setVisible(false);
+                        armorStand.setGravity(false);
+                        armorStand.setInvulnerable(true);
+                        armorStand.setAI(false);
+                        armorStand.setBasePlate(false);
+
+                        new BukkitRunnable() {
+                            int i = 0;
+                            @Override
+                            public void run() {
+                                i++;
+                                armorStand.setVelocity(new Vector(0, 5, 0));
+                                rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
+                                if (i > 70){
+                                    armorStand.remove();
+                                    this.cancel();
+                                }
+                            }
+                        }.runTaskTimer(Galactifun.instance(), 0, 5 );
 
                         if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
                             KnowledgeLevel.BASIC.set(p, worldTo);
