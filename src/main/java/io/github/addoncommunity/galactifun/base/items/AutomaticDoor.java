@@ -1,8 +1,9 @@
 package io.github.addoncommunity.galactifun.base.items;
 
 import java.util.Collection;
-import java.util.Objects;
+import java.util.EnumSet;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 
@@ -33,11 +34,14 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
+import static io.github.mooy1.infinitylib.core.AbstractAddon.log;
+
 public final class AutomaticDoor extends MenuBlock {
 
     private static final int[] BACKGROUND = new int[] { 0, 1, 2, 3, 5, 6, 7, 8 };
     private static final int INPUT_SLOT = 4;
     private static final String ACTIVE = "active";
+    private final EnumSet<Material> bannedTypes = EnumSet.noneOf(Material.class);
 
     public AutomaticDoor(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
@@ -79,7 +83,10 @@ public final class AutomaticDoor extends MenuBlock {
 
                 ItemStack item = menu.getItemInSlot(INPUT_SLOT);
                 Material mat = startBlock.getType();
-                String id = BlockStorage.checkID(startBlock);
+
+                if (SlimefunItem.getByItem(item) != null) return;
+                if (item != null && bannedTypes.contains(item.getType())) return;
+
                 if (item == null || item.getType().isAir() || item.getType() == mat) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)) return;
@@ -87,10 +94,9 @@ public final class AutomaticDoor extends MenuBlock {
                     int size = item == null || item.getType().isAir() ?
                             mat.getMaxStackSize() :
                             item.getMaxStackSize() - item.getAmount();
-                    ItemStack itemStack = id == null ? new ItemStack(mat) : SlimefunItem.getById(id).getItem();
+                    ItemStack itemStack = new ItemStack(mat);
                     for (int i = 0; i < size; i++) {
-                        if (startBlock.isEmpty() || startBlock.getType() != mat ||
-                                !Objects.equals(BlockStorage.checkID(startBlock), id)) break;
+                        if (startBlock.isEmpty() || startBlock.getType() != mat || BlockStorage.hasBlockInfo(startBlock)) break;
 
                         startBlock.setType(Material.AIR);
                         menu.pushItem(itemStack.clone(), INPUT_SLOT);
@@ -103,7 +109,12 @@ public final class AutomaticDoor extends MenuBlock {
         } else {
             if (players.isEmpty()) {
                 ItemStack stack = menu.getItemInSlot(INPUT_SLOT);
-                if (stack != null && stack.getType().isBlock()) {
+                if (SlimefunItem.getByItem(stack) != null) return;
+                if (stack != null && stack.getType().isBlock() && !bannedTypes.contains(stack.getType())) {
+                    // no slimefun item
+                    // banned block
+                    if (bannedTypes.contains(stack.getType())) return;
+
                     OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(l, "player")));
                     if (!Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK)) return;
 
@@ -111,20 +122,20 @@ public final class AutomaticDoor extends MenuBlock {
                     Vector v = ((Directional) b.getBlockData()).getFacing().getDirection();
                     // gotta to do this bc im modifying the stack in the loop
                     int amount = stack.getAmount();
-                    SlimefunItem item = SlimefunItem.getByItem(stack);
+                    boolean closeDoor = false;
                     for (int i = 0; i < amount; i++) {
                         // add() modifies the current Location as well as returns it
                         Block next = start.add(v).getBlock();
                         if (!next.isEmpty()) break;
 
+                        closeDoor = true;
+
                         next.setType(stack.getType());
-                        if (item != null) {
-                            BlockStorage.addBlockInfo(next, "id", item.getId());
-                        }
                         menu.consumeItem(INPUT_SLOT);
                     }
-
-                    BlockStorage.addBlockInfo(l, ACTIVE, "true");
+                    if (closeDoor) {
+                        BlockStorage.addBlockInfo(l, ACTIVE, "true");
+                    }
                 }
             }
         }
@@ -143,6 +154,17 @@ public final class AutomaticDoor extends MenuBlock {
     @Override
     protected int[] getOutputSlots() {
         return new int[] { INPUT_SLOT };
+    }
+
+    @Override
+    public void preRegister() {
+        for (String type : Galactifun.instance().getConfig().getStringList("other.auto-door-banned-types")) {
+            try {
+                bannedTypes.add(Material.valueOf(type));
+            } catch (IllegalArgumentException ignored) {
+                log(Level.WARNING, "Unknown Type: " + type + ". Please check your config.yml");
+            }
+        }
     }
 
 }
