@@ -1,6 +1,5 @@
 package io.github.addoncommunity.galactifun.api.worlds.populators;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
@@ -48,7 +47,7 @@ public class OrePopulator extends BlockPopulator {
         this.minSize = minSize;
         this.maxSize = maxSize;
         this.ore = ore;
-        this.replaceable = EnumSet.of(replaceable[0], Arrays.copyOfRange(replaceable, 1, replaceable.length));
+        this.replaceable = replaceable.length > 0 ? EnumSet.of(replaceable[0], replaceable) : EnumSet.allOf(Material.class);
     }
 
     @Override
