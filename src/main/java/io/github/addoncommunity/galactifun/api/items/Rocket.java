@@ -21,7 +21,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -232,44 +231,52 @@ public final class Rocket extends SlimefunItem {
             }
             state.update();
 
+            boolean showLaunchAnimation = false;
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
                     if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
-
                         if (entity instanceof Player){
                             entity.setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
                         }
                         PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
 
-                        //Launch animation
-                        Location rocketLocation = rocket.getLocation().add(0.5, 0, 0.5);
-                        ArmorStand armorStand = (ArmorStand) rocketLocation.getWorld().spawnEntity(rocketLocation, EntityType.ARMOR_STAND);
-                        armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
-                        armorStand.setInvisible(true);
-                        armorStand.setInvulnerable(true);
-                        armorStand.setMarker(false);
-                        armorStand.setBasePlate(false);
-
-                        new BukkitRunnable() {
-                            int i = 0;
-                            @Override
-                            public void run() {
-                                i++;
-                                armorStand.setVelocity(new Vector(0, 0.8 + i/10 , 0));
-                                rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
-                                rocketLocation.getWorld().spawnParticle(Particle.LAVA, armorStand.getLocation(), 5);
-                                if (i > 40) {
-                                    armorStand.remove();
-                                    this.cancel();
-                                }
-                            }
-                        }.runTaskTimer(Galactifun.instance(), 0, 8);
-
                         if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
                             KnowledgeLevel.BASIC.set(p, worldTo);
                         }
+
+                    } else if (entity.getLocation().distance(rocket.getLocation()) <= 64) {
+                        if (entity instanceof Player) {
+                            showLaunchAnimation = true;
+                        }
                     }
                 }
+            }
+            //Launch animation
+
+            if (showLaunchAnimation) {
+                Location rocketLocation = rocket.getLocation().add(0.5, 0, 0.5);
+                ArmorStand armorStand = rocketLocation.getWorld().spawn(rocketLocation, ArmorStand.class);
+                armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
+                armorStand.setInvisible(true);
+                armorStand.setInvulnerable(true);
+                armorStand.setMarker(false);
+                armorStand.setBasePlate(false);
+
+                new BukkitRunnable() {
+                    int i = 0;
+
+                    @Override
+                    public void run() {
+                        i++;
+                        armorStand.setVelocity(new Vector(0, 0.8 + i / 10, 0));
+                        rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
+                        rocketLocation.getWorld().spawnParticle(Particle.LAVA, armorStand.getLocation(), 5);
+                        if (i > 40) {
+                            armorStand.remove();
+                            this.cancel();
+                        }
+                    }
+                }.runTaskTimer(Galactifun.instance(), 0, 8);
             }
 
             rocket.setType(Material.AIR);
