@@ -276,13 +276,12 @@ public final class Rocket extends SlimefunItem {
                         PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
 
                         //Launch animation
-                        Location rocketLocation = rocket.getLocation();
+                        Location rocketLocation = rocket.getLocation().add(0.5, 0, 0.5);
                         ArmorStand armorStand = (ArmorStand) rocketLocation.getWorld().spawnEntity(rocketLocation, EntityType.ARMOR_STAND);
                         armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
-                        armorStand.setVisible(false);
-                        armorStand.setGravity(false);
+                        armorStand.setInvisible(true);
                         armorStand.setInvulnerable(true);
-                        armorStand.setAI(false);
+                        armorStand.setMarker(false);
                         armorStand.setBasePlate(false);
 
                         new BukkitRunnable() {
@@ -290,14 +289,15 @@ public final class Rocket extends SlimefunItem {
                             @Override
                             public void run() {
                                 i++;
-                                armorStand.setVelocity(new Vector(0, 5, 0));
+                                armorStand.setVelocity(new Vector(0, i / 2 , 0));
                                 rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
-                                if (i > 70){
+                                rocketLocation.getWorld().spawnParticle(Particle.LAVA, armorStand.getLocation(), 5);
+                                if (i > 40) {
                                     armorStand.remove();
                                     this.cancel();
                                 }
                             }
-                        }.runTaskTimer(Galactifun.instance(), 0, 5 );
+                        }.runTaskTimer(Galactifun.instance(), 0, 8);
 
                         if (KnowledgeLevel.get(p, worldTo) == KnowledgeLevel.NONE) {
                             KnowledgeLevel.BASIC.set(p, worldTo);
