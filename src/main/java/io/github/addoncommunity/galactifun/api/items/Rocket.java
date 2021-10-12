@@ -289,7 +289,7 @@ public final class Rocket extends SlimefunItem {
                             @Override
                             public void run() {
                                 i++;
-                                armorStand.setVelocity(new Vector(0, i / 2 , 0));
+                                armorStand.setVelocity(new Vector(0, 0.8 + i/10 , 0));
                                 rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
                                 rocketLocation.getWorld().spawnParticle(Particle.LAVA, armorStand.getLocation(), 5);
                                 if (i > 40) {
