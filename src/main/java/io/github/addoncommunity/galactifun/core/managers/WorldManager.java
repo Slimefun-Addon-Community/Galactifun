@@ -27,6 +27,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,6 +46,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
@@ -62,8 +64,6 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-
-import org.bukkit.metadata.MetadataValue;
 
 public final class WorldManager implements Listener {
 
@@ -323,10 +323,9 @@ public final class WorldManager implements Listener {
                 if (timeSince < (60 * 1000)) {
                     int times = this.respawnTimes.merge(p.getUniqueId(), 1, Integer::sum);
                     if (times > 3) {
-                        p.sendMessage(
-                                ChatColor.YELLOW +
-                                        "A possible respawn loop has been detected! " +
-                                        "Do you wish to go back to Earth? (yes/no)"
+                        p.sendMessage(ChatColor.YELLOW + """
+                            A possible respawn loop has been detected!
+                            Do you wish to go back to Earth? (yes/no)"""
                         );
                         ChatUtils.awaitInput(p, s -> {
                             if (s.equalsIgnoreCase("yes")) {
@@ -356,14 +355,21 @@ public final class WorldManager implements Listener {
                 }
             }
             ProtectionManager manager = Galactifun.protectionManager();
-            Block toBePlaced = e.getBlockClicked().getRelative(e.getBlockFace());
+            Block clicked = e.getBlockClicked();
+            Block toBePlaced = clicked.getRelative(e.getBlockFace());
             Location l = toBePlaced.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
                 toBePlaced.setType(Material.ICE);
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
                 p.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l, 5);
             } else {
-                toBePlaced.setType(Material.WATER);
+                BlockData data = clicked.getBlockData();
+                if (data instanceof Waterlogged waterlogged) {
+                    waterlogged.setWaterlogged(true);
+                    clicked.setBlockData(waterlogged);
+                } else {
+                    toBePlaced.setType(Material.WATER);
+                }
             }
         }
     }
