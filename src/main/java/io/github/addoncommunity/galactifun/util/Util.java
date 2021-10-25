@@ -40,7 +40,7 @@ public final class Util {
     };
     // TODO maybe move this to protection manager?
     public static final Set<Material> IMPERMEABLE_BLOCKS = EnumSet.noneOf(Material.class);
-    private static final BlockFace[] ALL_SIDES = {
+    public static final BlockFace[] ALL_SIDES = {
             BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN
     };
 
