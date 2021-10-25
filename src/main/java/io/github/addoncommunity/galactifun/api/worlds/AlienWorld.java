@@ -72,7 +72,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
             return null;
         }
 
-        Galactifun.instance().log(Level.INFO, "Loading planet " + name());
+        Galactifun.log(Level.INFO, "Loading planet " + name());
 
         String worldName = "world_galactifun_" + this.id;
 
