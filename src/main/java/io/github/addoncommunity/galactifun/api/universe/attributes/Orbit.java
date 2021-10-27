@@ -33,7 +33,7 @@ public final class Orbit {
      */
     @Nonnull
     public static Orbit kilometers(double kilometers, long days) {
-        return new Orbit(kilometers / Util.KM_PER_LY, 365D / days);
+        return new Orbit(kilometers / Util.KM_PER_LY, days / 365.25);
     }
 
     @Nonnull

@@ -31,7 +31,7 @@ import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 @UtilityClass
 public final class Util {
 
-    public static final double KM_PER_LY = 9_700_000_000D;
+    public static final double KM_PER_LY = 9.461e12;
     public static final Pattern COORD_PATTERN = Pattern.compile("^-?\\d+ -?\\d+$");
     public static final Pattern SPACE_PATTERN = Pattern.compile(" ");
     public static final BlockFace[] SURROUNDING_FACES = new BlockFace[] {
