@@ -13,6 +13,7 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
+import io.github.addoncommunity.galactifun.base.items.MoonCheese;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.CoreRecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -219,6 +220,13 @@ public final class BaseMats {
             "",
             "&7These meteors contain Tungsten"
     );
+    public static final SlimefunItemStack MOON_CHEESE = new SlimefunItemStack(
+            "MOON_CHEESE",
+            GalactifunHead.CHEESE,
+            "&6Moon Cheese",
+            "",
+            "&7Ew"
+    );
     public static final SlimefunItemStack ENDER_BLOCK = new SlimefunItemStack(
             "ENDER_BLOCK",
             Material.PRISMARINE_BRICKS,
@@ -415,6 +423,12 @@ public final class BaseMats {
 
         component(LASERITE_DUST, true, RecipeType.ORE_CRUSHER, LASERITE_ORE);
         component(LASERITE, DiamondAnvil.TYPE, new SlimefunItemStack(LASERITE_DUST, 12));
+
+        new MoonCheese(CoreItemGroup.ITEMS, MOON_CHEESE, CoreRecipeType.WORLD_GEN, new ItemStack[]{
+                BaseUniverse.THE_MOON.item()
+        }).register(Galactifun.instance());
+
+        BaseUniverse.THE_MOON.addBlockMapping(Material.GOLD_ORE, MOON_CHEESE);
 
         // SlimefunWarfare integration
         SlimefunItem diode = SlimefunItem.getById("LASER_DIODE");
