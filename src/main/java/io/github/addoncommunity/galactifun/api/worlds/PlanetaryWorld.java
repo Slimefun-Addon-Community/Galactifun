@@ -1,6 +1,8 @@
 package io.github.addoncommunity.galactifun.api.worlds;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +30,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 
 /**
@@ -48,6 +51,9 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
     @Getter
     private SlimefunAddon addon;
     private Marker worldStorage;
+
+    @Getter
+    private final Set<GEOResource> resources = new HashSet<>();
 
     public PlanetaryWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                           DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
@@ -101,6 +107,10 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
 
     public final boolean enabled() {
         return this.world != null;
+    }
+
+    public void registerGEOResource(GEOResource resource) {
+        resources.add(resource);
     }
 
 }

@@ -49,15 +49,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.ExclusiveGEOResource;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
+import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
 import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.thebusybiscuit.slimefun4.api.events.GEOResourceGenerationEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
+import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
@@ -196,7 +200,7 @@ public final class WorldManager implements Listener {
                 AlienWorld world = getAlienWorld(e.getTo().getWorld());
                 if (world != null) {
                     boolean canTp = false;
-                    for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")){
+                    for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")) {
                         canTp = value.asBoolean();
                     }
                     if (canTp) {
@@ -324,8 +328,8 @@ public final class WorldManager implements Listener {
                     int times = this.respawnTimes.merge(p.getUniqueId(), 1, Integer::sum);
                     if (times > 3) {
                         p.sendMessage(ChatColor.YELLOW + """
-                            A possible respawn loop has been detected!
-                            Do you wish to go back to Earth? (yes/no)"""
+                                A possible respawn loop has been detected!
+                                Do you wish to go back to Earth? (yes/no)"""
                         );
                         ChatUtils.awaitInput(p, s -> {
                             if (s.equalsIgnoreCase("yes")) {
@@ -372,6 +376,24 @@ public final class WorldManager implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onGEOResourceGenerate(GEOResourceGenerationEvent e) {
+        PlanetaryWorld world = this.spaceWorlds.get(e.getWorld());
+        if (world == null) return;
+
+        if (e.getResource() instanceof ExclusiveGEOResource exclusiveResource) {
+            if (exclusiveResource.getWorlds().contains(world)) return;
+        } else {
+            if (world instanceof Earth) return;
+
+            for (GEOResource resource : world.resources()) {
+                if (resource.equals(e.getResource())) return;
+            }
+        }
+
+        e.setValue(0);
     }
 
 }

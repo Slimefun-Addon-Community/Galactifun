@@ -22,4 +22,13 @@ public interface ExclusiveGEOResource extends GEOResource {
     @Nonnull
     Set<PlanetaryWorld> getWorlds();
 
+    @Override
+    default void register() {
+        GEOResource.super.register();
+
+        for (PlanetaryWorld world : getWorlds()) {
+            world.registerGEOResource(this);
+        }
+    }
+
 }
