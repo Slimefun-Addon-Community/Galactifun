@@ -52,7 +52,7 @@ public class OrePopulator extends BlockPopulator {
 
     @Override
     public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        for (int i = 1; i < this.attempts; i++) {
+        for (int i = 0; i < this.attempts; i++) {
             if (random.nextInt(100) < this.chance) {
                 int x = random.nextInt(16);
                 int y = random.nextInt(this.maxy - this.miny) + this.miny;
