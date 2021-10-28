@@ -1,7 +1,10 @@
 package io.github.addoncommunity.galactifun.api.items;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -41,6 +44,7 @@ import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.mooy1.infinitylib.common.StackUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -53,22 +57,25 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-public final class Rocket extends SlimefunItem {
+public abstract class Rocket extends SlimefunItem {
 
     // todo Move static to some sort of RocketManager
     private static final List<String> LAUNCH_MESSAGES = Galactifun.instance().getConfig().getStringList("rockets.launch-msgs");
-    private static final int DISTANCE_PER_FUEL = 2_000_000;
+    private static final long DISTANCE_PER_FUEL = 2_000_000;
 
     @Getter
     private final int fuelCapacity;
     @Getter
     private final int storageCapacity;
+    @Getter
+    private final Set<String> allowedFuels;
 
     public Rocket(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
 
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
+        this.allowedFuels = getAllowedFuels().stream().map(StackUtils::getIdOrType).collect(Collectors.toUnmodifiableSet());
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(block -> openGUI(e.getPlayer(), block)));
 
@@ -116,29 +123,29 @@ public final class Rocket extends SlimefunItem {
         string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
         if (string == null) return;
         String fuelType = string;
-        Integer eff = LaunchPadCore.FUELS.get(string);
+        Double eff = LaunchPadCore.FUELS.get(string);
         if (eff == null) return;
 
-        // km
-        long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
+        // km, using bigint bc of the gigantic numbers we now use for interstellar distances
+        BigInteger maxDistance = BigInteger.valueOf(DISTANCE_PER_FUEL * fuel).multiply(BigInteger.valueOf(eff.longValue()));
 
         new WorldSelector((player, obj, lore) -> {
             if (obj instanceof PlanetaryWorld) {
                 // km
-                double dist = obj.distanceTo(world) * Util.KM_PER_LY;
-                if (dist > maxDistance) return false;
+                BigInteger dist = BigInteger.valueOf((long) (obj.distanceTo(world) * Util.KM_PER_LY));
+                if (dist.compareTo(maxDistance) > 0) return false;
 
                 lore.add(Component.empty());
                 lore.add(Component.text()
                         .color(NamedTextColor.YELLOW)
                         .append(Component.text("Distance: "))
-                        .append(Component.text((long) dist))
+                        .append(Component.text(dist.toString()))
                         .build()
                 );
                 lore.add(Component.text()
                         .color(NamedTextColor.YELLOW)
                         .append(Component.text("Fuel: "))
-                        .append(Component.text((long) Math.ceil(dist / DISTANCE_PER_FUEL)))
+                        .append(Component.text(dist.divide(BigInteger.valueOf(DISTANCE_PER_FUEL)).add(BigInteger.ONE).toString()))
                         .build()
                 );
             }
@@ -283,5 +290,7 @@ public final class Rocket extends SlimefunItem {
             BlockStorage.clearBlockInfo(rocket);
         });
     }
+
+    protected abstract List<ItemStack> getAllowedFuels();
 
 }

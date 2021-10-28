@@ -55,11 +55,11 @@ public final class LaunchPadCore extends TickingMenuBlock {
     private static final int FUEL_SLOT = 33;
 
     // TODO improve fuel system
-    public static final Map<String, Integer> FUELS = new HashMap<>();
+    public static final Map<String, Double> FUELS = new HashMap<>();
 
     static {
-        FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 1);
-        FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 2);
+        FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 0.5);
+        FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 1.0);
     }
 
     public LaunchPadCore(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
@@ -90,9 +90,9 @@ public final class LaunchPadCore extends TickingMenuBlock {
         if (fuel < rocket.fuelCapacity()) {
             ItemStack fuelItem = menu.getItemInSlot(FUEL_SLOT);
             if (fuelItem == null) return;
-            String id = StackUtils.getId(fuelItem);
+            String id = StackUtils.getIdOrType(fuelItem);
 
-            if (id != null && FUELS.containsKey(id) && (string == null || id.equals(string))) {
+            if (FUELS.containsKey(id) && (string == null || id.equals(string)) && rocket.allowedFuels().contains(id)) {
                 menu.consumeItem(FUEL_SLOT);
                 BSUtils.addBlockInfo(l.getBlock(), "fuel", ++fuel);
                 if (string == null) {
