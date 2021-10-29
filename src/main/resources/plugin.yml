@@ -5,6 +5,8 @@ main: io.github.addoncommunity.galactifun.Galactifun
 version: ${project.version}
 api-version: 1.16
 depend: [Slimefun]
+# This makes ClayTech load before Galactifun, so we can check if it's enabled in onEnable()
+softdepend: [ClayTech]
 
 commands:
   galactifun:
