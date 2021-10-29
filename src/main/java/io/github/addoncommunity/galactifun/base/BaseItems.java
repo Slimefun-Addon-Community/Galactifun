@@ -17,6 +17,7 @@ import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.base.items.FusionReactor;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
+import io.github.addoncommunity.galactifun.base.items.Methane;
 import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SimpleRocket;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
@@ -120,7 +121,6 @@ public final class BaseItems {
             "&7Basic pair of space suit boots"
     );
     //</editor-fold>
-
     //<editor-fold desc="Random Stuff" defaultstate="collapsed">
     public static final SlimefunItemStack LAUNCH_PAD_CORE = new SlimefunItemStack(
             "LAUNCH_PAD_CORE",
@@ -212,6 +212,13 @@ public final class BaseItems {
             "",
             LoreBuilder.powerPerSecond(65_536),
             LoreBuilder.powerBuffer(65_536)
+    );
+    public static final SlimefunItemStack METHANE_BUCKET = new SlimefunItemStack(
+            "METHANE_BUCKET",
+            HeadTexture.FUEL_BUCKET,
+            "&eMethane Bucket",
+            "",
+            "&7Highly efficient rocket fuel"
     );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
@@ -579,6 +586,8 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.LASERITE, BaseMats.LASERITE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
         }).register(galactifun);
+
+        new Methane(METHANE_BUCKET).register(galactifun);
     }
 
 }

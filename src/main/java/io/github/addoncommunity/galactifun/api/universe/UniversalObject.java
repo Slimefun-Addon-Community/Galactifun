@@ -32,8 +32,9 @@ public abstract class UniversalObject {
     private final ItemStack item;
     @Getter
     private final UniversalObject orbiting;
+    @Getter
     private final Orbit orbit;
-    private final int orbitLevel;
+    protected final int orbitLevel;
 
     UniversalObject(@Nonnull String name, @Nonnull UniversalType type, @Nonnull Orbit orbit,
                     @Nonnull UniversalObject orbiting, @Nonnull ItemStack baseItem) {
@@ -61,7 +62,7 @@ public abstract class UniversalObject {
     /**
      * Gets the distance in light years between 2 objects
      */
-    public final double distanceTo(@Nonnull UniversalObject other) {
+    public double distanceTo(@Nonnull UniversalObject other) {
         if (this.orbiting == other.orbiting) {
             double thisDist = this.orbit.currentDistance();
             double otherDist = other.orbit.currentDistance();

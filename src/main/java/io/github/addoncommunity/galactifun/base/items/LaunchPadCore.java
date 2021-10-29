@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.common.StackUtils;
@@ -60,6 +61,8 @@ public final class LaunchPadCore extends TickingMenuBlock {
     static {
         FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 0.5);
         FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 1.0);
+        FUELS.put(BaseItems.METHANE_BUCKET.getItemId(), 6.0);
+        FUELS.put(BaseMats.FUSION_PELLET.getItemId(), 66_227.0);
     }
 
     public LaunchPadCore(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
