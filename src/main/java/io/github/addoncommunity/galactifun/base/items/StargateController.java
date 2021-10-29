@@ -21,10 +21,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
+import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.mooy1.infinitylib.common.Events;
+import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.mooy1.infinitylib.machines.MenuBlock;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -173,6 +177,7 @@ public final class StargateController extends SlimefunItem implements Listener {
                 portal.setType(Material.END_GATEWAY);
                 EndGateway gateway = (EndGateway) portal.getState();
                 gateway.setAge(GATEWAY_TICKS);
+                gateway.setExitLocation(b.getLocation());
                 gateway.update(false, false);
                 BlockStorage.addBlockInfo(portal, "portal", "true");
             }
@@ -279,17 +284,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
 
-        for (Block portal : portalOptional.get()) {
-            if (portal.getState() instanceof EndGateway gateway) {
-                gateway.setExitLocation(dest);
-                gateway.update(false, false);
-            } else {
-                portal.setType(Material.END_GATEWAY);
-                EndGateway gateway = (EndGateway) portal.getState();
-                gateway.setExitLocation(dest);
-                gateway.update(false, false);
-            }
-        }
+        BSUtils.setStoredLocation(b.getLocation(), "dest", dest);
 
         p.sendMessage(ChatColor.YELLOW + String.format(
                 "Set Stargate destination to %d %d %d in %s",
@@ -314,11 +309,15 @@ public final class StargateController extends SlimefunItem implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onUsePortal(PlayerTeleportEndGatewayEvent e) {
-        if (!Boolean.parseBoolean(BlockStorage.getLocationInfo(e.getGateway().getLocation(), "portal"))) return;
-        Location dest = e.getGateway().getExitLocation();
+        if (!BSUtils.getStoredBoolean(e.getGateway().getLocation(), "portal")) return;
+        Location dest = BSUtils.getStoredLocation(e.getGateway().getExitLocation(), "dest");
         if (dest == null) return;
 
         e.setCancelled(true);
+
+        Player p = e.getPlayer();
+
+        if (p.hasMetadata("disableStargate")) return;
 
         Block b = dest.getBlock();
         if (BlockStorage.check(b, BaseItems.STARGATE_CONTROLLER.getItemId()) &&
@@ -330,6 +329,8 @@ public final class StargateController extends SlimefunItem implements Listener {
         Block destBlock = b.getRelative(1, 0, 0);
         if (destBlock.getType().isEmpty()) {
             PaperLib.teleportAsync(e.getPlayer(), destBlock.getLocation());
+            p.setMetadata("disableStargate", new FixedMetadataValue(Galactifun.instance(), true));
+            Scheduler.run(10, () -> p.removeMetadata("disableStargate", Galactifun.instance()));
         } else {
             e.getPlayer().sendMessage(ChatColor.RED + "The destination is blocked");
         }
