@@ -41,7 +41,7 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
     private static final int RECIPE_SLOT = 7;
     public static final MachineRecipeType TYPE = new MachineRecipeType("assembly_table",
             new CustomItemStack(BaseItems.ASSEMBLY_TABLE, BaseItems.ASSEMBLY_TABLE.getDisplayName(),
-                    "", "&cUse the assemby recipes category to see the correct recipe!"));
+                    "", "&cUse the assembly recipes category to see the correct recipe!"));
 
     private final int energy;
 
