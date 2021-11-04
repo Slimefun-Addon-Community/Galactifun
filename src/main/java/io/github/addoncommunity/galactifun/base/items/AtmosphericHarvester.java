@@ -35,7 +35,7 @@ public final class AtmosphericHarvester extends AbstractMachineBlock {
     public AtmosphericHarvester(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         this.energyPerTick = 32;
-        this.energyCapacity = 64;
+        this.energyCapacity = 128;
     }
 
     @Override

@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 
 import io.github.addoncommunity.galactifun.api.items.Rocket;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.BSUtils;
@@ -67,11 +68,13 @@ public final class LaunchPadCore extends TickingMenuBlock implements RecipeDispl
     public static final Map<String, Double> FUELS = new HashMap<>();
 
     static {
+        FUELS.put(Gas.HYDROCARBONS.item().getItemId(), 0.5);
         FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 0.5);
         FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 1.0);
-        FUELS.put("ATMOSPHERIC_GAS_HYDROGEN", 3.5);
-        FUELS.put("ATMOSPHERIC_GAS_METHANE", 6.0);
-        FUELS.put("ATMOSPHERIC_GAS_ARGON", 18.0);
+        FUELS.put(Gas.HYDROGEN.item().getItemId(), 3.5);
+        FUELS.put(Gas.AMMONIA.item().getItemId(), 4.0);
+        FUELS.put(Gas.METHANE.item().getItemId(), 6.0);
+        FUELS.put(Gas.ARGON.item().getItemId(), 18.0);
         FUELS.put(BaseMats.FUSION_PELLET.getItemId(), 66_227.0);
     }
 

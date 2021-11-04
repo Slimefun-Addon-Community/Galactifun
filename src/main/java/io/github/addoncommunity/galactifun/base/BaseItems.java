@@ -10,11 +10,13 @@ import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.AtmosphericHarvester;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
+import io.github.addoncommunity.galactifun.base.items.Electrolyzer;
 import io.github.addoncommunity.galactifun.base.items.FusionReactor;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
@@ -31,6 +33,7 @@ import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
 import io.github.addoncommunity.galactifun.base.items.rockets.ChemicalRocket;
 import io.github.addoncommunity.galactifun.base.items.rockets.IonRocket;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
+import io.github.mooy1.infinitylib.machines.MachineBlock;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -220,8 +223,30 @@ public final class BaseItems {
             "&fAtmospheric Harvester",
             "",
             "&7Collects gases from the atmosphere",
+            LoreBuilder.powerPerSecond(64),
+            LoreBuilder.powerBuffer(128),
             "",
             "&f&oTexture by haseir"
+    );
+    public static final SlimefunItemStack CHEMICAL_REACTOR = new SlimefunItemStack(
+            "CHEMICAL_REACTOR",
+            Material.BREWING_STAND,
+            "&fChemical Reactor",
+            "",
+            "&7Reacts chemicals together",
+            "&7to create new ones",
+            LoreBuilder.powerPerSecond(256),
+            LoreBuilder.powerBuffer(512)
+    );
+    public static final SlimefunItemStack ELECTROLYZER = new SlimefunItemStack(
+            "ELECTROLYZER",
+            Material.LANTERN,
+            "&fElectrolyzer",
+            "",
+            "&7Uses electricity to split",
+            "&chemicals into their constituents",
+            LoreBuilder.powerPerSecond(256),
+            LoreBuilder.powerBuffer(512)
     );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
@@ -617,6 +642,33 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ION_ENGINE, BaseMats.ION_ENGINE, null, BaseMats.ULTRA_DUTY_SHEET
         }, 500, 18).register(galactifun);
+
+        MachineBlock chemicalReactor = new MachineBlock(CoreItemGroup.MACHINES, CHEMICAL_REACTOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
+        });
+
+        chemicalReactor.addRecipe(new ItemStack(Material.WATER_BUCKET), Gas.WATER.item(), new ItemStack(Material.BUCKET));
+        chemicalReactor.addRecipe(Gas.WATER.item(), Gas.OXYGEN.item(), Gas.HYDROGEN.item().asQuantity(2));
+
+        chemicalReactor.addRecipe(Gas.CARBON_DIOXIDE.item(), SlimefunItems.CARBON, Gas.OXYGEN.item().asQuantity(2));
+        chemicalReactor.addRecipe(Gas.METHANE.item(), SlimefunItems.CARBON, Gas.HYDROGEN.item().asQuantity(4));
+        chemicalReactor.addRecipe(Gas.HYDROCARBONS.item(), Gas.METHANE.item().asQuantity(6));
+        chemicalReactor.addRecipe(SlimefunItems.OIL_BUCKET, Gas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
+
+        chemicalReactor.addRecipe(Gas.AMMONIA.item(), Gas.NITROGEN.item(), Gas.HYDROGEN.item().asQuantity(3));
+
+        chemicalReactor.energyCapacity(512);
+        chemicalReactor.energyPerTick(128);
+        chemicalReactor.ticksPerOutput(20);
+        chemicalReactor.register(galactifun);
+
+        new Electrolyzer(ELECTROLYZER, new ItemStack[] {
+                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
+                SlimefunItems.SILVER_INGOT, BaseMats.BLISTERING_VOLCANIC_INGOT, SlimefunItems.SILVER_INGOT,
+                BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
+        }).register(galactifun);
     }
 
 }
