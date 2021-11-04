@@ -11,15 +11,14 @@ import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
+import io.github.addoncommunity.galactifun.base.items.AtmosphericHarvester;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.base.items.FusionReactor;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadFloor;
-import io.github.addoncommunity.galactifun.base.items.Methane;
 import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
-import io.github.addoncommunity.galactifun.base.items.SimpleRocket;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
@@ -29,6 +28,8 @@ import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
 import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
+import io.github.addoncommunity.galactifun.base.items.rockets.ChemicalRocket;
+import io.github.addoncommunity.galactifun.base.items.rockets.IonRocket;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -213,12 +214,14 @@ public final class BaseItems {
             LoreBuilder.powerPerSecond(65_536),
             LoreBuilder.powerBuffer(65_536)
     );
-    public static final SlimefunItemStack METHANE_BUCKET = new SlimefunItemStack(
-            "METHANE_BUCKET",
-            HeadTexture.FUEL_BUCKET,
-            "&eMethane Bucket",
+    public static final SlimefunItemStack ATMOSPHERIC_HARVESTER = new SlimefunItemStack(
+            "ATMOSPHERIC_HARVESTER",
+            GalactifunHead.ATMOSPHERIC_HARVESTER,
+            "&fAtmospheric Harvester",
             "",
-            "&7Highly efficient rocket fuel"
+            "&7Collects gases from the atmosphere",
+            "",
+            "&f&oTexture by haseir"
     );
     //</editor-fold>
     //<editor-fold desc="Protecting Blocks" defaultstate="collapsed">
@@ -351,7 +354,7 @@ public final class BaseItems {
     public static final SlimefunItemStack TIER_ONE = new SlimefunItemStack(
             "ROCKET_TIER_ONE",
             GalactifunHead.ROCKET,
-            "&4Rocket Tier 1",
+            "&4Chemical Rocket Tier 1",
             "",
             "&7Fuel Capacity: " + TIER_ONE_FUEL,
             "&7Cargo Capacity: " + TIER_ONE_STORAGE
@@ -361,7 +364,7 @@ public final class BaseItems {
     public static final SlimefunItemStack TIER_TWO = new SlimefunItemStack(
             "ROCKET_TIER_TWO",
             GalactifunHead.ROCKET,
-            "&4Rocket Tier 2",
+            "&4Chemical Rocket Tier 2",
             "",
             "&7Fuel Capacity: " + TIER_TWO_FUEL,
             "&7Cargo Capacity: " + TIER_TWO_STORAGE
@@ -371,10 +374,23 @@ public final class BaseItems {
     public static final SlimefunItemStack TIER_THREE = new SlimefunItemStack(
             "ROCKET_TIER_THREE",
             GalactifunHead.ROCKET,
-            "&4Rocket Tier 3",
+            "&4Chemical Rocket Tier 3",
             "",
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
+    );
+
+    public static final SlimefunItemStack ION_ROCKET = new SlimefunItemStack(
+            "ION_ROCKET",
+            GalactifunHead.ION_ROCKET,
+            "&bIon Rocket",
+            "",
+            "&7Uses a specialized engine that",
+            "&7expels ions at great speed, granting",
+            "&7extreme fuel efficiency",
+            "",
+            "&7Fuel Capacity: 500",
+            "&7Cargo Capacity: 18"
     );
     //</editor-fold>
 
@@ -453,7 +469,7 @@ public final class BaseItems {
                 STARGATE_RING, BaseMats.LAPIS_CIRCUIT, STARGATE_RING
         }).register(galactifun);
 
-        new SimpleRocket(CoreItemGroup.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
+        new ChemicalRocket(CoreItemGroup.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
@@ -461,7 +477,7 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE, BaseMats.ROCKET_ENGINE, null, BaseMats.HEAVY_DUTY_SHEET
         }, TIER_ONE_FUEL, TIER_ONE_STORAGE).register(galactifun);
-        new SimpleRocket(CoreItemGroup.ITEMS, TIER_TWO, AssemblyTable.TYPE, new ItemStack[] {
+        new ChemicalRocket(CoreItemGroup.ITEMS, TIER_TWO, AssemblyTable.TYPE, new ItemStack[] {
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
@@ -469,7 +485,7 @@ public final class BaseItems {
                 BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
                 BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_2, BaseMats.ROCKET_ENGINE_2, null, BaseMats.HEAVY_DUTY_SHEET
         }, TIER_TWO_FUEL, TIER_TWO_STORAGE).register(galactifun);
-        new SimpleRocket(CoreItemGroup.ITEMS, TIER_THREE, AssemblyTable.TYPE, new ItemStack[] {
+        new ChemicalRocket(CoreItemGroup.ITEMS, TIER_THREE, AssemblyTable.TYPE, new ItemStack[] {
                 null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
                 null, null, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, null, null,
                 null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, null,
@@ -587,7 +603,15 @@ public final class BaseItems {
                 BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
         }).register(galactifun);
 
-        new Methane(METHANE_BUCKET).register(galactifun);
+        new AtmosphericHarvester(ATMOSPHERIC_HARVESTER, new ItemStack[] {
+                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.SPACE_GRADE_PLATE, SUPER_FAN, BaseMats.SPACE_GRADE_PLATE,
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE
+        }).register(galactifun);
+
+        new IonRocket(ION_ROCKET, new ItemStack[] {
+
+        }, 500, 18).register(galactifun);
     }
 
 }

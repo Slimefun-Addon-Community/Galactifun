@@ -1,6 +1,8 @@
 package io.github.addoncommunity.galactifun.base.items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,15 +14,18 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.common.PersistentType;
 import io.github.mooy1.infinitylib.common.StackUtils;
 import io.github.mooy1.infinitylib.machines.TickingMenuBlock;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
@@ -28,16 +33,19 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
-public final class LaunchPadCore extends TickingMenuBlock {
+public final class LaunchPadCore extends TickingMenuBlock implements RecipeDisplayItem {
+
 
     private static final int[] BACKGROUND = {
             0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -61,7 +69,9 @@ public final class LaunchPadCore extends TickingMenuBlock {
     static {
         FUELS.put(SlimefunItems.OIL_BUCKET.getItemId(), 0.5);
         FUELS.put(SlimefunItems.FUEL_BUCKET.getItemId(), 1.0);
-        FUELS.put(BaseItems.METHANE_BUCKET.getItemId(), 6.0);
+        FUELS.put("ATMOSPHERIC_GAS_HYDROGEN", 3.5);
+        FUELS.put("ATMOSPHERIC_GAS_METHANE", 6.0);
+        FUELS.put("ATMOSPHERIC_GAS_ARGON", 18.0);
         FUELS.put(BaseMats.FUSION_PELLET.getItemId(), 66_227.0);
     }
 
@@ -92,17 +102,47 @@ public final class LaunchPadCore extends TickingMenuBlock {
 
         if (fuel < rocket.fuelCapacity()) {
             ItemStack fuelItem = menu.getItemInSlot(FUEL_SLOT);
-            if (fuelItem == null) return;
-            String id = StackUtils.getIdOrType(fuelItem);
+            if (fuelItem != null) {
+                String id = StackUtils.getIdOrType(fuelItem);
 
-            if (FUELS.containsKey(id) && (string == null || id.equals(string)) && rocket.allowedFuels().contains(id)) {
-                menu.consumeItem(FUEL_SLOT);
-                BSUtils.addBlockInfo(l.getBlock(), "fuel", ++fuel);
-                if (string == null) {
-                    BlockStorage.addBlockInfo(l, "fuelType", id);
+                if (FUELS.containsKey(id) && (string == null || id.equals(string)) && rocket.allowedFuels().contains(id)) {
+                    menu.consumeItem(FUEL_SLOT);
+                    BSUtils.addBlockInfo(l.getBlock(), "fuel", ++fuel);
+                    if (string == null) {
+                        BlockStorage.addBlockInfo(l, "fuelType", id);
+                    }
                 }
             }
         }
+
+        Skull skull = (Skull) b.getState();
+        PersistentDataContainer container = skull.getPersistentDataContainer();
+        List<ItemStack> cargo = container.getOrDefault(Rocket.CARGO_KEY, PersistentType.ITEM_STACK_LIST, new ArrayList<>());
+        if (cargo.size() < rocket.storageCapacity()) {
+            for (int i : INVENTORY_SLOTS) {
+                ItemStack item = menu.getItemInSlot(i);
+                if (item != null) {
+                    item = item.asOne();
+                    for (ItemStack stack : cargo) {
+                        if (ItemUtils.canStack(stack, item)) {
+                            stack.add();
+                            item = null;
+                            break;
+                        }
+                    }
+
+                    if (item != null) {
+                        cargo.add(item);
+                    }
+
+                    menu.consumeItem(i);
+                    break;
+                }
+            }
+        }
+
+        container.set(Rocket.CARGO_KEY, PersistentType.ITEM_STACK_LIST, cargo);
+        skull.update();
     }
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
@@ -165,8 +205,8 @@ public final class LaunchPadCore extends TickingMenuBlock {
             Player p = e.getPlayer();
 
             if (isSurroundedByFloors(b)) {
-                SlimefunItem item = SlimefunItem.getByItem(p.getInventory().getItem(e.getHand()));
-                if (item == null || !item.getId().startsWith("ROCKET_TIER_")) {
+                SlimefunItem item = SlimefunItem.getByItem(e.getItem());
+                if (!(item instanceof Rocket)) {
                     e.cancel();
                 }
 
@@ -185,6 +225,28 @@ public final class LaunchPadCore extends TickingMenuBlock {
             }
         }
 
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public List<ItemStack> getDisplayRecipes() {
+        List<ItemStack> ret = new ArrayList<>();
+
+        for (String id : FUELS.keySet()) {
+            ItemStack item = StackUtils.itemByIdOrType(id);
+            ret.add(new CustomItemStack(
+                    item,
+                    item.getI18NDisplayName(),
+                    "&7Efficiency: " + FUELS.get(id) + 'x'
+            ));
+        }
+
+        return ret;
+    }
+
+    @Override
+    protected boolean synchronous() {
         return true;
     }
 
