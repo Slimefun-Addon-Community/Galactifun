@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,7 +42,6 @@ import org.bukkit.util.Vector;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
@@ -283,7 +283,12 @@ public abstract class Rocket extends SlimefunItem {
             if (showLaunchAnimation) {
                 Location rocketLocation = rocket.getLocation().add(0.5, -1, 0.5);
                 ArmorStand armorStand = rocketLocation.getWorld().spawn(rocketLocation, ArmorStand.class);
-                armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
+
+                Skull skull = (Skull) rocket.getState();
+                ItemStack stack = new ItemStack(skull.getType());
+                stack.editMeta(meta -> ((SkullMeta) meta).setPlayerProfile(skull.getPlayerProfile()));
+
+                armorStand.getEquipment().setHelmet(stack);
                 armorStand.setInvisible(true);
                 armorStand.setInvulnerable(true);
                 armorStand.setMarker(false);
