@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.util.BSUtils;
@@ -27,8 +27,8 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -39,19 +39,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
 
     private static final String PROTECTING = "oxygenating";
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
-    private static final String ENABLED = "enabled";
-    private static final ItemStack ENABLED_ITEM = new CustomItemStack(
-            Material.STRUCTURE_VOID,
-            "&aEnabled",
-            "",
-            "&7Click to disable"
-    );
-    private static final ItemStack DISABLED_ITEM = new CustomItemStack(
-            Material.BARRIER,
-            "&cDisabled",
-            "",
-            "&7Click to enable"
-    );
+    private static final int OXYGEN_SLOT = 4;
     private static int counter = 0;
     private final int range;
 
@@ -62,7 +50,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
         addItemHandler(new BlockTicker() {
             @Override
             public boolean isSynchronized() {
-                return false;
+                return true;
             }
 
             @Override
@@ -105,7 +93,6 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
 
     @Override
     protected void onPlace(@Nonnull BlockPlaceEvent e, @Nonnull Block b) {
-        BlockStorage.addBlockInfo(b, ENABLED, "true");
         updateProtections(new BlockPosition(b));
     }
 
@@ -117,7 +104,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
     }
 
     @Override
-    protected final void setup(@Nonnull BlockMenuPreset preset) {
+    protected void setup(@Nonnull BlockMenuPreset preset) {
         for (int i = 0; i < 9; i++) {
             if (i == 4) continue;
             preset.addItem(i, MenuBlock.BACKGROUND_ITEM, ChestMenuUtils.getEmptyClickHandler());
@@ -126,31 +113,12 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
 
     @Override
     protected int[] getInputSlots() {
-        return new int[0];
+        return new int[]{OXYGEN_SLOT};
     }
 
     @Override
     protected int[] getOutputSlots() {
         return new int[0];
-    }
-
-    @Override
-    protected void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
-        if (BSUtils.getStoredBoolean(b.getLocation(), ENABLED)) {
-            menu.replaceExistingItem(4, ENABLED_ITEM);
-            menu.addMenuClickHandler(4, (p, slot, item, action) -> {
-                BlockStorage.addBlockInfo(b, ENABLED, "false");
-                this.onNewInstance(menu, b);
-                return false;
-            });
-        } else {
-            menu.replaceExistingItem(4, DISABLED_ITEM);
-            menu.addMenuClickHandler(4, (p, slot, item, action) -> {
-                BlockStorage.addBlockInfo(b, ENABLED, "true");
-                this.onNewInstance(menu, b);
-                return false;
-            });
-        }
     }
 
     @Nonnull
@@ -167,14 +135,19 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
     private void updateProtections(BlockPosition pos) {
         Location l = pos.toLocation();
         Block b = pos.getBlock();
-        if (!BSUtils.getStoredBoolean(l, ENABLED)) {
-            updateHologram(b, "&cNot Enabled");
-            return;
-        }
 
         if (!BSUtils.getStoredBoolean(l, PROTECTING)) {
             updateHologram(b, "&cNot Enough Energy");
             return;
+        }
+
+        if (Galactifun.slimefunTickCount() % 18 == 0) {
+            BlockMenu menu = BlockStorage.getInventory(b);
+            if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item(), false, false)) {
+                updateHologram(b, "&cNo Oxygen");
+                return;
+            }
+            menu.consumeItem(OXYGEN_SLOT);
         }
 
         int range = this.range;
