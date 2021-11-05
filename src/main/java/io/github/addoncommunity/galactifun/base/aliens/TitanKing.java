@@ -24,7 +24,7 @@ public final class TitanKing extends BossAlien<Evoker> {
 
     private final Alien<?> leech;
 
-    public TitanKing(String id, String name, double maxHealth, int spawnChance, BossBarStyle style, Alien<?> leech) {
+    public TitanKing(String id, String name, double maxHealth, double spawnChance, BossBarStyle style, Alien<?> leech) {
         super(Evoker.class, id, name, maxHealth, spawnChance, style);
         this.leech = leech;
     }

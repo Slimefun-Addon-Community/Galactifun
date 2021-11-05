@@ -21,6 +21,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -210,12 +211,19 @@ public abstract class AlienWorld extends PlanetaryWorld {
             Collections.shuffle(this.species, rand);
 
             int players = world.getPlayers().size();
-            int mobs = world.getLivingEntities().size() - players;
+            int mobs = 0;
+            for (LivingEntity e : world.getLivingEntities()) {
+                if (Galactifun.alienManager().getAlien(e) != null) {
+                    mobs++;
+                }
+            }
             int max = players * Galactifun.worldManager().maxAliensPerPlayer();
 
-            for (Alien<?> alien : this.species) {
-                if ((mobs += alien.attemptSpawn(rand, world)) > max) {
-                    break;
+            if (mobs < max) {
+                for (Alien<?> alien : this.species) {
+                    if ((mobs += alien.attemptSpawn(rand, world)) > max) {
+                        break;
+                    }
                 }
             }
         }
