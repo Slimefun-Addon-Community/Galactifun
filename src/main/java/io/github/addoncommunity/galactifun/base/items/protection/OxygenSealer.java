@@ -38,6 +38,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 public final class OxygenSealer extends MenuBlock implements EnergyNetComponent, HologramOwner {
 
     private static final String PROTECTING = "oxygenating";
+    private static final String NO_OXYGEN = "no_oxygen";
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
     private static final int OXYGEN_SLOT = 4;
     private static int counter = 0;
@@ -113,7 +114,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
 
     @Override
     protected int[] getInputSlots() {
-        return new int[]{OXYGEN_SLOT};
+        return new int[] { OXYGEN_SLOT };
     }
 
     @Override
@@ -141,13 +142,16 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
             return;
         }
 
-        if (Galactifun.slimefunTickCount() % 18 == 0) {
-            BlockMenu menu = BlockStorage.getInventory(b);
-            if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item(), false, false)) {
-                updateHologram(b, "&cNo Oxygen");
-                return;
-            }
+        BlockMenu menu = BlockStorage.getInventory(b);
+        if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item(), false, false)) {
+            updateHologram(b, "&cNo Oxygen");
+            BSUtils.addBlockInfo(b, NO_OXYGEN, true);
+            return;
+        }
+        // to protect against people looping back and forth one oxygen tank and tricking it into thinking there is oxygen
+        if (Galactifun.slimefunTickCount() % 18 == 0 || BSUtils.getStoredBoolean(l, NO_OXYGEN)) {
             menu.consumeItem(OXYGEN_SLOT);
+            BSUtils.addBlockInfo(b, NO_OXYGEN, false);
         }
 
         int range = this.range;

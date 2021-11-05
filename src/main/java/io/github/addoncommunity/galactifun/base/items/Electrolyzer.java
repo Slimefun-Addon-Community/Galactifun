@@ -19,6 +19,7 @@ public class Electrolyzer extends AContainer {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         setCapacity(512);
         setEnergyConsumption(128);
+        setProcessingSpeed(1);
     }
 
     @Override
