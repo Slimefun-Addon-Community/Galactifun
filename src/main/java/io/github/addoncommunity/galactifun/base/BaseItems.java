@@ -629,8 +629,8 @@ public final class BaseItems {
         }).register(galactifun);
 
         new AtmosphericHarvester(ATMOSPHERIC_HARVESTER, new ItemStack[] {
+                BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.SPACE_GRADE_PLATE, SUPER_FAN, BaseMats.SPACE_GRADE_PLATE,
                 BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE
         }).register(galactifun);
 
