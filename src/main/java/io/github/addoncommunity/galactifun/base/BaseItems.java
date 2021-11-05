@@ -230,7 +230,7 @@ public final class BaseItems {
     );
     public static final SlimefunItemStack CHEMICAL_REACTOR = new SlimefunItemStack(
             "CHEMICAL_REACTOR",
-            Material.BREWING_STAND,
+            Material.SEA_LANTERN,
             "&fChemical Reactor",
             "",
             "&7Reacts chemicals together",
