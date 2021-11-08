@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.mooy1.infinitylib.machines.MenuBlock;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -33,6 +34,9 @@ public class Electrolyzer extends AContainer {
         registerRecipe(Gas.CARBON_DIOXIDE.item(), Gas.OXYGEN.item().asQuantity(2), SlimefunItems.CARBON);
 
         registerRecipe(Gas.AMMONIA.item(), Gas.HYDROGEN.item().asQuantity(3), Gas.NITROGEN.item());
+
+        registerRecipe(BaseMats.MARS_DUST, SlimefunItems.IRON_DUST.asQuantity(2), Gas.OXYGEN.item().asQuantity(3));
+        registerRecipe(BaseMats.MOON_DUST, Gas.HELIUM.item().asQuantity(3));
     }
 
     private void registerRecipe(ItemStack in, ItemStack... out) {

@@ -38,10 +38,20 @@ public final class BaseMats {
             Material.LIGHT_GRAY_CONCRETE_POWDER,
             "&7Moon Dust"
     );
+    public static final SlimefunItemStack MOON_ROCK = new SlimefunItemStack(
+            "MOON_ROCK",
+            Material.ANDESITE,
+            "&7Moon Rock"
+    );
     public static final SlimefunItemStack MARS_DUST = new SlimefunItemStack(
             "MARS_DUST",
             Material.RED_SAND,
             "&cMars Dust"
+    );
+    public static final SlimefunItemStack MARS_ROCK = new SlimefunItemStack(
+            "MARS_ROCK",
+            Material.TERRACOTTA,
+            "&cMars Rock"
     );
     public static final SlimefunItemStack DRY_ICE = new SlimefunItemStack(
             "DRY_ICE",
@@ -293,7 +303,9 @@ public final class BaseMats {
 
     public static void setup() {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
+        worldItem(MOON_ROCK, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
+        worldItem(MARS_ROCK, BaseUniverse.MARS);
         worldItem(FALLEN_METEOR, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
@@ -452,6 +464,14 @@ public final class BaseMats {
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
                 new SlimefunItemStack(SlimefunItems.SULFATE, 9)
+        );
+        RecipeType.GRIND_STONE.register(
+                Arrays.copyOf(new ItemStack[] { MARS_ROCK }, 9),
+                new SlimefunItemStack(MARS_DUST, 4)
+        );
+        RecipeType.GRIND_STONE.register(
+                Arrays.copyOf(new ItemStack[] { MOON_ROCK }, 9),
+                new SlimefunItemStack(MOON_DUST, 4)
         );
     }
 
