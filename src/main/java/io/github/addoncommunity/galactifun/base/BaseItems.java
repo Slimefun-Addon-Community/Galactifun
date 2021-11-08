@@ -244,7 +244,7 @@ public final class BaseItems {
             "&fElectrolyzer",
             "",
             "&7Uses electricity to split",
-            "&chemicals into their constituents",
+            "&7chemicals into their constituents",
             LoreBuilder.powerPerSecond(256),
             LoreBuilder.powerBuffer(512)
     );
