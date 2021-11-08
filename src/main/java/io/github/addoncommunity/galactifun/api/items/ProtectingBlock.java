@@ -66,7 +66,7 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
         addItemHandler(new BlockTicker() {
             @Override
             public boolean isSynchronized() {
-                return false;
+                return true;
             }
 
             @Override

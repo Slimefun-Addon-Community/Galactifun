@@ -159,6 +159,11 @@ public final class BaseMats {
             Material.FLINT_AND_STEEL,
             "&fRocket Engine Mk 3"
     );
+    public static final SlimefunItemStack ION_ENGINE = new SlimefunItemStack(
+            "ION_ENGINE",
+            Material.FLINT_AND_STEEL,
+            "&bIon Engine"
+    );
     public static final SlimefunItemStack ADVANCED_PROCESSING_UNIT = new SlimefunItemStack(
             "ADVANCED_PROCESSING_UNIT",
             GalactifunHead.CORE,
@@ -364,6 +369,14 @@ public final class BaseMats {
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE,
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE
         );
+        assembly(ION_ENGINE, true,
+                SlimefunItems.SOLAR_GENERATOR_4, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, SlimefunItems.SOLAR_GENERATOR_4,
+                null, null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null, null,
+                null, DIAMOND_CIRCUIT, NOZZLE, NOZZLE, DIAMOND_CIRCUIT, null,
+                null, SPACE_GRADE_PLATE, BLISTERING_VOLCANIC_INGOT, BLISTERING_VOLCANIC_INGOT, SPACE_GRADE_PLATE, null,
+                SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE,
+                SPACE_GRADE_PLATE, ALUMINUM_COMPOSITE, null, null, ALUMINUM_COMPOSITE, SPACE_GRADE_PLATE
+                );
         component(ADVANCED_PROCESSING_UNIT, RecipeType.ENHANCED_CRAFTING_TABLE,
                 REDSTONE_CIRCUIT, GLOWSTONE_CIRCUIT, REDSTONE_CIRCUIT,
                 DIAMOND_CIRCUIT, SlimefunItems.ADVANCED_CIRCUIT_BOARD, DIAMOND_CIRCUIT,
