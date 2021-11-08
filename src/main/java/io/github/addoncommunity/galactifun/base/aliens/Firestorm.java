@@ -23,7 +23,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 public final class Firestorm extends Alien<Blaze> implements Listener {
 
 
-    public Firestorm(@NonNull String id, @NonNull String name, double maxHealth, int spawnChance) {
+    public Firestorm(@NonNull String id, @NonNull String name, double maxHealth, double spawnChance) {
         super(Blaze.class, id, name, maxHealth, spawnChance);
 
         Events.registerListener(this);

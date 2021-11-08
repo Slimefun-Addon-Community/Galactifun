@@ -4,12 +4,14 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.util.Util;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -27,7 +29,7 @@ public final class OxygenFiller extends AContainer {
     @Override
     protected void tick(Block b) {
         PlanetaryWorld world = Galactifun.worldManager().getWorld(b.getWorld());
-        if (!Galactifun.protectionManager().isOxygenBlock(b.getLocation()) && world != null && world.atmosphere().requiresOxygenTank()) {
+        if (!isInSealed(b) && world != null && world.atmosphere().requiresOxygenTank()) {
             return;
         }
 
@@ -76,6 +78,16 @@ public final class OxygenFiller extends AContainer {
     @Override
     public String getMachineIdentifier() {
         return "OXYGEN_FILLER";
+    }
+
+    private boolean isInSealed(@Nonnull Block b) {
+        for (BlockFace face : Util.ALL_SIDES) {
+            if (Galactifun.protectionManager().isOxygenBlock(b.getRelative(face).getLocation())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

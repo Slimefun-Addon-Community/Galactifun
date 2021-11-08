@@ -24,7 +24,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
  */
 public final class MutantCreeper extends Alien<Creeper> {
 
-    public MutantCreeper(String id, String name, double maxHealth, int spawnChance) {
+    public MutantCreeper(String id, String name, double maxHealth, double spawnChance) {
         super(Creeper.class, id, name, maxHealth, spawnChance);
     }
 

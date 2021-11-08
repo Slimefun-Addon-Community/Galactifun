@@ -35,7 +35,7 @@ public final class Venus extends SimpleAlienWorld {
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new VolcanoPopulator(117, Material.MAGMA_BLOCK, Material.LAVA));
-        populators.add(new LakePopulator(80, Material.LAVA));
+        populators.add(new LakePopulator(75, Material.LAVA));
     }
 
     @Nonnull

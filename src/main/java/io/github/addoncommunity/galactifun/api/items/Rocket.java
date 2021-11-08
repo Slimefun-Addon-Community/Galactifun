@@ -254,7 +254,7 @@ public final class Rocket extends SlimefunItem {
             //Launch animation
 
             if (showLaunchAnimation) {
-                Location rocketLocation = rocket.getLocation().add(0.5, 0, 0.5);
+                Location rocketLocation = rocket.getLocation().add(0.5, -1, 0.5);
                 ArmorStand armorStand = rocketLocation.getWorld().spawn(rocketLocation, ArmorStand.class);
                 armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
                 armorStand.setInvisible(true);

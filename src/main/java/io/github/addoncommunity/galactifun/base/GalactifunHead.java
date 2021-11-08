@@ -15,5 +15,6 @@ public final class GalactifunHead {
     public static final ItemStack FAN = SlimefunUtils.getCustomHead("172771fc11737063c81eb75973e9b82590951e3674f31acce8cddd1aad1b");
     public static final ItemStack LIFE_SUPPORT_MODULE = SlimefunUtils.getCustomHead("5aa7c7bccf903cec5f3d0323ad05054aa207d5412f5097d0ab214cf59b42bc1c");
     public static final ItemStack CAN = SlimefunUtils.getCustomHead("eb2e58962331676f67a67c0273ed29ba4465986b44e1598e0b8a29c04f82d21a");
+    public static final ItemStack CHEESE = SlimefunUtils.getCustomHead("35e140868f338aae43f01086adc17bc31da1e981b83b7a0e063b4da3d507c1d3");
 
 }
