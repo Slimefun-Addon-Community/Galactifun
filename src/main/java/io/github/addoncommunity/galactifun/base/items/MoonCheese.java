@@ -13,7 +13,7 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 
-public class MoonCheese extends SimpleSlimefunItem<BlockPlaceHandler> {
+public final class MoonCheese extends SimpleSlimefunItem<BlockPlaceHandler> {
 
     public MoonCheese(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);

@@ -38,10 +38,20 @@ public final class BaseMats {
             Material.LIGHT_GRAY_CONCRETE_POWDER,
             "&7Moon Dust"
     );
+    public static final SlimefunItemStack MOON_ROCK = new SlimefunItemStack(
+            "MOON_ROCK",
+            Material.ANDESITE,
+            "&7Moon Rock"
+    );
     public static final SlimefunItemStack MARS_DUST = new SlimefunItemStack(
             "MARS_DUST",
             Material.RED_SAND,
             "&cMars Dust"
+    );
+    public static final SlimefunItemStack MARS_ROCK = new SlimefunItemStack(
+            "MARS_ROCK",
+            Material.TERRACOTTA,
+            "&cMars Rock"
     );
     public static final SlimefunItemStack DRY_ICE = new SlimefunItemStack(
             "DRY_ICE",
@@ -158,6 +168,11 @@ public final class BaseMats {
             "ROCKET_ENGINE_3",
             Material.FLINT_AND_STEEL,
             "&fRocket Engine Mk 3"
+    );
+    public static final SlimefunItemStack ION_ENGINE = new SlimefunItemStack(
+            "ION_ENGINE",
+            Material.FLINT_AND_STEEL,
+            "&bIon Engine"
     );
     public static final SlimefunItemStack ADVANCED_PROCESSING_UNIT = new SlimefunItemStack(
             "ADVANCED_PROCESSING_UNIT",
@@ -288,7 +303,9 @@ public final class BaseMats {
 
     public static void setup() {
         worldItem(MOON_DUST, BaseUniverse.THE_MOON);
+        worldItem(MOON_ROCK, BaseUniverse.THE_MOON);
         worldItem(MARS_DUST, BaseUniverse.MARS);
+        worldItem(MARS_ROCK, BaseUniverse.MARS);
         worldItem(FALLEN_METEOR, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
@@ -364,6 +381,14 @@ public final class BaseMats {
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE,
                 SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE
         );
+        assembly(ION_ENGINE, true,
+                SlimefunItems.SOLAR_GENERATOR_4, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, REINFORCED_CHANNEL, SlimefunItems.SOLAR_GENERATOR_4,
+                null, null, REINFORCED_CHANNEL, REINFORCED_CHANNEL, null, null,
+                null, DIAMOND_CIRCUIT, NOZZLE, NOZZLE, DIAMOND_CIRCUIT, null,
+                null, SPACE_GRADE_PLATE, BLISTERING_VOLCANIC_INGOT, BLISTERING_VOLCANIC_INGOT, SPACE_GRADE_PLATE, null,
+                SPACE_GRADE_PLATE, null, null, null, null, SPACE_GRADE_PLATE,
+                SPACE_GRADE_PLATE, ALUMINUM_COMPOSITE, null, null, ALUMINUM_COMPOSITE, SPACE_GRADE_PLATE
+                );
         component(ADVANCED_PROCESSING_UNIT, RecipeType.ENHANCED_CRAFTING_TABLE,
                 REDSTONE_CIRCUIT, GLOWSTONE_CIRCUIT, REDSTONE_CIRCUIT,
                 DIAMOND_CIRCUIT, SlimefunItems.ADVANCED_CIRCUIT_BOARD, DIAMOND_CIRCUIT,
@@ -439,6 +464,14 @@ public final class BaseMats {
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { SULFUR_BLOCK }, 9),
                 new SlimefunItemStack(SlimefunItems.SULFATE, 9)
+        );
+        RecipeType.GRIND_STONE.register(
+                Arrays.copyOf(new ItemStack[] { MARS_ROCK }, 9),
+                new SlimefunItemStack(MARS_DUST, 4)
+        );
+        RecipeType.GRIND_STONE.register(
+                Arrays.copyOf(new ItemStack[] { MOON_ROCK }, 9),
+                new SlimefunItemStack(MOON_DUST, 4)
         );
     }
 

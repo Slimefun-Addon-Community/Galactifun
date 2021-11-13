@@ -1,7 +1,11 @@
 package io.github.addoncommunity.galactifun.api.items;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -11,12 +15,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Skull;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.ArmorStand;
@@ -27,20 +33,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
 import io.github.addoncommunity.galactifun.util.Util;
+import io.github.mooy1.infinitylib.common.PersistentType;
 import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.mooy1.infinitylib.common.StackUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -53,24 +62,32 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-public final class Rocket extends SlimefunItem {
+public abstract class Rocket extends SlimefunItem {
+
+    public static final NamespacedKey CARGO_KEY = Galactifun.createKey("cargo");
 
     // todo Move static to some sort of RocketManager
     private static final List<String> LAUNCH_MESSAGES = Galactifun.instance().getConfig().getStringList("rockets.launch-msgs");
-    private static final int DISTANCE_PER_FUEL = 2_000_000;
+    private static final double DISTANCE_PER_FUEL = 2_000_000 / Util.KM_PER_LY;
 
     @Getter
     private final int fuelCapacity;
     @Getter
     private final int storageCapacity;
+    @Getter
+    private final Set<String> allowedFuels;
 
     public Rocket(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
 
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
+        this.allowedFuels = getAllowedFuels().stream().map(StackUtils::getIdOrType).collect(Collectors.toUnmodifiableSet());
 
-        addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(block -> openGUI(e.getPlayer(), block)));
+        addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(block -> {
+            e.cancel();
+            openGUI(e.getPlayer(), block);
+        }));
 
         addItemHandler(new BlockPlaceHandler(false) {
             @Override
@@ -116,29 +133,29 @@ public final class Rocket extends SlimefunItem {
         string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
         if (string == null) return;
         String fuelType = string;
-        Integer eff = LaunchPadCore.FUELS.get(string);
+        Double eff = LaunchPadCore.FUELS.get(string);
         if (eff == null) return;
 
-        // km
-        long maxDistance = Math.round(DISTANCE_PER_FUEL * eff * fuel);
+        // ly
+        double maxDistance = fuel * DISTANCE_PER_FUEL * eff;
 
         new WorldSelector((player, obj, lore) -> {
             if (obj instanceof PlanetaryWorld) {
-                // km
-                double dist = obj.distanceTo(world) * Util.KM_PER_LY;
+                // ly
+                double dist = obj.distanceTo(world);
                 if (dist > maxDistance) return false;
 
                 lore.add(Component.empty());
                 lore.add(Component.text()
                         .color(NamedTextColor.YELLOW)
                         .append(Component.text("Distance: "))
-                        .append(Component.text((long) dist))
+                        .append(Component.text((long) Math.ceil(dist / Util.KM_PER_LY)))
                         .build()
                 );
                 lore.add(Component.text()
                         .color(NamedTextColor.YELLOW)
                         .append(Component.text("Fuel: "))
-                        .append(Component.text((long) Math.ceil(dist / DISTANCE_PER_FUEL)))
+                        .append(Component.text((long) Math.ceil(dist / (DISTANCE_PER_FUEL * eff))))
                         .build()
                 );
             }
@@ -146,7 +163,8 @@ public final class Rocket extends SlimefunItem {
             return true;
         }, (player, pw) -> {
             player.closeInventory();
-            int usedFuel = (int) Math.ceil((pw.distanceTo(world) * Util.KM_PER_LY) / DISTANCE_PER_FUEL);
+            // i hate biginteger math
+            long usedFuel =(long) Math.ceil(pw.distanceTo(world) / (DISTANCE_PER_FUEL * eff));
             player.sendMessage(ChatColor.YELLOW + "You are going to " + pw.name() + " and will use " +
                     usedFuel + " fuel. Are you sure you want to do that? (yes/no)");
             ChatUtils.awaitInput(player, (input) -> {
@@ -168,7 +186,7 @@ public final class Rocket extends SlimefunItem {
         }).open(p);
     }
 
-    public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, int fuelLeft, String fuelType, int x, int z) {
+    public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, long fuelLeft, String fuelType, int x, int z) {
         BlockStorage.addBlockInfo(rocket, "isLaunching", "true");
 
         World world = p.getWorld();
@@ -223,11 +241,20 @@ public final class Rocket extends SlimefunItem {
                 Inventory inv = chest.getInventory();
                 inv.addItem(this.getItem().clone());
 
-                SlimefunItem sfi = SlimefunItem.getById(fuelType);
-                ItemStack fuel = sfi == null ? new ItemStack(Material.valueOf(fuelType)) : sfi.getItem();
+                ItemStack fuel = StackUtils.itemByIdOrType(fuelType);
                 fuel = fuel.clone();
-                fuel.setAmount(fuelLeft);
+                fuel.setAmount((int) fuelLeft);
                 inv.addItem(fuel);
+
+                PersistentDataContainer container = ((Skull) rocket.getState()).getPersistentDataContainer();
+                List<ItemStack> cargo = container.getOrDefault(CARGO_KEY, PersistentType.ITEM_STACK_LIST, new ArrayList<>());
+
+                for (ItemStack item : cargo) {
+                    HashMap<Integer, ItemStack> notFit = inv.addItem(item);
+                    for (ItemStack nf : notFit.values()) {
+                        to.dropItemNaturally(destBlock.getLocation().add(0, 1, 0), nf);
+                    }
+                }
             }
             state.update();
 
@@ -235,7 +262,7 @@ public final class Rocket extends SlimefunItem {
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity && !(entity instanceof ArmorStand)) || entity instanceof Item) {
                     if (entity.getLocation().distanceSquared(rocket.getLocation()) <= 25) {
-                        if (entity instanceof Player){
+                        if (entity instanceof Player) {
                             entity.setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
                         }
                         PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
@@ -251,12 +278,17 @@ public final class Rocket extends SlimefunItem {
                     }
                 }
             }
-            //Launch animation
 
+            // launch animation
             if (showLaunchAnimation) {
                 Location rocketLocation = rocket.getLocation().add(0.5, -1, 0.5);
                 ArmorStand armorStand = rocketLocation.getWorld().spawn(rocketLocation, ArmorStand.class);
-                armorStand.getEquipment().setHelmet(GalactifunHead.ROCKET);
+
+                Skull skull = (Skull) rocket.getState();
+                ItemStack stack = new ItemStack(skull.getType());
+                stack.editMeta(meta -> ((SkullMeta) meta).setPlayerProfile(skull.getPlayerProfile()));
+
+                armorStand.getEquipment().setHelmet(stack);
                 armorStand.setInvisible(true);
                 armorStand.setInvulnerable(true);
                 armorStand.setMarker(false);
@@ -268,9 +300,8 @@ public final class Rocket extends SlimefunItem {
                     @Override
                     public void run() {
                         i++;
-                        armorStand.setVelocity(new Vector(0, 0.8 + i / 10, 0));
-                        rocketLocation.getWorld().spawnParticle(Particle.FLAME, armorStand.getLocation(), 5);
-                        rocketLocation.getWorld().spawnParticle(Particle.LAVA, armorStand.getLocation(), 5);
+                        armorStand.setVelocity(new Vector(0, 0.8 + i / 10D, 0));
+                        rocketLocation.getWorld().spawnParticle(getLaunchParticles(), armorStand.getLocation(), 10);
                         if (i > 40) {
                             armorStand.remove();
                             this.cancel();
@@ -282,6 +313,13 @@ public final class Rocket extends SlimefunItem {
             rocket.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocket);
         });
+    }
+
+    protected abstract List<ItemStack> getAllowedFuels();
+
+    @Nonnull
+    protected Particle getLaunchParticles() {
+        return Particle.ASH;
     }
 
 }

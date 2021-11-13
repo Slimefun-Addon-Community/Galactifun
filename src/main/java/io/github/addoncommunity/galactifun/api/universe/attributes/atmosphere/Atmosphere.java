@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.RandomizedSet;
 
 /**
  * An atmosphere of a celestial object, use {@link AtmosphereBuilder} to create
@@ -25,14 +26,12 @@ import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 @ParametersAreNonnullByDefault
 public final class Atmosphere {
 
-    private static final double EARTH_CARBON_DIOXIDE = 0.0415;
-
     public static final Atmosphere NONE = new AtmosphereBuilder()
             .setEnd()
             .setPressure(0)
             .addEffect(AtmosphericEffect.COLD, 3)
             .build();
-
+    private static final double EARTH_CARBON_DIOXIDE = 0.0415;
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
             .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
             .add(Gas.OXYGEN, 20.946)
@@ -50,6 +49,10 @@ public final class Atmosphere {
     private final World.Environment environment;
     private final Map<AtmosphericEffect, Integer> effects;
     private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
+    /**
+     * Used for getting a gas proportionally to the composition
+     */
+    private final RandomizedSet<Gas> weightedCompositionSet = new RandomizedSet<>();
 
     // builder's constructor
     Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering,
@@ -67,6 +70,11 @@ public final class Atmosphere {
         // calculated values
         this.flammable = composition.getOrDefault(Gas.OXYGEN, 0.0) > 5;
         this.growthAttempts = (int) (this.pressurizedCompositionOf(Gas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
+        for (Map.Entry<Gas, Double> entry : this.composition.entrySet()) {
+            if (entry.getKey().item() != null) {
+                this.weightedCompositionSet.add(entry.getKey(), entry.getValue().floatValue());
+            }
+        }
     }
 
     public void applyEffects(@Nonnull World world) {
