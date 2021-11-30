@@ -62,6 +62,7 @@ import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
 import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
+import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.GEOResourceGenerationEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
@@ -279,6 +280,11 @@ public final class WorldManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onEntityExplode(EntityExplodeEvent e) {
         handleExplosion(e.blockList().iterator());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    private void onExplosivePickUse(ExplosiveToolBreakBlocksEvent e) {
+        handleExplosion(e.getAdditionalBlocks().iterator());
     }
 
     private void handleExplosion(Iterator<Block> blocks) {
