@@ -331,7 +331,9 @@ public final class StargateController extends SlimefunItem implements Listener {
         if (destBlock.getType().isEmpty()) {
             // Check if the destination is an alien world
             AlienWorld world = Galactifun.worldManager().getAlienWorld(destBlock.getWorld());
-            if (world != null) e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
+            if (world != null) {
+                e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
+            }
             PaperLib.teleportAsync(e.getPlayer(), destBlock.getLocation());
             p.setMetadata("disableStargate", new FixedMetadataValue(Galactifun.instance(), true));
             Scheduler.run(10, () -> p.removeMetadata("disableStargate", Galactifun.instance()));
