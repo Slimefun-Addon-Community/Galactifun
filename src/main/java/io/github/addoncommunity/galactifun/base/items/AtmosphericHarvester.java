@@ -19,6 +19,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.RandomizedSet;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
@@ -80,6 +81,7 @@ public final class AtmosphericHarvester extends AbstractMachineBlock {
     @Override
     protected void setup(@Nonnull BlockMenuPreset preset) {
         preset.setSize(36);
+        preset.addMenuClickHandler(getStatusSlot(), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override

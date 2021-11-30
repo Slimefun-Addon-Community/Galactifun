@@ -278,7 +278,7 @@ public final class WorldManager implements Listener {
                 } else {
                     Location l = b.getLocation();
                     e.setDropItems(false);
-                    w.dropItemNaturally(l.add(0.5, 0.5, 0.5), item.clone());
+                    w.dropItemNaturally(l.add(0.5, 0, 0.5), item.clone());
                 }
             }
         }
