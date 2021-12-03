@@ -329,7 +329,7 @@ public final class StargateController extends SlimefunItem implements Listener {
 
         Block destBlock = b.getRelative(1, 0, 0);
         if (destBlock.getType().isEmpty()) {
-            // Check if the destination is an alien world
+            // Check if the player is teleporting to an alien world, and if so, allow them to
             AlienWorld world = Galactifun.worldManager().getAlienWorld(destBlock.getWorld());
             if (world != null) {
                 e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
