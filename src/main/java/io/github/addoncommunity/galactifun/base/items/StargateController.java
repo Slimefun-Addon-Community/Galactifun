@@ -25,6 +25,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.destroystokyo.paper.event.player.PlayerTeleportEndGatewayEvent;
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.BSUtils;
 import io.github.mooy1.infinitylib.common.Events;
@@ -328,7 +329,11 @@ public final class StargateController extends SlimefunItem implements Listener {
 
         Block destBlock = b.getRelative(1, 0, 0);
         if (destBlock.getType().isEmpty()) {
-            e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
+            // Check if the player is teleporting to an alien world, and if so, allow them to
+            AlienWorld world = Galactifun.worldManager().getAlienWorld(destBlock.getWorld());
+            if (world != null) {
+                e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
+            }
             PaperLib.teleportAsync(e.getPlayer(), destBlock.getLocation());
             p.setMetadata("disableStargate", new FixedMetadataValue(Galactifun.instance(), true));
             Scheduler.run(10, () -> p.removeMetadata("disableStargate", Galactifun.instance()));
