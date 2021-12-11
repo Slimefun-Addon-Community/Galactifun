@@ -28,7 +28,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -358,7 +357,7 @@ public final class WorldManager implements Listener {
         if (e.getBucket() != Material.WATER_BUCKET) return;
         Player p = e.getPlayer();
         PlanetaryWorld world = this.getWorld(p.getWorld());
-        if (world != null) {
+        if (world != null && world != BaseUniverse.EARTH) {
             e.setCancelled(true);
             if (p.getGameMode() != GameMode.CREATIVE) {
                 ItemStack item = p.getInventory().getItem(e.getHand());
@@ -375,13 +374,7 @@ public final class WorldManager implements Listener {
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
                 p.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l, 5);
             } else {
-                BlockData data = clicked.getBlockData();
-                if (data instanceof Waterlogged waterlogged) {
-                    waterlogged.setWaterlogged(true);
-                    clicked.setBlockData(waterlogged);
-                } else {
-                    toBePlaced.setType(Material.WATER);
-                }
+                e.setCancelled(false);
             }
         }
     }
