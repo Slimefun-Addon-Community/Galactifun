@@ -7,6 +7,8 @@ api-version: 1.16
 depend: [Slimefun]
 # This makes ClayTech load before Galactifun, so we can check if it's enabled in onEnable()
 softdepend: [ClayTech]
+loadbefore:
+  - Multiverse-Core
 
 commands:
   galactifun:
