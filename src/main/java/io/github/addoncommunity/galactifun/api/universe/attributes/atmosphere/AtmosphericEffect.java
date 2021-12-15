@@ -26,6 +26,7 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
  */
 public final class AtmosphericEffect {
 
+    @Getter
     private static final Map<String, AtmosphericEffect> allEffects = new HashMap<>();
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION",
