@@ -2,8 +2,10 @@ package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import lombok.Getter;
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -26,7 +29,6 @@ import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
  */
 public final class AtmosphericEffect {
 
-    @Getter
     private static final Map<String, AtmosphericEffect> allEffects = new HashMap<>();
 
     public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION",
@@ -80,6 +82,11 @@ public final class AtmosphericEffect {
 
     public static AtmosphericEffect getById(@NonNull String id) {
         return allEffects.get(id);
+    }
+
+    @Nonnull
+    public static Set<AtmosphericEffect> allEffects() {
+        return ImmutableSet.copyOf(allEffects.values());
     }
 
     public void apply(@NonNull Player p, int level) {
