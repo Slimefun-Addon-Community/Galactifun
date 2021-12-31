@@ -23,6 +23,8 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.At
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
 import io.github.addoncommunity.galactifun.util.GenUtils;
+import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
 /**
  * Class for Mars
@@ -40,16 +42,19 @@ public final class Mars extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Material generateMaterial(@Nonnull Random random, int x, int y, int z, int top) {
-        // top 4 blocks
-        if (y > top - 4) {
-            return Material.RED_SAND;
-        }
         if (random.nextDouble() <= 0.1 && y <= 15) {
             // 10% of blocks under y 15 are iron ore
             return Material.IRON_ORE;
         }
         // 90% of blocks are terracotta
         return Material.TERRACOTTA;
+    }
+
+    @Nonnull
+    @Override
+    protected ObjectIntPair<Material> getTop() {
+        // top 4 blocks
+        return new ObjectIntImmutablePair<>(Material.RED_SAND, 4);
     }
 
     @Override
