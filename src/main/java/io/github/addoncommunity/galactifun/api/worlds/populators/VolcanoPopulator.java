@@ -6,12 +6,10 @@ import javax.annotation.Nonnull;
 
 import lombok.AllArgsConstructor;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
 
 /**
  * Volcano populator
@@ -27,25 +25,37 @@ public class VolcanoPopulator extends BlockPopulator {
     private final Material liquid;
 
     @Override
-    public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        final int startX = chunk.getX() << 4;
-        final int startZ = chunk.getZ() << 4;
+    public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
+        int startX = region.getCenterChunkX() << 4;
+        int startZ = region.getCenterChunkZ() << 4;
 
-        Block highestBlock = chunk.getBlock(0, 0, 0);
+        int bx = startX;
+        int by = 0;
+        int bz = startZ;
+
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                Block b = world.getHighestBlockAt(startX + x, startZ + z);
-                if (b.getY() > highestBlock.getY()) {
-                    highestBlock = b;
+                for (int y = 0; y < worldInfo.getMaxHeight(); y++) {
+                    int realX = startX + x;
+                    int realZ = startZ + z;
+
+                    if (region.getType(realX, y, realZ).isAir()) {
+                        if (y > by && y >= minY) {
+                            bx = realX;
+                            by = y;
+                            bz = realZ;
+                        }
+                        break;
+                    }
                 }
             }
         }
 
-        if (highestBlock.getY() >= this.minY) {
-            highestBlock.getRelative(BlockFace.UP).setType(this.liquid);
-            for (int i = 0; i < 7; i++) {
-                highestBlock.setType(this.belowLiquid, false);
-                highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+        if (by >= minY) {
+            region.setType(bx, by, bz, liquid);
+            region.scheduleFluidUpdate(bx, by, bz);
+            for (int y = 7; y > 0; y--) {
+                region.setType(bx, by - y, bz, belowLiquid);
             }
         }
     }
