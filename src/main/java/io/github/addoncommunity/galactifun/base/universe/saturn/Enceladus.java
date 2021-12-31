@@ -1,20 +1,16 @@
 package io.github.addoncommunity.galactifun.base.universe.saturn;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.structures.Structure;
-import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
@@ -58,12 +54,15 @@ public final class Enceladus extends FlatWorld {
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        /*
         populators.add(new BlockPopulator() {
-
             @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
+            public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int x, int z, @Nonnull LimitedRegion region) {
                 double rand = random.nextDouble();
                 if (rand < .03) {
+                    int chunkX = region.getCenterChunkX() << 4;
+                    int chunkZ = region.getCenterChunkZ() << 4;
+
                     if (random.nextDouble() < .75) {
                         Enceladus.this.cryovolcano.paste(source.getBlock(4, 61, 4), StructureRotation.DEFAULT);
                     } else {
@@ -72,6 +71,7 @@ public final class Enceladus extends FlatWorld {
                 }
             }
         });
+         */
     }
 
     @Override
