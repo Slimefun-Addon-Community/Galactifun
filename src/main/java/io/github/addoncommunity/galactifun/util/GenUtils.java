@@ -1,12 +1,17 @@
 package io.github.addoncommunity.galactifun.util;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BiomeProvider;
+import org.bukkit.generator.WorldInfo;
 
 @UtilityClass
 public final class GenUtils {
@@ -43,4 +48,27 @@ public final class GenUtils {
         generateSquare(topLog.subtract(0, 1, 0), leaves, 2);
     }
 
+    public static final class SingleBiomeProvider extends BiomeProvider {
+
+        private final Biome biome;
+        private final List<Biome> singletonBiome;
+
+        public SingleBiomeProvider(Biome biome) {
+            this.biome = biome;
+            this.singletonBiome = List.of(biome);
+        }
+
+        @Nonnull
+        @Override
+        public Biome getBiome(@Nonnull WorldInfo worldInfo, int x, int y, int z) {
+            return biome;
+        }
+
+        @Nonnull
+        @Override
+        public List<Biome> getBiomes(@Nonnull WorldInfo worldInfo) {
+            return singletonBiome;
+        }
+
+    }
 }

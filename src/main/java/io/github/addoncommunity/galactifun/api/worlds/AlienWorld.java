@@ -12,9 +12,8 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.Chunk;
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -22,8 +21,10 @@ import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
@@ -38,10 +39,7 @@ import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * Any alien world
@@ -80,14 +78,32 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
         // Load or create world
         World world = new WorldCreator(worldName)
-                .generator(new ChunkGenerator() {
+                .generator(replaceChunkGenerator(new ChunkGenerator() {
 
-                    @Nonnull
+                    @Nullable
                     @Override
-                    public ChunkData generateChunkData(@Nonnull World world, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull BiomeGrid grid) {
-                        ChunkData chunk = createChunkData(world);
-                        generateChunk(chunk, grid, random, world, chunkX, chunkZ);
-                        return chunk;
+                    public BiomeProvider getDefaultBiomeProvider(@Nonnull WorldInfo worldInfo) {
+                        return getBiomeProvider();
+                    }
+
+                    @Override
+                    public void generateBedrock(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int chunkX, int chunkZ, @Nonnull ChunkData chunkData) {
+                        int bedrock = getBedrockLayer();
+                        for (int x = 0; x < 16; x++) {
+                            for (int z = 0; z < 16; z++) {
+                                chunkData.setBlock(x, bedrock, z, Material.BEDROCK);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void generateNoise(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int x, int z, @Nonnull ChunkData chunkData) {
+                        generateChunk(chunkData, random, worldInfo, x, z);
+                    }
+
+                    @Override
+                    public void generateSurface(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int x, int z, @Nonnull ChunkData chunkData) {
+                        AlienWorld.this.generateSurface(chunkData, random, worldInfo, x, z);
                     }
 
                     @Nonnull
@@ -95,22 +111,9 @@ public abstract class AlienWorld extends PlanetaryWorld {
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
                         List<BlockPopulator> list = new ArrayList<>(1);
                         getPopulators(list);
-                        list.add(new BlockPopulator() {
-                            @Override
-                            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
-                                PersistentDataAPI.setString(source, CHUNK_VER_KEY,
-                                        String.format("%s v%s", addon().getName(), addon().getPluginVersion()));
-                            }
-                        });
                         return list;
                     }
-
-                    @Override
-                    public Location getFixedSpawnLocation(@Nonnull World world, @Nonnull Random random) {
-                        Block b = world.getHighestBlockAt(random.nextInt(), random.nextInt());
-                        return b.getLocation();
-                    }
-                })
+                }))
                 .environment(atmosphere().environment())
                 .createWorld();
 
@@ -174,14 +177,57 @@ public abstract class AlienWorld extends PlanetaryWorld {
 
     /**
      * Generate a chunk
+     *
+     * @deprecated generation has been changed. use {@link #generateChunk(ChunkGenerator.ChunkData, Random, WorldInfo, int, int)} instead
      */
-    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
-                                          @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ);
+    @Deprecated
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
+                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
+    }
+
+    /**
+     * Generate a chunk
+     */
+    protected abstract void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random,
+                                          @Nonnull WorldInfo world, int chunkX, int chunkZ);
+
+    /**
+     * Optionally, generate the surface step of the world
+     */
+    protected void generateSurface(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+    }
 
     /**
      * Add all chunk populators to this list
      */
     protected abstract void getPopulators(@Nonnull List<BlockPopulator> populators);
+
+    /**
+     * Get the {@link BiomeProvider} for this world
+     *
+     * @return the {@link BiomeProvider} for this world, or null for vanilla biomes
+     */
+    @Nullable
+    protected BiomeProvider getBiomeProvider() {
+        return null;
+    }
+
+    /**
+     * Optionally replace the default {@link ChunkGenerator} for this world
+     */
+    @Nonnull
+    protected ChunkGenerator replaceChunkGenerator(@Nonnull ChunkGenerator defaultGenerator) {
+        return defaultGenerator;
+    }
+
+    /**
+     * Returns the y layer at which bedrock is generated
+     *
+     * @return the y layer of bedrock in this world
+     */
+    protected int getBedrockLayer() {
+        return 0;
+    }
 
     public final void applyEffects(@Nonnull Player p) {
         atmosphere().applyEffects(p);
