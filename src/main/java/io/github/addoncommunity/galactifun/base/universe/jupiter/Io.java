@@ -46,7 +46,7 @@ public final class Io extends SimpleAlienWorld {
     @Nonnull
     @Override
     protected Biome getBiome() {
-        return Biome.DESERT_HILLS;
+        return Biome.DESERT;
     }
 
     @Override

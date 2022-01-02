@@ -6,11 +6,10 @@ import javax.annotation.Nonnull;
 
 import lombok.AllArgsConstructor;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
 
 /**
  * Lake populator
@@ -26,16 +25,15 @@ public class LakePopulator extends BlockPopulator {
     private final Material liquid;
 
     @Override
-    public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
-        final int startX = chunk.getX() << 4;
-        final int startZ = chunk.getZ() << 4;
+    public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
+        int startX = region.getCenterChunkX() << 4;
+        int startZ = region.getCenterChunkZ() << 4;
 
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                Block b = world.getHighestBlockAt(startX + x, startZ + z);
-                if (b.getY() < this.maxY) {
-                    for (int y = this.maxY; y > b.getY(); y--) {
-                        chunk.getBlock(x, y, z).setType(this.liquid, false);
+        for (int x = startX; x < startX + 16; x++) {
+            for (int z = startZ; z < startZ + 16; z++) {
+                for (int y = 0; y < maxY; y++) {
+                    if (region.getType(x, y, z).isAir()) {
+                        region.setType(x, y, z, liquid);
                     }
                 }
             }

@@ -9,8 +9,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
@@ -20,6 +22,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.util.GenUtils;
 import io.github.addoncommunity.galactifun.util.Sphere;
 
 public final class EarthOrbit extends AlienWorld {
@@ -33,15 +36,20 @@ public final class EarthOrbit extends AlienWorld {
     }
 
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
-                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0; x < 16; x++) {
-            for (int y = world.getMinHeight(); y < world.getMaxHeight(); y++) {
-                for (int z = 0; z < 16; z++) {
-                    grid.setBiome(x, y, z, Biome.THE_VOID);
-                }
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+        // nop
+    }
+
+    @Nonnull
+    @Override
+    protected ChunkGenerator replaceChunkGenerator(@Nonnull ChunkGenerator defaultGenerator) {
+        return new ChunkGenerator() {
+            @Nonnull
+            @Override
+            public BiomeProvider getDefaultBiomeProvider(@Nonnull WorldInfo worldInfo) {
+                return new GenUtils.SingleBiomeProvider(Biome.THE_VOID);
             }
-        }
+        };
     }
 
     @Override

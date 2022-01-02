@@ -22,7 +22,6 @@ import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
-import io.github.addoncommunity.galactifun.core.commands.ChunkverCommand;
 import io.github.addoncommunity.galactifun.core.commands.EffectsCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
 import io.github.addoncommunity.galactifun.core.commands.SealedCommand;
@@ -131,8 +130,7 @@ public final class Galactifun extends AbstractAddon {
                 .addSub(new SphereCommand())
                 .addSub(new StructureCommand(this))
                 .addSub(new SealedCommand())
-                .addSub(new EffectsCommand())
-                .addSub(new ChunkverCommand());
+                .addSub(new EffectsCommand());
     }
 
     @Override

@@ -1,20 +1,18 @@
 package io.github.addoncommunity.galactifun.base.universe.saturn;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
@@ -35,6 +33,7 @@ import io.github.addoncommunity.galactifun.base.BaseMats;
  */ // TODO clean it up a bit
 public final class Titan extends AlienWorld {
 
+    /*
     private static final Set<Biome> forests = EnumSet.of(
             Biome.FOREST,
             Biome.BIRCH_FOREST,
@@ -46,6 +45,7 @@ public final class Titan extends AlienWorld {
             Biome.WOODED_HILLS,
             Biome.WOODED_MOUNTAINS
     );
+     */
 
     private SimplexOctaveGenerator generator;
 
@@ -124,6 +124,7 @@ public final class Titan extends AlienWorld {
                     biome = removeRiver(grid, x, z, height);
                 }
 
+                /*
                 switch (biome) {
                     case BADLANDS, MODIFIED_BADLANDS_PLATEAU, MODIFIED_WOODED_BADLANDS_PLATEAU, ERODED_BADLANDS, DESERT -> {
                         if (random.nextDouble() < 0.1) {
@@ -173,8 +174,14 @@ public final class Titan extends AlienWorld {
                         generateRest(height, chunk, random, x, z);
                     }
                 }
+                 */
             }
         }
+    }
+
+    @Override
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+
     }
 
     @Override
@@ -188,6 +195,7 @@ public final class Titan extends AlienWorld {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    /*
                     if (forests.contains(b.getBiome())) {
                         if (b.getType() == Material.WARPED_NYLIUM) {
                             world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
@@ -195,6 +203,7 @@ public final class Titan extends AlienWorld {
                             world.generateTree(b.getLocation().add(0, 1, 0), TreeType.CRIMSON_FUNGUS);
                         }
                     }
+                     */
                 }
             }
         });
@@ -206,9 +215,11 @@ public final class Titan extends AlienWorld {
                     int x = random.nextInt(15);
                     int z = random.nextInt(15);
                     Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
+                    /*
                     if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
                         world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
                     }
+                     */
                 }
             }
         });

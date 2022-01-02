@@ -1,38 +1,35 @@
 package io.github.addoncommunity.galactifun.base.universe.saturn;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.structures.Structure;
-import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.api.universe.attributes.DayCycle;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
-import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.FlatWorld;
 import io.github.addoncommunity.galactifun.util.Sphere;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMap;
 
 /**
  * Class for the Saturnian moon Enceladus
  *
  * @author Seggan
  */
-public final class Enceladus extends AlienWorld {
+public final class Enceladus extends FlatWorld {
 
-    private final Structure cryoVolcano = Structure.get(Galactifun.instance(), "cryovolcano");
+    private final Structure cryovolcano = Structure.get(Galactifun.instance(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
     public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
@@ -40,49 +37,41 @@ public final class Enceladus extends AlienWorld {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
+    @Nonnull
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
-                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
+    protected Int2ObjectSortedMap<Material> getLayers() {
+        return new Int2ObjectLinkedOpenHashMap<>() {{
+            put(30, Material.PACKED_ICE);
+            put(60, Material.BLUE_ICE);
+        }};
+    }
 
-                chunk.setBlock(x, 0, z, Material.BEDROCK);
-                grid.setBiome(x, 0, z, Biome.FROZEN_OCEAN);
-
-                int y = 1;
-                while (y <= 30) {
-                    chunk.setBlock(x, y++, z, Material.PACKED_ICE);
-                    grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
-                }
-
-                while (y <= 60) {
-                    chunk.setBlock(x, y++, z, Material.BLUE_ICE);
-                    grid.setBiome(x, y, z, Biome.FROZEN_OCEAN);
-                }
-
-                while (y < 256) {
-                    grid.setBiome(x, y++, z, Biome.FROZEN_OCEAN);
-                }
-            }
-        }
+    @Nonnull
+    @Override
+    protected Biome getBiome() {
+        return Biome.FROZEN_OCEAN;
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
+        /*
         populators.add(new BlockPopulator() {
-
             @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk source) {
+            public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int x, int z, @Nonnull LimitedRegion region) {
                 double rand = random.nextDouble();
                 if (rand < .03) {
-                    if (rand < .15) {
-                        Enceladus.this.cryoVolcano.paste(source.getBlock(4, 61, 4), StructureRotation.DEFAULT);
+                    int chunkX = region.getCenterChunkX() << 4;
+                    int chunkZ = region.getCenterChunkZ() << 4;
+
+                    if (random.nextDouble() < .75) {
+                        Enceladus.this.cryovolcano.paste(source.getBlock(4, 61, 4), StructureRotation.DEFAULT);
                     } else {
                         Enceladus.this.waterPocket.generate(source.getBlock(8, random.nextInt(40) + 5, 8), 3, 3);
                     }
                 }
             }
         });
+         */
     }
 
     @Override
