@@ -135,7 +135,8 @@ public abstract class FlatWorld extends AlienWorld {
 
             int amount = layers.size() / 2 + 1;
             for (int i = 0; i < amount; i++) {
-                newBottom.put(i, layers.get(i));
+                int layer = iter.nextInt();
+                newBottom.put(layer, layers.get(layer));
             }
 
             this.bottom = Int2ObjectSortedMaps.unmodifiable(newBottom);
