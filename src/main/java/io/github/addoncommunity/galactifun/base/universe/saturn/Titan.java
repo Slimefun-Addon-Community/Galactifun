@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
@@ -48,140 +48,58 @@ public final class Titan extends AlienWorld {
      */
 
     private SimplexOctaveGenerator generator;
+    private TitanBiomeProvider provider;
 
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
         super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    /**
-     * Replaces river with the closest biome it finds
-     */
-    private static Biome removeRiver(ChunkGenerator.BiomeGrid grid, int x, int z, int height) {
-        int dev = 1;
-        Biome biome = grid.getBiome(x, height, z);
-        while (dev < 16) {
-            if (x - dev >= 0 && (grid.getBiome(x - dev, height, z) != Biome.RIVER && grid.getBiome(x - dev, height, z) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x - dev, height, z);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (x + dev <= 16 && (grid.getBiome(x + dev, height, z) != Biome.RIVER && grid.getBiome(x + dev, height, z) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x + dev, height, z);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (z - dev >= 0 && (grid.getBiome(x, height, z - dev) != Biome.RIVER && grid.getBiome(x, height, z - dev) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x, height, z - dev);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            } else if (z + dev <= 16 && (grid.getBiome(x, height, z + dev) != Biome.RIVER && grid.getBiome(x, height, z + dev) != Biome.FROZEN_RIVER)) {
-                biome = grid.getBiome(x, height, z + dev);
-                for (int y = 0; y < 256; y++) {
-                    grid.setBiome(x, y, z, biome);
-                }
-                return biome;
-            }
-            dev++;
-        }
-        return biome;
-    }
-
-    private static void generateRest(int height, ChunkGenerator.ChunkData chunk, Random random, int x, int z) {
-        for (int y = height; y > 0; y--) {
-            if (random.nextBoolean()) {
-                chunk.setBlock(x, y, z, Material.STONE);
-            } else {
-                chunk.setBlock(x, y, z, Material.COAL_ORE);
-            }
-        }
-    }
-
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull ChunkGenerator.BiomeGrid grid,
-                                 @Nonnull Random random, @Nonnull World world, int chunkX, int chunkZ) {
-        if (this.generator == null) {
-            this.generator = new SimplexOctaveGenerator(world, 8);
-            this.generator.setScale(0.004);
-        }
-
+    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+        init(world);
         for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
             for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
-                chunk.setBlock(x, 0, z, Material.BEDROCK);
+                int height = getHeight(realX, realZ);
 
-                // find max height
-                double startHeight = generator.noise(realX, realZ, 0.5, 0.5, true);
-                int height = (int) (55 + 30 * (startHeight * startHeight));
-
-                Biome biome = grid.getBiome(x, height, z);
-
-                if (biome == Biome.RIVER || biome == Biome.FROZEN_RIVER) {
-                    biome = removeRiver(grid, x, z, height);
-                }
-
-                /*
-                switch (biome) {
-                    case BADLANDS, MODIFIED_BADLANDS_PLATEAU, MODIFIED_WOODED_BADLANDS_PLATEAU, ERODED_BADLANDS, DESERT -> {
-                        if (random.nextDouble() < 0.1) {
-                            for (int y = height + random.nextInt(4); y > height; y--) {
-                                chunk.setBlock(x, y, z, Material.COAL_BLOCK);
-                            }
-                        }
-                        chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
-                        generateRest(height, chunk, random, x, z);
-                    }
-                    case WOODED_BADLANDS_PLATEAU, BADLANDS_PLATEAU, DESERT_HILLS, DESERT_LAKES -> {
-                        if (random.nextDouble() < 0.1) {
-                            for (int y = height + random.nextInt(4); y > height; y--) {
-                                if (random.nextBoolean()) {
-                                    chunk.setBlock(x, y, z, Material.COAL_BLOCK);
-                                } else {
-                                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
-                                }
-                            }
-                        }
-                        chunk.setBlock(x, height + 1, z, Material.COAL_BLOCK);
-                        generateRest(height, chunk, random, x, z);
-                    }
-                    case BIRCH_FOREST, WOODED_HILLS, WOODED_MOUNTAINS, FLOWER_FOREST, BIRCH_FOREST_HILLS, TALL_BIRCH_FOREST, TALL_BIRCH_HILLS, FOREST -> {
-                        if (random.nextBoolean()) {
-                            chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
-                        } else {
-                            chunk.setBlock(x, height + 1, z, Material.CRIMSON_NYLIUM);
-                        }
-                        generateRest(height, chunk, random, x, z);
-                    }
-                    case SNOWY_TAIGA, SNOWY_TAIGA_HILLS, SNOWY_TAIGA_MOUNTAINS -> {
-                        chunk.setBlock(x, height + 1, z, Material.WARPED_NYLIUM);
-                        generateRest(height, chunk, random, x, z);
-                    }
-                    case COLD_OCEAN, DEEP_LUKEWARM_OCEAN, DEEP_OCEAN, DEEP_WARM_OCEAN, LUKEWARM_OCEAN, DEEP_COLD_OCEAN, FROZEN_OCEAN, DEEP_FROZEN_OCEAN, WARM_OCEAN, OCEAN, BEACH, SNOWY_BEACH -> {
-                        if (height <= 58) {
-                            for (int i = 58; i > height; i--) {
-                                chunk.setBlock(x, i, z, Material.WATER);
-                            }
-                        }
-                        chunk.setBlock(x, height + 1, z, Material.SAND);
-                        generateRest(height, chunk, random, x, z);
-                    }
-                    default -> {
-                        chunk.setBlock(x, height + 1, z, Material.BLUE_ICE);
-                        generateRest(height, chunk, random, x, z);
+                for (int y = 0; y < height; y++) {
+                    if (random.nextBoolean()) {
+                        chunk.setBlock(x, y, z, Material.STONE);
+                    } else {
+                        chunk.setBlock(x, y, z, Material.COAL_ORE);
                     }
                 }
-                 */
             }
         }
     }
 
     @Override
-    protected void generateChunk(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+    protected void generateSurface(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
+        super.generateSurface(chunk, random, world, chunkX, chunkZ);
+    }
 
+    @Nonnull
+    @Override
+    protected BiomeProvider getBiomeProvider(@Nonnull WorldInfo info) {
+        init(info);
+        return this.provider;
+    }
+
+    private void init(@Nonnull WorldInfo info) {
+        if (this.generator == null) {
+            this.generator = new SimplexOctaveGenerator(info.getSeed(), 8);
+            this.generator.setScale(0.004);
+        }
+        if (this.provider == null) {
+            this.provider = new TitanBiomeProvider(this);
+        }
+    }
+
+    int getHeight(int x, int z) {
+        // find max height
+        double startHeight = generator.noise(x, z, 0.5, 0.5, true);
+        return (int) (55 + 30 * (startHeight * startHeight));
     }
 
     @Override

@@ -111,7 +111,7 @@ public abstract class FlatWorld extends AlienWorld {
 
     @Nonnull
     @Override
-    protected final BiomeProvider getBiomeProvider() {
+    protected final BiomeProvider getBiomeProvider(@Nonnull WorldInfo info) {
         return new GenUtils.SingleBiomeProvider(getBiome());
     }
 

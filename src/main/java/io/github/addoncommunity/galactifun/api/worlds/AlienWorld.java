@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -40,6 +39,8 @@ import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+
+import org.apache.commons.lang.Validate;
 
 /**
  * Any alien world
@@ -83,7 +84,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
                     @Nullable
                     @Override
                     public BiomeProvider getDefaultBiomeProvider(@Nonnull WorldInfo worldInfo) {
-                        return getBiomeProvider();
+                        return getBiomeProvider(worldInfo);
                     }
 
                     @Override
@@ -208,7 +209,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
      * @return the {@link BiomeProvider} for this world, or null for vanilla biomes
      */
     @Nullable
-    protected BiomeProvider getBiomeProvider() {
+    protected BiomeProvider getBiomeProvider(@Nonnull WorldInfo info) {
         return null;
     }
 
