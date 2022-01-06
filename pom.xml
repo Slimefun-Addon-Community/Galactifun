@@ -121,6 +121,10 @@
                             <pattern>io.github.mooy1.infinitylib</pattern>
                             <shadedPattern>io.github.addoncommunity.galactifun.infinitylib</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>it.unimi.dsi.fastutil</pattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.fastutil</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
