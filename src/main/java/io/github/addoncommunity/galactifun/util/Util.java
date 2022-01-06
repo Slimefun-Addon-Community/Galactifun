@@ -12,10 +12,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.RegionAccessor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -86,7 +88,7 @@ public final class Util {
      * @return blocks traversed, or an empty optional if traversed blocks > max
      */
     @Nonnull
-    public static Optional<Set<BlockPosition>> floodFill(@Nonnull Location start, int max) {
+    public static Optional<Set<BlockPosition>> floodFill(@NonNull Location start, int max) {
         if (max == 0) return Optional.empty();
 
         Set<Block> visited = new HashSet<>();
@@ -107,6 +109,19 @@ public final class Util {
         }
 
         return Optional.of(visited.parallelStream().map(BlockPosition::new).collect(Collectors.toSet()));
+    }
+
+    /**
+     * Gets the highest block of this {@link RegionAccessor}
+     */
+    public static Location getHighestBlockAt(@NonNull RegionAccessor region, int x, int z) {
+        for (int y = 0; y < 319; y++) {
+            if (region.getType(x, y, z).isAir()) {
+                return new Location(null, x, y - 1, z);
+            }
+        }
+
+        return new Location(null, x, 0, z);
     }
 
 }

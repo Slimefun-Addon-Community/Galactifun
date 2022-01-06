@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import lombok.Getter;
 
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -32,22 +31,6 @@ final class TitanBiomeProvider extends BiomeProvider {
     });
 
     private final List<Biome> allBiomes = Arrays.stream(TitanBiome.values()).map(TitanBiome::biome).collect(Collectors.toList());
-
-    enum TitanBiome {
-        FOREST(Biome.FOREST),
-        FROZEN_FOREST(Biome.SNOWY_TAIGA),
-        WASTELAND(Biome.DESERT),
-        DRY_ICE_FLATS(Biome.ICE_SPIKES),
-        CARBON_FOREST(Biome.DARK_FOREST),
-        FROZEN_CARBON_FOREST(Biome.BIRCH_FOREST);
-
-        @Getter
-        private final Biome biome;
-
-        TitanBiome(Biome biome) {
-            this.biome = biome;
-        }
-    }
 
     @Nonnull
     @Override
@@ -76,7 +59,7 @@ final class TitanBiomeProvider extends BiomeProvider {
             } else {
                 biome = TitanBiome.DRY_ICE_FLATS;
             }
-        } else if (humidity > 0.1) {
+        } else if (humidity > -0.1) {
             if (heat > 0.2) {
                 biome = TitanBiome.CARBON_FOREST;
             } else {
@@ -102,8 +85,8 @@ final class TitanBiomeProvider extends BiomeProvider {
             this.heat.setScale(0.001);
         }
         if (this.humidity == null) {
-            this.humidity = new SimplexOctaveGenerator(worldInfo.getSeed(), 8);
-            this.humidity.setScale(0.001);
+            this.humidity = new SimplexOctaveGenerator(new Random(worldInfo.getSeed()).nextLong(), 8);
+            this.humidity.setScale(0.003);
         }
     }
 

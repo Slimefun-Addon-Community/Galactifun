@@ -5,13 +5,13 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.TreeType;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
@@ -26,6 +26,7 @@ import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.OrePopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
+import io.github.addoncommunity.galactifun.util.Util;
 
 /**
  * Class for the Saturnian moon Titan
@@ -82,7 +83,7 @@ public final class Titan extends AlienWorld {
             for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
 
                 int height = getHeight(realX, realZ);
-                TitanBiomeProvider.TitanBiome biome = this.provider.getBiome(world, realX, realZ);
+                TitanBiome biome = this.provider.getBiome(world, realX, realZ);
 
                 Material material = height < 57 ? Material.BLUE_ICE : switch (biome) {
                     case FOREST -> random.nextBoolean() ? Material.WARPED_NYLIUM : Material.CRIMSON_NYLIUM;
@@ -95,14 +96,14 @@ public final class Titan extends AlienWorld {
                 chunk.setBlock(x, height, z, material);
 
                 // carbon forest/frozen carbon forest
-                if (height > 57) {
-                    if (biome == TitanBiomeProvider.TitanBiome.CARBON_FOREST) {
+                if (height > 56) {
+                    if (biome == TitanBiome.CARBON_FOREST) {
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 chunk.setBlock(x, y, z, Material.COAL_BLOCK);
                             }
                         }
-                    } else if (biome == TitanBiomeProvider.TitanBiome.FROZEN_CARBON_FOREST) {
+                    } else if (biome == TitanBiome.FROZEN_CARBON_FOREST) {
                         if (random.nextDouble() < 0.1) {
                             for (int y = height + random.nextInt(4); y > height; y--) {
                                 if (random.nextBoolean()) {
@@ -145,38 +146,38 @@ public final class Titan extends AlienWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         // TODO add more vegetation
         populators.add(new BlockPopulator() {
+
             @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+            public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
                 int amount = random.nextInt(2) + 1;
                 for (int i = 0; i < amount; i++) {
-                    int x = random.nextInt(15);
-                    int z = random.nextInt(15);
-                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    /*
-                    if (forests.contains(b.getBiome())) {
-                        if (b.getType() == Material.WARPED_NYLIUM) {
-                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
+                    int x = (cx << 4) + random.nextInt(16);
+                    int z = (cz << 4) + random.nextInt(16);
+
+                    if (region.getBiome(x, 1, z) == TitanBiome.FOREST.biome()) {
+                        Location l = Util.getHighestBlockAt(region, x, z);
+                        if (region.getType(l) == Material.WARPED_NYLIUM) {
+                            region.generateTree(l.add(0, 1, 0), random, TreeType.WARPED_FUNGUS);
                         } else {
-                            world.generateTree(b.getLocation().add(0, 1, 0), TreeType.CRIMSON_FUNGUS);
+                            region.generateTree(l.add(0, 1, 0), random, TreeType.CRIMSON_FUNGUS);
                         }
                     }
-                     */
                 }
             }
         });
 
         populators.add(new BlockPopulator() {
+
             @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+            public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
                 if (random.nextDouble() < 0.25) {
-                    int x = random.nextInt(15);
-                    int z = random.nextInt(15);
-                    Block b = world.getHighestBlockAt((chunk.getX() << 4) + x, (chunk.getZ() << 4) + z);
-                    /*
-                    if (b.getBiome() == Biome.SNOWY_TAIGA || b.getBiome() == Biome.SNOWY_TAIGA_HILLS || b.getBiome() == Biome.SNOWY_TAIGA_MOUNTAINS) {
-                        world.generateTree(b.getLocation().add(0, 1, 0), TreeType.WARPED_FUNGUS);
+                    int x = (cx << 4) + random.nextInt(16);
+                    int z = (cz << 4) + random.nextInt(16);
+
+                    if (region.getBiome(x, 1, z) == TitanBiome.FROZEN_FOREST.biome()) {
+                        Location l = Util.getHighestBlockAt(region, x, z).add(0, 1, 0);
+                        region.generateTree(l, random, TreeType.WARPED_FUNGUS);
                     }
-                     */
                 }
             }
         });
