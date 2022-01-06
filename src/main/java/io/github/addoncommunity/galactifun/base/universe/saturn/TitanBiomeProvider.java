@@ -74,29 +74,23 @@ final class TitanBiomeProvider extends BiomeProvider {
         double heat = this.heat.noise(x, z, 0.01, 0.03, true);
         double humidity = this.humidity.noise(x, z, 0.01, 0.03, true);
 
-        int height = titan.getHeight(x, z);
-
         TitanBiome biome;
-        if (height <= 57) {
-            biome = TitanBiome.LAKES;
-        } else {
-            if (humidity > 0.2) {
-                if (heat > 0.2) {
-                    biome = TitanBiome.FOREST;
-                } else if (heat > 0) {
-                    biome = TitanBiome.FROZEN_FOREST;
-                } else {
-                    biome = TitanBiome.DRY_ICE_FLATS;
-                }
-            } else if (humidity > 0.1) {
-                if (heat > 0.2) {
-                    biome = TitanBiome.CARBON_FOREST;
-                } else {
-                    biome = TitanBiome.FROZEN_CARBON_FOREST;
-                }
+        if (humidity > 0.2) {
+            if (heat > 0.2) {
+                biome = TitanBiome.FOREST;
+            } else if (heat > 0) {
+                biome = TitanBiome.FROZEN_FOREST;
             } else {
-                biome = TitanBiome.WASTELAND;
+                biome = TitanBiome.DRY_ICE_FLATS;
             }
+        } else if (humidity > 0.1) {
+            if (heat > 0.2) {
+                biome = TitanBiome.CARBON_FOREST;
+            } else {
+                biome = TitanBiome.FROZEN_CARBON_FOREST;
+            }
+        } else {
+            biome = TitanBiome.WASTELAND;
         }
 
         cachedData.put(new IntIntImmutablePair(x, z), biome);

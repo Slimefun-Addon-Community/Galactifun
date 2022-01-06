@@ -76,8 +76,21 @@ public final class Titan extends AlienWorld {
 
     @Override
     protected void generateSurface(@Nonnull ChunkGenerator.ChunkData chunk, @Nonnull Random random, @Nonnull WorldInfo world, int chunkX, int chunkZ) {
-        super.generateSurface(chunk, random, world, chunkX, chunkZ);
+        init(world);
+        for (int x = 0, realX = chunkX << 4; x < 16; x++, realX++) {
+            for (int z = 0, realZ = chunkZ << 4; z < 16; z++, realZ++) {
+
+                int height = getHeight(realX, realZ);
+                TitanBiomeProvider.TitanBiome biome = this.provider.getBiome(world, realX, realZ);
+
+                Material material = height > 57 ? Material.SAND : switch (biome) {
+                    case FOREST -> random.nextBoolean() ? Material.WARPED_NYLIUM : Material.CRIMSON_NYLIUM;
+                };
+            }
+        }
     }
+
+    private static Material
 
     @Nonnull
     @Override
