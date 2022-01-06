@@ -21,10 +21,8 @@ import it.unimi.dsi.fastutil.ints.IntIntPair;
 
 final class TitanBiomeProvider extends BiomeProvider {
 
-    private SimplexOctaveGenerator heat;
-    private SimplexOctaveGenerator humidity;
-
-    private final Titan titan;
+    private volatile SimplexOctaveGenerator heat;
+    private volatile SimplexOctaveGenerator humidity;
 
     private final Map<IntIntPair, TitanBiome> cachedData = Collections.synchronizedMap(new LinkedHashMap<>() {
         @Override
@@ -35,18 +33,13 @@ final class TitanBiomeProvider extends BiomeProvider {
 
     private final List<Biome> allBiomes = Arrays.stream(TitanBiome.values()).map(TitanBiome::biome).collect(Collectors.toList());
 
-    TitanBiomeProvider(Titan titan) {
-        this.titan = titan;
-    }
-
     enum TitanBiome {
         FOREST(Biome.FOREST),
         FROZEN_FOREST(Biome.SNOWY_TAIGA),
         WASTELAND(Biome.DESERT),
         DRY_ICE_FLATS(Biome.ICE_SPIKES),
         CARBON_FOREST(Biome.DARK_FOREST),
-        FROZEN_CARBON_FOREST(Biome.BIRCH_FOREST),
-        LAKES(Biome.OCEAN);
+        FROZEN_CARBON_FOREST(Biome.BIRCH_FOREST);
 
         @Getter
         private final Biome biome;
@@ -104,10 +97,14 @@ final class TitanBiomeProvider extends BiomeProvider {
     }
 
     private void init(WorldInfo worldInfo) {
-        this.heat = new SimplexOctaveGenerator(worldInfo.getSeed(), 8);
-        this.heat.setScale(0.001);
-        this.humidity = new SimplexOctaveGenerator(worldInfo.getSeed(), 8);
-        this.humidity.setScale(0.001);
+        if (this.heat == null) {
+            this.heat = new SimplexOctaveGenerator(worldInfo.getSeed(), 8);
+            this.heat.setScale(0.001);
+        }
+        if (this.humidity == null) {
+            this.humidity = new SimplexOctaveGenerator(worldInfo.getSeed(), 8);
+            this.humidity.setScale(0.001);
+        }
     }
 
 }

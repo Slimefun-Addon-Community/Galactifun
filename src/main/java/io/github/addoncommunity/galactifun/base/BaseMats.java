@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.CircuitPress;
@@ -57,6 +58,11 @@ public final class BaseMats {
             "DRY_ICE",
             Material.PACKED_ICE,
             "&bDry Ice"
+    );
+    public static final SlimefunItemStack METHANE_ICE = new SlimefunItemStack(
+            "METHANE_ICE",
+            Material.BLUE_ICE,
+            "&bMethane Ice"
     );
     public static final SlimefunItemStack SULFUR_BLOCK = new SlimefunItemStack(
             "SULFUR_BLOCK",
@@ -308,6 +314,7 @@ public final class BaseMats {
         worldItem(MARS_ROCK, BaseUniverse.MARS);
         worldItem(FALLEN_METEOR, BaseUniverse.MARS);
         worldItem(DRY_ICE, BaseUniverse.MARS, BaseUniverse.TITAN);
+        worldItem(METHANE_ICE, BaseUniverse.TITAN);
         worldItem(SULFUR_BLOCK, BaseUniverse.VENUS, BaseUniverse.IO);
         worldItem(VENTSTONE, BaseUniverse.VENUS);
         worldItem(LASERITE_ORE, BaseUniverse.TITAN);
@@ -472,6 +479,11 @@ public final class BaseMats {
         RecipeType.GRIND_STONE.register(
                 Arrays.copyOf(new ItemStack[] { MOON_ROCK }, 9),
                 new SlimefunItemStack(MOON_DUST, 4)
+        );
+
+        RecipeType.SMELTERY.register(
+                Arrays.copyOf(new ItemStack[] { METHANE_ICE }, 9),
+                new SlimefunItemStack(Gas.METHANE.item(), 4)
         );
     }
 

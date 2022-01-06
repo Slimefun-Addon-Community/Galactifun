@@ -217,8 +217,7 @@ public final class BaseUniverse {
         EARTH.register(galactifun);
         EARTH_ORBIT.register(galactifun);
         ENCALADUS.register(galactifun);
-        // TODO re-add Titan
-        //TITAN.register(galactifun);
+        TITAN.register(galactifun);
         MARS.register(galactifun);
         THE_MOON.register(galactifun);
     }

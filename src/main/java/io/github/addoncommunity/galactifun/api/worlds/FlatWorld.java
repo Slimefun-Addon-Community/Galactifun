@@ -18,6 +18,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
 import io.github.addoncommunity.galactifun.base.universe.jupiter.Europa;
 import io.github.addoncommunity.galactifun.util.GenUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
@@ -27,7 +28,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectSortedMaps;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 
 /**
- * An {@link AlienWorld} that {@literal is...} flat
+ * An {@link AlienWorld} that {@literal is...} flat. {@link Earth} is definitely not a subclass of this
  *
  * @author Seggan
  * @see Europa

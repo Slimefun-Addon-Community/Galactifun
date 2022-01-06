@@ -23,6 +23,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.populators.LakePopulator;
 import io.github.addoncommunity.galactifun.api.worlds.populators.OrePopulator;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 
@@ -47,8 +48,8 @@ public final class Titan extends AlienWorld {
     );
      */
 
-    private SimplexOctaveGenerator generator;
-    private TitanBiomeProvider provider;
+    private volatile SimplexOctaveGenerator generator;
+    private volatile TitanBiomeProvider provider;
 
     public Titan(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
@@ -83,14 +84,39 @@ public final class Titan extends AlienWorld {
                 int height = getHeight(realX, realZ);
                 TitanBiomeProvider.TitanBiome biome = this.provider.getBiome(world, realX, realZ);
 
-                Material material = height > 57 ? Material.SAND : switch (biome) {
+                Material material = height < 57 ? Material.BLUE_ICE : switch (biome) {
                     case FOREST -> random.nextBoolean() ? Material.WARPED_NYLIUM : Material.CRIMSON_NYLIUM;
+                    case FROZEN_FOREST -> Material.WARPED_NYLIUM;
+                    case WASTELAND -> Material.SAND;
+                    case DRY_ICE_FLATS -> Material.PACKED_ICE;
+                    case CARBON_FOREST, FROZEN_CARBON_FOREST -> Material.COAL_BLOCK;
                 };
+
+                chunk.setBlock(x, height, z, material);
+
+                // carbon forest/frozen carbon forest
+                if (height > 57) {
+                    if (biome == TitanBiomeProvider.TitanBiome.CARBON_FOREST) {
+                        if (random.nextDouble() < 0.1) {
+                            for (int y = height + random.nextInt(4); y > height; y--) {
+                                chunk.setBlock(x, y, z, Material.COAL_BLOCK);
+                            }
+                        }
+                    } else if (biome == TitanBiomeProvider.TitanBiome.FROZEN_CARBON_FOREST) {
+                        if (random.nextDouble() < 0.1) {
+                            for (int y = height + random.nextInt(4); y > height; y--) {
+                                if (random.nextBoolean()) {
+                                    chunk.setBlock(x, y, z, Material.PACKED_ICE);
+                                } else {
+                                    chunk.setBlock(x, y, z, Material.COAL_BLOCK);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
-    private static Material
 
     @Nonnull
     @Override
@@ -105,7 +131,7 @@ public final class Titan extends AlienWorld {
             this.generator.setScale(0.004);
         }
         if (this.provider == null) {
-            this.provider = new TitanBiomeProvider(this);
+            this.provider = new TitanBiomeProvider();
         }
     }
 
@@ -165,6 +191,8 @@ public final class Titan extends AlienWorld {
                 BaseMats.LASERITE_ORE,
                 Material.STONE, Material.COAL_ORE
         ));
+
+        populators.add(new LakePopulator(58, Material.WATER));
     }
 
 }
