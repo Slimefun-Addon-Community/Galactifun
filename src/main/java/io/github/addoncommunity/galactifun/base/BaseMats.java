@@ -135,7 +135,7 @@ public final class BaseMats {
             "&fNozzle"
     );
     public static final SlimefunItemStack FILTER = new SlimefunItemStack(
-            "FILTER",
+            "AIR_FILTER",
             Material.PAPER,
             "&fFilter"
     );

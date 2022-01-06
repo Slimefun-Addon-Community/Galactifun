@@ -42,6 +42,10 @@
                     <groupId>org.jetbrains</groupId>
                     <artifactId>annotations</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>it.unimi.dsi</groupId>
+                    <artifactId>fastutil</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -66,6 +70,13 @@
             <groupId>io.github.mooy1</groupId>
             <artifactId>InfinityLib</artifactId>
             <version>1.3.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- 1.17 does not have the latest fastutil that we need -->
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>8.5.6</version>
             <scope>compile</scope>
         </dependency>
 
@@ -109,6 +120,10 @@
                         <relocation>
                             <pattern>io.github.mooy1.infinitylib</pattern>
                             <shadedPattern>io.github.addoncommunity.galactifun.infinitylib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>it.unimi.dsi.fastutil</pattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.fastutil</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
