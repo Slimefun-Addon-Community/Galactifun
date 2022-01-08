@@ -65,4 +65,10 @@ public final class TheMoon extends SimpleAlienWorld {
         return 50;
     }
 
+    @Nonnull
+    @Override
+    protected CraterSettings getCraterSettings() {
+        return CraterSettings.DEFAULT;
+    }
+
 }
