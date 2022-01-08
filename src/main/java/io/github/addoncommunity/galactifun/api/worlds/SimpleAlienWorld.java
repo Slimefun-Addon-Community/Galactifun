@@ -236,7 +236,7 @@ public abstract class SimpleAlienWorld extends AlienWorld {
      */
     protected static record CraterSettings(int octaves, double scale, double frequency, double amplitude, double noiseDepth) {
 
-        public static CraterSettings DEFAULT = new CraterSettings(3, 0.03, 0.5,
+        public static CraterSettings DEFAULT = new CraterSettings(3, 0.01, 0.5,
                 0.1, 0.35);
 
         // sadly we have to do this as protected will not give accessibility to subclasses
