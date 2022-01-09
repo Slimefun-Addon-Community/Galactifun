@@ -56,6 +56,8 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -233,6 +235,12 @@ public abstract class Rocket extends SlimefunItem {
 
             if (destBlock == null) {
                 destBlock = to.getBlockAt(x, to.getMaxHeight() - 4, z);
+            }
+
+            if (!Slimefun.getProtectionManager().hasPermission(p, destBlock, Interaction.PLACE_BLOCK)) {
+                p.sendMessage(ChatColor.RED + "Launch was not successful! You do not have permission to land there!");
+                BlockStorage.addBlockInfo(rocket, "isLaunching", "false");
+                return;
             }
 
             destBlock.setType(Material.CHEST);
