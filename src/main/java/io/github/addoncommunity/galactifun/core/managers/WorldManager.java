@@ -370,7 +370,9 @@ public final class WorldManager implements Listener {
             Block toBePlaced = clicked.getRelative(e.getBlockFace());
             Location l = toBePlaced.getLocation();
             if (manager.getEffectAt(l, AtmosphericEffect.COLD) > 1) {
-                toBePlaced.setType(Material.ICE);
+                if (toBePlaced.isEmpty()) {
+                    toBePlaced.setType(Material.ICE);
+                }
             } else if (manager.getEffectAt(l, AtmosphericEffect.HEAT) > 1) {
                 p.getWorld().spawnParticle(Particle.SMOKE_NORMAL, l, 5);
             } else {
