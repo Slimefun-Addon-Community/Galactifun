@@ -75,7 +75,7 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
 
                 BlockMenu menu = BlockStorage.getInventory(b);
                 int req = getEnergyRequirement();
-                if (getCharge(b.getLocation()) < req) {
+                if (getCharge(b.getLocation()) < req || !BSUtils.getStoredBoolean(b.getLocation(), ENABLED)) {
                     BlockStorage.addBlockInfo(b, PROTECTING, "false");
                 } else {
                     BlockStorage.addBlockInfo(b, PROTECTING, "true");
