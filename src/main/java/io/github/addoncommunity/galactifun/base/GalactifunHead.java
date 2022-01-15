@@ -18,4 +18,5 @@ public final class GalactifunHead {
     public static final ItemStack CHEESE = SlimefunUtils.getCustomHead("35e140868f338aae43f01086adc17bc31da1e981b83b7a0e063b4da3d507c1d3");
     public static final ItemStack ATMOSPHERIC_HARVESTER = SlimefunUtils.getCustomHead("eaf9712d3f37e3efc6d835b33c0b6ca0cfc46acbbbb0db9c8e6b8acefb3c2977");
     public static final ItemStack ION_ROCKET = SlimefunUtils.getCustomHead("6b2853c590580511c3c8e7e99328b752ddec60e42cf95d9062d6db2b31997274");
+    public static final ItemStack FALLEN_SATELLITE = SlimefunUtils.getCustomHead("d78afe4387d1c51bfd144789bca7a0ab4805f8401168418733dd1c34dc6be909");
 }
