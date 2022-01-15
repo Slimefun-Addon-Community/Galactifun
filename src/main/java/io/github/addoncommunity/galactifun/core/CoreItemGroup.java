@@ -43,6 +43,9 @@ public final class CoreItemGroup {
     public static final ItemGroup BLOCKS = new SubGroup(
             "blocks", new CustomItemStack(Material.COBBLESTONE, "&fGalactifun Blocks")
     );
+    public static final ItemGroup RELICS = new SubGroup(
+            "relics", new CustomItemStack(Material.CHISELED_POLISHED_BLACKSTONE, "&fGalactifun Relics")
+    );
 
     public static final AssemblyItemGroup ASSEMBLY_CATEGORY = new AssemblyItemGroup(
             Galactifun.createKey("assembly_flex"),
@@ -54,7 +57,7 @@ public final class CoreItemGroup {
 
         new MultiGroup("main",
                 new CustomItemStack(Material.BEACON, "&bGalactifun"),
-                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, ASSEMBLY_CATEGORY
+                EQUIPMENT, ITEMS, COMPONENTS, MACHINES, BLOCKS, universe, ASSEMBLY_CATEGORY, RELICS
         ).register(galactifun);
     }
 

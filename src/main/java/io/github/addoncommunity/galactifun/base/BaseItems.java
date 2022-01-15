@@ -6,11 +6,13 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
+import io.github.addoncommunity.galactifun.api.items.Relic;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuit;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.AtmosphericHarvester;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
@@ -372,6 +374,58 @@ public final class BaseItems {
             "&7Automatically places/removes the blocks inside",
             "&7when you go to/away from it"
     );
+    public static final SlimefunItemStack ION_ROCKET = new SlimefunItemStack(
+            "ION_ROCKET",
+            GalactifunHead.ION_ROCKET,
+            "&bIon Rocket",
+            "",
+            "&7Uses a specialized engine that",
+            "&7expels ions at great speed, granting",
+            "&7extreme fuel efficiency",
+            "",
+            "&7Fuel Capacity: 500",
+            "&7Cargo Capacity: 18"
+    );
+    //</editor-fold>
+    //<editor-fold desc="Relics" defaultstate="collapsed">
+    public static final SlimefunItemStack ENGINE_RELIC = new SlimefunItemStack(
+            "ENGINE_RELIC",
+            Material.SEA_LANTERN,
+            "&fRelic: 'Letagivd Yynmukav",
+            "",
+            "&7Dorepv 'lbarok 'tagivd yboths amukav",
+            "&7uyigrene teuz'lopsi 'letagivd tote"
+    );
+    public static final SlimefunItemStack REACTOR_RELIC = new SlimefunItemStack(
+            "REACTOR_RELIC",
+            Material.BEACON,
+            "&fRelic: Rotarenegortkele Yynmukav",
+            "",
+            "&7Ovehcin zi 'taribos onhzom uyigrene",
+            "&7oths lamud otk?"
+    );
+    public static final SlimefunItemStack COMPUTER_RELIC = new SlimefunItemStack(
+            "COMPUTER_RELIC",
+            GalactifunHead.CORE,
+            "&fRelic: Retuypmok Yyntnavk",
+            "",
+            "&7Aretupmoc eyenhcybo mehc eyertsyb ogonman",
+            "&7einelsihcsar 'taled tugom aretuypmok eyntnavk"
+    );
+    public static final SlimefunItemStack BROKEN_SOLAR_PANEL_RELIC = new SlimefunItemStack(
+            "BROKEN_SOLAR_PANEL_RELIC",
+            Material.DAYLIGHT_DETECTOR,
+            "&7Relic: 'Lenap Ayanhcenlos Ayanamolop",
+            "",
+            "&7'Lenap ayanhcenlos ayarats 'nehco"
+    );
+    public static final SlimefunItemStack FALLEN_SATELLITE_RELIC = new SlimefunItemStack(
+            "FALLEN_SATELLITE_RELIC",
+            Material.CHISELED_QUARTZ_BLOCK,
+            "&7Relic: Kintups Yyhsdap",
+            "",
+            "&7Aben s lapu yyrotok, kintups"
+    );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
@@ -403,19 +457,6 @@ public final class BaseItems {
             "",
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
-    );
-
-    public static final SlimefunItemStack ION_ROCKET = new SlimefunItemStack(
-            "ION_ROCKET",
-            GalactifunHead.ION_ROCKET,
-            "&bIon Rocket",
-            "",
-            "&7Uses a specialized engine that",
-            "&7expels ions at great speed, granting",
-            "&7extreme fuel efficiency",
-            "",
-            "&7Fuel Capacity: 500",
-            "&7Cargo Capacity: 18"
     );
     //</editor-fold>
 
@@ -669,6 +710,23 @@ public final class BaseItems {
                 SlimefunItems.SILVER_INGOT, BaseMats.BLISTERING_VOLCANIC_INGOT, SlimefunItems.SILVER_INGOT,
                 BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
         }).register(galactifun);
+
+        // relics
+        new Relic(BROKEN_SOLAR_PANEL_RELIC, new Relic.RelicSettings()
+                .addRequired(SlimefunItems.SILICON, 2, 5)
+                .addRequired(SlimefunItems.SOLAR_PANEL, 1, 3)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR, 0.20f)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR_2, 0.10f)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR_3, 0.02f),
+                Galactifun.worldManager().spaceWorlds().toArray(PlanetaryWorld[]::new)).register(galactifun);
+
+        new Relic(FALLEN_SATELLITE_RELIC, new Relic.RelicSettings()
+                .addRequired(BaseMats.HEAVY_DUTY_SHEET, 3, 4)
+                .addRequired(BaseMats.SPACE_GRADE_PLATE, 1, 3)
+                .addRequired(SlimefunItems.BASIC_CIRCUIT_BOARD, 0, 2)
+                .addOptional(SlimefunItems.ADVANCED_CIRCUIT_BOARD, 0.15f)
+                .addOptional(BaseMats.ADVANCED_PROCESSING_UNIT, 0.10f),
+                Galactifun.worldManager().spaceWorlds().toArray(PlanetaryWorld[]::new)).register(galactifun);
     }
 
 }
