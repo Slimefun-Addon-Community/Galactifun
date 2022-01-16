@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.Lists;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -20,7 +19,14 @@ public final class ChemicalRocket extends Rocket {
 
     @Override
     protected List<ItemStack> getAllowedFuels() {
-        return Lists.newArrayList(SlimefunItems.OIL_BUCKET, SlimefunItems.FUEL_BUCKET, Gas.METHANE.item());
+        return List.of(
+                SlimefunItems.OIL_BUCKET,
+                SlimefunItems.FUEL_BUCKET,
+                Gas.METHANE.item(),
+                Gas.HYDROGEN.item(),
+                Gas.HYDROCARBONS.item(),
+                Gas.AMMONIA.item()
+        );
     }
 
 }
