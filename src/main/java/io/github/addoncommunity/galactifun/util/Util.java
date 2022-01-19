@@ -15,22 +15,14 @@ import javax.annotation.Nonnull;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.RegionAccessor;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
-import org.bukkit.generator.LimitedRegion;
-import org.bukkit.inventory.meta.SkullMeta;
 
-import io.github.mooy1.infinitylib.common.Scheduler;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
  * Utilities
@@ -130,29 +122,6 @@ public final class Util {
         }
 
         return new Location(null, x, 0, z);
-    }
-
-    public static void setSlimefunBlock(@NonNull RegionAccessor accessor, @NonNull Location l, @NonNull SlimefunItemStack item) {
-        if (!Bukkit.isStopping()) {
-            Material material = item.getType();
-            accessor.setType(l, material);
-            if (material == Material.PLAYER_HEAD || material == Material.PLAYER_WALL_HEAD) {
-                SkullMeta meta = (SkullMeta) item.getItemMeta();
-                Skull skull = (Skull) accessor.getBlockState(l);
-                skull.setPlayerProfile(meta.getPlayerProfile());
-                skull.update();
-            }
-            World w;
-            if (accessor instanceof World) {
-                w = (World) accessor;
-            } else if (accessor instanceof LimitedRegion r) {
-                w = r.getWorld();
-            } else {
-                throw new IllegalArgumentException("RegionAccessor must be a World or a LimitedRegion");
-            }
-            l.setWorld(w);
-            Scheduler.run(() -> BlockStorage.addBlockInfo(l, "id", item.getItemId()));
-        }
     }
 
 }

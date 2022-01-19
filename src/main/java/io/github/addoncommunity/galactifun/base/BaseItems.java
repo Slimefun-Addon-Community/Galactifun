@@ -26,6 +26,7 @@ import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
+import io.github.addoncommunity.galactifun.base.items.TechnologicalAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
@@ -426,6 +427,15 @@ public final class BaseItems {
             "",
             "&7Aben s lapu yyrotok, kintups"
     );
+    public static final SlimefunItemStack TECHNOLOGICAL_ANALYZER = new SlimefunItemStack(
+            "TECHNOLOGICAL_ANALYZER",
+            GalactifunHead.CORE,
+            "&fTechnological Analyzer",
+            "",
+            "&7Salvages anything salvageable from relics",
+            LoreBuilder.powerPerSecond(64),
+            LoreBuilder.powerBuffer(64)
+    );
     //</editor-fold>
     //<editor-fold desc="Rock It" defaultstate="collapsed">
     private static final int TIER_ONE_FUEL = 10;
@@ -727,6 +737,12 @@ public final class BaseItems {
                 .addOptional(SlimefunItems.ADVANCED_CIRCUIT_BOARD, 0.15f)
                 .addOptional(BaseMats.ADVANCED_PROCESSING_UNIT, 0.10f),
                 Galactifun.worldManager().spaceWorlds().toArray(PlanetaryWorld[]::new)).register(galactifun);
+
+        new TechnologicalAnalyzer(TECHNOLOGICAL_ANALYZER, new ItemStack[] {
+                BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ADVANCED_PROCESSING_UNIT, null, BaseMats.ADVANCED_PROCESSING_UNIT,
+                BaseMats.ULTRA_DUTY_SHEET, new ItemStack(Material.STICKY_PISTON), BaseMats.ULTRA_DUTY_SHEET
+        }).register(galactifun);
     }
 
 }
