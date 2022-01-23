@@ -2,11 +2,13 @@ package io.github.addoncommunity.galactifun.core.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -66,6 +68,7 @@ import io.github.thebusybiscuit.slimefun4.api.events.GEOResourceGenerationEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
@@ -266,7 +269,12 @@ public final class WorldManager implements Listener {
             SlimefunItemStack item = world.getMappedItem(b);
             if (item != null && !removePlacedBlock(b)) {
                 e.setDropItems(false);
-                w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), item.clone());
+                List<ItemStack> drops = new ArrayList<>();
+                drops.add(item.clone());
+                item.getItem().callItemHandler(BlockBreakHandler.class, h -> h.onPlayerBreak(e, item, drops));
+                for (ItemStack drop : drops) {
+                    w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), drop);
+                }
             }
         }
     }
