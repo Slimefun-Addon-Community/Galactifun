@@ -12,7 +12,7 @@ import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitHelmet;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitStat;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitUpgrade;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
-import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
 import io.github.addoncommunity.galactifun.base.items.AssemblyTable;
 import io.github.addoncommunity.galactifun.base.items.AtmosphericHarvester;
 import io.github.addoncommunity.galactifun.base.items.AutomaticDoor;
@@ -26,7 +26,7 @@ import io.github.addoncommunity.galactifun.base.items.OxygenFiller;
 import io.github.addoncommunity.galactifun.base.items.SpaceSuitUpgrader;
 import io.github.addoncommunity.galactifun.base.items.StargateController;
 import io.github.addoncommunity.galactifun.base.items.StargateRing;
-import io.github.addoncommunity.galactifun.base.items.TechnologicalAnalyzer;
+import io.github.addoncommunity.galactifun.base.items.TechnologicalSalvager;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
@@ -427,10 +427,10 @@ public final class BaseItems {
             "",
             "&7Aben s lapu yyrotok, kintups"
     );
-    public static final SlimefunItemStack TECHNOLOGICAL_ANALYZER = new SlimefunItemStack(
-            "TECHNOLOGICAL_ANALYZER",
+    public static final SlimefunItemStack TECHNOLOGICAL_SALVAGER = new SlimefunItemStack(
+            "TECHNOLOGICAL_SALVAGER",
             GalactifunHead.CORE,
-            "&fTechnological Analyzer",
+            "&fTechnological Salvager",
             "",
             "&7Salvages anything salvageable from relics",
             LoreBuilder.powerPerSecond(64),
@@ -728,7 +728,9 @@ public final class BaseItems {
                 .addOptional(SlimefunItems.SOLAR_GENERATOR, 0.20f)
                 .addOptional(SlimefunItems.SOLAR_GENERATOR_2, 0.10f)
                 .addOptional(SlimefunItems.SOLAR_GENERATOR_3, 0.02f),
-                Galactifun.worldManager().spaceWorlds().toArray(PlanetaryWorld[]::new)).register(galactifun);
+                Galactifun.worldManager().alienWorlds().stream()
+                        .filter(a -> a.getSetting("generate-fallen-satellites", Boolean.class, true))
+                        .toArray(AlienWorld[]::new)).register(galactifun);
 
         new Relic(FALLEN_SATELLITE_RELIC, new Relic.RelicSettings()
                 .addRequired(BaseMats.HEAVY_DUTY_SHEET, 3, 4)
@@ -736,9 +738,11 @@ public final class BaseItems {
                 .addRequired(SlimefunItems.BASIC_CIRCUIT_BOARD, 0, 2)
                 .addOptional(SlimefunItems.ADVANCED_CIRCUIT_BOARD, 0.15f)
                 .addOptional(BaseMats.ADVANCED_PROCESSING_UNIT, 0.10f),
-                Galactifun.worldManager().spaceWorlds().toArray(PlanetaryWorld[]::new)).register(galactifun);
+                Galactifun.worldManager().alienWorlds().stream()
+                        .filter(a -> a.getSetting("generate-fallen-satellites", Boolean.class, true))
+                        .toArray(AlienWorld[]::new)).register(galactifun);
 
-        new TechnologicalAnalyzer(TECHNOLOGICAL_ANALYZER, new ItemStack[] {
+        new TechnologicalSalvager(TECHNOLOGICAL_SALVAGER, new ItemStack[] {
                 BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ULTRA_DUTY_SHEET,
                 BaseMats.ADVANCED_PROCESSING_UNIT, null, BaseMats.ADVANCED_PROCESSING_UNIT,
                 BaseMats.ULTRA_DUTY_SHEET, new ItemStack(Material.STICKY_PISTON), BaseMats.ULTRA_DUTY_SHEET

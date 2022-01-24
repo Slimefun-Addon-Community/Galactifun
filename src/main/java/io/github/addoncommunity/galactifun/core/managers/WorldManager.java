@@ -170,6 +170,11 @@ public final class WorldManager implements Listener {
     public Collection<PlanetaryWorld> spaceWorlds() {
         return Collections.unmodifiableCollection(this.spaceWorlds.values());
     }
+    
+    @Nonnull
+    public Collection<AlienWorld> alienWorlds() {
+        return Collections.unmodifiableCollection(this.alienWorlds.values());
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlanetChange(@Nonnull PlayerChangedWorldEvent e) {

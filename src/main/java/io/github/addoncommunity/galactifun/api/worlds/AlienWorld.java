@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -35,12 +36,11 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Gravity;
 import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
+import io.github.addoncommunity.galactifun.api.worlds.populators.relics.FallenSatellitePopulator;
 import io.github.addoncommunity.galactifun.base.universe.earth.EarthOrbit;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * Any alien world
@@ -112,6 +112,9 @@ public abstract class AlienWorld extends PlanetaryWorld {
                     public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
                         List<BlockPopulator> list = new ArrayList<>(1);
                         getPopulators(list);
+                        if (getSetting("generate-fallen-satellites", Boolean.class, true)) {
+                            list.add(new FallenSatellitePopulator(0.5));
+                        }
                         return list;
                     }
                 }))
@@ -147,7 +150,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
         }
     }
 
-    protected final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
+    public final <T> T getSetting(@Nonnull String path, @Nonnull Class<T> clazz, T defaultValue) {
         return Galactifun.worldManager().getSetting(this, path, clazz, defaultValue);
     }
 

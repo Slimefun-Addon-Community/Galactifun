@@ -17,7 +17,6 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.SimpleAlienWorld;
-import io.github.addoncommunity.galactifun.api.worlds.populators.relics.FallenSatellitePopulator;
 import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
@@ -36,7 +35,7 @@ public final class TheMoon extends SimpleAlienWorld {
 
     @Override
     protected void getPopulators(@Nonnull List<BlockPopulator> populators) {
-        populators.add(new FallenSatellitePopulator(0.5));
+
     }
 
     @Nonnull

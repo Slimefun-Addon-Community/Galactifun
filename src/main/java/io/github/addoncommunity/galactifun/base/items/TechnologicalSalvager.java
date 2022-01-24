@@ -27,7 +27,7 @@ import it.unimi.dsi.fastutil.ints.IntIntPair;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 
-public class TechnologicalAnalyzer extends AbstractMachineBlock implements MachineProcessHolder<CraftingOperation> {
+public class TechnologicalSalvager extends AbstractMachineBlock implements MachineProcessHolder<CraftingOperation> {
 
     private static final int[] BACKGROUND = new int[] { 0, 1, 2, 3, 4, 13, 31, 36, 37, 38, 39, 40 };
     private static final int[] INPUT_BORDER = new int[] { 9, 10, 11, 12, 18, 21, 27, 28, 29, 30 };
@@ -39,7 +39,7 @@ public class TechnologicalAnalyzer extends AbstractMachineBlock implements Machi
 
     private final MachineProcessor<CraftingOperation> processor = new MachineProcessor<>(this);
 
-    public TechnologicalAnalyzer(SlimefunItemStack item, ItemStack[] recipe) {
+    public TechnologicalSalvager(SlimefunItemStack item, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
 
         energyPerTick(32);
