@@ -53,7 +53,7 @@ public class TechnologicalSalvager extends AbstractMachineBlock implements Machi
             if (operation.isFinished()) {
                 ItemStack[] results = operation.getResults();
                 for (ItemStack result : results) {
-                    menu.pushItem(result, OUTPUT_SLOTS);
+                    menu.pushItem(result.clone(), OUTPUT_SLOTS);
                 }
                 processor.endOperation(b);
             } else {
