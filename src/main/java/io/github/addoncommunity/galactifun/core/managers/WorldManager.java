@@ -41,6 +41,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -57,6 +58,7 @@ import io.github.addoncommunity.galactifun.api.items.ExclusiveGEOResource;
 import io.github.addoncommunity.galactifun.api.items.spacesuit.SpaceSuitProfile;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.AtmosphericEffect;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.OrbitWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
@@ -303,7 +305,7 @@ public final class WorldManager implements Listener {
         while (blocks.hasNext()) {
             Block b = blocks.next();
             World w = b.getWorld();
-            AlienWorld world = this.alienWorlds.get(w);
+            AlienWorld world = this.getAlienWorld(w);
             if (world != null) {
                 SlimefunItemStack item = world.getMappedItem(b);
                 if (item != null && !removePlacedBlock(b)) {
@@ -331,7 +333,7 @@ public final class WorldManager implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlace(BlockPlaceEvent e) {
         Block b = e.getBlock();
-        AlienWorld world = this.alienWorlds.get(b.getWorld());
+        AlienWorld world = this.getAlienWorld(b.getWorld());
         if (world != null && world.getMappedItem(b) != null) {
             addPlacedBlock(b);
         }
@@ -366,7 +368,7 @@ public final class WorldManager implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerPlaceWater(PlayerBucketEmptyEvent e) {
+    private void onPlayerPlaceWater(PlayerBucketEmptyEvent e) {
         if (e.getBucket() != Material.WATER_BUCKET) return;
         Player p = e.getPlayer();
         PlanetaryWorld world = this.getWorld(p.getWorld());
@@ -395,8 +397,8 @@ public final class WorldManager implements Listener {
     }
 
     @EventHandler
-    public void onGEOResourceGenerate(GEOResourceGenerationEvent e) {
-        PlanetaryWorld world = this.spaceWorlds.get(e.getWorld());
+    private void onGEOResourceGenerate(GEOResourceGenerationEvent e) {
+        PlanetaryWorld world = this.getWorld(e.getWorld());
         if (world == null) return;
 
         if (e.getResource() instanceof ExclusiveGEOResource exclusiveResource) {
@@ -410,6 +412,23 @@ public final class WorldManager implements Listener {
         }
 
         e.setValue(0);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onPlayerFallInOrbit(EntityDamageEvent e) {
+        if (e.getCause() != EntityDamageEvent.DamageCause.VOID) return;
+        PlanetaryWorld world = this.getWorld(e.getEntity().getWorld());
+
+        if (world instanceof OrbitWorld orbitWorld && orbitWorld.getPlanet() instanceof PlanetaryWorld planet) {
+            e.setCancelled(true);
+            Location l = e.getEntity().getLocation();
+            e.getEntity().teleport(new Location(
+                    planet.world(),
+                    l.getX(),
+                    planet.world().getMaxHeight(),
+                    l.getZ()
+            ));
+        }
     }
 
     public void addPlacedBlock(Block b) {

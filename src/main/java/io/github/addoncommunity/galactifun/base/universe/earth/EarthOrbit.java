@@ -22,10 +22,13 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.Orbit;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
 import io.github.addoncommunity.galactifun.api.universe.types.PlanetaryType;
 import io.github.addoncommunity.galactifun.api.worlds.AlienWorld;
+import io.github.addoncommunity.galactifun.api.worlds.OrbitWorld;
+import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
+import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.util.GenUtils;
 import io.github.addoncommunity.galactifun.util.Sphere;
 
-public final class EarthOrbit extends AlienWorld {
+public final class EarthOrbit extends AlienWorld implements OrbitWorld {
 
     private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
@@ -69,6 +72,12 @@ public final class EarthOrbit extends AlienWorld {
                 }
             }
         });
+    }
+
+    @Nonnull
+    @Override
+    public PlanetaryWorld getPlanet() {
+        return BaseUniverse.EARTH;
     }
 
 }
