@@ -333,6 +333,11 @@ public final class BaseMats {
                 new ItemStack[]{ HEAVY_DUTY_SHEET, TUNGSTEN_CARBIDE},
                 new ItemStack[]{ SPACE_GRADE_PLATE }
         );
+        ((HeatedPressureChamber) SlimefunItems.HEATED_PRESSURE_CHAMBER_2.getItem()).registerRecipe(
+                20,
+                new ItemStack[]{ HEAVY_DUTY_SHEET, TUNGSTEN_CARBIDE},
+                new ItemStack[]{ SPACE_GRADE_PLATE }
+        );
         component(ULTRA_DUTY_SHEET, RecipeType.COMPRESSOR, new SlimefunItemStack(SPACE_GRADE_PLATE, 4));
         component(GOLD_FOIL, RecipeType.COMPRESSOR, 4, SlimefunItems.GOLD_24K_BLOCK);
         component(REINFORCED_CHANNEL, RecipeType.ENHANCED_CRAFTING_TABLE, 8,
