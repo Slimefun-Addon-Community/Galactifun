@@ -107,6 +107,7 @@ public class TechnologicalSalvager extends AbstractMachineBlock implements Machi
         for (int i : OUTPUT_BORDER) {
             preset.addItem(i, MenuBlock.OUTPUT_BORDER, ChestMenuUtils.getEmptyClickHandler());
         }
+        preset.addMenuClickHandler(getStatusSlot(), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override
