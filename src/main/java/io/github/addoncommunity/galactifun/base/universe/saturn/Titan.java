@@ -158,7 +158,7 @@ public final class Titan extends AlienWorld {
                         Location l = Util.getHighestBlockAt(region, x, z);
                         if (region.getType(l) == Material.WARPED_NYLIUM) {
                             region.generateTree(l.add(0, 1, 0), random, TreeType.WARPED_FUNGUS);
-                        } else {
+                        } else if (region.getType(l) == Material.CRIMSON_NYLIUM) {
                             region.generateTree(l.add(0, 1, 0), random, TreeType.CRIMSON_FUNGUS);
                         }
                     }
@@ -174,7 +174,7 @@ public final class Titan extends AlienWorld {
                     int x = (cx << 4) + random.nextInt(16);
                     int z = (cz << 4) + random.nextInt(16);
 
-                    if (region.getBiome(x, 1, z) == TitanBiome.FROZEN_FOREST.biome()) {
+                    if (region.getBiome(x, 1, z) == TitanBiome.FROZEN_FOREST.biome() && region.getType(x, 1, z) == Material.WARPED_NYLIUM) {
                         Location l = Util.getHighestBlockAt(region, x, z).add(0, 1, 0);
                         region.generateTree(l, random, TreeType.WARPED_FUNGUS);
                     }
