@@ -216,7 +216,7 @@ public final class WorldManager implements Listener {
                     for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")) {
                         canTp = value.asBoolean();
                     }
-                    if (canTp) {
+                    if (canTp || e.getFrom().getWorld().equals(e.getTo().getWorld())) {
                         e.getPlayer().removeMetadata("CanTpAlienWorld", Galactifun.instance());
                     } else {
                         e.setCancelled(true);
