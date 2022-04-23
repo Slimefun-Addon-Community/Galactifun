@@ -178,7 +178,7 @@ public abstract class Rocket extends SlimefunItem {
                             String[] split = Util.SPACE_PATTERN.split(trimmed);
                             int x = Integer.parseInt(split[0]);
                             int z = Integer.parseInt(split[1]);
-                            WorldBorder border = player.getWorld().getWorldBorder();
+                            WorldBorder border = pw.world().getWorldBorder();
                             if (border.isInside(new Location(pw.world(), x, 0, z))) {
                                 launch(player, b, pw, fuel - usedFuel, fuelType, x, z);
                             } else {
