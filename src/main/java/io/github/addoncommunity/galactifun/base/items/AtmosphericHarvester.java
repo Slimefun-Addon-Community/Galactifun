@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Atmosphere;
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Gas;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.GalactifunHead;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
@@ -67,7 +68,10 @@ public final class AtmosphericHarvester extends AbstractMachineBlock {
             if (ThreadLocalRandom.current().nextDouble() > atmosphere.pressure()) return true;
         }
 
-        ItemStack stack = atmosphere.weightedCompositionSet().getRandom().item().asQuantity(multiplier);
+        Gas gas = atmosphere.weightedCompositionSet().getRandom();
+        // we are on an atmosphereless world, so we can't harvest anything
+        if (gas == null) return false;
+        ItemStack stack = gas.item().asQuantity(multiplier);
         menu.pushItem(stack, SLOTS);
 
         return true;
