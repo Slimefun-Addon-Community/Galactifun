@@ -248,28 +248,31 @@ public abstract class Rocket extends SlimefunItem {
                 return;
             }
 
-            destBlock.setType(Material.CHEST);
-            BlockState state = PaperLib.getBlockState(destBlock, false).getState();
-            if (state instanceof Chest chest) {
-                Inventory inv = chest.getInventory();
-                inv.addItem(this.getItem().clone());
+            // check if we haven't dropped the chest yet
+            if (destBlock.getRelative(BlockFace.DOWN).getType() != Material.CHEST) {
+                destBlock.setType(Material.CHEST);
+                BlockState state = PaperLib.getBlockState(destBlock, false).getState();
+                if (state instanceof Chest chest) {
+                    Inventory inv = chest.getInventory();
+                    inv.addItem(this.getItem().clone());
 
-                ItemStack fuel = StackUtils.itemByIdOrType(fuelType);
-                fuel = fuel.clone();
-                fuel.setAmount((int) fuelLeft);
-                inv.addItem(fuel);
+                    ItemStack fuel = StackUtils.itemByIdOrType(fuelType);
+                    fuel = fuel.clone();
+                    fuel.setAmount((int) fuelLeft);
+                    inv.addItem(fuel);
 
-                PersistentDataContainer container = ((Skull) rocket.getState()).getPersistentDataContainer();
-                List<ItemStack> cargo = container.getOrDefault(CARGO_KEY, PersistentType.ITEM_STACK_LIST, new ArrayList<>());
+                    PersistentDataContainer container = ((Skull) rocket.getState()).getPersistentDataContainer();
+                    List<ItemStack> cargo = container.getOrDefault(CARGO_KEY, PersistentType.ITEM_STACK_LIST, new ArrayList<>());
 
-                for (ItemStack item : cargo) {
-                    HashMap<Integer, ItemStack> notFit = inv.addItem(item);
-                    for (ItemStack nf : notFit.values()) {
-                        to.dropItemNaturally(destBlock.getLocation().add(0, 1, 0), nf);
+                    for (ItemStack item : cargo) {
+                        HashMap<Integer, ItemStack> notFit = inv.addItem(item);
+                        for (ItemStack nf : notFit.values()) {
+                            to.dropItemNaturally(destBlock.getLocation().add(0, 1, 0), nf);
+                        }
                     }
                 }
+                state.update();
             }
-            state.update();
 
             boolean showLaunchAnimation = false;
             for (Entity entity : world.getEntities()) {
