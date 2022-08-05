@@ -5,13 +5,13 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.ItemStack;
 
@@ -59,15 +59,21 @@ public final class EarthOrbit extends AlienWorld implements OrbitWorld {
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BlockPopulator() {
             @Override
-            public void populate(@Nonnull World world, @Nonnull Random random, @Nonnull Chunk chunk) {
+            public void populate(@Nonnull WorldInfo world, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
                 if (random.nextInt(10) == 0) {
                     int x = random.nextInt(2) + 7;
                     int y = random.nextInt(224) + 16;
                     int z = random.nextInt(2) + 7;
+                    Location l = new Location(
+                            region.getWorld(),
+                            (region.getCenterChunkX() << 4) + x,
+                            y,
+                            (region.getCenterChunkZ() << 4) + z
+                    );
                     switch (random.nextInt(3)) {
-                        case 0 -> EarthOrbit.this.asteroid.generate(chunk.getBlock(x, y, z), 5, 2);
-                        case 1 -> EarthOrbit.this.comet.generate(chunk.getBlock(x, y, z), 5, 2);
-                        case 2 -> chunk.getBlock(x, y, z).setType(Material.IRON_BLOCK);
+                        case 0 -> EarthOrbit.this.asteroid.generate(l, region, 5, 2);
+                        case 1 -> EarthOrbit.this.comet.generate(l, region, 5, 2);
+                        case 2 -> region.setType(l, Material.IRON_BLOCK);
                     }
                 }
             }

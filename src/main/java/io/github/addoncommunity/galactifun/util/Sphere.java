@@ -5,8 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.generator.LimitedRegion;
 
 /**
  * A class for optimized generation of spheres of blocks
@@ -19,14 +20,15 @@ public final class Sphere {
     public static final int MAX_RADIUS = 125;
 
     private final Material[] materials;
-    private Block currentMiddle;
+    private Location currentMiddle;
     private int currentMaterial;
+    private LimitedRegion currentRegion;
 
     public Sphere(@Nonnull Material... materials) {
         Validate.isTrue((this.materials = materials).length != 0);
     }
 
-    public void generate(@Nonnull Block middle, int min, int dev) {
+    public void generate(@Nonnull Location middle, @Nonnull LimitedRegion region, int min, int dev) {
         Validate.isTrue(min >= MIN_RADIUS && dev >= 0 && min + dev <= MAX_RADIUS, "Generation parameters out of bounds!");
 
         this.currentMiddle = middle;
@@ -132,7 +134,7 @@ public final class Sphere {
     }
 
     private void gen(int x, int y, int z) {
-        this.currentMiddle.getRelative(x, y, z).setType(this.materials[this.currentMaterial++], false);
+        this.currentRegion.setType(currentMiddle.clone().add(x, y, z), this.materials[this.currentMaterial++]);
         if (this.currentMaterial == this.materials.length) {
             this.currentMaterial = 0;
         }
