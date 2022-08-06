@@ -32,7 +32,7 @@ public class FallenSatellitePopulator extends BlockPopulator {
             Location l = Util.getHighestBlockAt(region, x, z).add(0, 1, 0);
             setSlimefunBlock(region, l, BaseItems.FALLEN_SATELLITE_RELIC);
             if (random.nextBoolean()) {
-               setSlimefunBlock(region, l.add(v), BaseItems.BROKEN_SOLAR_PANEL_RELIC);
+                setSlimefunBlock(region, l.add(v), BaseItems.BROKEN_SOLAR_PANEL_RELIC);
                 v.multiply(-1);
                 l.add(v);
             }

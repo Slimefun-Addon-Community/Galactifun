@@ -113,8 +113,8 @@ public final class WorldSelector {
                     lore.remove(lore.size() - 1);
 
                     if (distance > 0) {
-                        lore.add(Component.text("Distance: " + (distance < 1
-                                ? distance * Util.KM_PER_LY + " Kilometers"
+                        lore.add(Component.text("Distance: " + (distance < .5
+                                ? "%.3f Kilometers".formatted(distance * Util.KM_PER_LY)
                                 : distance + " Light Years")
                         ).color(NamedTextColor.GRAY));
                     } else {

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.items.DiamondAnvil;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -47,6 +48,7 @@ public enum Gas {
         }
         if (BaseItems.DIAMOND_ANVIL.getItem() instanceof DiamondAnvil anvil) {
             anvil.registerRecipe(10, Gas.HYDROGEN.item().asQuantity(4), Gas.HELIUM.item());
+            anvil.registerRecipe(10, Gas.HELIUM.item().asQuantity(4), BaseMats.FUSION_PELLET);
         }
     }
 

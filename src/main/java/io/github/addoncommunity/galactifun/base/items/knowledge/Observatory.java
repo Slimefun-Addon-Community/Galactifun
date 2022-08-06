@@ -33,7 +33,7 @@ public final class Observatory extends MultiBlockMachine {
         }
 
         if (PersistentDataAPI.getBoolean(world.worldStorage(), key)) {
-            p.sendMessage(ChatColor.RED + "Already discovering!");
+            p.sendMessage(ChatColor.RED + "Already observing!");
             return;
         }
 
@@ -44,7 +44,7 @@ public final class Observatory extends MultiBlockMachine {
             }
             return true;
         }, (pl, w) -> {
-            pl.sendMessage(ChatColor.GREEN + "Discovering planet " + w.name());
+            pl.sendMessage(ChatColor.GREEN + "Observing planet " + w.name());
             PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
             Scheduler.run(30 * 60 * 20, () -> {
                 PersistentDataAPI.setBoolean(world.worldStorage(), key, false);
