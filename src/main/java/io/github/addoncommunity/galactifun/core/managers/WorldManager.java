@@ -150,8 +150,9 @@ public final class WorldManager implements Listener {
                 PlanetaryWorld world = spaceWorlds.get(p.getWorld());
                 if (world != null
                         && world.atmosphere().requiresOxygenTank()
-                        && !SpaceSuitProfile.get(p).consumeOxygen(20)
-                        && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())) {
+                        && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())
+                        && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
+                    p.sendMessage(ChatColor.RED + "You have run out of oxygen!");
                     p.damage(8);
                 }
             }
