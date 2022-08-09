@@ -3,10 +3,9 @@ package io.github.addoncommunity.galactifun.api.items;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -44,7 +43,6 @@ import org.bukkit.util.Vector;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseItems;
-import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
@@ -57,9 +55,12 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -67,7 +68,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
-public abstract class Rocket extends SlimefunItem {
+public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
 
     public static final NamespacedKey CARGO_KEY = Galactifun.createKey("cargo");
 
@@ -80,14 +81,16 @@ public abstract class Rocket extends SlimefunItem {
     @Getter
     private final int storageCapacity;
     @Getter
-    private final Set<String> allowedFuels;
+    private final Map<String, Double> allowedFuels = new HashMap<>();
 
     public Rocket(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int fuelCapacity, int storageCapacity) {
         super(category, item, recipeType, recipe);
 
         this.fuelCapacity = fuelCapacity;
         this.storageCapacity = storageCapacity;
-        this.allowedFuels = getAllowedFuels().stream().map(StackUtils::getIdOrType).collect(Collectors.toUnmodifiableSet());
+        for (Map.Entry<ItemStack, Double> entry : getAllowedFuels().entrySet()) {
+            allowedFuels.put(StackUtils.getIdOrType(entry.getKey()), entry.getValue());
+        }
 
         addItemHandler((BlockUseHandler) e -> e.getClickedBlock().ifPresent(block -> {
             e.cancel();
@@ -136,7 +139,7 @@ public abstract class Rocket extends SlimefunItem {
         string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
         if (string == null) return;
         String fuelType = string;
-        double eff = LaunchPadCore.FUELS.get(string);
+        double eff = allowedFuels.get(string);
 
         // ly
         double maxDistance = fuel * DISTANCE_PER_FUEL * eff;
@@ -330,11 +333,26 @@ public abstract class Rocket extends SlimefunItem {
         });
     }
 
-    protected abstract List<ItemStack> getAllowedFuels();
+    protected abstract Map<ItemStack, Double> getAllowedFuels();
 
     @Nonnull
     protected Particle getLaunchParticles() {
         return Particle.ASH;
     }
 
+    @Nonnull
+    @Override
+    public List<ItemStack> getDisplayRecipes() {
+        List<ItemStack> ret = new ArrayList<>();
+
+        for (Map.Entry<ItemStack, Double> entry : getAllowedFuels().entrySet()) {
+            ret.add(new CustomItemStack(
+                    entry.getKey(),
+                    ItemUtils.getItemName(entry.getKey()),
+                    "&7Efficiency: " + entry.getValue() + 'x'
+            ));
+        }
+
+        return ret;
+    }
 }

@@ -1,6 +1,6 @@
 package io.github.addoncommunity.galactifun.base.items.rockets;
 
-import java.util.List;
+import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -18,14 +18,14 @@ public final class ChemicalRocket extends Rocket {
     }
 
     @Override
-    protected List<ItemStack> getAllowedFuels() {
-        return List.of(
-                SlimefunItems.OIL_BUCKET,
-                SlimefunItems.FUEL_BUCKET,
-                Gas.METHANE.item(),
-                Gas.HYDROGEN.item(),
-                Gas.HYDROCARBONS.item(),
-                Gas.AMMONIA.item()
+    protected Map<ItemStack, Double> getAllowedFuels() {
+        return Map.of(
+                SlimefunItems.OIL_BUCKET, .5,
+                Gas.HYDROCARBONS.item(), .5,
+                SlimefunItems.FUEL_BUCKET, 1.0,
+                Gas.HYDROGEN.item(), 3.5,
+                Gas.AMMONIA.item(), 4.0,
+                Gas.METHANE.item(), 6.0
         );
     }
 
