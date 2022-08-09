@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,26 +177,40 @@ public final class WorldSelector {
                     item.setItemMeta(meta);
                 }
             }
-
-            menu.addItem(i + offset, item);
-            if (orbiter.orbiters().size() == 0) {
-                menu.addMenuClickHandler(i + offset, (clicker, i1, s, a) -> {
-                    // 99% true
-                    if (orbiter instanceof PlanetaryWorld planetaryWorld) {
-                        selectHandler.onSelect(clicker, planetaryWorld);
-                    }
-                    return false;
-                });
+            if (orbiter instanceof PlanetaryWorld || showObject(p, orbiter)) {
+                menu.addItem(i + offset, item);
+                if (orbiter.orbiters().size() == 0) {
+                    menu.addMenuClickHandler(i + offset, (clicker, i1, s, a) -> {
+                        // 99% true
+                        if (orbiter instanceof PlanetaryWorld planetaryWorld) {
+                            selectHandler.onSelect(clicker, planetaryWorld);
+                        }
+                        return false;
+                    });
+                } else {
+                    menu.addMenuClickHandler(i + offset, (p1, slot, item1, a) -> {
+                        open(p1, orbiter, true);
+                        return false;
+                    });
+                }
             } else {
-                menu.addMenuClickHandler(i + offset, (p1, slot, item1, a) -> {
-                    open(p1, orbiter, true);
-                    return false;
-                });
+                offset--;
             }
         }
 
         menu.open(p);
 
+    }
+
+    private boolean showObject(Player p, UniversalObject object) {
+        for (UniversalObject o : object.orbiters()) {
+            if (o instanceof PlanetaryWorld world && world.enabled() && modifier.modifyItem(p, world, new ArrayList<>())) {
+                return true;
+            } else if (showObject(p, o) && modifier.modifyItem(p, o, new ArrayList<>())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @FunctionalInterface

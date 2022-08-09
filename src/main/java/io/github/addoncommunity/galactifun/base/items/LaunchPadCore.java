@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -25,6 +26,7 @@ import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.Ga
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.util.BSUtils;
+import io.github.addoncommunity.galactifun.util.ChunkStorage;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.common.PersistentType;
 import io.github.mooy1.infinitylib.common.StackUtils;
@@ -90,16 +92,11 @@ public final class LaunchPadCore extends TickingMenuBlock implements RecipeDispl
         SlimefunItem sfItem = BlockStorage.check(b);
         if (!(sfItem instanceof Rocket rocket)) return;
 
+        if (ChunkStorage.isTagged(b, "isLaunching")) return;
+
         Location l = b.getLocation();
-
-        String string = BlockStorage.getLocationInfo(l, "isLaunching");
-        if (Boolean.parseBoolean(string)) return;
-
-        string = BlockStorage.getLocationInfo(l, "fuel");
-        int fuel = 0;
-        if (string != null) {
-            fuel = Integer.parseInt(string);
-        }
+        String string = Objects.requireNonNullElse(BlockStorage.getLocationInfo(l, "fuel"), "0");
+        int fuel = Integer.parseInt(string);
 
         string = BlockStorage.getLocationInfo(l, "fuelType");
 
@@ -149,7 +146,7 @@ public final class LaunchPadCore extends TickingMenuBlock implements RecipeDispl
     }
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
-        if (BSUtils.getStoredBoolean(b.getRelative(BlockFace.UP).getLocation(), "isLaunching")) {
+        if (ChunkStorage.isTagged(b.getRelative(BlockFace.UP), "isLaunching")) {
             p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
             return false;
         }

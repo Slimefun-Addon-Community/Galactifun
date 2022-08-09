@@ -3,6 +3,7 @@ package io.github.addoncommunity.galactifun.api.items;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ import io.github.addoncommunity.galactifun.base.items.LaunchPadCore;
 import io.github.addoncommunity.galactifun.base.items.knowledge.KnowledgeLevel;
 import io.github.addoncommunity.galactifun.core.WorldSelector;
 import io.github.addoncommunity.galactifun.core.managers.WorldManager;
+import io.github.addoncommunity.galactifun.util.ChunkStorage;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.common.PersistentType;
 import io.github.mooy1.infinitylib.common.Scheduler;
@@ -112,8 +114,7 @@ public abstract class Rocket extends SlimefunItem {
     private void openGUI(@Nonnull Player p, @Nonnull Block b) {
         if (!BlockStorage.check(b, this.getId())) return;
 
-        String string = BlockStorage.getLocationInfo(b.getLocation(), "isLaunching");
-        if (Boolean.parseBoolean(string)) {
+        if (ChunkStorage.isTagged(b, "isLaunching")) {
             p.sendMessage(ChatColor.RED + "The rocket is already launching!");
             return;
         }
@@ -125,8 +126,7 @@ public abstract class Rocket extends SlimefunItem {
             return;
         }
 
-        string = BlockStorage.getLocationInfo(b.getLocation(), "fuel");
-        if (string == null) return;
+        String string = Objects.requireNonNullElse(BlockStorage.getLocationInfo(b.getLocation(), "fuel"), "0");
         int fuel = Integer.parseInt(string);
         if (fuel == 0) {
             p.sendMessage(ChatColor.RED + "The rocket has no fuel!");
@@ -136,8 +136,7 @@ public abstract class Rocket extends SlimefunItem {
         string = BlockStorage.getLocationInfo(b.getLocation(), "fuelType");
         if (string == null) return;
         String fuelType = string;
-        Double eff = LaunchPadCore.FUELS.get(string);
-        if (eff == null) return;
+        double eff = LaunchPadCore.FUELS.get(string);
 
         // ly
         double maxDistance = fuel * DISTANCE_PER_FUEL * eff;
@@ -162,7 +161,6 @@ public abstract class Rocket extends SlimefunItem {
                         .build()
                 );
             }
-
             return true;
         }, (player, pw) -> {
             player.closeInventory();
@@ -194,7 +192,7 @@ public abstract class Rocket extends SlimefunItem {
     }
 
     public void launch(@Nonnull Player p, @Nonnull Block rocket, PlanetaryWorld worldTo, long fuelLeft, String fuelType, int x, int z) {
-        BlockStorage.addBlockInfo(rocket, "isLaunching", "true");
+        ChunkStorage.tag(rocket, "isLaunching");
 
         World world = p.getWorld();
 
@@ -232,7 +230,7 @@ public abstract class Rocket extends SlimefunItem {
             Block destBlock = null;
             for (int y = to.getMaxHeight(); y > to.getMinHeight(); y--) {
                 Block b = to.getBlockAt(x, y, z);
-                if (b.isSolid() && !BlockStorage.check(b, BaseItems.LANDING_HATCH.getItemId())) {
+                if ((b.isBuildable() || b.isLiquid()) && !BlockStorage.check(b, BaseItems.LANDING_HATCH.getItemId())) {
                     destBlock = b.getRelative(BlockFace.UP);
                     break;
                 }
@@ -243,8 +241,8 @@ public abstract class Rocket extends SlimefunItem {
             }
 
             if (!Slimefun.getProtectionManager().hasPermission(p, destBlock, Interaction.PLACE_BLOCK)) {
-                p.sendMessage(ChatColor.RED + "Launch was not successful! You do not have permission to land there!");
-                BlockStorage.addBlockInfo(rocket, "isLaunching", "false");
+                p.sendMessage(ChatColor.RED + "Launch was not successful! You do not have permission to land there.");
+                ChunkStorage.untag(rocket, "isLaunching");
                 return;
             }
 
@@ -328,6 +326,7 @@ public abstract class Rocket extends SlimefunItem {
 
             rocket.setType(Material.AIR);
             BlockStorage.clearBlockInfo(rocket);
+            ChunkStorage.untag(rocket, "isLaunching");
         });
     }
 

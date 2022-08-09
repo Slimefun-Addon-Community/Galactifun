@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -23,7 +21,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Tag;
 import org.bukkit.World;
@@ -62,7 +59,7 @@ import io.github.addoncommunity.galactifun.api.worlds.OrbitWorld;
 import io.github.addoncommunity.galactifun.api.worlds.PlanetaryWorld;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.base.universe.earth.Earth;
-import io.github.addoncommunity.galactifun.util.PersistentBlockPositions;
+import io.github.addoncommunity.galactifun.util.ChunkStorage;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
@@ -71,7 +68,6 @@ import io.github.thebusybiscuit.slimefun4.api.events.WaypointCreateEvent;
 import io.github.thebusybiscuit.slimefun4.api.geo.GEOResource;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
@@ -79,7 +75,7 @@ import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
 public final class WorldManager implements Listener {
 
-    private static final NamespacedKey PLACED = Galactifun.createKey("placed");
+    private static final String PLACED = "placed";
 
     @Getter
     private final int maxAliensPerPlayer;
@@ -433,17 +429,7 @@ public final class WorldManager implements Listener {
     }
 
     public void addPlacedBlock(Block b) {
-        Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
-                PLACED,
-                PersistentBlockPositions.INSTANCE,
-                new HashSet<>()
-        );
-        placed.add(new BlockPosition(b));
-        b.getChunk().getPersistentDataContainer().set(
-                PLACED,
-                PersistentBlockPositions.INSTANCE,
-                placed
-        );
+        ChunkStorage.tag(b, PLACED);
     }
 
     /**
@@ -452,20 +438,7 @@ public final class WorldManager implements Listener {
      * @return true if the block was a placed block, false if it was not
      */
     public boolean removePlacedBlock(Block b) {
-        Set<BlockPosition> placed = b.getChunk().getPersistentDataContainer().getOrDefault(
-                PLACED,
-                PersistentBlockPositions.INSTANCE,
-                new HashSet<>()
-        );
-        boolean remove = placed.remove(new BlockPosition(b));
-        if (remove) {
-            b.getChunk().getPersistentDataContainer().set(
-                    PLACED,
-                    PersistentBlockPositions.INSTANCE,
-                    placed
-            );
-        }
-        return remove;
+        return ChunkStorage.untag(b, PLACED);
     }
 
 }
