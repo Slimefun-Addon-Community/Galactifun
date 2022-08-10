@@ -9,7 +9,7 @@ worlds:
 
 aliens:
 
-  # How often aliens tick in Minecraft ticks- there are 20 ticks in 1 second
+  # How often aliens tick in Minecraft ticks - there are 20 ticks in 1 second
   tick-interval: 2
 
   # Maximum number of aliens per player per world
@@ -20,7 +20,7 @@ aliens:
 
 rockets:
   
-  # Messages while rocket is launching
+  # Messages while rocket is launching. Must have at least 4
   launch-msgs: 
     - Forgetting parachutes
     - Restocking snack bin
@@ -30,11 +30,13 @@ rockets:
     - Thanking TheBusyBiscuit
     - Faking Moon landings
     - Taking one small step
+    - Going Boomer
+    - Not going home
 
 other:
   # The range that the automatic door checks for players
   auto-door-range: 2
-  # Automatic door prohibits placing and recycling blocks
+  # Blocks prohibited to be used by the automatic door
   auto-door-banned-types:
     - BEDROCK
     - CAKE
@@ -42,5 +44,3 @@ other:
     - COMMAND_BLOCK
     - END_PORTAL
     - STRUCTURE_BLOCK
-
-

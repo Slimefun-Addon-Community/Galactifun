@@ -22,7 +22,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import io.github.addoncommunity.galactifun.api.items.Rocket;
 import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.util.BSUtils;
-import io.github.addoncommunity.galactifun.util.ChunkStorage;
 import io.github.addoncommunity.galactifun.util.Util;
 import io.github.mooy1.infinitylib.common.PersistentType;
 import io.github.mooy1.infinitylib.common.StackUtils;
@@ -72,9 +71,9 @@ public final class LaunchPadCore extends TickingMenuBlock {
         SlimefunItem sfItem = BlockStorage.check(b);
         if (!(sfItem instanceof Rocket rocket)) return;
 
-        if (ChunkStorage.isTagged(b, "isLaunching")) return;
-
         Location l = b.getLocation();
+        if (BSUtils.getStoredBoolean(l, "isLaunching")) return;
+
         String string = Objects.requireNonNullElse(BlockStorage.getLocationInfo(l, "fuel"), "0");
         int fuel = Integer.parseInt(string);
 
@@ -126,7 +125,7 @@ public final class LaunchPadCore extends TickingMenuBlock {
     }
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
-        if (ChunkStorage.isTagged(b.getRelative(BlockFace.UP), "isLaunching")) {
+        if (BSUtils.getStoredBoolean(b.getRelative(BlockFace.UP).getLocation(), "isLaunching")) {
             p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
             return false;
         }

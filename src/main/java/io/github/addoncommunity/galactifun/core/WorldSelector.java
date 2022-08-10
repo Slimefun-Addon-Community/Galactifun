@@ -158,10 +158,8 @@ public final class WorldSelector {
                     lore.remove(lore.size() - 1);
 
                     if (distance > 0) {
-                        lore.add(Component.text("Distance: " + (distance < 1
-                                ? distance * Util.KM_PER_LY + " Kilometers"
-                                : distance + " Light Years")
-                        ).color(NamedTextColor.GRAY));
+                        lore.add(Component.text("Distance: " + Util.formatDistance(distance))
+                                .color(NamedTextColor.GRAY));
                     } else {
                         lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
                     }
