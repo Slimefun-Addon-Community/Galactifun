@@ -161,6 +161,12 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                             l -> (l.isBuildable() || l.isLiquid()) && !BlockStorage.check(l, BaseItems.LANDING_HATCH.getItemId())
                     );
                     destBlock.getChunk().load();
+                    Block down = destBlock.getRelative(BlockFace.DOWN);
+                    if (down.getType() == Material.CHEST) {
+                        destBlock = down;
+                    } else {
+                        destBlock.setType(Material.CHEST);
+                    }
                     if (Slimefun.getProtectionManager().hasPermission(p, destBlock, Interaction.PLACE_BLOCK)) {
                         launch(
                                 p,
