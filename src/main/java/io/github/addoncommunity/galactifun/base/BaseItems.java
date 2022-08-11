@@ -30,6 +30,7 @@ import io.github.addoncommunity.galactifun.base.items.TechnologicalSalvager;
 import io.github.addoncommunity.galactifun.base.items.knowledge.Observatory;
 import io.github.addoncommunity.galactifun.base.items.knowledge.PlanetaryAnalyzer;
 import io.github.addoncommunity.galactifun.base.items.protection.CoolingUnit;
+import io.github.addoncommunity.galactifun.base.items.protection.ForcefieldGenerator;
 import io.github.addoncommunity.galactifun.base.items.protection.IonDisperser;
 import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
 import io.github.addoncommunity.galactifun.base.items.protection.SpaceHeater;
@@ -375,17 +376,13 @@ public final class BaseItems {
             "&7Automatically places/removes the blocks inside",
             "&7when you go to/away from it"
     );
-    public static final SlimefunItemStack ION_ROCKET = new SlimefunItemStack(
-            "ION_ROCKET",
-            GalactifunHead.ION_ROCKET,
-            "&bIon Rocket",
+    public static final SlimefunItemStack ENVIRONMENTAL_FORCEFIELD_GENERATOR = new SlimefunItemStack(
+            "ENVIRONMENTAL_FORCEFIELD_GENERATOR",
+            Material.DISPENSER,
+            "&fEnvironmental Forcefield Generator",
             "",
-            "&7Uses a specialized engine that",
-            "&7expels ions at great speed, granting",
-            "&7extreme fuel efficiency",
-            "",
-            "&7Fuel Capacity: 500",
-            "&7Cargo Capacity: 18"
+            "&7Produces a forcefield that keeps air from",
+            "&7going through, but allows entities"
     );
     //</editor-fold>
     //<editor-fold desc="Relics" defaultstate="collapsed">
@@ -467,6 +464,18 @@ public final class BaseItems {
             "",
             "&7Fuel Capacity: " + TIER_THREE_FUEL,
             "&7Cargo Capacity: " + TIER_THREE_STORAGE
+    );
+    public static final SlimefunItemStack ION_ROCKET = new SlimefunItemStack(
+            "ION_ROCKET",
+            GalactifunHead.ION_ROCKET,
+            "&bIon Rocket",
+            "",
+            "&7Uses a specialized engine that",
+            "&7expels ions at great speed, granting",
+            "&7extreme fuel efficiency",
+            "",
+            "&7Fuel Capacity: 500",
+            "&7Cargo Capacity: 18"
     );
     //</editor-fold>
 
@@ -668,6 +677,12 @@ public final class BaseItems {
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, new ItemStack(Material.OBSERVER), BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.PROGRAMMABLE_ANDROID_MINER, BaseMats.ALUMINUM_COMPOSITE_SHEET,
                 BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
+        }).register(galactifun);
+
+        new ForcefieldGenerator(ENVIRONMENTAL_FORCEFIELD_GENERATOR, new ItemStack[] {
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, ION_DISPERSER_1, BaseMats.ALUMINUM_COMPOSITE_SHEET,
+                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.SPACE_GRADE_PLATE, BaseMats.ALUMINUM_COMPOSITE_SHEET
         }).register(galactifun);
 
         new FusionReactor(FUSION_REACTOR, new ItemStack[] {

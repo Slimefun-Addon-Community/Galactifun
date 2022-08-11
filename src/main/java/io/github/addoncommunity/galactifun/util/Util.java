@@ -64,6 +64,7 @@ public final class Util {
                 Material.QUARTZ_BLOCK,
                 Material.SMOOTH_QUARTZ
         ));
+        IMPERMEABLE_BLOCKS.add(Material.LIGHT);
         for (Material material : Material.values()) {
             if (material.name().startsWith("WAXED") || material.name().endsWith("CONCRETE")) {
                 IMPERMEABLE_BLOCKS.add(material);
