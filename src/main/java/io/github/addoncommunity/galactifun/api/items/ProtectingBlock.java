@@ -104,7 +104,7 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
     private void uniqueTick() {
         //noinspection deprecation
         Galactifun.protectionManager().clearProtectedBlocks();
-        for (BlockPosition l : allBlocks) {
+        for (BlockPosition l : new HashSet<>(allBlocks)) {
             updateProtections(l);
         }
     }
