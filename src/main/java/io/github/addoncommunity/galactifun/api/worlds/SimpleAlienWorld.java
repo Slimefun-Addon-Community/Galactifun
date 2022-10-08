@@ -234,7 +234,7 @@ public abstract class SimpleAlienWorld extends AlienWorld {
      *                  and deeper the crater.
      *
      */
-    protected record CraterSettings(int octaves, double scale, double frequency, double amplitude, double noiseDepth) {
+    protected static record CraterSettings(int octaves, double scale, double frequency, double amplitude, double noiseDepth) {
 
         public static CraterSettings DEFAULT = new CraterSettings(3, 0.01, 0.5,
                 0.1, 0.35);
