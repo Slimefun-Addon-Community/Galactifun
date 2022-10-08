@@ -30,7 +30,7 @@ public final class Sphere {
 
     public void generate(@Nonnull Location middle, @Nonnull LimitedRegion region, int min, int dev) {
         Validate.isTrue(min >= MIN_RADIUS && dev >= 0 && min + dev <= MAX_RADIUS, "Generation parameters out of bounds!");
-
+        this.currentRegion = region;
         this.currentMiddle = middle;
 
         // radius

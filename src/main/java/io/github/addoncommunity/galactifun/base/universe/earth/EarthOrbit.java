@@ -1,5 +1,6 @@
 package io.github.addoncommunity.galactifun.base.universe.earth;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -7,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
@@ -52,14 +54,23 @@ public final class EarthOrbit extends AlienWorld implements OrbitWorld {
             public BiomeProvider getDefaultBiomeProvider(@Nonnull WorldInfo worldInfo) {
                 return new GenUtils.SingleBiomeProvider(Biome.THE_VOID);
             }
+
+            @Nonnull
+            @Override
+            public List<BlockPopulator> getDefaultPopulators(@Nonnull World world) {
+                List<BlockPopulator> list = new ArrayList<>(1);
+                getPopulators(list);
+                return list;
+            }
         };
     }
 
     @Override
     public void getPopulators(@Nonnull List<BlockPopulator> populators) {
         populators.add(new BlockPopulator() {
+
             @Override
-            public void populate(@Nonnull WorldInfo world, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
+            public void populate(@Nonnull WorldInfo worldInfo, @Nonnull Random random, int cx, int cz, @Nonnull LimitedRegion region) {
                 if (random.nextInt(10) == 0) {
                     int x = random.nextInt(2) + 7;
                     int y = random.nextInt(224) + 16;
