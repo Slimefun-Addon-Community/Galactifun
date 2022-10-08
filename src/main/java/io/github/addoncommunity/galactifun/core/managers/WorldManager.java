@@ -308,6 +308,7 @@ public final class WorldManager implements Listener {
                 if (item != null && !removePlacedBlock(b)) {
                     blocks.remove();
                     w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), item.clone());
+                    Scheduler.run(() -> b.setType(Material.AIR));
                 }
             }
         }
