@@ -365,12 +365,12 @@ public final class BaseMats {
                 NOZZLE, GOLD_FOIL, FILTER,
                 SlimefunItems.ELECTRO_MAGNET, REINFORCED_CHANNEL, FILTER
         );
-        component(SPARK_PLUG, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(SPARK_PLUG, true, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
                 SlimefunItems.ALUMINUM_INGOT, null, MUNPOWDER,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
         );
-        component(SPARK_PLUG_2, RecipeType.ENHANCED_CRAFTING_TABLE,
+        component(SPARK_PLUG_2, true, RecipeType.ENHANCED_CRAFTING_TABLE,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT,
                 TUNGSTEN_INGOT, null, MUNPOWDER,
                 null, SlimefunItems.STEEL_PLATE, SlimefunItems.NICKEL_INGOT
