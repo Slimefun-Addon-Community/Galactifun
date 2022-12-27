@@ -3,10 +3,15 @@ package io.github.addoncommunity.galactifun.core.managers;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 
 import lombok.Getter;
 
@@ -43,6 +48,7 @@ public final class AlienManager implements Listener {
     @Getter
     private final NamespacedKey bossKey;
     private final Map<String, Alien<?>> aliens = new HashMap<>();
+    private final Set<UUID> alienSet = new HashSet<>();
 
     public AlienManager(Galactifun galactifun) {
         Events.registerListener(this);
@@ -75,16 +81,21 @@ public final class AlienManager implements Listener {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
+    public void addUUID(@Nonnull UUID uuid) {
+        alienSet.add(uuid);
+    }
+
     private void tick() {
         for (Alien<?> alien : this.aliens.values()) {
             alien.onUniqueTick();
         }
 
-        for (World world : Bukkit.getWorlds()) {
-            for (LivingEntity entity : world.getLivingEntities()) {
-                Alien<?> alien = getAlien(entity);
+        for (UUID uuid : alienSet) {
+            final Entity entity = Bukkit.getEntity(uuid);
+            if (entity instanceof LivingEntity livingEntity) {
+                final Alien<?> alien = getAlien(entity);
                 if (alien != null) {
-                    alien.onEntityTick(entity);
+                    alien.onEntityTick(livingEntity);
                 }
             }
         }
@@ -159,6 +170,11 @@ public final class AlienManager implements Listener {
                 alien.onShoot(e);
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    private void onAlienRemove(@Nonnull EntityRemoveFromWorldEvent e) {
+        alienSet.remove(e.getEntity().getUniqueId());
     }
 
     public void onDisable() {
