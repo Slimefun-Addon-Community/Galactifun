@@ -51,6 +51,7 @@ public final class AlienManager implements Listener {
     private final Set<UUID> alienSet = new HashSet<>();
 
     public AlienManager(Galactifun galactifun) {
+        findAliens();
         Events.registerListener(this);
         Scheduler.repeat(galactifun.getConfig().getInt("aliens.tick-interval", 1, 20), this::tick);
 
@@ -81,6 +82,17 @@ public final class AlienManager implements Listener {
         return Collections.unmodifiableCollection(this.aliens.values());
     }
 
+    public void findAliens() {
+        for (World world : Bukkit.getWorlds()) {
+            for (LivingEntity entity : world.getLivingEntities()) {
+                Alien<?> alien = getAlien(entity);
+                if (alien != null) {
+                    addUUID(entity.getUniqueId());
+                }
+            }
+        }
+    }
+
     public void addUUID(@Nonnull UUID uuid) {
         alienSet.add(uuid);
     }
@@ -91,9 +103,9 @@ public final class AlienManager implements Listener {
         }
 
         for (UUID uuid : alienSet) {
-            final Entity entity = Bukkit.getEntity(uuid);
+            Entity entity = Bukkit.getEntity(uuid);
             if (entity instanceof LivingEntity livingEntity) {
-                final Alien<?> alien = getAlien(entity);
+                Alien<?> alien = getAlien(entity);
                 if (alien != null) {
                     alien.onEntityTick(livingEntity);
                 }
