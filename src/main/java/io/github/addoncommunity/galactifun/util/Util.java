@@ -76,9 +76,9 @@ public final class Util {
     public static String timeSince(double nanoTime) {
         nanoTime = System.nanoTime() - nanoTime;
         if (nanoTime >= 1_000_000_000D) {
-            return ((int) (nanoTime / 1_000_000D)) / 1000 + " s";
+            return ((int) (nanoTime / 1_000_000D)) / 1000 + " 秒";
         } else {
-            return ((int) (nanoTime / 1_000D)) / 1000D + " ms";
+            return ((int) (nanoTime / 1_000D)) / 1000D + " 毫秒";
         }
     }
 
@@ -144,9 +144,9 @@ public final class Util {
      */
     public static String formatDistance(double distance) {
         if (distance >= 0.25) {
-            return "%.3f ly".formatted(distance);
+            return "%.3f 光年".formatted(distance);
         } else {
-            return "%.3f km".formatted(distance * KM_PER_LY);
+            return "%.3f 千米".formatted(distance * KM_PER_LY);
         }
     }
 }

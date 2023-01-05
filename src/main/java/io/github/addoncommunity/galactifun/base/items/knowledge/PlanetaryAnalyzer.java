@@ -32,16 +32,16 @@ public final class PlanetaryAnalyzer extends SimpleSlimefunItem<BlockUseHandler>
 
             PlanetaryWorld world = Galactifun.worldManager().getWorld(p.getWorld());
             if (world == null) {
-                p.sendMessage(ChatColor.RED + "You must be on a planet to use this!");
+                p.sendMessage(ChatColor.RED + "你必须在一颗星球上才能使用它!");
                 return;
             }
 
             if (PersistentDataAPI.getBoolean(world.worldStorage(), key)) {
-                p.sendMessage(ChatColor.RED + "Already analyzing!");
+                p.sendMessage(ChatColor.RED + "已经在分析中了!");
                 return;
             }
 
-            p.sendMessage(ChatColor.GREEN + "Analyzing planet " + world.name());
+            p.sendMessage(ChatColor.GREEN + "正在分析星球 " + world.name());
             PersistentDataAPI.setBoolean(world.worldStorage(), key, true);
             Scheduler.run(30 * 60 * 20, () -> {
                 PersistentDataAPI.setBoolean(world.worldStorage(), key, false);

@@ -126,7 +126,7 @@ public final class LaunchPadCore extends TickingMenuBlock {
 
     public static boolean canBreak(@Nonnull Player p, @Nonnull Block b) {
         if (BSUtils.getStoredBoolean(b.getRelative(BlockFace.UP).getLocation(), "isLaunching")) {
-            p.sendMessage(ChatColor.RED + "You cannot break the launchpad a rocket is launching on!");
+            p.sendMessage(ChatColor.RED + "在发射中你不能破坏发射台!");
             return false;
         }
         return true;
@@ -163,7 +163,7 @@ public final class LaunchPadCore extends TickingMenuBlock {
 
         preset.addItem(24, new CustomItemStack(
                 HeadTexture.FUEL_BUCKET.getAsItemStack(),
-                "&6Insert Fuel Here"
+                "&6这里放入燃料"
         ), ChestMenuUtils.getEmptyClickHandler());
     }
 
@@ -192,7 +192,7 @@ public final class LaunchPadCore extends TickingMenuBlock {
                 BlockStorage.getInventory(b).open(p);
             } else {
                 e.cancel();
-                p.sendMessage(ChatColor.RED + "Surround this block with 8 launch pad floors before attempting to use it");
+                p.sendMessage(ChatColor.RED + "请在使用它前用 8 个发射台基石围住这个方块");
             }
         }
     }

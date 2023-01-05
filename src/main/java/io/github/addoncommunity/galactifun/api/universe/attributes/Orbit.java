@@ -44,7 +44,7 @@ public final class Orbit {
     private final double distance;
 
     private Orbit(double distance, double year) {
-        Validate.isTrue(distance >= 0, "Orbits must be positive!");
+        Validate.isTrue(distance >= 0, "轨道距离必须为正数!");
 
         this.distance = distance;
         this.year = (long) (EARTH_YEAR * year) * 1200000;

@@ -28,9 +28,9 @@ import it.unimi.dsi.fastutil.objects.ObjectIntPair;
  */
 public final class TheMoon extends SimpleAlienWorld {
 
-    public TheMoon(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public TheMoon(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                    DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

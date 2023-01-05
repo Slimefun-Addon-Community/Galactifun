@@ -19,8 +19,8 @@ public final class StarSystemType extends UniversalType {
 
     private static final Map<String, StarSystemType> allTypes = new HashMap<>();
 
-    public static final StarSystemType NORMAL = new StarSystemType("Normal", "NORMAL");
-    public static final StarSystemType BINARY = new StarSystemType("Binary", "BINARY");
+    public static final StarSystemType NORMAL = new StarSystemType("正常", "NORMAL");
+    public static final StarSystemType BINARY = new StarSystemType("双星", "BINARY");
 
     public StarSystemType(String name, String id) {
         super(name, id);

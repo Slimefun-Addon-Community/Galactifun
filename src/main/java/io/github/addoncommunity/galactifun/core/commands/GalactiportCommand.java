@@ -25,7 +25,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 public final class GalactiportCommand extends SubCommand {
 
     public GalactiportCommand() {
-        super("world", "Teleports you to the spawn of the specified world", true);
+        super("world", "传送你到指定世界的出生点", true);
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class GalactiportCommand extends SubCommand {
         World world = Bukkit.getWorld(strings[0]);
 
         if (world == null) {
-            p.sendMessage(ChatColor.RED + "Invalid World!");
+            p.sendMessage(ChatColor.RED + "无效的世界!");
             return;
         }
 

@@ -24,17 +24,17 @@ public class PlanetaryObject extends UniversalObject {
     private final Atmosphere atmosphere;
     private final Gravity gravity;
 
-    public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public PlanetaryObject(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                            @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem);
+        super(name, id, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
         this.gravity = gravity;
     }
 
-    public PlanetaryObject(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public PlanetaryObject(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                            @Nonnull DayCycle dayCycle, @Nonnull Atmosphere atmosphere, @Nonnull Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem);
+        super(name, id, type, orbit, orbiting, baseItem);
         this.dayCycle = dayCycle;
         this.atmosphere = atmosphere;
         this.gravity = gravity;

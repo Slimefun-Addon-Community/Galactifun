@@ -38,12 +38,12 @@ public abstract class FlatWorld extends AlienWorld {
     private volatile Int2ObjectMap<Material> top = null;
     private volatile Int2ObjectMap<Material> bottom = null;
 
-    public FlatWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem, DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+    public FlatWorld(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem, DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public FlatWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem, DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+    public FlatWorld(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem, DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     /**

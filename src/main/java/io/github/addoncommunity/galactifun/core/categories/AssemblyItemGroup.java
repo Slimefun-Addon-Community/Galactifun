@@ -52,7 +52,7 @@ public final class AssemblyItemGroup extends FlexItemGroup {
     public void open(Player p, PlayerProfile profile, SlimefunGuideMode layout) {
         profile.getGuideHistory().add(this, 1);
 
-        ChestMenu menu = new ChestMenu("Assembly Table Recipes");
+        ChestMenu menu = new ChestMenu("装配台配方");
         menu.setEmptySlotsClickable(false);
 
         for (int i = 0; i < 9; ++i) {
@@ -86,7 +86,7 @@ public final class AssemblyItemGroup extends FlexItemGroup {
     }
 
     private void displayItem(Player p, PlayerProfile profile, Map.Entry<SlimefunItemStack, ItemStack[]> item) {
-        ChestMenu menu = new ChestMenu("Recipe for " + item.getKey().getDisplayName());
+        ChestMenu menu = new ChestMenu(item.getKey().getDisplayName() + "的配方");
         menu.setEmptySlotsClickable(false);
 
         menu.addItem(0, new CustomItemStack(ChestMenuUtils.getBackButton(p, "",

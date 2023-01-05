@@ -31,16 +31,16 @@ public final class AtmosphericEffect {
 
     private static final Map<String, AtmosphericEffect> allEffects = new HashMap<>();
 
-    public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION",
+    public static final AtmosphericEffect RADIATION = new AtmosphericEffect("RADIATION", "辐射",
             SpaceSuitStat.RADIATION_RESISTANCE, PotionEffectType.WITHER);
-    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT",
+    public static final AtmosphericEffect HEAT = new AtmosphericEffect("HEAT", "炎热",
             SpaceSuitStat.HEAT_RESISTANCE, (player, level) -> {
         player.setFireTicks(Ints.constrainToRange(240 * level, 0, player.getMaxFireTicks()));
         if (level > 3) {
             player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
         }
     });
-    public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD",
+    public static final AtmosphericEffect COLD = new AtmosphericEffect("COLD", "寒冷",
             SpaceSuitStat.COLD_RESISTANCE, (player, level) -> {
         player.damage(level * 2);
         player.addPotionEffect(new PotionEffect(
@@ -56,13 +56,17 @@ public final class AtmosphericEffect {
 
     @Getter
     private final String id;
+
+    @Getter
+    private final String name;
+
     @Getter
     @Nullable
     private final SpaceSuitStat stat;
     private final BiConsumer<Player, Integer> applier;
 
-    public AtmosphericEffect(@NonNull String id, @Nullable SpaceSuitStat stat, @NonNull PotionEffectType effectType) {
-        this(id, stat, (player, level) -> player.addPotionEffect(new PotionEffect(
+    public AtmosphericEffect(@NonNull String id, @NonNull String name, @Nullable SpaceSuitStat stat, @NonNull PotionEffectType effectType) {
+        this(id, name, stat, (player, level) -> player.addPotionEffect(new PotionEffect(
                 effectType,
                 200,
                 Math.min(200, level - 1), // i think the max is 255 but to be on the safe side
@@ -72,8 +76,9 @@ public final class AtmosphericEffect {
         )));
     }
 
-    public AtmosphericEffect(@NonNull String id, @Nullable SpaceSuitStat stat, @NonNull BiConsumer<Player, Integer> applier) {
+    public AtmosphericEffect(@NonNull String id, @NonNull String name, @Nullable SpaceSuitStat stat, @NonNull BiConsumer<Player, Integer> applier) {
         this.id = id;
+        this.name = name;
         this.stat = stat;
         this.applier = applier;
 
@@ -91,7 +96,7 @@ public final class AtmosphericEffect {
 
     public void apply(@NonNull Player p, int level) {
         if (level > 0) {
-            p.sendMessage(ChatColor.RED + "You have been exposed to " + this + "!");
+            p.sendMessage(ChatColor.RED + "你已经暴露于" + name + "!");
             this.applier.accept(p, level);
         }
     }

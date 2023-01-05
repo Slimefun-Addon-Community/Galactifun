@@ -64,12 +64,12 @@ public final class Structure {
         }
 
         try (InputStream stream = Objects.requireNonNull(plugin.getResource(path),
-                "No galactic structure found in " + plugin.getName() + "'s resources named " + path)) {
+                "在 " + plugin.getName() + "资源 " + path + "中未找到星际结构")) {
 
             structure = loadFromString(new String(stream.readAllBytes()));
 
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to read galactic structure '" + path + "' from '" + plugin.getName() + "'", e);
+            throw new IllegalStateException("无法读取星际结构 '" + path + "' 从 '" + plugin.getName() + "'", e);
         }
 
         STRUCTURES.put(key, structure);
@@ -98,13 +98,13 @@ public final class Structure {
                 return switch (blockSplit.length) {
                     case 1 -> StructureBlock.of(Material.valueOf(blockSplit[0]));
                     case 2 -> new RotatableBlock(Material.valueOf(blockSplit[0]), BlockFace.valueOf(blockSplit[1]));
-                    default -> throw new IllegalArgumentException("Failed to load structure block from String '" + block + "'");
+                    default -> throw new IllegalArgumentException("无法加载结构方块从文本 '" + block + "'");
                 };
             });
 
             return structure;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to load galactic structure from given string!");
+            throw new IllegalArgumentException("无法从给定文本中加载星际结构!");
         }
     }
 

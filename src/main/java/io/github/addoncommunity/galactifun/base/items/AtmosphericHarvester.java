@@ -31,7 +31,7 @@ public final class AtmosphericHarvester extends AbstractMachineBlock {
     private static final Map<PlanetaryWorld, RandomizedSet<Integer>> weights = new HashMap<>();
 
     private static final ItemStack PROCESSING = new CustomItemStack(
-            GalactifunHead.ATMOSPHERIC_HARVESTER, "&fHarvesting..."
+            GalactifunHead.ATMOSPHERIC_HARVESTER, "&f捕获中..."
     );
 
     public AtmosphericHarvester(SlimefunItemStack item, ItemStack[] recipe) {

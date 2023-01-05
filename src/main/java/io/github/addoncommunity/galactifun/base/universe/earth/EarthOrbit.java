@@ -35,9 +35,9 @@ public final class EarthOrbit extends AlienWorld implements OrbitWorld {
     private final Sphere comet = new Sphere(Material.ICE, Material.PACKED_ICE, Material.BLUE_ICE);
     private final Sphere asteroid = new Sphere(Material.STONE, Material.COBBLESTONE, Material.ANDESITE);
 
-    public EarthOrbit(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public EarthOrbit(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

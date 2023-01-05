@@ -32,9 +32,9 @@ public final class Enceladus extends FlatWorld {
     private final Structure cryovolcano = Structure.get(Galactifun.instance(), "cryovolcano");
     private final Sphere waterPocket = new Sphere(Material.WATER);
 
-    public Enceladus(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public Enceladus(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                      DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Nonnull

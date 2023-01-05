@@ -54,7 +54,7 @@ public final class AlienManager implements Listener {
 
     public void register(Alien<?> alien) {
         if (this.aliens.containsKey(alien.id())) {
-            throw new IllegalArgumentException("Alien " + alien.id() + " has already been registered!");
+            throw new IllegalArgumentException("外星人 " + alien.id() + " 已被注册!");
         }
         this.aliens.put(alien.id(), alien);
     }

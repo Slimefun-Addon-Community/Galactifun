@@ -40,14 +40,14 @@ public abstract class SimpleAlienWorld extends AlienWorld {
     private final AtomicDouble craterDepthNoise = new AtomicDouble(0);
     private volatile CraterSettings craterSettings;
 
-    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public SimpleAlienWorld(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                             DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public SimpleAlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public SimpleAlienWorld(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                             DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

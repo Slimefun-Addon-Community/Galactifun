@@ -16,7 +16,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 public final class SealedCommand extends SubCommand {
 
     public SealedCommand() {
-        super("sealed", "Checks if the area is sealed", false);
+        super("sealed", "检查当前区域是否密封", false);
     }
 
     @Override
@@ -27,9 +27,9 @@ public final class SealedCommand extends SubCommand {
         double time = System.nanoTime();
         Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[0]));
         if (filled.isPresent()) {
-            p.sendMessage("Sealed");
+            p.sendMessage("已密封");
         } else {
-            p.sendMessage("Not sealed");
+            p.sendMessage("未密封");
         }
 
         p.sendMessage(Util.timeSince(time));

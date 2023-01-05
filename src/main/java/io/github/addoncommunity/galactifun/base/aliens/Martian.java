@@ -50,7 +50,7 @@ public final class Martian extends Alien<ZombieVillager> {
 
         // 1/64 chance
         if (ThreadLocalRandom.current().nextDouble() <= 0.015625) {
-            spawned.setCustomName(ChatColor.RED + "The Zerix");
+            spawned.setCustomName(ChatColor.RED + "泽里克斯");
             spawned.setCustomNameVisible(true);
         }
 

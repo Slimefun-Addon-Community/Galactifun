@@ -56,14 +56,14 @@ public abstract class AlienWorld extends PlanetaryWorld {
     private final Map<Material, SlimefunItemStack> blockMappings = new EnumMap<>(Material.class);
     private final List<Alien<?>> species = new ArrayList<>();
 
-    public AlienWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public AlienWorld(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public AlienWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public AlienWorld(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                       DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Nullable
@@ -73,7 +73,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
             return null;
         }
 
-        Galactifun.log(Level.INFO, "Loading planet " + name());
+        Galactifun.log(Level.INFO, "正在加载星球 " + name());
 
         String worldName = "world_galactifun_" + this.id;
 
@@ -121,7 +121,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
                 .environment(atmosphere().environment())
                 .createWorld();
 
-        Validate.notNull(world, "There was an error loading the world for " + worldName);
+        Validate.notNull(world, "加载此世界时发生错误 " + worldName);
 
         if (world.getEnvironment() == World.Environment.THE_END) {
             // Prevents ender dragon spawn using portal, surrounds portal with bedrock
@@ -145,7 +145,7 @@ public abstract class AlienWorld extends PlanetaryWorld {
             if (alien.isRegistered()) {
                 this.species.add(alien);
             } else {
-                throw new IllegalStateException("You must register an alien before adding it to a world!");
+                throw new IllegalStateException("在添加外星生物前需要先注册!");
             }
         }
     }

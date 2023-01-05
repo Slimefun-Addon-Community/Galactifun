@@ -27,9 +27,9 @@ import io.github.addoncommunity.galactifun.api.worlds.populators.VolcanoPopulato
  */
 public final class Venus extends SimpleAlienWorld {
 
-    public Venus(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public Venus(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                  DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     @Override

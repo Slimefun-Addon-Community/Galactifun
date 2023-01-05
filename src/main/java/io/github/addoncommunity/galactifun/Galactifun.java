@@ -51,11 +51,11 @@ public final class Galactifun extends AbstractAddon {
     private boolean shouldDisable = false;
 
     public Galactifun() {
-        super("Slimefun-Addon-Community", "Galactifun", "master", "auto-update");
+        super("ClayCoffee", "Galactifun", "master", "auto-update");
     }
 
     public Galactifun(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file, "Slimefun-Addon-Community", "Galactifun", "master", "auto-update");
+        super(loader, description, dataFolder, file, "ClayCoffee", "Galactifun", "master", "auto-update");
         isTest = true;
     }
 
@@ -77,18 +77,18 @@ public final class Galactifun extends AbstractAddon {
 
         if (!isTest) {
             if (!PaperLib.isPaper()) {
-                log(Level.SEVERE, "Galactifun only supports Paper and its forks (i.e. Airplane and Purpur)");
-                log(Level.SEVERE, "Please use Paper or a fork of Paper");
+                log(Level.SEVERE, "Galactifun 仅支持 Paper 端及其分支 (如 Airplane 和 Purpur)");
+                log(Level.SEVERE, "请使用 Paper 端或其分支");
                 shouldDisable = true;
             }
             if (Slimefun.getMinecraftVersion().isBefore(MinecraftVersion.MINECRAFT_1_17)) {
-                log(Level.SEVERE, "Galactifun only supports Minecraft 1.17 and above");
-                log(Level.SEVERE, "Please use Minecraft 1.17 or above");
+                log(Level.SEVERE, "Galactifun 仅支持 Minecraft 1.17 或以上");
+                log(Level.SEVERE, "请使用 Minecraft 1.17 或以上");
                 shouldDisable = true;
             }
             if (Bukkit.getPluginManager().isPluginEnabled("ClayTech")) {
-                log(Level.SEVERE, "Galactifun will not work properly with ClayTech");
-                log(Level.SEVERE, "Please disable ClayTech");
+                log(Level.SEVERE, "Galactifun 不会和 ClayTech 一起工作");
+                log(Level.SEVERE, "请禁用 ClayTech");
                 shouldDisable = true;
             }
 
@@ -116,9 +116,8 @@ public final class Galactifun extends AbstractAddon {
         Scheduler.run(() -> log(Level.INFO,
                 "################# Galactifun " + getPluginVersion() + " #################",
                 "",
-                "Galactifun is open source, you can contribute or report bugs at: ",
+                "Galactifun 是开源的, 你可以贡献代码或提交bug在这里: ",
                 getBugTrackerURL(),
-                "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
                 "",
                 "###################################################"
         ));

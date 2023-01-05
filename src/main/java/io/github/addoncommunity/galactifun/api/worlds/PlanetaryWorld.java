@@ -55,19 +55,19 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
     @Getter
     private final Set<GEOResource> resources = new HashSet<>();
 
-    public PlanetaryWorld(String name, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
+    public PlanetaryWorld(String name, String id, PlanetaryType type, Orbit orbit, StarSystem orbiting, ItemStack baseItem,
                           DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
-    public PlanetaryWorld(String name, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
+    public PlanetaryWorld(String name, String id, PlanetaryType type, Orbit orbit, PlanetaryObject orbiting, ItemStack baseItem,
                           DayCycle dayCycle, Atmosphere atmosphere, Gravity gravity) {
-        super(name, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
+        super(name, id, type, orbit, orbiting, baseItem, dayCycle, atmosphere, gravity);
     }
 
     public final void register(@Nonnull SlimefunAddon addon) {
         if (isRegistered()) {
-            throw new IllegalStateException("World already registered!");
+            throw new IllegalStateException("世界已被注册!");
         }
         this.worldManager = Galactifun.worldManager();
         this.addon = addon;
@@ -101,7 +101,7 @@ public abstract class PlanetaryWorld extends PlanetaryObject {
     @Nonnull
     public final PersistentDataHolder worldStorage() {
         // it will only be null if the world is disabled
-        Validate.notNull(this.worldStorage, "Attempted to get the world storage of disabled world " + name());
+        Validate.notNull(this.worldStorage, "获得了已禁用世界的世界存储: " + name());
         return this.worldStorage;
     }
 

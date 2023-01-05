@@ -110,20 +110,20 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
         if (!BlockStorage.check(b, this.getId())) return;
 
         if (BSUtils.getStoredBoolean(b.getLocation(), "isLaunching")) {
-            p.sendMessage(ChatColor.RED + "The rocket is already launching!");
+            p.sendMessage(ChatColor.RED + "火箭已在发射中!");
             return;
         }
 
         WorldManager worldManager = Galactifun.worldManager();
         PlanetaryWorld currentWorld = worldManager.getWorld(p.getWorld());
         if (currentWorld == null) {
-            p.sendMessage(ChatColor.RED + "You cannot travel to space from this world!");
+            p.sendMessage(ChatColor.RED + "你不能从这个世界中发射到太空!");
             return;
         }
 
         int fuel = BSUtils.getStoredInt(b.getLocation(), "fuel");
         if (fuel == 0) {
-            p.sendMessage(ChatColor.RED + "The rocket has no fuel!");
+            p.sendMessage(ChatColor.RED + "火箭没有燃料!");
             return;
         }
 
@@ -142,7 +142,7 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                 lore.add(Component.empty());
                 lore.add(Component.text()
                         .color(NamedTextColor.YELLOW)
-                        .append(Component.text("Fuel: "))
+                        .append(Component.text("燃料: "))
                         .append(Component.text((long) Math.ceil(distance / (DISTANCE_PER_FUEL * eff))))
                         .build());
             }
@@ -150,7 +150,7 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
         }, (player, destination) -> {
             player.closeInventory();
             int usedFuel = (int) Math.ceil(destination.distanceTo(currentWorld) / (DISTANCE_PER_FUEL * eff));
-            p.sendMessage(ChatColor.YELLOW + "Please enter destination coordinates in the form of <x> <z> (i.e. -123 456) or type in anything else to cancel:");
+            p.sendMessage(ChatColor.YELLOW + "请以 <x> <z> (如 -123 456) 的形式输入目的地, 输入其他文本以取消:");
             ChatUtils.awaitInput(p, s -> {
                 if (Util.COORD_PATTERN.matcher(s).matches()) {
                     String[] coords = Util.SPACE_PATTERN.split(s);
@@ -176,10 +176,10 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                                 destBlock
                         );
                     } else {
-                        p.sendMessage(ChatColor.RED + "You do not have permission to land there");
+                        p.sendMessage(ChatColor.RED + "你没有权限在那里着陆");
                     }
                 } else {
-                    p.sendMessage(ChatColor.RED + "Launch cancelled");
+                    p.sendMessage(ChatColor.RED + "发射取消");
                 }
             });
         }).open(p);
@@ -212,7 +212,7 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
         sendLaunchMessage(120, p, launchMessages);
         sendLaunchMessage(160, p, launchMessages);
         Scheduler.run(200, () -> {
-            p.sendMessage(ChatColor.YELLOW + "Verifying blast awesomeness...");
+            p.sendMessage(ChatColor.YELLOW + "检查飞船...");
             Chest chest = (Chest) PaperLib.getBlockState(destBlock, false).getState();
             Inventory inv = chest.getBlockInventory();
             inv.addItem(fuelLeft);
@@ -301,7 +301,7 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
             ret.add(new CustomItemStack(
                     entry.getKey(),
                     ItemUtils.getItemName(entry.getKey()),
-                    "&7Efficiency: " + entry.getValue() + 'x'
+                    "&7效率: " + entry.getValue() + 'x'
             ));
         }
 

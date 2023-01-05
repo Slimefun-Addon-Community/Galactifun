@@ -51,23 +51,17 @@ public final class DayCycle {
     private final long perFiveSeconds;
 
     private DayCycle(int days, int hours) {
-        Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "Day cycles must last at least 1 hour!");
+        Validate.isTrue((days > 0 && hours >= 0) || (hours > 0 && days >= 0), "自转时间至少为1小时!");
 
         StringBuilder builder = new StringBuilder();
         if (days > 0) {
             builder.append(days);
-            builder.append(" day");
-            if (days != 1) {
-                builder.append('s');
-            }
+            builder.append(" 天");
             builder.append(' ');
         }
         if (hours > 0) {
             builder.append(hours);
-            builder.append(" hour");
-            if (hours != 1) {
-                builder.append('s');
-            }
+            builder.append(" 小时");
         }
 
         this.description = builder.toString();
@@ -79,9 +73,9 @@ public final class DayCycle {
      * Eternal constructor
      */
     private DayCycle(long time) {
-        Validate.isTrue(time >= 0 && time < 24000, "Eternal time must be between 0 and 24000!");
+        Validate.isTrue(time >= 0 && time < 24000, "固定时间必须在 0 和 24000 中间!");
 
-        this.description = "Eternal " + (time < 12000 ? "Day" : "Night");
+        this.description = "永远的 " + (time < 12000 ? "白天" : "黑夜");
         this.startTime = time;
         this.perFiveSeconds = 0;
     }

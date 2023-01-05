@@ -64,7 +64,7 @@ public final class AtmosphereBuilder {
     }
 
     public AtmosphereBuilder setPressure(double pressureInAtm) {
-        Validate.isTrue(pressureInAtm >= 0, "pressureInAtm is negative!");
+        Validate.isTrue(pressureInAtm >= 0, "大气压为负!");
         this.pressure = pressureInAtm;
         return this;
     }
@@ -78,7 +78,7 @@ public final class AtmosphereBuilder {
         }
 
         // account for rounding and slight impression
-        Validate.isTrue(percent < 101, "Percentage cannot be more than 100%!");
+        Validate.isTrue(percent < 101, "百分数不能大于 100%!");
 
         if (percent != 0) {
             this.composition.put(Gas.OTHER, this.composition.getOrDefault(Gas.OTHER, 0.0) + 100 - percent);

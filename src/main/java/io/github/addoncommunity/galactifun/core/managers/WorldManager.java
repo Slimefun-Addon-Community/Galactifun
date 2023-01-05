@@ -121,7 +121,7 @@ public final class WorldManager implements Listener {
 
     public void register(PlanetaryWorld world) {
         if (this.spaceWorlds.containsKey(world.world())) {
-            throw new IllegalArgumentException("Alien World " + world.id() + " is already registered!");
+            throw new IllegalArgumentException("外星世界 " + world.id() + " 已被注册!");
         }
         this.spaceWorlds.put(world.world(), world);
         if (world instanceof AlienWorld alienWorld) {
@@ -148,7 +148,7 @@ public final class WorldManager implements Listener {
                         && world.atmosphere().requiresOxygenTank()
                         && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())
                         && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
-                    p.sendMessage(ChatColor.RED + "You have run out of oxygen!");
+                    p.sendMessage(ChatColor.RED + "你缺氧了!");
                     p.damage(8);
                 }
             }
@@ -324,7 +324,7 @@ public final class WorldManager implements Listener {
         if (b != null && Tag.BEDS.isTagged(b.getType())) {
             e.setCancelled(true);
             p.setBedSpawnLocation(p.getLocation(), true);
-            p.sendMessage("Respawn point set");
+            p.sendMessage("重生点已设置");
         }
     }
 
@@ -348,11 +348,11 @@ public final class WorldManager implements Listener {
                     int times = this.respawnTimes.merge(p.getUniqueId(), 1, Integer::sum);
                     if (times > 3) {
                         p.sendMessage(ChatColor.YELLOW + """
-                                A possible respawn loop has been detected!
-                                Do you wish to go back to Earth? (yes/no)"""
+                                尝试多次仍未找到合适位置!
+                                你是否想返回地球? (是/否)"""
                         );
                         ChatUtils.awaitInput(p, s -> {
-                            if (s.equalsIgnoreCase("yes")) {
+                            if (s.equalsIgnoreCase("是")) {
                                 PaperLib.teleportAsync(p, BaseUniverse.EARTH.world().getSpawnLocation());
                                 WorldManager.this.respawnTimes.remove(p.getUniqueId());
                             }

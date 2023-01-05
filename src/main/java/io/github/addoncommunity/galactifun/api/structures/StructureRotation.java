@@ -42,7 +42,7 @@ public enum StructureRotation {
             case EAST -> CLOCKWISE;
             case SOUTH -> OPPOSITE;
             case WEST -> COUNTER_CLOCKWISE;
-            default -> throw new IllegalArgumentException("BlockFace " + face + " cant be converted to StructureRotation!");
+            default -> throw new IllegalArgumentException("方块朝向 " + face + " 不能转换成结构朝向!");
         };
     }
 

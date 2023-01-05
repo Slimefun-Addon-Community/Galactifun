@@ -36,23 +36,23 @@ public abstract class UniversalObject {
     private final Orbit orbit;
     protected final int orbitLevel;
 
-    UniversalObject(@Nonnull String name, @Nonnull UniversalType type, @Nonnull Orbit orbit,
+    UniversalObject(@Nonnull String name, @Nonnull String id, @Nonnull UniversalType type, @Nonnull Orbit orbit,
                     @Nonnull UniversalObject orbiting, @Nonnull ItemStack baseItem) {
         this.name = ChatUtils.removeColorCodes(name);
-        this.item = new CustomItemStack(baseItem, name, "&7Type: " + type.description());
+        this.item = new CustomItemStack(baseItem, name, "&7类型: " + type.description());
         this.orbiting = orbiting;
         this.orbit = orbit;
         this.orbitLevel = orbiting.orbitLevel + 1;
-        this.id = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+        this.id = id.toLowerCase(Locale.ROOT).replace(' ', '_');;
         orbiting.orbiters.add(this);
     }
 
     /**
      * Constructor for the universe
      */
-    UniversalObject(String name) {
+    UniversalObject(String name, String id) {
         this.name = ChatUtils.removeColorCodes(name);
-        this.id = this.name.toLowerCase(Locale.ROOT).replace(' ', '_');
+        this.id = id.toLowerCase(Locale.ROOT).replace(' ', '_');
         this.item = null;
         this.orbiting = null;
         this.orbit = null;

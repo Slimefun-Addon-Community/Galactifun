@@ -114,12 +114,12 @@ public final class WorldSelector {
                     lore.remove(lore.size() - 1);
 
                     if (distance > 0) {
-                        lore.add(Component.text("Distance: " + (distance < .5
-                                ? "%.3f Kilometers".formatted(distance * Util.KM_PER_LY)
-                                : distance + " Light Years")
+                        lore.add(Component.text("距离: " + (distance < .5
+                                ? "%.3f 千米".formatted(distance * Util.KM_PER_LY)
+                                : distance + " 光年")
                         ).color(NamedTextColor.GRAY));
                     } else {
-                        lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
+                        lore.add(Component.text("你在这里!").color(NamedTextColor.GRAY));
                     }
 
                     KnowledgeLevel.get(p, world).addLore(lore, world);
@@ -158,10 +158,10 @@ public final class WorldSelector {
                     lore.remove(lore.size() - 1);
 
                     if (distance > 0) {
-                        lore.add(Component.text("Distance: " + Util.formatDistance(distance))
+                        lore.add(Component.text("距离: " + Util.formatDistance(distance))
                                 .color(NamedTextColor.GRAY));
                     } else {
-                        lore.add(Component.text("You are here!").color(NamedTextColor.GRAY));
+                        lore.add(Component.text("你在这里!").color(NamedTextColor.GRAY));
                     }
 
                     if (orbiter instanceof PlanetaryWorld planetaryWorld) {

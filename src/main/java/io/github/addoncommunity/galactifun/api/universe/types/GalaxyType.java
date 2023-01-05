@@ -19,9 +19,9 @@ public final class GalaxyType extends UniversalType {
 
     public static final Map<String, GalaxyType> allTypes = new HashMap<>();
 
-    public static final GalaxyType ELLIPTICAL = new GalaxyType("Elliptical", "ELLIPTICAL");
-    public static final GalaxyType SPIRAL = new GalaxyType("Spiral", "SPIRAL");
-    public static final GalaxyType IRREGULAR = new GalaxyType("Irregular", "IRREGULAR");
+    public static final GalaxyType ELLIPTICAL = new GalaxyType("椭圆形", "ELLIPTICAL");
+    public static final GalaxyType SPIRAL = new GalaxyType("螺旋形", "SPIRAL");
+    public static final GalaxyType IRREGULAR = new GalaxyType("不规则", "IRREGULAR");
 
     public GalaxyType(String name, String id) {
         super(name, id);

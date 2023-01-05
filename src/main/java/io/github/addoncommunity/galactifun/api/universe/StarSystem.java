@@ -14,8 +14,8 @@ import io.github.addoncommunity.galactifun.api.universe.types.StarSystemType;
  */
 public final class StarSystem extends UniversalObject {
 
-    public StarSystem(String name, StarSystemType type, Orbit orbit, Galaxy orbiting, ItemStack baseItem) {
-        super(name, type, orbit, orbiting, baseItem);
+    public StarSystem(String name, String id, StarSystemType type, Orbit orbit, Galaxy orbiting, ItemStack baseItem) {
+        super(name, id, type, orbit, orbiting, baseItem);
     }
 
     @Override

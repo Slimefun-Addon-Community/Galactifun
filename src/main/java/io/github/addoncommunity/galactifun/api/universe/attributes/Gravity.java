@@ -50,9 +50,9 @@ public final class Gravity {
             int level = (int) (Math.log(ratio) / Math.log(JUMP_BOOST)) * -1;
             this.effect = new PotionEffect(PotionEffectType.JUMP, 200, level - 1, false, false, false);
         } else if (ratio < 0) {
-            throw new IllegalArgumentException("Negative gravity is not supported yet!");
+            throw new IllegalArgumentException("反引力未被支持!");
         } else {
-            throw new IllegalArgumentException("Gravity with 0 block height is unsupported, did you mean to use Gravity.ZERO?");
+            throw new IllegalArgumentException("0方块高的引力不被支持, 你是不是想用 Gravity.ZERO?");
         }
     }
 

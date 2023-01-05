@@ -78,7 +78,7 @@ public class Alien<T extends Mob> {
 
     public final void register(@Nonnull AlienManager alienManager) {
         if (isRegistered()) {
-            throw new IllegalStateException("Alien already registered!");
+            throw new IllegalStateException("外星生物已被注册!");
         }
         this.alienManager = alienManager;
         alienManager.register(this);
