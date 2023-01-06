@@ -45,7 +45,7 @@ public enum KnowledgeLevel {
                 lore.add(Component.empty());
                 lore.add(Component.text("效果:").color(NamedTextColor.GRAY));
                 for (Map.Entry<AtmosphericEffect, Integer> effect : world.atmosphere().effects().entrySet()) {
-                    lore.add(Component.text(effect.getKey().toString())
+                    lore.add(Component.text(effect.getKey().name())
                             .color(NamedTextColor.RED)
                             .append(Component.text(": "))
                             .append(Component.text(effect.getValue()))
