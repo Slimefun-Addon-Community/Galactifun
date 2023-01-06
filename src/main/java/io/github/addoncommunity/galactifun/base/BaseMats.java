@@ -91,7 +91,7 @@ public final class BaseMats {
             "&b钨锭",
             "",
             "&7一种坚硬的金属",
-            "&7通过给火星人的强化合金板或熔炼小行星获得"
+            "&7通过给火星人钢筋板或熔炼小行星获得"
     );
     public static final SlimefunItemStack ALUMINUM_COMPOSITE_SHEET = new SlimefunItemStack(
             "ALUMINUM_COMPOSITE_SHEET",
@@ -293,7 +293,7 @@ public final class BaseMats {
     public static final SlimefunItemStack LASERITE = new SlimefunItemStack(
             "LASERITE",
             Material.RED_DYE,
-            "&c镭射"
+            "&c镭射核心"
     );
 
     public static void setup() {
