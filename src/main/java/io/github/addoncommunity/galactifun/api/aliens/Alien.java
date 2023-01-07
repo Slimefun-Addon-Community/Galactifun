@@ -88,7 +88,7 @@ public class Alien<T extends Mob> {
         return this.alienManager != null;
     }
 
-    public final int attemptSpawn(Random rand, World world) {
+    public int attemptSpawn(Random rand, World world) {
         int spawned = 0;
         for (Chunk chunk : world.getLoadedChunks()) {
             if (rand.nextDouble() * 100 > this.spawnChance) {
