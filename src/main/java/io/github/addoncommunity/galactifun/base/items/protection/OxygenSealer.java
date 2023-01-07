@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -143,7 +145,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
         }
 
         BlockMenu menu = BlockStorage.getInventory(b);
-        if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item(), false, false)) {
+        if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), BasicGas.OXYGEN.item(), false, false)) {
             updateHologram(b, "&c无氧气");
             BSUtils.addBlockInfo(b, NO_OXYGEN, true);
             return;

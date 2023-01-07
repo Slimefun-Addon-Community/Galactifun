@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -70,8 +72,8 @@ public final class BaseUniverse {
                     .addStorm()
                     .addThunder()
                     .enableWeather()
-                    .add(Gas.HYDROGEN, 90)
-                    .add(Gas.HELIUM, 10)
+                    .add(BasicGas.HYDROGEN, 90)
+                    .add(BasicGas.HELIUM, 10)
                     .build(),
             Gravity.metersPerSec(24.79)
     );
@@ -111,9 +113,9 @@ public final class BaseUniverse {
             DayCycle.hours(10),
             new AtmosphereBuilder()
                     .enableWeather()
-                    .add(Gas.HYDROGEN, 96.3)
-                    .add(Gas.HELIUM, 3.25)
-                    .add(Gas.METHANE, 0.45)
+                    .add(BasicGas.HYDROGEN, 96.3)
+                    .add(BasicGas.HELIUM, 3.25)
+                    .add(BasicGas.METHANE, 0.45)
                     .build(),
             Gravity.relativeToEarth(1.06)
     );
@@ -150,8 +152,8 @@ public final class BaseUniverse {
                     .addStorm()
                     .addThunder()
                     .addEffect(AtmosphericEffect.HEAT, 10)
-                    .add(Gas.CARBON_DIOXIDE, 96.5)
-                    .add(Gas.NITROGEN, 3.5)
+                    .add(BasicGas.CARBON_DIOXIDE, 96.5)
+                    .add(BasicGas.NITROGEN, 3.5)
                     .setPressure(93)
                     .build(),
             Gravity.metersPerSec(8.87)
@@ -178,9 +180,9 @@ public final class BaseUniverse {
             new ItemStack(Material.RED_SAND),
             DayCycle.of(1, 1),
             new AtmosphereBuilder()
-                    .add(Gas.CARBON_DIOXIDE, 94.9)
-                    .add(Gas.NITROGEN, 2.6)
-                    .add(Gas.ARGON, 1.9)
+                    .add(BasicGas.CARBON_DIOXIDE, 94.9)
+                    .add(BasicGas.NITROGEN, 2.6)
+                    .add(BasicGas.ARGON, 1.9)
                     .addEffect(AtmosphericEffect.COLD, 2)
                     .setPressure(0.006)
                     .build(),
@@ -196,10 +198,10 @@ public final class BaseUniverse {
             DayCycle.EARTH_LIKE,
             new AtmosphereBuilder()
                     .enableWeather()
-                    .add(Gas.NITROGEN, 97)
-                    .add(Gas.METHANE, 2.7)
-                    .add(Gas.HYDROCARBONS, 0.2)
-                    .add(Gas.HYDROGEN, 0.1)
+                    .add(BasicGas.NITROGEN, 97)
+                    .add(BasicGas.METHANE, 2.7)
+                    .add(BasicGas.HYDROCARBONS, 0.2)
+                    .add(BasicGas.HYDROGEN, 0.1)
                     .addEffect(AtmosphericEffect.COLD, 6)
                     .setPressure(1.5)
                     .build(),

@@ -2,6 +2,8 @@ package io.github.addoncommunity.galactifun.base.items;
 
 import javax.annotation.Nonnull;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,18 +27,18 @@ public class Electrolyzer extends AContainer {
 
     @Override
     protected void registerDefaultRecipes() {
-        registerRecipe(new ItemStack(Material.WATER_BUCKET), Gas.WATER.item(), new ItemStack(Material.BUCKET));
-        registerRecipe(Gas.WATER.item(), Gas.HYDROGEN.item().asQuantity(2), Gas.OXYGEN.item());
+        registerRecipe(new ItemStack(Material.WATER_BUCKET), BasicGas.WATER.item(), new ItemStack(Material.BUCKET));
+        registerRecipe(BasicGas.WATER.item(), BasicGas.HYDROGEN.item().asQuantity(2), BasicGas.OXYGEN.item());
 
-        registerRecipe(SlimefunItems.OIL_BUCKET, Gas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
-        registerRecipe(Gas.HYDROCARBONS.item(), Gas.METHANE.item().asQuantity(6));
-        registerRecipe(Gas.METHANE.item(), Gas.HYDROGEN.item().asQuantity(4), SlimefunItems.CARBON);
-        registerRecipe(Gas.CARBON_DIOXIDE.item(), Gas.OXYGEN.item().asQuantity(2), SlimefunItems.CARBON);
+        registerRecipe(SlimefunItems.OIL_BUCKET, BasicGas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
+        registerRecipe(BasicGas.HYDROCARBONS.item(), BasicGas.METHANE.item().asQuantity(6));
+        registerRecipe(BasicGas.METHANE.item(), BasicGas.HYDROGEN.item().asQuantity(4), SlimefunItems.CARBON);
+        registerRecipe(BasicGas.CARBON_DIOXIDE.item(), BasicGas.OXYGEN.item().asQuantity(2), SlimefunItems.CARBON);
 
-        registerRecipe(Gas.AMMONIA.item(), Gas.HYDROGEN.item().asQuantity(3), Gas.NITROGEN.item());
+        registerRecipe(BasicGas.AMMONIA.item(), BasicGas.HYDROGEN.item().asQuantity(3), BasicGas.NITROGEN.item());
 
-        registerRecipe(BaseMats.MARS_DUST, SlimefunItems.IRON_DUST.asQuantity(2), Gas.OXYGEN.item().asQuantity(3));
-        registerRecipe(BaseMats.MOON_DUST, Gas.HELIUM.item().asQuantity(3));
+        registerRecipe(BaseMats.MARS_DUST, SlimefunItems.IRON_DUST.asQuantity(2), BasicGas.OXYGEN.item().asQuantity(3));
+        registerRecipe(BaseMats.MOON_DUST, BasicGas.HELIUM.item().asQuantity(3));
     }
 
     private void registerRecipe(ItemStack in, ItemStack... out) {

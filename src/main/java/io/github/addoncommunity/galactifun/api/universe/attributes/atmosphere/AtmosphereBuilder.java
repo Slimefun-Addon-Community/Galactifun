@@ -18,7 +18,7 @@ import org.bukkit.World;
 public final class AtmosphereBuilder {
 
     private final Map<AtmosphericEffect, Integer> effects = new HashMap<>();
-    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
+    private final Map<Gas, Double> composition = new HashMap<>();
     private boolean weatherCycle;
     private boolean storming;
     private boolean thundering;
@@ -81,7 +81,7 @@ public final class AtmosphereBuilder {
         Validate.isTrue(percent < 101, "百分数不能大于 100%!");
 
         if (percent != 0) {
-            this.composition.put(Gas.OTHER, this.composition.getOrDefault(Gas.OTHER, 0.0) + 100 - percent);
+            this.composition.put(BasicGas.OTHER, this.composition.getOrDefault(BasicGas.OTHER, 0.0) + 100 - percent);
         }
 
         return new Atmosphere(this.weatherCycle, this.storming, this.thundering,

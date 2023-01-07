@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +23,7 @@ public final class IonRocket extends Rocket {
 
     @Override
     protected Map<ItemStack, Double> getAllowedFuels() {
-        return Map.of(Gas.ARGON.item(), 18.0);
+        return Map.of(BasicGas.ARGON.item(), 18.0);
     }
 
     @Nonnull

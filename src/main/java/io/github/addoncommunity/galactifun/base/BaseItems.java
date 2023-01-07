@@ -1,5 +1,7 @@
 package io.github.addoncommunity.galactifun.base;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Material;
@@ -695,15 +697,15 @@ public final class BaseItems {
                 BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
         });
 
-        chemicalReactor.addRecipe(new ItemStack(Material.WATER_BUCKET), Gas.WATER.item(), new ItemStack(Material.BUCKET));
-        chemicalReactor.addRecipe(Gas.WATER.item(), Gas.OXYGEN.item(), Gas.HYDROGEN.item().asQuantity(2));
+        chemicalReactor.addRecipe(new ItemStack(Material.WATER_BUCKET), BasicGas.WATER.item(), new ItemStack(Material.BUCKET));
+        chemicalReactor.addRecipe(BasicGas.WATER.item(), BasicGas.OXYGEN.item(), BasicGas.HYDROGEN.item().asQuantity(2));
 
-        chemicalReactor.addRecipe(Gas.CARBON_DIOXIDE.item(), SlimefunItems.CARBON, Gas.OXYGEN.item().asQuantity(2));
-        chemicalReactor.addRecipe(Gas.METHANE.item(), SlimefunItems.CARBON, Gas.HYDROGEN.item().asQuantity(4));
-        chemicalReactor.addRecipe(Gas.HYDROCARBONS.item(), Gas.METHANE.item().asQuantity(6));
-        chemicalReactor.addRecipe(SlimefunItems.OIL_BUCKET, Gas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
+        chemicalReactor.addRecipe(BasicGas.CARBON_DIOXIDE.item(), SlimefunItems.CARBON, BasicGas.OXYGEN.item().asQuantity(2));
+        chemicalReactor.addRecipe(BasicGas.METHANE.item(), SlimefunItems.CARBON, BasicGas.HYDROGEN.item().asQuantity(4));
+        chemicalReactor.addRecipe(BasicGas.HYDROCARBONS.item(), BasicGas.METHANE.item().asQuantity(6));
+        chemicalReactor.addRecipe(SlimefunItems.OIL_BUCKET, BasicGas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
 
-        chemicalReactor.addRecipe(Gas.AMMONIA.item(), Gas.NITROGEN.item(), Gas.HYDROGEN.item().asQuantity(3));
+        chemicalReactor.addRecipe(BasicGas.AMMONIA.item(), BasicGas.NITROGEN.item(), BasicGas.HYDROGEN.item().asQuantity(3));
 
         chemicalReactor.energyCapacity(512);
         chemicalReactor.energyPerTick(128);

@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -33,11 +34,11 @@ public final class Atmosphere {
             .build();
     private static final double EARTH_CARBON_DIOXIDE = 0.0415;
     public static final Atmosphere EARTH_LIKE = new AtmosphereBuilder().enableWeather()
-            .add(Gas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
-            .add(Gas.OXYGEN, 20.946)
-            .add(Gas.WATER, 0.95)
-            .add(Gas.ARGON, 0.934)
-            .add(Gas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
+            .add(BasicGas.NITROGEN, 77.084) // subtracted 1 to allow water to fit in
+            .add(BasicGas.OXYGEN, 20.946)
+            .add(BasicGas.WATER, 0.95)
+            .add(BasicGas.ARGON, 0.934)
+            .add(BasicGas.CARBON_DIOXIDE, EARTH_CARBON_DIOXIDE)
             .build();
 
     private final boolean weatherEnabled;
@@ -48,7 +49,7 @@ public final class Atmosphere {
     private final double pressure;
     private final World.Environment environment;
     private final Map<AtmosphericEffect, Integer> effects;
-    private final Map<Gas, Double> composition = new EnumMap<>(Gas.class);
+    private final Map<Gas, Double> composition = new HashMap<>();
     /**
      * Used for getting a gas proportionally to the composition
      */
@@ -68,8 +69,8 @@ public final class Atmosphere {
         this.composition.putAll(composition);
 
         // calculated values
-        this.flammable = composition.getOrDefault(Gas.OXYGEN, 0.0) > 5;
-        this.growthAttempts = (int) (this.pressurizedCompositionOf(Gas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
+        this.flammable = composition.getOrDefault(BasicGas.OXYGEN, 0.0) > 5;
+        this.growthAttempts = (int) (this.pressurizedCompositionOf(BasicGas.CARBON_DIOXIDE) / EARTH_CARBON_DIOXIDE);
         for (Map.Entry<Gas, Double> entry : this.composition.entrySet()) {
             if (entry.getKey().item() != null) {
                 this.weightedCompositionSet.add(entry.getKey(), entry.getValue().floatValue());
@@ -113,7 +114,7 @@ public final class Atmosphere {
     }
 
     public boolean requiresOxygenTank() {
-        return compositionOf(Gas.OXYGEN) < 16.0;
+        return compositionOf(BasicGas.OXYGEN) < 16.0;
     }
 
     public AtmosphereBuilder toBuilder() {

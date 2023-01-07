@@ -2,6 +2,8 @@ package io.github.addoncommunity.galactifun.base;
 
 import java.util.Arrays;
 
+import io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere.BasicGas;
+
 import lombok.experimental.UtilityClass;
 
 import org.bukkit.Bukkit;
@@ -482,7 +484,7 @@ public final class BaseMats {
 
         RecipeType.SMELTERY.register(
                 Arrays.copyOf(new ItemStack[] { METHANE_ICE }, 9),
-                new SlimefunItemStack(Gas.METHANE.item(), 4)
+                new SlimefunItemStack(BasicGas.METHANE.item(), 4)
         );
     }
 
