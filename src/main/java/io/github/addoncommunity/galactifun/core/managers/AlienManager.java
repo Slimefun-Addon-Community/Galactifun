@@ -11,13 +11,11 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
-
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -32,8 +30,10 @@ import org.bukkit.event.entity.EntitySpellCastEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import io.github.addoncommunity.galactifun.Galactifun;
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.api.aliens.BossAlien;
@@ -49,9 +49,9 @@ public final class AlienManager implements Listener {
     private final NamespacedKey bossKey;
     private final Map<String, Alien<?>> aliens = new HashMap<>();
     private final Set<UUID> alienSet = new HashSet<>();
+    private final Map<String, Set<Long>> loadedChunks = new HashMap<>();
 
     public AlienManager(Galactifun galactifun) {
-        findAliens();
         Events.registerListener(this);
         Scheduler.repeat(galactifun.getConfig().getInt("aliens.tick-interval", 1, 20), this::tick);
 
@@ -80,17 +80,6 @@ public final class AlienManager implements Listener {
     @Nonnull
     public Collection<Alien<?>> aliens() {
         return Collections.unmodifiableCollection(this.aliens.values());
-    }
-
-    public void findAliens() {
-        for (World world : Bukkit.getWorlds()) {
-            for (LivingEntity entity : world.getLivingEntities()) {
-                Alien<?> alien = getAlien(entity);
-                if (alien != null) {
-                    addUUID(entity.getUniqueId());
-                }
-            }
-        }
     }
 
     public void addUUID(@Nonnull UUID uuid) {
@@ -187,6 +176,29 @@ public final class AlienManager implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     private void onAlienRemove(@Nonnull EntityRemoveFromWorldEvent e) {
         alienSet.remove(e.getEntity().getUniqueId());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    private void onChunkLoad(@Nonnull ChunkLoadEvent e) {
+        Chunk chunk = e.getChunk();
+        String world = chunk.getWorld().getName();
+        long chunkKey = chunk.getChunkKey();
+        Set<Long> chunks = loadedChunks.getOrDefault(world, new HashSet<>());
+        if (!chunks.contains(chunkKey)) {
+            chunks.add(chunkKey);
+            loadedChunks.put(world, chunks);
+            for (Entity entity : chunk.getEntities()) {
+                UUID uuid = entity.getUniqueId();
+                if (alienSet.contains(uuid)) {
+                    continue;
+                }
+
+                Alien<?> alien = getAlien(entity);
+                if (alien != null) {
+                    alienSet.add(uuid);
+                }
+            }
+        }
     }
 
     public void onDisable() {
