@@ -189,9 +189,7 @@ public final class AlienManager implements Listener {
             loadedChunks.put(world, chunks);
             for (Entity entity : chunk.getEntities()) {
                 UUID uuid = entity.getUniqueId();
-                if (alienSet.contains(uuid)) {
-                    continue;
-                }
+                if (alienSet.contains(uuid)) continue;
 
                 Alien<?> alien = getAlien(entity);
                 if (alien != null) {
