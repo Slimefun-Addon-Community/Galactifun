@@ -161,13 +161,17 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                             l -> (l.isBuildable() || l.isLiquid()) && !BlockStorage.check(l, BaseItems.LANDING_HATCH.getItemId())
                     );
                     destBlock.getChunk().load();
-                    Block down = destBlock.getRelative(BlockFace.DOWN);
-                    if (down.getType() == Material.CHEST) {
-                        destBlock = down;
+                    if (!destBlock.getWorld().getWorldBorder().isInside(destBlock.getLocation())) {
+                        p.sendMessage(ChatColor.RED + "Destination is outside of world border");
+                    } else if (!Slimefun.getProtectionManager().hasPermission(p, destBlock, Interaction.PLACE_BLOCK)) {
+                        p.sendMessage(ChatColor.RED + "You do not have permission to land there");
                     } else {
-                        destBlock.setType(Material.CHEST);
-                    }
-                    if (Slimefun.getProtectionManager().hasPermission(p, destBlock, Interaction.PLACE_BLOCK)) {
+                        Block down = destBlock.getRelative(BlockFace.DOWN);
+                        if (down.getType() == Material.CHEST) {
+                            destBlock = down;
+                        } else {
+                            destBlock.setType(Material.CHEST);
+                        }
                         launch(
                                 p,
                                 b,
@@ -175,8 +179,6 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                                 destination,
                                 destBlock
                         );
-                    } else {
-                        p.sendMessage(ChatColor.RED + "You do not have permission to land there");
                     }
                 } else {
                     p.sendMessage(ChatColor.RED + "Launch cancelled");

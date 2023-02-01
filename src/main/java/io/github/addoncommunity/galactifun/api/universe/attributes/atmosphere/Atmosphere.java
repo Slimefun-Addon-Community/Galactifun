@@ -55,7 +55,7 @@ public final class Atmosphere {
     private final RandomizedSet<Gas> weightedCompositionSet = new RandomizedSet<>();
 
     // builder's constructor
-    Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering,
+    public Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering,
                @Nonnull World.Environment environment, @Nonnull Map<Gas, Double> composition,
                double pressure, @Nonnull Map<AtmosphericEffect, Integer> effects) {
 
