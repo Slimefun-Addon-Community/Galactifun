@@ -60,6 +60,18 @@
             <artifactId>Slimefun4</artifactId>
             <version>RC-33</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.baked-libs</groupId>
+                    <artifactId>dough-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.baked-libs</groupId>
+            <artifactId>dough-api</artifactId>
+            <version>1.2.0</version>
+            <scope>compile</scope>
         </dependency>
         <!-- 1.18 does not have the latest fastutil that we need -->
         <dependency>
@@ -175,6 +187,10 @@
                             <pattern>org.bstats</pattern>
                             <shadedPattern>io.github.addoncommunity.galactifun.bstats</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.bakedlibs.dough</pattern>
+                            <shadedPattern>io.github.addoncommunity.galactifun.dough</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -196,5 +212,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

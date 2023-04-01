@@ -21,7 +21,7 @@ class Galactifun : AbstractAddon() {
 
         var shouldDisable = false
         if (!PaperLib.isPaper()) {
-            log(Level.SEVERE, "Galactifun only supports Paper and its forks (i.e. Airplane and Purpur)")
+            log(Level.SEVERE, "Galactifun only supports Paper and its forks (e.x. Airplane and Purpur)")
             log(Level.SEVERE, "Please use Paper or a fork of Paper")
             shouldDisable = true
         }
