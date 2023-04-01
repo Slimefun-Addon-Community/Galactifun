@@ -21,6 +21,7 @@ import io.github.addoncommunity.galactifun.base.BaseItems;
 import io.github.addoncommunity.galactifun.base.BaseMats;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
 import io.github.addoncommunity.galactifun.core.CoreItemGroup;
+import io.github.addoncommunity.galactifun.core.commands.AlienRemoveCommand;
 import io.github.addoncommunity.galactifun.core.commands.AlienSpawnCommand;
 import io.github.addoncommunity.galactifun.core.commands.EffectsCommand;
 import io.github.addoncommunity.galactifun.core.commands.GalactiportCommand;
@@ -126,6 +127,7 @@ public final class Galactifun extends AbstractAddon {
         getAddonCommand()
                 .addSub(new GalactiportCommand())
                 .addSub(new AlienSpawnCommand())
+                .addSub(new AlienRemoveCommand())
                 .addSub(new StructureCommand(this))
                 .addSub(new SealedCommand())
                 .addSub(new EffectsCommand());
