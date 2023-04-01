@@ -110,8 +110,11 @@ public final class AlienManager implements Listener {
         return Collections.unmodifiableSet(this.alienIds);
     }
 
-    public void addUUID(@Nonnull UUID uuid) {
-        this.alienIds.add(uuid);
+    public void addAlien(@Nonnull UUID uuid) {
+        Entity entity = Bukkit.getEntity(uuid);
+        if (entity != null && getAlien(entity) != null) {
+            this.alienIds.add(uuid);
+        }
     }
 
     private void tick() {

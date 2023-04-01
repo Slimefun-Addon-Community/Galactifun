@@ -64,8 +64,8 @@ public class Alien<T extends Mob> {
     public final T spawn(@Nonnull Location loc, @Nonnull World world) {
         T mob = world.spawn(loc, this.clazz);
 
-        this.alienManager.addUUID(mob.getUniqueId());
         PersistentDataAPI.setString(mob, this.alienManager.key(), this.id);
+        this.alienManager.addAlien(mob.getUniqueId());
 
         Objects.requireNonNull(mob.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(this.maxHealth);
         mob.setHealth(this.maxHealth);
