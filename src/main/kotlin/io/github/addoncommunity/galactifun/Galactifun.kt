@@ -20,23 +20,23 @@ class Galactifun : AbstractAddon() {
         pluginInstance = this
 
         var shouldDisable = false
-        if (!PaperLib.isPaper()){
+        if (!PaperLib.isPaper()) {
             log(Level.SEVERE, "Galactifun only supports Paper and its forks (i.e. Airplane and Purpur)")
             log(Level.SEVERE, "Please use Paper or a fork of Paper")
             shouldDisable = true
         }
-        if (Slimefun.getMinecraftVersion().isBefore(MinecraftVersion.MINECRAFT_1_18)){
+        if (Slimefun.getMinecraftVersion().isBefore(MinecraftVersion.MINECRAFT_1_18)) {
             log(Level.SEVERE, "Galactifun only supports Minecraft 1.18 and above")
             log(Level.SEVERE, "Please use Minecraft 1.18 or above")
             shouldDisable = true
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("ClayTech")){
+        if (Bukkit.getPluginManager().isPluginEnabled("ClayTech")) {
             log(Level.SEVERE, "Galactifun will not work properly with ClayTech")
             log(Level.SEVERE, "Please disable ClayTech")
             shouldDisable = true
         }
 
-        if (shouldDisable){
+        if (shouldDisable) {
             Bukkit.getPluginManager().disablePlugin(this)
             return
         }
