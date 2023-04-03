@@ -5,6 +5,8 @@ import io.github.bakedlibs.dough.items.CustomItemStack
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import kotlin.math.cos
+import kotlin.math.sqrt
 
 abstract class UniversalObject private constructor(
     name: String,
@@ -38,8 +40,28 @@ abstract class UniversalObject private constructor(
         orbit
     )
 
+    protected constructor(name: String, baseItem: Material, orbiting: UniversalObject, orbit: Orbit) : this(
+        name,
+        ItemStack(baseItem),
+        orbiting,
+        orbit
+    )
+
     fun addOrbiter(orbiter: UniversalObject) {
         _orbiters.add(orbiter)
+    }
+
+    open fun distanceTo(other: UniversalObject): Double {
+        if (_orbiting == null || orbitLevel < other.orbitLevel) {
+            return other.orbit.distance + distanceTo(other.orbiting)
+        }
+        if (orbiting == other.orbiting) {
+            val thisDist = orbit.distance
+            val otherDist = other.orbit.distance
+            val cosAngle = cos(orbit.position - other.orbit.position)
+            return sqrt(thisDist * thisDist + otherDist * otherDist - 2 * thisDist * otherDist * cosAngle)
+        }
+        return orbit.distance + orbiting.distanceTo(other)
     }
 
     override fun equals(other: Any?): Boolean {

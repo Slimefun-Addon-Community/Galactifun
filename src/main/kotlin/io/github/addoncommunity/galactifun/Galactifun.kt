@@ -43,7 +43,7 @@ class Galactifun : AbstractAddon() {
 
         Metrics(this, 11613)
 
-        Galactifun.runTask {
+        runTask {
             log(
                 Level.INFO,
                 """################# Galactifun $pluginVersion #################
@@ -64,10 +64,14 @@ class Galactifun : AbstractAddon() {
 lateinit var pluginInstance: Galactifun
     private set
 
-fun Galactifun.Companion.log(level: Level, message: String) {
-    pluginInstance.logger.log(level, message)
+fun Galactifun.log(level: Level, message: String) {
+    logger.log(level, message)
 }
 
-fun Galactifun.Companion.runTask(runnable: Runnable) {
-    pluginInstance.server.scheduler.runTask(pluginInstance, runnable)
+fun Galactifun.runTask(runnable: Runnable) {
+    server.scheduler.runTask(this, runnable)
+}
+
+fun Galactifun.runTaskRepeat(period: Long, delay: Long = 0, runnable: Runnable) {
+    server.scheduler.runTaskTimer(this, runnable, delay, period)
 }

@@ -7,7 +7,7 @@ class Orbit(kmDistance: Double, years: Double = 0.0, days: Double = 0.0) {
 
     private val year = EARTH_YEAR * (years + days / 365.25) * 1200000 // why 1200000? it was in the original code
 
-    val distanceInLy = kmDistance / Constants.KM_PER_LY
+    val distance = kmDistance / Constants.KM_PER_LY
 
     val position: Double
         get() {
@@ -17,7 +17,7 @@ class Orbit(kmDistance: Double, years: Double = 0.0, days: Double = 0.0) {
 
     init {
         require(year >= 0) { "Year must be positive" }
-        require(distanceInLy >= 0) { "Distance must be positive" }
+        require(distance >= 0) { "Distance must be positive" }
     }
 }
 
