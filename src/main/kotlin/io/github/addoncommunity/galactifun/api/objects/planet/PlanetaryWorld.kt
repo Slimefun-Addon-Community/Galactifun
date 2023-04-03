@@ -8,6 +8,7 @@ import io.github.addoncommunity.galactifun.util.getNearbyEntitiesByType
 import io.github.addoncommunity.galactifun.util.spawn
 import io.github.addoncommunity.galactifun.util.toKey
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.Marker
 import org.bukkit.inventory.ItemStack
@@ -28,6 +29,14 @@ abstract class PlanetaryWorld(
     orbit: Orbit,
     dayCycle: DayCycle
 ) : PlanetaryObject(name, baseItem, orbiting, orbit, dayCycle) {
+
+    constructor(name: String, baseItem: Material, orbiting: UniversalObject, orbit: Orbit, dayCycle: DayCycle) : this(
+        name,
+        ItemStack(baseItem),
+        orbiting,
+        orbit,
+        dayCycle
+    )
 
     lateinit var world: World
         private set
