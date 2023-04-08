@@ -67,6 +67,14 @@ public enum Gas {
     private final SlimefunItem slimefunItem;
 
     Gas(String texture) {
+        this(texture, CoreRecipeType.ATMOSPHERIC_HARVESTER);
+    }
+
+    Gas(String texture, RecipeType recipeType) {
+        this(texture, recipeType, new ItemStack[9]);
+    }
+
+    Gas(String texture, RecipeType recipeType, ItemStack[] recipe) {
         this.item = new SlimefunItemStack(
                 "ATMOSPHERIC_GAS_" + this.name(),
                 SlimefunUtils.getCustomHead(texture),
