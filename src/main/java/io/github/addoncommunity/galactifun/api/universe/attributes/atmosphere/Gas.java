@@ -1,6 +1,7 @@
 package io.github.addoncommunity.galactifun.api.universe.attributes.atmosphere;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import io.github.addoncommunity.galactifun.api.universe.PlanetaryObject;
 import io.github.addoncommunity.galactifun.base.BaseUniverse;
@@ -66,14 +67,16 @@ public enum Gas {
     @Getter
     private final SlimefunItem slimefunItem;
 
-    Gas(String texture) {
+    Gas(@Nonnull String texture) {
         this(texture, CoreRecipeType.ATMOSPHERIC_HARVESTER);
     }
 
+    @ParametersAreNonnullByDefault
     Gas(String texture, RecipeType recipeType) {
         this(texture, recipeType, new ItemStack[9]);
     }
 
+    @ParametersAreNonnullByDefault
     Gas(String texture, RecipeType recipeType, ItemStack[] recipe) {
         this.item = new SlimefunItemStack(
                 "ATMOSPHERIC_GAS_" + this.name(),
@@ -111,6 +114,7 @@ public enum Gas {
         setRecipe(HYDROGEN, BaseUniverse.JUPITER);
     }
 
+    @ParametersAreNonnullByDefault
     private static void setRecipe(Gas gas, PlanetaryObject planetaryObject) {
         gas.slimefunItem().setRecipe(new ItemStack[] {
                 null, null, null,
