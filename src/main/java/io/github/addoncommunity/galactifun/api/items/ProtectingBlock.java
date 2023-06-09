@@ -59,6 +59,11 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
     );
     private static int counter = 0;
 
+
+    public static Set<BlockPosition> getAllBlocks() {
+        return allBlocks;
+    }
+
     @ParametersAreNonnullByDefault
     public ProtectingBlock(SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(CoreItemGroup.MACHINES, item, recipeType, recipe);
@@ -89,19 +94,11 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
             public void uniqueTick() {
                 // to prevent memory leaks if something happens (block breaks aren't the only thing that can)
                 allBlocks.removeIf(pos -> !(BlockStorage.check(pos.toLocation()) instanceof ProtectingBlock));
-
-                // every 6 slimefun ticks (every 3 seconds)
-                if (counter < 6) {
-                    counter++;
-                } else {
-                    counter = 0;
-                    ProtectingBlock.this.uniqueTick();
-                }
             }
         });
     }
 
-    private void uniqueTick() {
+    public void customTick() {
         //noinspection deprecation
         Galactifun.protectionManager().clearProtectedBlocks();
         for (BlockPosition l : new HashSet<>(allBlocks)) {
@@ -121,7 +118,6 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu) {
         removeHologram(e.getBlock());
         allBlocks.remove(new BlockPosition(e.getBlock()));
-        uniqueTick();
     }
 
     @Override

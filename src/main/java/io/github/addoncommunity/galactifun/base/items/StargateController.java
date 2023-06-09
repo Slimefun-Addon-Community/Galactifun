@@ -10,6 +10,8 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import io.github.addoncommunity.galactifun.util.Util;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -327,7 +329,18 @@ public final class StargateController extends SlimefunItem implements Listener {
             return;
         }
 
-        Block destBlock = b.getRelative(1, 0, 0);
+
+        Block destBlock = null;
+        for(int i = 0; i <= 320 - b.getY(); i++) {
+            Block b1 = b.getRelative(0,i,0);
+            String id = BlockStorage.checkID(b1);
+            if(id != null && id.equalsIgnoreCase(BaseItems.STARGATE_RING.getItemId())) {
+                destBlock = b1.getRelative(0,1,0);
+            }
+        }
+
+        if(destBlock == null) destBlock = b.getRelative(0,1,0);
+
         if (destBlock.getType().isEmpty()) {
             // Check if the player is teleporting to an alien world, and if so, allow them to
             AlienWorld world = Galactifun.worldManager().getAlienWorld(destBlock.getWorld());

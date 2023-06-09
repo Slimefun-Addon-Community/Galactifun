@@ -14,6 +14,10 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
@@ -92,7 +96,7 @@ public final class WorldManager implements Listener {
 
         Events.registerListener(this);
         Scheduler.repeat(100, () -> this.alienWorlds.values().forEach(AlienWorld::tickWorld));
-        Scheduler.repeat(20, this::tickOxygen);
+        Scheduler.repeat(60, this::tickOxygen);
 
         File configFile = new File("plugins/Galactifun", "worlds.yml");
         this.config = new YamlConfiguration();
@@ -141,18 +145,26 @@ public final class WorldManager implements Listener {
     }
 
     private void tickOxygen() {
+        SlimefunItem sfit = SlimefunItem.getByItem(BaseItems.OXYGEN_SEALER);
+        if(sfit instanceof OxygenSealer os) {
+            os.customTick();
+        }
+
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getGameMode() == GameMode.SURVIVAL) {
                 PlanetaryWorld world = spaceWorlds.get(p.getWorld());
                 if (world != null
                         && world.atmosphere().requiresOxygenTank()
-                        && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())
-                        && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
+                        && !canBreath(p)) {
                     p.sendMessage(ChatColor.RED + "你缺氧了!");
                     p.damage(8);
                 }
             }
         }
+    }
+
+    private boolean canBreath(Player p) {
+        return Galactifun.protectionManager().isOxygenBlock(p.getLocation()) || SpaceSuitProfile.get(p).consumeOxygen(60);
     }
 
     @Nullable
@@ -180,26 +192,6 @@ public final class WorldManager implements Listener {
         AlienWorld object = getAlienWorld(e.getFrom());
         if (object != null) {
             object.gravity().removeGravity(e.getPlayer());
-        }
-        object = getAlienWorld(e.getPlayer().getWorld());
-        if (object != null) {
-            object.applyEffects(e.getPlayer());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    private void onPlanetJoin(@Nonnull PlayerJoinEvent e) {
-        AlienWorld object = getAlienWorld(e.getPlayer().getWorld());
-        if (object != null) {
-            object.applyEffects(e.getPlayer());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    private void onPlayerChangeGameMode(@Nonnull PlayerGameModeChangeEvent e) {
-        AlienWorld object = getAlienWorld(e.getPlayer().getWorld());
-        if (object != null && !(e.getNewGameMode() == GameMode.CREATIVE || e.getNewGameMode() == GameMode.SPECTATOR)) {
-            object.applyEffects(e.getPlayer());
         }
     }
 

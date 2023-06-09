@@ -12,7 +12,13 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
+import io.github.addoncommunity.galactifun.base.BaseItems;
+import io.github.addoncommunity.galactifun.base.items.protection.OxygenSealer;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
+
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -243,11 +249,23 @@ public abstract class AlienWorld extends PlanetaryWorld {
         // time
         dayCycle().tick(world);
 
+        List<String> tickedList = new ArrayList<>();
+        // protecting blocks
+        for (BlockPosition bp : ProtectingBlock.getAllBlocks()) {
+            if(BlockStorage.check(bp.getBlock()) instanceof ProtectingBlock pb && bp.getWorld().equals(world) && !tickedList.contains(pb.getId())) {
+                pb.customTick();
+                tickedList.add(pb.getId());
+            }
+        }
+
         // player effects
         for (Player p : world.getPlayers()) {
             gravity().applyGravity(p);
             if (p.getGameMode() == GameMode.SURVIVAL) {
-                applyEffects(p);
+                Bukkit.getScheduler().callSyncMethod(Galactifun.instance(),() -> {
+                    applyEffects(p);
+                    return true;
+                });
             }
         }
 

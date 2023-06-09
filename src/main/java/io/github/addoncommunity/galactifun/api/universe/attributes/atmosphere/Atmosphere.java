@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import io.github.addoncommunity.galactifun.api.items.ProtectingBlock;
+
 import lombok.Getter;
 
 import org.bukkit.GameRule;
@@ -55,6 +57,7 @@ public final class Atmosphere {
      */
     private final RandomizedSet<Gas> weightedCompositionSet = new RandomizedSet<>();
 
+
     // builder's constructor
     Atmosphere(boolean weatherEnabled, boolean storming, boolean thundering,
                @Nonnull World.Environment environment, @Nonnull Map<Gas, Double> composition,
@@ -96,6 +99,7 @@ public final class Atmosphere {
             AtmosphericEffect effect = entry.getKey();
 
             int protection = Galactifun.protectionManager().protectionAt(player.getLocation(), effect);
+
             SpaceSuitStat stat = effect.stat();
             if (stat != null) {
                 protection += SpaceSuitProfile.get(player).getStat(stat);

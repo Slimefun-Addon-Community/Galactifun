@@ -73,19 +73,11 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
             public void uniqueTick() {
                 // to prevent memory leaks if something happens (block breaks aren't the only thing that can)
                 allBlocks.removeIf(pos -> !(BlockStorage.check(pos.toLocation()) instanceof OxygenSealer));
-
-                // every 6 slimefun ticks (every 3 seconds)
-                if (counter < 6) {
-                    counter++;
-                } else {
-                    counter = 0;
-                    OxygenSealer.this.uniqueTick();
-                }
             }
         });
     }
 
-    private void uniqueTick() {
+    public void customTick() {
         //noinspection deprecation
         Galactifun.protectionManager().clearOxygenBlocks();
         for (BlockPosition l : allBlocks) {
@@ -103,7 +95,6 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu) {
         removeHologram(e.getBlock());
         allBlocks.remove(new BlockPosition(e.getBlock()));
-        uniqueTick();
     }
 
     @Override
@@ -170,6 +161,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
             updateHologram(b, "&c区域未被密封或过大");
             return;
         }
+
 
         for (BlockPosition bp : returned.get()) {
             // add a protection to the location

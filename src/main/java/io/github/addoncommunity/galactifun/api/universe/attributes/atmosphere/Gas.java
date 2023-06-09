@@ -17,10 +17,10 @@ import javax.annotation.Nonnull;
 
 public class Gas {
     @Getter
-    private final SlimefunItemStack item;
+    protected SlimefunItemStack item;
 
-    private final String id;
-    private final String name;
+    protected String id;
+    protected String name;
 
     public Gas(String id, String name, String texture) {
         this.id = id;
