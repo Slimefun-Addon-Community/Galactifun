@@ -93,6 +93,12 @@ public final class Galactifun extends AbstractAddon {
                 shouldDisable = true;
             }
 
+            if (Bukkit.getPluginManager().isPluginEnabled("ChatColor2")) {
+                log(Level.SEVERE, "Galactifun will not work properly with ChatColor2");
+                log(Level.SEVERE, "Please disable ChatColor2");
+                shouldDisable = true;
+            }
+
             if (shouldDisable) {
                 Bukkit.getPluginManager().disablePlugin(this);
                 return;
