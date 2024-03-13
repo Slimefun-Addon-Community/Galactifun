@@ -149,7 +149,7 @@ public final class WorldManager implements Listener {
                         && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())
                         && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
                     p.sendMessage(ChatColor.RED + "You have run out of oxygen!");
-                    p.damage(8);
+                    p.setHealth(Math.max(p.getHealth() - 2, 0));
                 }
             }
         }
@@ -206,9 +206,10 @@ public final class WorldManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onPlayerTeleport(@Nonnull PlayerTeleportEvent e) {
         if (!e.getPlayer().hasPermission("galactifun.admin")) {
-            if (e.getTo().getWorld() != null) {
-                AlienWorld world = getAlienWorld(e.getTo().getWorld());
-                if (world != null) {
+            if (e.getTo().getWorld() != null && e.getFrom().getWorld() != e.getTo().getWorld()) {
+                PlanetaryWorld world = getWorld(e.getTo().getWorld());
+                PlanetaryWorld world2 = getWorld(e.getFrom().getWorld());
+                if (world != null && world2 != null) {
                     boolean canTp = false;
                     for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")) {
                         canTp = value.asBoolean();
