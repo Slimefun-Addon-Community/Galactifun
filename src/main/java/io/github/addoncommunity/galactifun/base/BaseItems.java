@@ -200,7 +200,7 @@ public final class BaseItems {
     );
     public static final SlimefunItemStack DIAMOND_ANVIL = new SlimefunItemStack(
             "DIAMOND_ANVIL",
-            Material.ANVIL,
+            Material.PISTON,
             "&fDiamond Anvil",
             "",
             "&7Compresses material so hard",
