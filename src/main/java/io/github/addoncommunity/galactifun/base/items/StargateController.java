@@ -46,6 +46,9 @@ import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 // TODO clean up if possible
 public final class StargateController extends SlimefunItem implements Listener {
@@ -228,7 +231,13 @@ public final class StargateController extends SlimefunItem implements Listener {
                 "&fAddress: " + address,
                 "&7Click to send the address to chat"
         ), (p, i, s, c) -> {
-            p.sendMessage(ChatColor.YELLOW + "Address: " + temp);
+            p.sendMessage(
+                    Component.text()
+                            .color(NamedTextColor.YELLOW)
+                            .content("Address (click to copy): " + temp)
+                            .clickEvent(ClickEvent.copyToClipboard(temp))
+                            .build()
+            );
             p.closeInventory();
             return false;
         });
