@@ -30,7 +30,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 tasks.shadowJar {
     relocate("io.github.mooy1.infinitylib", "io.github.addoncommunity.galactifun.infinitylib")
 
-    archiveFileName = "Galactifun.jar"
+    archiveFileName = "galactifun.jar"
 }
 
 bukkit {
