@@ -86,6 +86,7 @@ public final class WorldManager implements Listener {
 
     private final Map<UUID, Integer> respawnTimes = new HashMap<>();
     private final Map<UUID, Long> lastDeaths = new HashMap<>();
+    private final Map<UUID, Long> oxygenDamage = new HashMap<>();
 
     public WorldManager(Galactifun galactifun) {
         this.maxAliensPerPlayer = galactifun.getConfig().getInt("aliens.max-per-player", 4, 64);
@@ -147,9 +148,13 @@ public final class WorldManager implements Listener {
                 if (world != null
                         && world.atmosphere().requiresOxygenTank()
                         && !Galactifun.protectionManager().isOxygenBlock(p.getLocation())
-                        && !SpaceSuitProfile.get(p).consumeOxygen(20)) {
+                        && !SpaceSuitProfile.get(p).consumeOxygen(20)
+                        && !p.isDead()) {
                     p.sendMessage(ChatColor.RED + "You have run out of oxygen!");
-                    p.setHealth(Math.max(p.getHealth() - 8, 0));
+                    double damage = oxygenDamage.merge(p.getUniqueId(), 2L, (a, b) -> a * b);
+                    p.setHealth(Math.max(p.getHealth() - damage, 0));
+                } else {
+                    oxygenDamage.remove(p.getUniqueId());
                 }
             }
         }
