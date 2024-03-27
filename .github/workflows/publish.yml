@@ -27,5 +27,5 @@ jobs:
         with:
           project: Galactifun
           apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-          file: ./build/libs/Galactifun.jar
+          file: ./build/libs/galactifun.jar
           releaseNotes: ${{ github.event.head_commit.message }}
