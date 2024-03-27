@@ -40,7 +40,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -183,7 +182,6 @@ public final class StargateController extends SlimefunItem implements Listener {
                 gateway.setAge(GATEWAY_TICKS);
                 gateway.setExitLocation(b.getLocation());
                 gateway.update(false, false);
-                BlockStorage.addBlockInfo(portal, "portal", "true");
             }
 
             String destAddress = BlockStorage.getLocationInfo(b.getLocation(), "destination");
@@ -319,20 +317,20 @@ public final class StargateController extends SlimefunItem implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onUsePortal(PlayerTeleportEndGatewayEvent e) {
-        if (!BSUtils.getStoredBoolean(e.getGateway().getLocation(), "portal")) return;
-        Location dest = BSUtils.getStoredLocation(e.getGateway().getExitLocation(), "dest");
+        Location exit = e.getGateway().getExitLocation();
+        if (exit == null || !(BlockStorage.check(exit) instanceof StargateController)) return;
+        Location dest = BSUtils.getStoredLocation(exit, "dest");
         if (dest == null) return;
 
         e.setCancelled(true);
 
         Player p = e.getPlayer();
-
         if (p.hasMetadata("disableStargate")) return;
 
         Block b = dest.getBlock();
         if (BlockStorage.check(b, BaseItems.STARGATE_CONTROLLER.getItemId()) &&
                 StargateController.getPortalBlocks(b).isEmpty()) {
-            e.getPlayer().sendMessage(ChatColor.RED + "The destination Stargate is not activated");
+            p.sendMessage(ChatColor.RED + "The destination Stargate is not activated");
             return;
         }
 
@@ -343,11 +341,11 @@ public final class StargateController extends SlimefunItem implements Listener {
             if (world != null) {
                 e.getPlayer().setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
             }
-            PaperLib.teleportAsync(e.getPlayer(), destBlock.getLocation());
+            p.teleportAsync(destBlock.getLocation());
             p.setMetadata("disableStargate", new FixedMetadataValue(Galactifun.instance(), true));
             Scheduler.run(10, () -> p.removeMetadata("disableStargate", Galactifun.instance()));
         } else {
-            e.getPlayer().sendMessage(ChatColor.RED + "The destination is blocked");
+            p.sendMessage(ChatColor.RED + "The destination is blocked");
         }
     }
 
