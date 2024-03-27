@@ -25,7 +25,7 @@ dependencies {
 group = "io.github.addoncommunity.galactifun"
 version = "MODIFIED"
 description = "Galactifun"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.shadowJar {
     relocate("io.github.mooy1.infinitylib", "io.github.addoncommunity.galactifun.infinitylib")
