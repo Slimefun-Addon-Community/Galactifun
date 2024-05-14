@@ -40,7 +40,7 @@ bukkit {
     version = project.version.toString()
     authors = listOf("Seggan", "Mooy1", "GallowsDove", "ProfElements")
     apiVersion = "1.18"
-    softDepend = listOf("ClayTech")
+    softDepend = listOf("ClayTech", "BentoBox")
     loadBefore = listOf("Multiverse-Core")
     depend = listOf("Slimefun")
 
