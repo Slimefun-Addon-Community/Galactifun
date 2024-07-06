@@ -35,7 +35,7 @@ import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.mooy1.infinitylib.metrics.bukkit.Metrics;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
+//import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 
 
@@ -53,11 +53,11 @@ public final class Galactifun extends AbstractAddon {
     private boolean shouldDisable = false;
 
     public Galactifun() {
-        super("Slimefun-Addon-Community", "Galactifun", "master", "auto-update");
+        super("IvanMishin1", "ME-Galactifun", "master", "auto-update");
     }
 
     public Galactifun(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file, "Slimefun-Addon-Community", "Galactifun", "master", "auto-update");
+        super(loader, description, dataFolder, file, "IvanMishin1", "ME-Galactifun", "master", "auto-update");
         isTest = true;
     }
 
@@ -109,7 +109,9 @@ public final class Galactifun extends AbstractAddon {
         new Metrics(this, 11613);
 
         if (!isTest && this.getConfig().getBoolean("auto-update") && !getPluginVersion().contains("MODIFIED")) {
-            new BlobBuildUpdater(this, this.getFile(), "Galactifun").start();
+            // Disabled auto-updater for now
+            // new BlobBuildUpdater(this, this.getFile(), "Galactifun").start();
+            log(Level.WARNING, "Auto-update is disabled on this fork of Galactifun");
         }
 
         this.alienManager = new AlienManager(this);
@@ -126,8 +128,9 @@ public final class Galactifun extends AbstractAddon {
 
         // log after startup
         Scheduler.run(() -> log(Level.INFO,
-                "################# Galactifun " + getPluginVersion() + " #################",
+                "################# ME-Galactifun " + getPluginVersion() + " #################",
                 "",
+                "This is a fork of Galactifun made by IvanMishin1 for Mega-Earth",
                 "Galactifun is open source, you can contribute or report bugs at: ",
                 getBugTrackerURL(),
                 "Join the Slimefun Addon Community Discord: discord.gg/SqD3gg5SAU",
