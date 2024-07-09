@@ -185,7 +185,7 @@ public final class WorldManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPortalCreate(PortalCreateEvent e) {
-        if (!Galactifun.instance().getConfig().getBoolean("worlds.allow-nether-portals") && e.getWorld().getName().contains("world_galactifun")) {
+        if (!Galactifun.instance().getConfig().getBoolean("worlds.allow-nether-portals") && getAlienWorld(e.getWorld()) != null) {
             e.setCancelled(true);
         }
     }
