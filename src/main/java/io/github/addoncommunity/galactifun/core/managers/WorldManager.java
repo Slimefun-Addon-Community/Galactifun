@@ -77,13 +77,9 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public final class WorldManager implements Listener {
 
     private static final String PLACED = "placed";
-    private static final Logger log = LoggerFactory.getLogger(WorldManager.class);
 
     @Getter
     private final int maxAliensPerPlayer;
