@@ -190,18 +190,14 @@ public final class WorldManager implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPortalCreate(PortalCreateEvent e) {
-        if (!e.getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.earth-name"))
-                && !e.getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.nether-name"))) {
-            Objects.requireNonNull(e.getEntity()).sendMessage(ChatColor.RED + "You cannot create portals in this world!");
+        if (e.getWorld().getName().contains("world_galactifun")) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void portal(PlayerPortalEvent e){
-        if (!e.getFrom().getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.earth-name"))
-                && !e.getFrom().getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.nether-name"))) {
-            e.getPlayer().sendMessage(ChatColor.RED + "You cannot use portals in this world!");
+        if (e.getFrom().getWorld().getName().contains("world_galactifun")){
             e.setCancelled(true);
         }
     }
