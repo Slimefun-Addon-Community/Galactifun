@@ -7,5 +7,6 @@
 .classpath
 .DS_Store
 .gradle/
+gradle/
 build/
 run/

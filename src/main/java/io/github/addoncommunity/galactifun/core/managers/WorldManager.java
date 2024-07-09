@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -46,7 +47,9 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
@@ -74,9 +77,13 @@ import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class WorldManager implements Listener {
 
     private static final String PLACED = "placed";
+    private static final Logger log = LoggerFactory.getLogger(WorldManager.class);
 
     @Getter
     private final int maxAliensPerPlayer;
@@ -179,6 +186,24 @@ public final class WorldManager implements Listener {
     @Nonnull
     public Collection<AlienWorld> alienWorlds() {
         return Collections.unmodifiableCollection(this.alienWorlds.values());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPortalCreate(PortalCreateEvent e) {
+        if (!e.getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.earth-name"))
+                && !e.getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.nether-name"))) {
+            Objects.requireNonNull(e.getEntity()).sendMessage(ChatColor.RED + "You cannot create portals in this world!");
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void portal(PlayerPortalEvent e){
+        if (!e.getFrom().getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.earth-name"))
+                && !e.getFrom().getWorld().getName().equals(Galactifun.instance().getConfig().getString("worlds.nether-name"))) {
+            e.getPlayer().sendMessage(ChatColor.RED + "You cannot use portals in this world!");
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
