@@ -188,16 +188,16 @@ public final class WorldManager implements Listener {
         return Collections.unmodifiableCollection(this.alienWorlds.values());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPortalCreate(PortalCreateEvent e) {
-        if (e.getWorld().getName().contains("world_galactifun")) {
+        if (!Galactifun.instance().getConfig().getBoolean("worlds.allow-nether-portals") && e.getWorld().getName().contains("world_galactifun")) {
             e.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void portal(PlayerPortalEvent e){
-        if (e.getFrom().getWorld().getName().contains("world_galactifun")){
+        if (!Galactifun.instance().getConfig().getBoolean("worlds.allow-nether-portals") && e.getFrom().getWorld().getName().contains("world_galactifun")){
             e.setCancelled(true);
         }
     }
