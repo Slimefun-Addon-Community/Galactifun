@@ -6,7 +6,7 @@ Inspiration taken from ClayTech and the mod GalactiCraft.
 
 ## Download
 
-Download here (just click the badge!): 
+Download here (just click the badge!):
 
 [![Build Status](https://thebusybiscuit.github.io/builds/Slimefun-Addon-Community/Galactifun/master/badge.svg)](https://thebusybiscuit.github.io/builds/Slimefun-Addon-Community/Galactifun/master)
 
