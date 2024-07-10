@@ -50,9 +50,6 @@ other:
     - END_PORTAL
     - STRUCTURE_BLOCK
 
-  # The maximum range that the sealed command can be executed with
-  # Setting this to a high value can cause performance issues
-  # # Setting this to a low value may limit the sealed command, causing it to miss larger sealed areas.
-  # Set to 0 to disable the range limit
-  # See https://github.com/Slimefun-Addon-Community/Galactifun/wiki/Sealing#Range for more info
+  # Max range for sealed command. High values may impact performance, low values may miss sealed areas.
+  # More info: https://github.com/Slimefun-Addon-Community/Galactifun/wiki/Sealing#Range
   sealed-command-max-range: 300000
