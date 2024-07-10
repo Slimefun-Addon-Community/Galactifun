@@ -6,6 +6,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import io.github.addoncommunity.galactifun.Galactifun;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,10 +25,28 @@ public final class SealedCommand extends SubCommand {
     @Override
     public void execute(@Nonnull CommandSender commandSender, @Nonnull String[] strings) {
         if (!(commandSender instanceof Player p)) return;
-        if (strings.length != 1) return;
+        if (strings.length != 1) {
+            p.sendMessage(ChatColor.RED + "Usage: /galactifun sealed <range>");
+            return;
+        }
+
+        int range;
+
+        try {
+            range = Integer.parseInt(strings[0]);
+        } catch (NumberFormatException e) {
+            p.sendMessage(ChatColor.RED + "Range must be an integer between 1 and " + Galactifun.instance().getConfig().getInt("other.sealed-command-max-range"));
+            return;
+        }
+
+        if (range < 1 || range > Galactifun.instance().getConfig().getInt("other.sealed-command-max-range")) {
+            p.sendMessage(ChatColor.RED + "Range must be an integer between 1 and " + Galactifun.instance().getConfig().getInt("other.sealed-command-max-range"));
+            return;
+        }
 
         double time = System.nanoTime();
-        Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), Integer.parseInt(strings[0]));
+        Optional<Set<BlockPosition>> filled = Util.floodFill(p.getLocation(), range);
+
         if (filled.isPresent()) {
             p.sendMessage("Sealed");
         } else {

@@ -37,8 +37,10 @@ rockets:
     - Not going home
 
 other:
+
   # The range that the automatic door checks for players
   auto-door-range: 2
+
   # Blocks prohibited to be used by the automatic door
   auto-door-banned-types:
     - BEDROCK
@@ -47,3 +49,10 @@ other:
     - COMMAND_BLOCK
     - END_PORTAL
     - STRUCTURE_BLOCK
+
+  # The maximum range that the sealed command can be executed with
+  # Setting this to a high value can cause performance issues
+  # # Setting this to a low value may limit the sealed command, causing it to miss larger sealed areas.
+  # Set to 0 to disable the range limit
+  # See https://github.com/Slimefun-Addon-Community/Galactifun/wiki/Sealing#Range for more info
+  sealed-command-max-range: 300000
