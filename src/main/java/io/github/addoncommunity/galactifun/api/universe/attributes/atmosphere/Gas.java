@@ -47,6 +47,9 @@ public enum Gas {
         if (SlimefunItems.FREEZER_2.getItem() instanceof Freezer freezer) {
             freezer.registerRecipe(10, NITROGEN.item(), SlimefunItems.REACTOR_COOLANT_CELL.asQuantity(4));
         }
+        if (SlimefunItems.FREEZER_3.getItem() instanceof  Freezer freezer) {
+            freezer.registerRecipe(7, NITROGEN.item(), SlimefunItems.REACTOR_COOLANT_CELL.asQuantity(4));
+        }
 
         if (SlimefunItems.COMBUSTION_REACTOR.getItem() instanceof CombustionGenerator generator) {
             generator.registerFuel(new MachineFuel(15, HYDROGEN.item()));
