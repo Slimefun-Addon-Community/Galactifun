@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import lombok.Getter;
 
@@ -26,6 +27,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +53,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
@@ -102,6 +105,17 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                     ((Rotatable) data).setRotation(BlockFace.NORTH);
                 }
                 b.setBlockData(data, true);
+            }
+        });
+
+        addItemHandler(new BlockBreakHandler(false, false) {
+            @Override
+            @ParametersAreNonnullByDefault
+            public void onPlayerBreak(BlockBreakEvent e, ItemStack itemStack, List<ItemStack> list) {
+                if (Boolean.parseBoolean(BlockStorage.getLocationInfo(e.getBlock().getLocation(), "isLaunching"))) {
+                    e.setCancelled(true);
+                    e.getPlayer().sendMessage(ChatColor.RED + "The rocket is currently launching!");
+                }
             }
         });
     }
