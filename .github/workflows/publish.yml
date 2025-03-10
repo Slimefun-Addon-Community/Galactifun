@@ -26,6 +26,7 @@ jobs:
         uses: WalshyDev/blob-builds/gh-action@main
         with:
           project: Galactifun
+          releaseChannel: 'Dev'
           apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
           file: ./build/libs/galactifun.jar
           releaseNotes: ${{ github.event.head_commit.message }}
