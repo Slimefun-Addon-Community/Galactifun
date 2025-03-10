@@ -45,13 +45,13 @@ public abstract class ProtectingBlock extends MenuBlock implements EnergyNetComp
     protected static final String ENABLED = "enabled";
 
     private static final Set<BlockPosition> allBlocks = new HashSet<>();
-    private static final ItemStack ENABLED_ITEM = new CustomItemStack(
+    private static final ItemStack ENABLED_ITEM = CustomItemStack.create(
             Material.STRUCTURE_VOID,
             "&aEnabled",
             "",
             "&7Click to disable"
     );
-    private static final ItemStack DISABLED_ITEM = new CustomItemStack(
+    private static final ItemStack DISABLED_ITEM = CustomItemStack.create(
             Material.BARRIER,
             "&cDisabled",
             "",

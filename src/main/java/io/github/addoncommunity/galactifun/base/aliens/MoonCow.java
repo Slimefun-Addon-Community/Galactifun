@@ -26,7 +26,7 @@ public final class MoonCow extends Alien<Cow> {
         long timer = PersistentDataAPI.getLong(entity, TIMER, 0);
         long currentTime = System.currentTimeMillis();
         if (currentTime - timer > 5 * 60 * 1000) {
-            entity.getWorld().dropItemNaturally(entity.getLocation(), BaseMats.MOON_CHEESE.clone());
+            entity.getWorld().dropItemNaturally(entity.getLocation(), BaseMats.MOON_CHEESE.item().clone());
             PersistentDataAPI.setLong(entity, TIMER, currentTime);
         }
     }

@@ -19,7 +19,7 @@ public final class DiamondAnvil extends AContainer {
 
     public static final MachineRecipeType TYPE = new MachineRecipeType(
             BaseItems.DIAMOND_ANVIL.getItemId().toLowerCase(Locale.ROOT),
-            BaseItems.DIAMOND_ANVIL
+            BaseItems.DIAMOND_ANVIL.item()
     );
 
     public DiamondAnvil(SlimefunItemStack item, ItemStack[] recipe) {

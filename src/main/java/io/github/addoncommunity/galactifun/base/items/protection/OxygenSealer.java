@@ -143,7 +143,7 @@ public final class OxygenSealer extends MenuBlock implements EnergyNetComponent,
         }
 
         BlockMenu menu = BlockStorage.getInventory(b);
-        if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item(), false, false)) {
+        if (!SlimefunUtils.isItemSimilar(menu.getItemInSlot(OXYGEN_SLOT), Gas.OXYGEN.item().item(), false, false)) {
             updateHologram(b, "&cNo Oxygen");
             BSUtils.addBlockInfo(b, NO_OXYGEN, true);
             return;

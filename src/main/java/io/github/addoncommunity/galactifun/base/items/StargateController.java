@@ -224,7 +224,7 @@ public final class StargateController extends SlimefunItem implements Listener {
         destination = destination == null ? "" : destination;
 
         String temp = address;
-        menu.addItem(ADDRESS_SLOT, new CustomItemStack(
+        menu.addItem(ADDRESS_SLOT, CustomItemStack.create(
                 Material.BOOK,
                 "&fAddress: " + address,
                 "&7Click to send the address to chat"
@@ -240,7 +240,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return false;
         });
 
-        menu.addItem(DEACTIVATE_SLOT, new CustomItemStack(
+        menu.addItem(DEACTIVATE_SLOT, CustomItemStack.create(
                 Material.BARRIER,
                 "&fClick to Deactivate the Stargate"
         ), (p, i, s, c) -> {
@@ -255,7 +255,7 @@ public final class StargateController extends SlimefunItem implements Listener {
             return false;
         });
 
-        menu.addItem(DESTINATION_SLOT, new CustomItemStack(
+        menu.addItem(DESTINATION_SLOT, CustomItemStack.create(
                 Material.RAIL,
                 "&fClick to Set Destination",
                 "&7Current Destination: " + destination

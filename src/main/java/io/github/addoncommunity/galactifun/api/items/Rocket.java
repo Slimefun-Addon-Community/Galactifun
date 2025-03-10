@@ -1,10 +1,5 @@
 package io.github.addoncommunity.galactifun.api.items;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -63,6 +58,10 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -314,7 +313,7 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
         List<ItemStack> ret = new ArrayList<>();
 
         for (Map.Entry<ItemStack, Double> entry : getAllowedFuels().entrySet()) {
-            ret.add(new CustomItemStack(
+            ret.add(CustomItemStack.create(
                     entry.getKey(),
                     ItemUtils.getItemName(entry.getKey()),
                     "&7Efficiency: " + entry.getValue() + 'x'

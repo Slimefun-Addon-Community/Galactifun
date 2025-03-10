@@ -1,16 +1,5 @@
 package io.github.addoncommunity.galactifun.core.managers;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -75,6 +64,16 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public final class WorldManager implements Listener {
 
@@ -298,8 +297,8 @@ public final class WorldManager implements Listener {
             if (item != null && !removePlacedBlock(b)) {
                 e.setDropItems(false);
                 List<ItemStack> drops = new ArrayList<>();
-                drops.add(item.clone());
-                item.getItem().callItemHandler(BlockBreakHandler.class, h -> h.onPlayerBreak(e, item, drops));
+                drops.add(item.item().clone());
+                item.getItem().callItemHandler(BlockBreakHandler.class, h -> h.onPlayerBreak(e, item.item(), drops));
                 for (ItemStack drop : drops) {
                     w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), drop);
                 }
@@ -331,7 +330,7 @@ public final class WorldManager implements Listener {
                 SlimefunItemStack item = world.getMappedItem(b);
                 if (item != null && !removePlacedBlock(b)) {
                     blocks.remove();
-                    w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), item.clone());
+                    w.dropItemNaturally(b.getLocation().add(0.5, 0, 0.5), item.item().clone());
                     Scheduler.run(() -> b.setType(Material.AIR));
                 }
             }

@@ -161,7 +161,7 @@ public final class LaunchPadCore extends TickingMenuBlock {
             preset.addItem(i, ChestMenuUtils.getOutputSlotTexture(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        preset.addItem(24, new CustomItemStack(
+        preset.addItem(24, CustomItemStack.create(
                 HeadTexture.FUEL_BUCKET.getAsItemStack(),
                 "&6Insert Fuel Here"
         ), ChestMenuUtils.getEmptyClickHandler());

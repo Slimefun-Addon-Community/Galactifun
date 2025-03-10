@@ -1,16 +1,7 @@
 package io.github.addoncommunity.galactifun.core.commands;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
-import org.apache.commons.codec.Charsets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -23,6 +14,14 @@ import io.github.addoncommunity.galactifun.api.structures.Structure;
 import io.github.addoncommunity.galactifun.api.structures.StructureRotation;
 import io.github.mooy1.infinitylib.commands.SubCommand;
 import io.github.mooy1.infinitylib.common.PersistentType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class StructureCommand extends SubCommand {
 
@@ -70,7 +69,7 @@ public final class StructureCommand extends SubCommand {
             file.getParentFile().mkdirs();
             if (file.exists()) {
                 try {
-                    Files.writeString(file.toPath(), struct.saveToString(), Charsets.UTF_8);
+                    Files.writeString(file.toPath(), struct.saveToString(), StandardCharsets.UTF_8);
                     this.savedStructures.put(args[1], struct);
                     p.sendMessage(ChatColor.GREEN + "Saved as '" + args[1] + "'!");
                 } catch (IOException e) {

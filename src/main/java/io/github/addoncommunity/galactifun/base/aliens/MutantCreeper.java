@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 import io.github.addoncommunity.galactifun.api.aliens.Alien;
 import io.github.addoncommunity.galactifun.base.BaseMats;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
 /**
  * A class for a charged alien creeper, passive until attacked
@@ -36,7 +36,7 @@ public final class MutantCreeper extends Alien<Creeper> {
     @Override
     public void onDeath(@Nonnull EntityDeathEvent e) {
         e.getDrops().clear();
-        e.getDrops().add(new SlimefunItemStack(BaseMats.MUNPOWDER, ThreadLocalRandom.current().nextInt(2)));
+        e.getDrops().add(CustomItemStack.create(BaseMats.MUNPOWDER.item(), ThreadLocalRandom.current().nextInt(2)));
     }
 
     @Override

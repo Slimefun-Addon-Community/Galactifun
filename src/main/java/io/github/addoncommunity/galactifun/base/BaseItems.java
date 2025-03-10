@@ -481,249 +481,249 @@ public final class BaseItems {
 
     public static void setup(Galactifun galactifun) {
         new OxygenFiller(CoreItemGroup.MACHINES, OXYGEN_FILLER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE, BaseMats.REINFORCED_CHANNEL, BaseMats.ALUMINUM_COMPOSITE,
-                BaseMats.ALUMINUM_COMPOSITE, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE,
-                BaseMats.ALUMINUM_COMPOSITE, null, BaseMats.ALUMINUM_COMPOSITE
+                BaseMats.ALUMINUM_COMPOSITE.item(), BaseMats.REINFORCED_CHANNEL.item(), BaseMats.ALUMINUM_COMPOSITE.item(),
+                BaseMats.ALUMINUM_COMPOSITE.item(), BaseMats.FAN_BLADE.item(), BaseMats.ALUMINUM_COMPOSITE.item(),
+                BaseMats.ALUMINUM_COMPOSITE.item(), null, BaseMats.ALUMINUM_COMPOSITE.item()
         }).setCapacity(200).setEnergyConsumption(100).setProcessingSpeed(1).register(galactifun);
         new SpaceSuitUpgrader(CoreItemGroup.MACHINES, SPACE_SUIT_UPGRADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE, SlimefunItems.HARDENED_GLASS, BaseMats.ALUMINUM_COMPOSITE,
-                BaseMats.ALUMINUM_COMPOSITE, null, BaseMats.ALUMINUM_COMPOSITE,
-                BaseMats.ALUMINUM_COMPOSITE, SlimefunItems.STEEL_INGOT, BaseMats.ALUMINUM_COMPOSITE
+                BaseMats.ALUMINUM_COMPOSITE.item(), SlimefunItems.HARDENED_GLASS.item(), BaseMats.ALUMINUM_COMPOSITE.item(),
+                BaseMats.ALUMINUM_COMPOSITE.item(), null, BaseMats.ALUMINUM_COMPOSITE.item(),
+                BaseMats.ALUMINUM_COMPOSITE.item(), SlimefunItems.STEEL_INGOT.item(), BaseMats.ALUMINUM_COMPOSITE.item()
         }).setCapacity(400).setEnergyConsumption(200).setProcessingSpeed(1).register(galactifun);
 
         new SpaceSuitUpgrade(CoreItemGroup.EQUIPMENT, HEAT_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT,
-                SlimefunItems.COOLING_UNIT, new ItemStack(Material.IRON_BLOCK), SlimefunItems.COOLING_UNIT,
-                SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT, SlimefunItems.COOLING_UNIT
+                SlimefunItems.COOLING_UNIT.item(), SlimefunItems.COOLING_UNIT.item(), SlimefunItems.COOLING_UNIT.item(),
+                SlimefunItems.COOLING_UNIT.item(), new ItemStack(Material.IRON_BLOCK), SlimefunItems.COOLING_UNIT.item(),
+                SlimefunItems.COOLING_UNIT.item(), SlimefunItems.COOLING_UNIT.item(), SlimefunItems.COOLING_UNIT.item()
         }, SpaceSuitStat.HEAT_RESISTANCE, 1).register(galactifun);
         new SpaceSuitUpgrade(CoreItemGroup.EQUIPMENT, COLD_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL,
-                SlimefunItems.HEATING_COIL, new ItemStack(Material.IRON_BLOCK), SlimefunItems.HEATING_COIL,
-                SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL, SlimefunItems.HEATING_COIL
+                SlimefunItems.HEATING_COIL.item(), SlimefunItems.HEATING_COIL.item(), SlimefunItems.HEATING_COIL.item(),
+                SlimefunItems.HEATING_COIL.item(), new ItemStack(Material.IRON_BLOCK), SlimefunItems.HEATING_COIL.item(),
+                SlimefunItems.HEATING_COIL.item(), SlimefunItems.HEATING_COIL.item(), SlimefunItems.HEATING_COIL.item()
         }, SpaceSuitStat.COLD_RESISTANCE, 1).register(galactifun);
         new SpaceSuitUpgrade(CoreItemGroup.EQUIPMENT, RADIATION_RESISTANCE_UPGRADE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT,
-                SlimefunItems.LEAD_INGOT, new ItemStack(Material.IRON_BLOCK), SlimefunItems.LEAD_INGOT,
-                SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT, SlimefunItems.LEAD_INGOT
+                SlimefunItems.LEAD_INGOT.item(), SlimefunItems.LEAD_INGOT.item(), SlimefunItems.LEAD_INGOT.item(),
+                SlimefunItems.LEAD_INGOT.item(), new ItemStack(Material.IRON_BLOCK), SlimefunItems.LEAD_INGOT.item(),
+                SlimefunItems.LEAD_INGOT.item(), SlimefunItems.LEAD_INGOT.item(), SlimefunItems.LEAD_INGOT.item()
         }, SpaceSuitStat.RADIATION_RESISTANCE, 1).register(galactifun);
 
         new SpaceSuitHelmet(CoreItemGroup.EQUIPMENT, SPACE_SUIT_HELMET, RecipeType.ARMOR_FORGE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.GOLD_FOIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                SlimefunItems.REINFORCED_CLOTH, SlimefunItems.SCUBA_HELMET, SlimefunItems.REINFORCED_CLOTH,
-                BaseMats.REINFORCED_CHANNEL, BaseMats.OXYGEN_REGENERATOR, BaseMats.FAN_BLADE
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.GOLD_FOIL.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                SlimefunItems.REINFORCED_CLOTH.item(), SlimefunItems.SCUBA_HELMET.item(), SlimefunItems.REINFORCED_CLOTH.item(),
+                BaseMats.REINFORCED_CHANNEL.item(), BaseMats.OXYGEN_REGENERATOR.item(), BaseMats.FAN_BLADE.item()
         }, 3, 0).register(galactifun);
         new SpaceSuit(CoreItemGroup.EQUIPMENT, SPACE_SUIT_CHEST, RecipeType.ARMOR_FORGE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.REINFORCED_CLOTH, BaseMats.REINFORCED_CHANNEL,
-                BaseMats.FAN_BLADE, SlimefunItems.HAZMAT_CHESTPLATE, BaseMats.FAN_BLADE,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.REINFORCED_CLOTH.item(), BaseMats.REINFORCED_CHANNEL.item(),
+                BaseMats.FAN_BLADE.item(), SlimefunItems.HAZMAT_CHESTPLATE.item(), BaseMats.FAN_BLADE.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 3, 3600).register(galactifun);
         new SpaceSuit(CoreItemGroup.EQUIPMENT, SPACE_SUIT_PANTS, RecipeType.ARMOR_FORGE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HAZMAT_LEGGINGS, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.HAZMAT_LEGGINGS.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), null, BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), null, BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 2, 0).register(galactifun);
         new SpaceSuit(CoreItemGroup.EQUIPMENT, SPACE_SUIT_BOOTS, RecipeType.ARMOR_FORGE, new ItemStack[] {
                 null, null, null,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HAZMAT_BOOTS, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), null, BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.HAZMAT_BOOTS.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 2, 0).register(galactifun);
 
         new CircuitPress(CoreItemGroup.MACHINES, CIRCUIT_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, null, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                SlimefunItems.HEATING_COIL, new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL
+                SlimefunItems.HEATING_COIL.item(), new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), null, BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                SlimefunItems.HEATING_COIL.item(), new ItemStack(Material.PISTON), SlimefunItems.HEATING_COIL.item()
         }).setCapacity(512).setEnergyConsumption(128).setProcessingSpeed(1).register(galactifun);
 
         new AssemblyTable(ASSEMBLY_TABLE, new ItemStack[] {
-                SlimefunItems.STEEL_PLATE, SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.STEEL_PLATE,
-                SlimefunItems.CARGO_MOTOR, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.CARGO_MOTOR,
-                SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_PLATE
+                SlimefunItems.STEEL_PLATE.item(), SlimefunItems.ENHANCED_AUTO_CRAFTER.item(), SlimefunItems.STEEL_PLATE.item(),
+                SlimefunItems.CARGO_MOTOR.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), SlimefunItems.CARGO_MOTOR.item(),
+                SlimefunItems.REINFORCED_PLATE.item(), SlimefunItems.REINFORCED_PLATE.item(), SlimefunItems.REINFORCED_PLATE.item()
         }, 2048).register(galactifun);
 
         new StargateRing(CoreItemGroup.COMPONENTS, STARGATE_RING, AssemblyTable.TYPE, new ItemStack[] {
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ENDER_BLOCK, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item()
         }).register(galactifun);
         new StargateController(CoreItemGroup.COMPONENTS, STARGATE_CONTROLLER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                STARGATE_RING, BaseMats.GLOWSTONE_CIRCUIT, STARGATE_RING,
-                BaseMats.REDSTONE_CIRCUIT, BaseMats.DIAMOND_CIRCUIT, BaseMats.REDSTONE_CIRCUIT,
-                STARGATE_RING, BaseMats.LAPIS_CIRCUIT, STARGATE_RING
+                STARGATE_RING.item(), BaseMats.GLOWSTONE_CIRCUIT.item(), STARGATE_RING.item(),
+                BaseMats.REDSTONE_CIRCUIT.item(), BaseMats.DIAMOND_CIRCUIT.item(), BaseMats.REDSTONE_CIRCUIT.item(),
+                STARGATE_RING.item(), BaseMats.LAPIS_CIRCUIT.item(), STARGATE_RING.item()
         }).register(galactifun);
 
         new ChemicalRocket(CoreItemGroup.ITEMS, TIER_ONE, AssemblyTable.TYPE, new ItemStack[] {
-                null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
-                null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
-                null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE, BaseMats.ROCKET_ENGINE, null, BaseMats.HEAVY_DUTY_SHEET
+                null, null, BaseMats.NOSE_CONE.item(), BaseMats.NOSE_CONE.item(), null, null,
+                null, null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(), null, null,
+                null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.HEAVY_DUTY_SHEET.item(), null,
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.FUEL_TANK.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.FUEL_TANK.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), null, BaseMats.ROCKET_ENGINE.item(), BaseMats.ROCKET_ENGINE.item(), null, BaseMats.HEAVY_DUTY_SHEET.item()
         }, TIER_ONE_FUEL, TIER_ONE_STORAGE).register(galactifun);
         new ChemicalRocket(CoreItemGroup.ITEMS, TIER_TWO, AssemblyTable.TYPE, new ItemStack[] {
-                null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
-                null, null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, null, null,
-                null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.HEAVY_DUTY_SHEET, null,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.HEAVY_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_2, BaseMats.ROCKET_ENGINE_2, null, BaseMats.HEAVY_DUTY_SHEET
+                null, null, BaseMats.NOSE_CONE.item(), BaseMats.NOSE_CONE.item(), null, null,
+                null, null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(), null, null,
+                null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.HEAVY_DUTY_SHEET.item(), null,
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.FUEL_TANK.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.FUEL_TANK.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), null, BaseMats.ROCKET_ENGINE_2.item(), BaseMats.ROCKET_ENGINE_2.item(), null, BaseMats.HEAVY_DUTY_SHEET.item()
         }, TIER_TWO_FUEL, TIER_TWO_STORAGE).register(galactifun);
         new ChemicalRocket(CoreItemGroup.ITEMS, TIER_THREE, AssemblyTable.TYPE, new ItemStack[] {
-                null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
-                null, null, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, null, null,
-                null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, null,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ROCKET_ENGINE_3, BaseMats.ROCKET_ENGINE_3, null, BaseMats.ULTRA_DUTY_SHEET
+                null, null, BaseMats.NOSE_CONE.item(), BaseMats.NOSE_CONE.item(), null, null,
+                null, null, BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), null, null,
+                null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ULTRA_DUTY_SHEET.item(), null,
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), null, BaseMats.ROCKET_ENGINE_3.item(), BaseMats.ROCKET_ENGINE_3.item(), null, BaseMats.ULTRA_DUTY_SHEET.item()
         }, TIER_THREE_FUEL, TIER_THREE_STORAGE).register(galactifun);
 
         new SlimefunItem(CoreItemGroup.ITEMS, LANDING_HATCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                BaseMats.HEAVY_DUTY_SHEET, new ItemStack(Material.IRON_TRAPDOOR), BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.HEAVY_DUTY_SHEET.item(), new ItemStack(Material.IRON_TRAPDOOR), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), null, BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), null, BaseMats.SPACE_GRADE_PLATE.item()
         }).register(galactifun);
 
         new LaunchPadFloor(CoreItemGroup.ITEMS, BaseItems.LAUNCH_PAD_FLOOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 null, null, null,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET, BaseMats.HEAVY_DUTY_SHEET,
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
         }).register(galactifun);
 
         new LaunchPadCore(CoreItemGroup.ITEMS, BaseItems.LAUNCH_PAD_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                SlimefunItems.REINFORCED_PLATE, BaseMats.NOZZLE, SlimefunItems.REINFORCED_PLATE,
-                SlimefunItems.CARGO_MOTOR, SlimefunItems.OIL_PUMP, SlimefunItems.CARGO_MOTOR,
-                SlimefunItems.REINFORCED_PLATE, BaseMats.ADVANCED_PROCESSING_UNIT, SlimefunItems.REINFORCED_PLATE,
+                SlimefunItems.REINFORCED_PLATE.item(), BaseMats.NOZZLE.item(), SlimefunItems.REINFORCED_PLATE.item(),
+                SlimefunItems.CARGO_MOTOR.item(), SlimefunItems.OIL_PUMP.item(), SlimefunItems.CARGO_MOTOR.item(),
+                SlimefunItems.REINFORCED_PLATE.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), SlimefunItems.REINFORCED_PLATE.item(),
         }).register(galactifun);
 
         new CoolingUnit(COOLING_UNIT_1, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.COOLING_UNIT, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                SlimefunItems.COOLING_UNIT, BaseMats.FAN_BLADE, SlimefunItems.COOLING_UNIT,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.COOLING_UNIT, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.COOLING_UNIT.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                SlimefunItems.COOLING_UNIT.item(), BaseMats.FAN_BLADE.item(), SlimefunItems.COOLING_UNIT.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.COOLING_UNIT.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 1).register(galactifun);
 
         new CoolingUnit(COOLING_UNIT_2, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.DRY_ICE, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.DRY_ICE, COOLING_UNIT_1, BaseMats.DRY_ICE,
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.DRY_ICE, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.DRY_ICE.item(), BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.DRY_ICE.item(), COOLING_UNIT_1.item(), BaseMats.DRY_ICE.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.DRY_ICE.item(), BaseMats.SPACE_GRADE_PLATE.item()
         }, 2).register(galactifun);
 
         new CoolingUnit(COOLING_UNIT_3, new ItemStack[] {
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.DRY_ICE, COOLING_UNIT_2, BaseMats.DRY_ICE,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.DRY_ICE, BaseMats.HEAVY_DUTY_SHEET
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.DRY_ICE.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.DRY_ICE.item(), COOLING_UNIT_2.item(), BaseMats.DRY_ICE.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.DRY_ICE.item(), BaseMats.HEAVY_DUTY_SHEET.item()
         }, 3).register(galactifun);
 
         new SpaceHeater(SPACE_HEATER_1, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                SlimefunItems.HEATING_COIL, BaseMats.FAN_BLADE, SlimefunItems.HEATING_COIL,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.HEATING_COIL, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.HEATING_COIL.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                SlimefunItems.HEATING_COIL.item(), BaseMats.FAN_BLADE.item(), SlimefunItems.HEATING_COIL.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.HEATING_COIL.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 1).register(galactifun);
 
         new SpaceHeater(SPACE_HEATER_2, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.VENTSTONE, SPACE_HEATER_1, BaseMats.VENTSTONE,
-                BaseMats.SPACE_GRADE_PLATE, SlimefunItems.HEATING_COIL, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.SPACE_GRADE_PLATE.item(), new ItemStack(Material.LAVA_BUCKET), BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.VENTSTONE.item(), SPACE_HEATER_1.item(), BaseMats.VENTSTONE.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), SlimefunItems.HEATING_COIL.item(), BaseMats.SPACE_GRADE_PLATE.item()
         }, 2).register(galactifun);
 
         new SpaceHeater(SPACE_HEATER_3, new ItemStack[] {
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET,
-                BaseMats.VOLCANIC_INGOT, SPACE_HEATER_2, BaseMats.VOLCANIC_INGOT,
-                BaseMats.HEAVY_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.HEAVY_DUTY_SHEET
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.VOLCANIC_INGOT.item(), BaseMats.HEAVY_DUTY_SHEET.item(),
+                BaseMats.VOLCANIC_INGOT.item(), SPACE_HEATER_2.item(), BaseMats.VOLCANIC_INGOT.item(),
+                BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.HEAVY_DUTY_SHEET.item()
         }, 3).register(galactifun);
 
         new IonDisperser(ION_DISPERSER_1, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                new ItemStack(Material.PRISMARINE_CRYSTALS), BaseMats.SULFUR_BLOCK, new ItemStack(Material.PRISMARINE_CRYSTALS),
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.FAN_BLADE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                new ItemStack(Material.PRISMARINE_CRYSTALS), BaseMats.SULFUR_BLOCK.item(), new ItemStack(Material.PRISMARINE_CRYSTALS),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.VENTSTONE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 1).register(galactifun);
 
         new IonDisperser(ION_DISPERSER_2, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.SULFUR_BLOCK, ION_DISPERSER_1, BaseMats.SULFUR_BLOCK,
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.FAN_BLADE.item(), BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.SULFUR_BLOCK.item(), ION_DISPERSER_1.item(), BaseMats.SULFUR_BLOCK.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.SPACE_GRADE_PLATE.item()
         }, 2).register(galactifun);
 
         new Observatory(OBSERVATORY, new ItemStack[] {
                 new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK),
-                new ItemStack(Material.PISTON), BaseMats.LUNAR_GLASS, new ItemStack(Material.PISTON),
+                new ItemStack(Material.PISTON), BaseMats.LUNAR_GLASS.item(), new ItemStack(Material.PISTON),
                 new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK)
         }).register(galactifun);
         new PlanetaryAnalyzer(PLANETARY_ANALYZER, new ItemStack[] {
-                BaseMats.TUNGSTEN_INGOT, SlimefunItems.GPS_TRANSMITTER_4, BaseMats.TUNGSTEN_INGOT,
-                BaseMats.SPACE_GRADE_PLATE, SlimefunItems.ENERGIZED_CAPACITOR, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.TUNGSTEN_INGOT, BaseMats.VOLCANIC_INGOT, BaseMats.TUNGSTEN_INGOT
+                BaseMats.TUNGSTEN_INGOT.item(), SlimefunItems.GPS_TRANSMITTER_4.item(), BaseMats.TUNGSTEN_INGOT.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), SlimefunItems.ENERGIZED_CAPACITOR.item(), BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.TUNGSTEN_INGOT.item(), BaseMats.VOLCANIC_INGOT.item(), BaseMats.TUNGSTEN_INGOT.item()
         }).register(galactifun);
         new DiamondAnvil(DIAMOND_ANVIL, new ItemStack[] {
-                BaseMats.ULTRA_DUTY_SHEET, new ItemStack(Material.GLASS), BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.DIAMOND_ANVIL_CELL, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, new ItemStack(Material.ANVIL), BaseMats.ULTRA_DUTY_SHEET
+                BaseMats.ULTRA_DUTY_SHEET.item(), new ItemStack(Material.GLASS), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.DIAMOND_ANVIL_CELL.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), new ItemStack(Material.ANVIL), BaseMats.ULTRA_DUTY_SHEET.item()
         }).setCapacity(2048).setEnergyConsumption(512).setProcessingSpeed(1).register(galactifun);
 
         new OxygenSealer(OXYGEN_SEALER, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.REINFORCED_CHANNEL, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.OXYGEN_REGENERATOR, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.FAN_BLADE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.REINFORCED_CHANNEL.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.OXYGEN_REGENERATOR.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }, 1000).register(galactifun);
 
         new SlimefunItem(CoreItemGroup.ITEMS, SUPER_FAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.FAN_BLADE, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.VENTSTONE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.FAN_BLADE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.VENTSTONE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }).register(galactifun);
 
         new AutomaticDoor(AUTOMATIC_DOOR, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, new ItemStack(Material.OBSERVER), BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.PROGRAMMABLE_ANDROID_MINER, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, SlimefunItems.BLOCK_PLACER, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), new ItemStack(Material.OBSERVER), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.PROGRAMMABLE_ANDROID_MINER.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), SlimefunItems.BLOCK_PLACER.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }).register(galactifun);
 
         new ForcefieldGenerator(ENVIRONMENTAL_FORCEFIELD_GENERATOR, new ItemStack[] {
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.ENDER_BLOCK, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, ION_DISPERSER_1, BaseMats.ALUMINUM_COMPOSITE_SHEET,
-                BaseMats.ALUMINUM_COMPOSITE_SHEET, BaseMats.SPACE_GRADE_PLATE, BaseMats.ALUMINUM_COMPOSITE_SHEET
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.ENDER_BLOCK.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), ION_DISPERSER_1.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item(),
+                BaseMats.ALUMINUM_COMPOSITE_SHEET.item(), BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.ALUMINUM_COMPOSITE_SHEET.item()
         }).register(galactifun);
 
         new FusionReactor(FUSION_REACTOR, new ItemStack[] {
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.LASERITE, BaseMats.LASERITE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.LASERITE, BaseMats.FUSION_PELLET, BaseMats.FUSION_PELLET, BaseMats.LASERITE, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.LASERITE, BaseMats.FUSION_PELLET, BaseMats.FUSION_PELLET, BaseMats.LASERITE, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.LASERITE, BaseMats.LASERITE, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET,
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.LASERITE.item(), BaseMats.LASERITE.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.LASERITE.item(), BaseMats.FUSION_PELLET.item(), BaseMats.FUSION_PELLET.item(), BaseMats.LASERITE.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.LASERITE.item(), BaseMats.FUSION_PELLET.item(), BaseMats.FUSION_PELLET.item(), BaseMats.LASERITE.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.LASERITE.item(), BaseMats.LASERITE.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
         }).register(galactifun);
 
         new AtmosphericHarvester(ATMOSPHERIC_HARVESTER, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.FAN_BLADE, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE, BaseMats.SPACE_GRADE_PLATE
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.FAN_BLADE.item(), BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), null, BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.SPACE_GRADE_PLATE.item(), BaseMats.SPACE_GRADE_PLATE.item()
         }).register(galactifun);
 
         new IonRocket(ION_ROCKET, new ItemStack[] {
-                null, null, BaseMats.NOSE_CONE, BaseMats.NOSE_CONE, null, null,
-                null, null, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ULTRA_DUTY_SHEET, null, null,
-                null, BaseMats.HEAVY_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, null,
-                BaseMats.ULTRA_DUTY_SHEET, FUSION_REACTOR, BaseMats.LIFE_SUPPORT_MODULE, BaseMats.LIFE_SUPPORT_MODULE, SlimefunItems.ENERGIZED_CAPACITOR, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.FUEL_TANK_2, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK, BaseMats.FUEL_TANK_2, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ION_ENGINE, BaseMats.ION_ENGINE, null, BaseMats.ULTRA_DUTY_SHEET
+                null, null, BaseMats.NOSE_CONE.item(), BaseMats.NOSE_CONE.item(), null, null,
+                null, null, BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ULTRA_DUTY_SHEET.item(), null, null,
+                null, BaseMats.HEAVY_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ULTRA_DUTY_SHEET.item(), null,
+                BaseMats.ULTRA_DUTY_SHEET.item(), FUSION_REACTOR.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), BaseMats.LIFE_SUPPORT_MODULE.item(), SlimefunItems.ENERGIZED_CAPACITOR.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK.item(), BaseMats.FUEL_TANK_2.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), null, BaseMats.ION_ENGINE.item(), BaseMats.ION_ENGINE.item(), null, BaseMats.ULTRA_DUTY_SHEET.item()
         }, 500, 18).register(galactifun);
 
         MachineBlock chemicalReactor = new MachineBlock(CoreItemGroup.MACHINES, CHEMICAL_REACTOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
-                BaseMats.ULTRA_DUTY_SHEET, BaseMats.BLISTERING_VOLCANIC_INGOT, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
+                BaseMats.SPACE_GRADE_PLATE.item(), null, BaseMats.SPACE_GRADE_PLATE.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item()
         });
 
-        chemicalReactor.addRecipe(new ItemStack(Material.WATER_BUCKET), Gas.WATER.item(), new ItemStack(Material.BUCKET));
-        chemicalReactor.addRecipe(Gas.WATER.item(), Gas.OXYGEN.item(), Gas.HYDROGEN.item().asQuantity(2));
+        chemicalReactor.addRecipe(new ItemStack(Material.WATER_BUCKET), Gas.WATER.item().item(), new ItemStack(Material.BUCKET));
+        chemicalReactor.addRecipe(Gas.WATER.item().item(), Gas.OXYGEN.item().item(), Gas.HYDROGEN.item().item().asQuantity(2));
 
-        chemicalReactor.addRecipe(Gas.CARBON_DIOXIDE.item(), SlimefunItems.CARBON, Gas.OXYGEN.item().asQuantity(2));
-        chemicalReactor.addRecipe(Gas.METHANE.item(), SlimefunItems.CARBON, Gas.HYDROGEN.item().asQuantity(4));
-        chemicalReactor.addRecipe(Gas.HYDROCARBONS.item(), Gas.METHANE.item().asQuantity(6));
-        chemicalReactor.addRecipe(SlimefunItems.OIL_BUCKET, Gas.HYDROCARBONS.item(), new ItemStack(Material.BUCKET));
+        chemicalReactor.addRecipe(Gas.CARBON_DIOXIDE.item().item(), SlimefunItems.CARBON.item(), Gas.OXYGEN.item().item().asQuantity(2));
+        chemicalReactor.addRecipe(Gas.METHANE.item().item(), SlimefunItems.CARBON.item(), Gas.HYDROGEN.item().item().asQuantity(4));
+        chemicalReactor.addRecipe(Gas.HYDROCARBONS.item().item(), Gas.METHANE.item().item().asQuantity(6));
+        chemicalReactor.addRecipe(SlimefunItems.OIL_BUCKET.item(), Gas.HYDROCARBONS.item().item(), new ItemStack(Material.BUCKET));
 
-        chemicalReactor.addRecipe(Gas.AMMONIA.item(), Gas.NITROGEN.item(), Gas.HYDROGEN.item().asQuantity(3));
+        chemicalReactor.addRecipe(Gas.AMMONIA.item().item(), Gas.NITROGEN.item().item(), Gas.HYDROGEN.item().item().asQuantity(3));
 
         chemicalReactor.energyCapacity(512);
         chemicalReactor.energyPerTick(128);
@@ -731,36 +731,36 @@ public final class BaseItems {
         chemicalReactor.register(galactifun);
 
         new Electrolyzer(ELECTROLYZER, new ItemStack[] {
-                BaseMats.SPACE_GRADE_PLATE, null, BaseMats.SPACE_GRADE_PLATE,
-                SlimefunItems.SILVER_INGOT, BaseMats.BLISTERING_VOLCANIC_INGOT, SlimefunItems.SILVER_INGOT,
-                BaseMats.ADVANCED_PROCESSING_UNIT, BaseMats.ULTRA_DUTY_SHEET, BaseMats.ADVANCED_PROCESSING_UNIT
+                BaseMats.SPACE_GRADE_PLATE.item(), null, BaseMats.SPACE_GRADE_PLATE.item(),
+                SlimefunItems.SILVER_INGOT.item(), BaseMats.BLISTERING_VOLCANIC_INGOT.item(), SlimefunItems.SILVER_INGOT.item(),
+                BaseMats.ADVANCED_PROCESSING_UNIT.item(), BaseMats.ULTRA_DUTY_SHEET.item(), BaseMats.ADVANCED_PROCESSING_UNIT.item()
         }).register(galactifun);
 
         // relics
         new Relic(BROKEN_SOLAR_PANEL_RELIC, new Relic.RelicSettings()
-                .addRequired(SlimefunItems.SILICON, 2, 5)
-                .addRequired(SlimefunItems.SOLAR_PANEL, 1, 3)
-                .addOptional(SlimefunItems.SOLAR_GENERATOR, 0.20f)
-                .addOptional(SlimefunItems.SOLAR_GENERATOR_2, 0.10f)
-                .addOptional(SlimefunItems.SOLAR_GENERATOR_3, 0.02f),
+                .addRequired(SlimefunItems.SILICON.item(), 2, 5)
+                .addRequired(SlimefunItems.SOLAR_PANEL.item(), 1, 3)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR.item(), 0.20f)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR_2.item(), 0.10f)
+                .addOptional(SlimefunItems.SOLAR_GENERATOR_3.item(), 0.02f),
                 Galactifun.worldManager().alienWorlds().stream()
                         .filter(a -> a.getSetting("generate-fallen-satellites", Boolean.class, true))
                         .toArray(AlienWorld[]::new)).register(galactifun);
 
         new Relic(FALLEN_SATELLITE_RELIC, new Relic.RelicSettings()
-                .addRequired(BaseMats.HEAVY_DUTY_SHEET, 3, 4)
-                .addRequired(BaseMats.SPACE_GRADE_PLATE, 1, 3)
-                .addRequired(SlimefunItems.BASIC_CIRCUIT_BOARD, 0, 2)
-                .addOptional(SlimefunItems.ADVANCED_CIRCUIT_BOARD, 0.15f)
-                .addOptional(BaseMats.ADVANCED_PROCESSING_UNIT, 0.10f),
+                .addRequired(BaseMats.HEAVY_DUTY_SHEET.item(), 3, 4)
+                .addRequired(BaseMats.SPACE_GRADE_PLATE.item(), 1, 3)
+                .addRequired(SlimefunItems.BASIC_CIRCUIT_BOARD.item(), 0, 2)
+                .addOptional(SlimefunItems.ADVANCED_CIRCUIT_BOARD.item(), 0.15f)
+                .addOptional(BaseMats.ADVANCED_PROCESSING_UNIT.item(), 0.10f),
                 Galactifun.worldManager().alienWorlds().stream()
                         .filter(a -> a.getSetting("generate-fallen-satellites", Boolean.class, true))
                         .toArray(AlienWorld[]::new)).register(galactifun);
 
         new TechnologicalSalvager(TECHNOLOGICAL_SALVAGER, new ItemStack[] {
-                BaseMats.ULTRA_DUTY_SHEET, null, BaseMats.ULTRA_DUTY_SHEET,
-                BaseMats.ADVANCED_PROCESSING_UNIT, null, BaseMats.ADVANCED_PROCESSING_UNIT,
-                BaseMats.ULTRA_DUTY_SHEET, new ItemStack(Material.STICKY_PISTON), BaseMats.ULTRA_DUTY_SHEET
+                BaseMats.ULTRA_DUTY_SHEET.item(), null, BaseMats.ULTRA_DUTY_SHEET.item(),
+                BaseMats.ADVANCED_PROCESSING_UNIT.item(), null, BaseMats.ADVANCED_PROCESSING_UNIT.item(),
+                BaseMats.ULTRA_DUTY_SHEET.item(), new ItemStack(Material.STICKY_PISTON), BaseMats.ULTRA_DUTY_SHEET.item()
         }).register(galactifun);
     }
 

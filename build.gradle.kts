@@ -14,10 +14,10 @@ repositories {
 }
 
 dependencies {
-    api("io.github.mooy1:InfinityLib:1.3.7")
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
-    compileOnly("io.github.TheBusyBiscuit:Slimefun4:RC-37")
+    compileOnly("com.github.Slimefun:Slimefun4:experimental-SNAPSHOT")
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    api("io.github.mooy1:InfinityLib:1.3.7")
 
     testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.85.2")
 }

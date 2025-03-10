@@ -35,7 +35,7 @@ public class TechnologicalSalvager extends AbstractMachineBlock implements Machi
     private static final int[] OUTPUT_BORDER = new int[] { 5, 6, 7, 8, 14, 17, 23, 26, 32, 35, 41, 42, 43, 44 };
     private static final int[] OUTPUT_SLOTS = { 15, 16, 24, 25, 33, 34 };
 
-    private static final ItemStack ANALYZING = new CustomItemStack(Material.LIME_STAINED_GLASS_PANE, "&aAnalyzing...");
+    private static final ItemStack ANALYZING = CustomItemStack.create(Material.LIME_STAINED_GLASS_PANE, "&aAnalyzing...");
 
     private final MachineProcessor<CraftingOperation> processor = new MachineProcessor<>(this);
 

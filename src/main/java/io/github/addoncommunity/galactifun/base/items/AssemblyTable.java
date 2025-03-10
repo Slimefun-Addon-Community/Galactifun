@@ -39,9 +39,15 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
             45, 46, 47, 48, 49, 50
     };
     private static final int RECIPE_SLOT = 7;
-    public static final MachineRecipeType TYPE = new MachineRecipeType("assembly_table",
-            new CustomItemStack(BaseItems.ASSEMBLY_TABLE, BaseItems.ASSEMBLY_TABLE.getDisplayName(),
-                    "", "&cUse the assembly recipes category to see the correct recipe!"));
+    public static final MachineRecipeType TYPE = new MachineRecipeType(
+            "assembly_table",
+            CustomItemStack.create(
+                    BaseItems.ASSEMBLY_TABLE.item(),
+                    BaseItems.ASSEMBLY_TABLE.getDisplayName(),
+                    "",
+                    "&cUse the assembly recipes category to see the correct recipe!"
+            )
+    );
 
     private final int energy;
 
@@ -67,7 +73,7 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
     @Override
     protected void setup(BlockMenuPreset preset) {
         super.setup(preset);
-        preset.addItem(RECIPE_SLOT, new CustomItemStack(Material.BOOK, "&6Recipes"), ChestMenuUtils.getEmptyClickHandler());
+        preset.addItem(RECIPE_SLOT, CustomItemStack.create(Material.BOOK, "&6Recipes"), ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override
@@ -89,10 +95,9 @@ public final class AssemblyTable extends CraftingBlock implements EnergyNetCompo
         if (charge < this.energy) {
             p.sendMessage(
                     ChatColor.RED + "Not enough energy!\n" +
-                    ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + this.energy + " J"
+                            ChatColor.GREEN + "Charge: " + ChatColor.RED + charge + ChatColor.GREEN + "/" + this.energy + " J"
             );
-        }
-        else {
+        } else {
             super.craft(b, menu, p);
         }
     }

@@ -19,7 +19,7 @@ public final class CircuitPress extends AContainer {
 
     public static final MachineRecipeType TYPE = new MachineRecipeType(
             BaseItems.CIRCUIT_PRESS.getItemId().toLowerCase(Locale.ROOT),
-            BaseItems.CIRCUIT_PRESS
+            BaseItems.CIRCUIT_PRESS.item()
     );
 
     public CircuitPress(ItemGroup category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {

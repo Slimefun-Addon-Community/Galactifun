@@ -21,7 +21,7 @@ public final class IonRocket extends Rocket {
 
     @Override
     protected Map<ItemStack, Double> getAllowedFuels() {
-        return Map.of(Gas.ARGON.item(), 18.0);
+        return Map.of(Gas.ARGON.item().item(), 18.0);
     }
 
     @Nonnull
