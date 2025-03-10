@@ -109,7 +109,7 @@ public final class Galactifun extends AbstractAddon {
         new Metrics(this, 11613);
 
         if (!isTest && this.getConfig().getBoolean("auto-update") && !getPluginVersion().contains("MODIFIED")) {
-            new BlobBuildUpdater(this, this.getFile(), "Galactifun").start();
+            new BlobBuildUpdater(this, this.getFile(), "Galactifun", "Experimental").start();
         }
 
         this.alienManager = new AlienManager(this);
