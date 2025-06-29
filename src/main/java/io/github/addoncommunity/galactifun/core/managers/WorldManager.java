@@ -232,7 +232,7 @@ public final class WorldManager implements Listener {
             if (e.getTo().getWorld() != null && e.getFrom().getWorld() != e.getTo().getWorld()) {
                 PlanetaryWorld world = getWorld(e.getTo().getWorld());
                 PlanetaryWorld world2 = getWorld(e.getFrom().getWorld());
-                if (world != null && world2 != null) {
+                if (world != null || world2 != null) {
                     boolean canTp = false;
                     for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")) {
                         canTp = value.asBoolean();
