@@ -232,12 +232,16 @@ public final class WorldManager implements Listener {
             if (e.getTo().getWorld() != null && e.getFrom().getWorld() != e.getTo().getWorld()) {
                 PlanetaryWorld world = getWorld(e.getTo().getWorld());
                 PlanetaryWorld world2 = getWorld(e.getFrom().getWorld());
-                if (world != null || world2 != null) {
+                if (
+                        (world != null || world2 != null)
+                        && !BaseUniverse.EARTH.equals(world)
+                        && !BaseUniverse.EARTH.equals(world2)
+                ) {
                     boolean canTp = false;
                     for (MetadataValue value : e.getPlayer().getMetadata("CanTpAlienWorld")) {
-                        canTp = value.asBoolean();
+                        canTp |= value.asBoolean();
                     }
-                    if (canTp || e.getFrom().getWorld().equals(e.getTo().getWorld())) {
+                    if (canTp) {
                         e.getPlayer().removeMetadata("CanTpAlienWorld", Galactifun.instance());
                     } else {
                         e.setCancelled(true);

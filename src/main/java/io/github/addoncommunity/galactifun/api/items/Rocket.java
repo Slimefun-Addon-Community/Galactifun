@@ -243,7 +243,8 @@ public abstract class Rocket extends SlimefunItem implements RecipeDisplayItem {
                         if (entity instanceof Player) {
                             entity.setMetadata("CanTpAlienWorld", new FixedMetadataValue(Galactifun.instance(), true));
                         }
-                        PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0));
+                        PaperLib.teleportAsync(entity, destBlock.getLocation().add(0, 1, 0))
+                                .thenRun(() -> entity.removeMetadata("CanTpAlienWorld", Galactifun.instance()));
                         if (KnowledgeLevel.get(p, destination) == KnowledgeLevel.NONE) {
                             KnowledgeLevel.BASIC.set(p, destination);
                         }
